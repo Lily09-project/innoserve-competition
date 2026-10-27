@@ -13,10 +13,10 @@ fs.mkdirSync(output,{recursive:true});
 const fps=24,width=1920,height=1080;
 const ffmpeg=process.env.FFMPEG_BINARY;if(!ffmpeg)throw Error('Set FFMPEG_BINARY to installed encoder');
 const mode=process.argv.includes('--preview')?'preview':'full';
-const sampleTimes=chapters.map((c,i)=>Math.min(duration-0.1,c.at+(i===6?12:6)));
+const sampleTimes=chapters.map((c,i)=>Math.min(duration-0.1,c.at+(c.card?3.5:8)));
 for(let i=0;i<sampleTimes.length;i++)await sharp(Buffer.from(frameSvg(sampleTimes[i]))).resize(width,height).png().toFile(path.join(output,`chapter-${i+1}.png`));
 if(mode==='preview'){console.log(JSON.stringify({preview_frames:sampleTimes.length,output}));process.exit(0)}
-const file=path.join(output,'AI資安框架_產品動畫_淺色_150秒.mp4');
+const file=path.join(output,'AI資安框架_系統展示影片_60秒.mp4');
 if(fs.existsSync(file))throw Error('Output exists; choose a new output directory to retain previous release');
 const encoder=spawn(ffmpeg,['-hide_banner','-loglevel','error','-f','image2pipe','-framerate',String(fps),'-i','pipe:0','-an','-c:v','libx264','-preset','fast','-crf','20','-pix_fmt','yuv420p','-movflags','+faststart',file],{stdio:['pipe','inherit','inherit'],windowsHide:true});
 const exit=new Promise((resolve,reject)=>{encoder.on('error',reject);encoder.on('close',c=>c===0?resolve():reject(Error(`encoder exit ${c}`)))});

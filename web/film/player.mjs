@@ -1,6 +1,7 @@
 import {frameSvg,duration,chapters,chapterAt} from './scene.mjs';
 const $=id=>document.getElementById(id),clock=s=>`${String(Math.floor(s/60)).padStart(2,'0')}:${String(Math.floor(s%60)).padStart(2,'0')}`;
 let t=0,playing=false,previous=0,active=-1;
+$('seek').max=duration;
 chapters.forEach((c,i)=>{const b=document.createElement('button');b.textContent=`${String(i+1).padStart(2,'0')} ${c.title}`;b.onclick=()=>{t=c.at;draw()};$('chapters').append(b)});
 function draw(){$('screen').innerHTML=frameSvg(t);$('seek').value=t;$('clock').textContent=`${clock(t)} / ${clock(duration)}`;const i=chapterAt(t);if(i!==active){active=i;$('scene-status').textContent=`目前章節：${chapters[i].title}`;[...$('chapters').children].forEach((b,k)=>b.setAttribute('aria-current',String(i===k)))}}
 function play(value){playing=value;$('play').textContent=playing?'暫停動畫':'播放動畫';previous=0;}
