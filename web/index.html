@@ -1,1 +1,163 @@
-<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f4f7fb"><title>AI 資安框架｜事件工作台</title><link rel="stylesheet" href="styles.css"></head><body><a class="skip-link" href="#workspace">跳至主要內容</a><div class="app-shell"><div class="rail"><a class="brand" href="/" aria-label="AI 資安框架首頁"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3 27 8v8c0 7-11 13-11 13S5 23 5 16V8L16 3Z" fill="#1558d6"/><path d="m10 16 4 4 8-9" fill="none" stroke="white" stroke-width="2.5"/></svg><span>AI 資安框架<small>SECURITY WORKSPACE</small></span></a><p class="rail-label">工作空間</p><nav role="tablist" aria-label="工作空間頁面" aria-orientation="vertical"><button id="events-tab" role="tab" aria-controls="events-view" aria-selected="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg>事件工作台</button><button id="results-tab" role="tab" aria-controls="results-view" aria-selected="false" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3v17h17M8 15v-4m5 4V7m5 8V4"/></svg>實測與驗證</button><button id="method-tab" role="tab" aria-controls="method-view" aria-selected="false" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v5H5zM5 15h6v5H5zM15 15h4v5h-4zM12 9v3M8 15v-3h9v3"/></svg>方法與架構</button></nav><a class="film-link" href="film/index.html">▷　產品動畫 <span>↗</span></a><div class="rail-foot"><span class="environment-tag">本機隔離環境</span><p>偵測有依據<br>處置可追溯</p><small>AI SECURITY FRAMEWORK</small></div></div><div class="main-shell"><header class="topbar"><span class="breadcrumb">工作空間 <span>/</span> <strong id="page-location">事件工作台</strong></span><div class="header-controls"><span class="mode">本次實測結果重播</span><button id="stop-service" class="quiet">停止服務</button></div></header><main id="workspace" tabindex="-1"><section class="page-intro"><div><p class="eyebrow">DETECTION · EVIDENCE · RESPONSE</p><h1>讓每一筆告警，都有下一步。</h1><p>以同一事件串接入侵偵測、案例證據、AI 稽核與隔離驗證。</p></div><div class="intro-tag"><span class="status-dot"></span>17 類整合框架<small>本機模型與證據鏈路</small></div></section><div class="summary-strip" aria-label="驗證規模"><div><span>偵測範圍</span><strong>17 <small>類</small></strong></div><div><span>訓練案例庫</span><strong id="summary-bank">1,550 <small>筆</small></strong></div><div><span>整合測試查詢</span><strong id="summary-queries">463 <small>筆</small></strong></div><div><span>同事件隔離驗證</span><strong>6 <small>種情境</small></strong></div></div><section class="operation-panel" aria-label="本機執行控制"><div class="operation-copy"><span class="eyebrow">LOCAL EXECUTION</span><h2>從紀錄走進實測</h2><p id="operation-status" role="status" aria-atomic="true">正在確認本機模型服務…</p></div><div class="operation-actions"><button id="warmup">預載模型</button><button id="live-run" class="primary">即時執行事件 →</button><button id="network-run">隔離處置與回復</button></div><p class="operation-hint">選擇可即時執行的輸入，完成模型推論後即可接續同事件隔離驗證。</p></section><section id="events-view" role="tabpanel" aria-labelledby="events-tab" class="view"><aside class="case-panel"><div class="panel-heading"><h2>驗證事件</h2><span class="small-tag">資料集案例</span></div><label for="class-filter">事件類別</label><select id="class-filter"></select><label for="case-filter">案例範圍</label><select id="case-filter"><option value="all">全部驗證案例</option><option value="live">可即時重跑的 17 類輸入</option><option value="error">偵測誤判案例</option><option value="review">稽核複核案例</option><option value="support">稽核支持案例</option></select><p id="case-count" class="muted"></p><div id="case-list" class="case-list" aria-label="事件清單"></div></aside><article class="event-panel"><div class="event-heading"><div><p class="eyebrow">EVENT INVESTIGATION</p><h2 id="event-title"></h2><p id="event-id" class="mono"></p></div><div class="controls"><button id="reset">重設步驟</button><button id="show-all">完整流程</button><button id="next" class="primary">下一步 →</button></div></div><ol id="steps" class="steps" aria-label="事件處理階段"><li><b>01</b>17 類偵測</li><li><b>02</b>Top-5 證據</li><li><b>03</b>AI 稽核</li><li><b>04</b>策略檢核</li></ol><div id="event-content" aria-live="polite"></div><div class="recompute"><button id="recompute">重算案例檢索與策略</button><span id="api-status" class="muted">讀取實測紀錄</span></div><div id="network-result" aria-live="polite"></div><details class="audit-details"><summary>事件追溯紀錄<span>檢視與匯出原始證據</span></summary><button id="export-event">匯出此事件紀錄</button><pre id="ledger"></pre></details></article></section><section id="results-view" role="tabpanel" aria-labelledby="results-tab" class="view" hidden><div class="section-heading"><p class="eyebrow">VALIDATION</p><h2>每項成果，都保留驗證範圍。</h2><p>分別呈現偵測、檢索、稽核與隔離網路的實測結果。</p></div><div id="results-content"></div></section><section id="method-view" role="tabpanel" aria-labelledby="method-tab" class="view" hidden><div class="section-heading"><p class="eyebrow">THE FRAMEWORK</p><h2>將偵測與回應，連成同一條事件鏈。</h2><p>分類結果提供檢索條件；案例證據支撐稽核；策略閘門決定執行範圍。</p></div><div class="method"><section><span class="method-number">01</span><div><h3>看懂內容、時間與方向</h3><p>CTBM 讀取封包內容、時間與傳輸方向，PBCNN 補充短窗位元組模式。兩分支經校準與凍結 OOF Gate 融合，產生固定 17 類正式機率。</p><span class="method-output">輸出：分類、信心與模型表徵</span></div></section><section><span class="method-number">02</span><div><h3>用任務向量找到相似證據</h3><p>512 維 CTBM 表徵與 17 維正式機率組成 529 維任務向量，正規化後，從真實訓練案例庫取出 Top-5 相似案例。測試標籤只用於本機評估。</p><span class="method-output">輸出：前五筆案例與相似度</span></div></section><section><span class="method-number">03</span><div><h3>讓 AI 依據證據稽核</h3><p>本機 Llama 3 8B Instruct 讀取預測、信心、分支判定及相似案例，回覆支持、複核或不確定。稽核結果與同事件證據綁定，正式分類保持可追溯。</p><span class="method-output">輸出：結構化稽核判斷與理由</span></div></section><section><span class="method-number">04</span><div><h3>檢核策略，再驗證回復</h3><p>策略閘門檢查類別、證據、白名單與有效期。通過的同事件策略送入 Mininet 隔離網路，驗證規則套用與讀回、背景連線及 30 秒到期回復，留下連續執行回條。</p><span class="method-output">輸出：動作、網路回條與恢復紀錄</span></div></section></div><p class="note">本次 17 類、529 維整合實驗與歷史 Fine-11、522 維 FE-Net 模組實驗分別呈現。</p></section></main><footer><span>AI 資安閉環框架</span><span>同一事件 · 同一執行批次 · 完整證據紀錄</span><span>本機展示｜隔離測試床</span></footer></div></div><script src="data.js"></script><script src="app.js"></script></body></html>
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f3f6fb">
+<meta name="description" content="融合新型內容相依時序方向模型入侵偵測與任務導向檢索增強稽核之 AI 資安框架：事件工作台">
+<title>AI 資安框架｜事件工作台</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 3 27 8v8c0 7-11 13-11 13S5 23 5 16V8z' fill='%231d4ed8'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip-link" href="#workspace">跳至主要內容</a>
+<div class="app-shell">
+
+  <aside class="rail">
+    <a class="brand" href="/" aria-label="AI 資安框架首頁">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3 27 8v8c0 7-11 13-11 13S5 23 5 16V8L16 3Z" fill="url(#shield)"/><path d="m10.5 16 4 4 7-8" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="shield" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#38bdf8"/><stop offset="1" stop-color="#1d4ed8"/></linearGradient></defs></svg>
+      <span>AI 資安框架<small>SECURITY WORKSPACE</small></span>
+    </a>
+    <p class="rail-label">工作空間</p>
+    <nav role="tablist" aria-label="工作空間頁面" aria-orientation="vertical">
+      <button id="events-tab" role="tab" aria-controls="events-view" aria-selected="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg>事件工作台</button>
+      <button id="results-tab" role="tab" aria-controls="results-view" aria-selected="false" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3v17h17M8 15v-4m5 4V7m5 8V4"/></svg>實測與驗證</button>
+      <button id="method-tab" role="tab" aria-controls="method-view" aria-selected="false" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v5H5zM5 15h6v5H5zM15 15h4v5h-4zM12 9v3M8 15v-3h9v3"/></svg>方法與架構</button>
+    </nav>
+    <a class="film-link" href="film/index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.5 5 3.5-5 3.5z"/></svg>系統展示影片<span aria-hidden="true">↗</span></a>
+    <div class="rail-foot">
+      <span class="environment-tag"><span class="pulse"></span>本機隔離環境</span>
+      <ol class="rail-chain" aria-label="事件鏈">
+        <li>偵測有依據</li><li>稽核有證據</li><li>處置可回復</li>
+      </ol>
+    </div>
+  </aside>
+
+  <div class="main-shell">
+    <header class="topbar">
+      <span class="breadcrumb">工作空間 <span>/</span> <strong id="page-location">事件工作台</strong></span>
+      <div class="header-controls">
+        <span class="mode">本次實測結果重播</span>
+        <button id="stop-service" class="quiet">停止服務</button>
+      </div>
+    </header>
+
+    <main id="workspace" tabindex="-1">
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">DETECTION · EVIDENCE · AUDIT · RESPONSE</p>
+          <h1>讓每一筆告警，<br>都有下一步。</h1>
+          <p class="work-title">融合新型內容相依時序方向模型入侵偵測與任務導向檢索增強稽核之 AI 資安框架</p>
+        </div>
+        <ol class="hero-chain" aria-label="框架四階段">
+          <li><b>01</b><span>17 類偵測</span><small>CTBM ＋ PBCNN</small></li>
+          <li><b>02</b><span>Top-5 證據</span><small>529 維任務向量</small></li>
+          <li><b>03</b><span>AI 稽核</span><small>支持・複核・不確定</small></li>
+          <li><b>04</b><span>受控回復</span><small>限時・讀回・Rollback</small></li>
+        </ol>
+      </section>
+
+      <div class="summary-strip" aria-label="驗證規模">
+        <div><span>偵測範圍</span><strong>17<small>類</small></strong></div>
+        <div><span>訓練案例庫</span><strong id="summary-bank">1,550<small>筆</small></strong></div>
+        <div><span>整合測試查詢</span><strong id="summary-queries">463<small>筆</small></strong></div>
+        <div><span>同事件隔離驗證</span><strong>6<small>種情境</small></strong></div>
+      </div>
+
+      <section class="operation-panel" aria-label="本機執行控制">
+        <div class="operation-copy">
+          <span class="eyebrow">LOCAL EXECUTION</span>
+          <h2>從紀錄走進實測</h2>
+          <p id="operation-status" role="status" aria-atomic="true">正在確認本機模型服務…</p>
+        </div>
+        <div class="operation-actions">
+          <button id="warmup">預載模型</button>
+          <button id="live-run" class="primary">即時執行事件 →</button>
+          <button id="network-run">隔離處置與回復</button>
+        </div>
+        <p class="operation-hint">選擇可即時執行的輸入，完成模型推論後即可接續同事件隔離驗證。</p>
+      </section>
+
+      <section id="events-view" role="tabpanel" aria-labelledby="events-tab" class="view">
+        <aside class="case-panel">
+          <div class="panel-heading"><h2>驗證事件</h2><span class="small-tag">資料集案例</span></div>
+          <label for="class-filter">事件類別</label>
+          <select id="class-filter"></select>
+          <label for="case-filter">案例範圍</label>
+          <select id="case-filter">
+            <option value="all">全部驗證案例</option>
+            <option value="live">可即時重跑的 17 類輸入</option>
+            <option value="error">偵測誤判案例</option>
+            <option value="review">稽核複核案例</option>
+            <option value="support">稽核支持案例</option>
+          </select>
+          <p id="case-count" class="muted"></p>
+          <div id="case-list" class="case-list" aria-label="事件清單"></div>
+        </aside>
+
+        <article class="event-panel">
+          <div class="event-heading">
+            <div>
+              <p class="eyebrow">EVENT INVESTIGATION</p>
+              <h2 id="event-title"></h2>
+              <p id="event-id" class="mono"></p>
+            </div>
+            <div class="controls">
+              <button id="reset">重設步驟</button>
+              <button id="show-all">完整流程</button>
+              <button id="next" class="primary">下一步 →</button>
+            </div>
+          </div>
+          <ol id="steps" class="steps" aria-label="事件處理階段">
+            <li><b>01</b>17 類偵測</li>
+            <li><b>02</b>Top-5 證據</li>
+            <li><b>03</b>AI 稽核</li>
+            <li><b>04</b>策略檢核</li>
+          </ol>
+          <div id="event-content" aria-live="polite"></div>
+          <div class="recompute"><button id="recompute">重算案例檢索與策略</button><span id="api-status" class="muted">讀取實測紀錄</span></div>
+          <div id="network-result" aria-live="polite"></div>
+          <details class="audit-details">
+            <summary>事件追溯紀錄<span>檢視與匯出原始證據</span></summary>
+            <button id="export-event">匯出此事件紀錄</button>
+            <pre id="ledger"></pre>
+          </details>
+        </article>
+      </section>
+
+      <section id="results-view" role="tabpanel" aria-labelledby="results-tab" class="view" hidden>
+        <div class="section-heading">
+          <p class="eyebrow">VALIDATION</p>
+          <h2>每項成果，都保留驗證範圍。</h2>
+          <p>分別呈現偵測、檢索、稽核與隔離網路的實測結果。</p>
+        </div>
+        <div id="results-content"></div>
+      </section>
+
+      <section id="method-view" role="tabpanel" aria-labelledby="method-tab" class="view" hidden>
+        <div class="section-heading">
+          <p class="eyebrow">THE FRAMEWORK</p>
+          <h2>將偵測與回應，連成同一條事件鏈。</h2>
+          <p>分類結果提供檢索條件；案例證據支撐稽核；策略閘門決定執行範圍。</p>
+        </div>
+        <div class="method">
+          <section><span class="method-number">01</span><div><h3>看懂內容、時間與方向</h3><p>CTBM 讀取封包內容、時間與傳輸方向，PBCNN 補充短窗位元組模式。兩分支經溫度校準與凍結 OOF Gate 融合，產生固定 17 類正式機率。</p><span class="method-output">輸出：分類、信心與模型表徵</span></div></section>
+          <section><span class="method-number">02</span><div><h3>用任務向量找到相似證據</h3><p>512 維 CTBM 表徵與 17 維正式機率組成 529 維任務向量，L2 正規化後以餘弦相似度從真實訓練案例庫取出 Top-5。測試標籤只用於本機評估。</p><span class="method-output">輸出：前五筆案例與相似度</span></div></section>
+          <section><span class="method-number">03</span><div><h3>讓 AI 依據證據稽核</h3><p>本機 Llama 3 8B Instruct 讀取預測、信心、分支判定及相似案例，回覆支持、複核或不確定。稽核結果與同事件證據綁定，正式分類保持不變。</p><span class="method-output">輸出：結構化稽核判斷與理由</span></div></section>
+          <section><span class="method-number">04</span><div><h3>檢核策略，再驗證回復</h3><p>Policy Guard 檢查類別、證據、白名單與有效期。通過的同事件策略送入 Mininet 隔離網路，驗證規則套用與讀回、背景連線及 30 秒到期回復，留下連續執行回條。</p><span class="method-output">輸出：動作、網路回條與恢復紀錄</span></div></section>
+        </div>
+        <p class="note">本次 17 類、529 維整合實驗與歷史 Fine-11、522 維 FE-Net 模組實驗分別呈現。</p>
+      </section>
+    </main>
+
+    <footer>
+      <span>AI 資安閉環框架</span>
+      <span>同一事件 · 同一執行批次 · 完整證據紀錄</span>
+      <span>本機展示｜隔離測試床</span>
+    </footer>
+  </div>
+</div>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
