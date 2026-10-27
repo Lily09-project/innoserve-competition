@@ -1,0 +1,96 @@
+{
+  "started_utc": "20261027T072312Z",
+  "api_version": "ai-security-demo.v2",
+  "real_live_classes": 17,
+  "real_local_llm_calls": 17,
+  "network_cases": 6,
+  "network_validation_labels": [
+    "BENIGN",
+    "FTP-BruteForce",
+    "SSH-Bruteforce",
+    "DDoS-LOIC-HTTP",
+    "Web-XSS",
+    "Bot"
+  ],
+  "network_receipts_bound_to_same_execution": true,
+  "stale_execution_rejected": true,
+  "background_preserved_cases": 6,
+  "rollback_passed_cases": 6,
+  "non_disruptive_network_cases": 2,
+  "scope": "real pretrained models on prepared tensors; synthetic TCP namespaces; no native exploit or live capture proof",
+  "frozen_prediction_agreement_cases": 17,
+  "cases": [
+    {
+      "validation_label": "BENIGN",
+      "action": "monitor",
+      "assessment": "support",
+      "rules_applied": 0,
+      "baseline_success_rate": 1.0,
+      "after_success_rate": 1.0,
+      "background_success_rate": 1.0,
+      "recovery_success_rate": 1.0,
+      "rollback_integrity": true,
+      "ttl_rollback_elapsed_seconds": null
+    },
+    {
+      "validation_label": "FTP-BruteForce",
+      "action": "auth_hardening",
+      "assessment": "support",
+      "rules_applied": 2,
+      "baseline_success_rate": 1.0,
+      "after_success_rate": 0.16666666666666666,
+      "background_success_rate": 1.0,
+      "recovery_success_rate": 1.0,
+      "rollback_integrity": true,
+      "ttl_rollback_elapsed_seconds": 30.133325770999996
+    },
+    {
+      "validation_label": "SSH-Bruteforce",
+      "action": "auth_hardening",
+      "assessment": "support",
+      "rules_applied": 2,
+      "baseline_success_rate": 1.0,
+      "after_success_rate": 0.16666666666666666,
+      "background_success_rate": 1.0,
+      "recovery_success_rate": 1.0,
+      "rollback_integrity": true,
+      "ttl_rollback_elapsed_seconds": 30.085782450000004
+    },
+    {
+      "validation_label": "DDoS-LOIC-HTTP",
+      "action": "upstream_scrubbing",
+      "assessment": "support",
+      "rules_applied": 2,
+      "baseline_success_rate": 1.0,
+      "after_success_rate": 0.16666666666666666,
+      "background_success_rate": 1.0,
+      "recovery_success_rate": 1.0,
+      "rollback_integrity": true,
+      "ttl_rollback_elapsed_seconds": 30.088653146
+    },
+    {
+      "validation_label": "Web-XSS",
+      "action": "capture_evidence",
+      "assessment": "review",
+      "rules_applied": 0,
+      "baseline_success_rate": 1.0,
+      "after_success_rate": 1.0,
+      "background_success_rate": 1.0,
+      "recovery_success_rate": 1.0,
+      "rollback_integrity": true,
+      "ttl_rollback_elapsed_seconds": null
+    },
+    {
+      "validation_label": "Bot",
+      "action": "block_c2_destination",
+      "assessment": "support",
+      "rules_applied": 1,
+      "baseline_success_rate": 1.0,
+      "after_success_rate": 0.0,
+      "background_success_rate": 1.0,
+      "recovery_success_rate": 1.0,
+      "rollback_integrity": true,
+      "ttl_rollback_elapsed_seconds": 30.083617841000006
+    }
+  ]
+}

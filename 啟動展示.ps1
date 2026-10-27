@@ -11,7 +11,7 @@ if (-not (Test-Path -LiteralPath $taskPython)) { throw '請安裝requirements.tx
 $taskUrl = "http://127.0.0.1:$Port"
 try {
     $taskStatus = Invoke-RestMethod -Uri "$taskUrl/api/status" -TimeoutSec 2
-    if ($taskStatus.product -eq 'ai-security-demo.v1') { if (-not $NoBrowser) { Start-Process $taskUrl }; exit 0 }
+    if ($taskStatus.product -eq 'ai-security-demo.v2') { if (-not $NoBrowser) { Start-Process $taskUrl }; exit 0 }
     throw '此連接埠已有其他服務。'
 } catch { if ($_.Exception.Message -eq '此連接埠已有其他服務。') { throw } }
 $taskLogDir = Join-Path $PSScriptRoot 'runtime\service_logs'
@@ -24,7 +24,7 @@ for ($taskAttempt = 0; $taskAttempt -lt 30; $taskAttempt++) {
     if ($taskHelper.HasExited) { throw '服務啟動失敗，請查看runtime/service_logs。' }
     try {
         $taskStatus = Invoke-RestMethod -Uri "$taskUrl/api/status" -TimeoutSec 1
-        if ($taskStatus.product -eq 'ai-security-demo.v1') { if (-not $NoBrowser) { Start-Process $taskUrl }; exit 0 }
+        if ($taskStatus.product -eq 'ai-security-demo.v2') { if (-not $NoBrowser) { Start-Process $taskUrl }; exit 0 }
     } catch { }
 }
 throw '服務啟動逾時。'

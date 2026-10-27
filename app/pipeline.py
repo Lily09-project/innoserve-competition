@@ -9,6 +9,7 @@ from pathlib import Path
 import sys
 
 import numpy as np
+from network_contract import B_NAMES
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "sources" / "paper_code" / "scripts"))
@@ -18,9 +19,6 @@ LABELS = ["BENIGN", "FTP-BruteForce", "SSH-Bruteforce", "DoS-GoldenEye",
           "DoS-Hulk", "DoS-Slowloris", "DoS-SlowHTTPTest", "DDoS-LOIC-HTTP",
           "DDoS-LOIC-UDP", "DDOS-HOIC", "Web-BruteForce", "Web-XSS",
           "SQL-Injection", "Bot", "Infiltration", "PortScan", "Heartbleed"]
-B_NAMES = {0: "Benign", 1: "BruteForce-FTP", 2: "BruteForce-SSH",
-           3: "DoS-GoldenEye", 4: "DoS-Hulk", 7: "DDoS-LOIC-HTTP", 9: "DDoS-HOIC",
-           10: "WebAttack-BruteForce", 11: "WebAttack-XSS", 12: "WebAttack-SQLInjection", 13: "Bot"}
 ACTIONS = {1: "auth_hardening", 2: "auth_hardening", 3: "rate_limit", 4: "rate_limit",
            7: "upstream_scrubbing", 9: "upstream_scrubbing", 10: "rate_limit",
            11: "waf_virtual_patch", 12: "waf_virtual_patch", 13: "block_c2_destination"}
@@ -115,7 +113,7 @@ def check_judge(cached, event_id, prediction, evidence):
         raise ValueError("missing_judge_provenance")
     if cached.get("classification_changed") is not False:
         raise ValueError("judge_cannot_change_formal_classification")
-    return {"assessment": cached["assessment"], "mode": "authorized_cached_response",
+    return {"assessment": cached["assessment"], "mode": cached.get("execution_mode", "authorized_cached_response"),
             "reason": str(cached.get("reason", "")), "input_sha256": expected,
             "model": cached["model"], "valid_json": cached.get("valid_json", True)}
 
@@ -171,7 +169,8 @@ def run_event(event, bank=None, cached=None):
     if judge["assessment"] == "support" and (float(p.max()) < 0.8 or sum(x["label_id"] == prediction for x in evidence) < 4):
         policy = {"allowed": False, "action": "capture_evidence", "execution_mode": "manual_review",
                   "reason": "模型信心或證據支持未達策略門檻，保留人工複核。"}
-    stages = [{"stage": "detection", "mode": event.get("mode", "frozen_prediction_replay"), "prediction": prediction},
+    stages = [{"stage": "detection", "mode": event.get("mode", "frozen_prediction_replay"), "prediction": prediction,
+               "execution_id": event.get("execution_id")},
               {"stage": "retrieval", "mode": "live_vector_retrieval" if bank else "asset_not_loaded", "count": len(evidence)},
               {"stage": "judge", **judge}, {"stage": "policy", **policy}]
     previous = "0" * 64

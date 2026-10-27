@@ -19,7 +19,7 @@
 </article>
 </section>
 <section id="results-view" class="view" hidden><h2>實測成果與驗證範圍</h2><p>17類偵測、17類整合重跑與Fine-11歷史模組實驗各自保留評估範圍。</p><div id="results-content"></div></section>
-<section id="method-view" class="view" hidden><h2>方法與事件交接</h2><div class="method"><h3>01　內容相依時序方向判定</h3><p>CTBM讀取封包內容、時間與傳輸方向，PBCNN補充短窗位元組模式。兩分支經校準與OOF Gate融合，輸出固定17類機率。</p><h3>02　任務導向案例檢索</h3><p>512維CTBM表徵與17維正式機率組成529維向量，完成L2正規化，再從僅含真實訓練資料的案例庫取得Top-5。測試標籤只用於本機評估。</p><h3>03　證據稽核</h3><p>本機Llama 3 8B Instruct接收預測、信心、分支結果及相似案例，輸出支持、複核或不確定。正式分類維持偵測結果，逐筆回覆綁定該次事件與證據。</p><h3>04　受控策略與驗證</h3><p>策略閘門檢查類別、稽核狀態、白名單與有效時間。展示頁產生結構化動作；網路效果由獨立Mininet隔離測試提供。</p></div><p class="note">本次17類檢索向量與歷史Fine-11、522維FE-Net實驗分別驗證。</p></section>
+<section id="method-view" class="view" hidden><h2>方法與事件交接</h2><div class="method"><h3>01　內容相依時序方向判定</h3><p>CTBM讀取封包內容、時間與傳輸方向，PBCNN補充短窗位元組模式。兩分支經校準與OOF Gate融合，輸出固定17類機率。</p><h3>02　任務導向案例檢索</h3><p>512維CTBM表徵與17維正式機率組成529維向量，完成L2正規化，再從僅含真實訓練資料的案例庫取得Top-5。測試標籤只用於本機評估。</p><h3>03　證據稽核</h3><p>本機Llama 3 8B Instruct接收預測、信心、分支結果及相似案例，輸出支持、複核或不確定。正式分類維持偵測結果，逐筆回覆綁定該次事件與證據。</p><h3>04　受控策略與驗證</h3><p>策略閘門檢查類別、稽核狀態、白名單與有效時間。即時模型產生的同事件策略可送入Mininet隔離網路，完成規則套用、讀回、背景連線檢查及30秒到期回復，並保存連續事件紀錄。</p></div><p class="note">本次17類檢索向量與歷史Fine-11、522維FE-Net實驗分別驗證。</p></section>
 </main>
 <footer>同一事件識別碼串接判定、證據與策略紀錄。此展示頁不直接變更實際網路設備。</footer>
 <script src="data.js"></script><script src="app.js"></script>

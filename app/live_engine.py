@@ -6,6 +6,7 @@ import os
 import re
 import sys
 import time
+import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -75,7 +76,7 @@ class LiveEngine:
             embed=c["z_B"].cpu().numpy()[0]
         gp=self.gate(cp,pp)[0]
         detector_ms=(time.perf_counter()-started)*1000
-        fresh={**event,"policy_ttl_seconds":30,"prediction":int(gp.argmax()),"confidence":float(gp.max()),"probabilities":gp.tolist(),
+        fresh={**event,"execution_id":uuid.uuid4().hex,"policy_ttl_seconds":30,"prediction":int(gp.argmax()),"confidence":float(gp.max()),"probabilities":gp.tolist(),
                "embedding":embed.tolist(),"pred_ctbm":int(cp.argmax()),"pred_pbcnn":int(pp.argmax()),"mode":"live_checkpoint_inference"}
         progress("以529維任務向量重新查詢Top-5訓練案例")
         began=time.perf_counter()
@@ -102,10 +103,10 @@ class LiveEngine:
         record={"input_sha256":digest({"event_id":fresh["event_id"],"prediction":fresh["prediction"],"evidence":fresh["evidence"]}),
                 "assessment":value["assessment"],"reason":value["reason"],"model":"Meta-Llama-3-8B-Instruct",
                 "prompt_sha256":hashlib.sha256(self.prompt.encode()).hexdigest(),"store":False,
-                "classification_changed":False,"model_revision":self.model_revision,"raw_response":raw,"valid_json":valid,"payload":payload}
+                "classification_changed":False,"model_revision":self.model_revision,"raw_response":raw,"valid_json":valid,"payload":payload,
+                "execution_mode":"live_local_llm_inference"}
         progress("策略檢核與保存事件紀錄")
         result=run_event(fresh,self.bank,record)
-        result["judge"].update({"mode":"live_local_llm_inference","model":record["model"],"valid_json":valid})
         fresh["result"]=result
         fresh["timings"]={"detector_ms":detector_ms,"retrieval_ms":retrieval_ms,"fresh_llm_ms":llm_ms}
         fresh["execution_mode"]="live_local_models"

@@ -24,6 +24,8 @@ def main():
     summary={"labels":LABELS,"detection":read(ROOT / "results/detection_17class.json"),
              "fresh_retrieval":read(fresh / "summary.json"),"local_judge":read(fresh / "judge_summary.json"),
              "judge_comparison":comparison,"network":None,"faults":None}
+    framework=ROOT / "results/framework_validation.json"
+    if framework.exists():summary["framework_validation"]=read(framework)
     (ROOT / "web/data.js").write_text("window.FINAL_DATA="+json.dumps({"summary":summary,"events":events},ensure_ascii=False,allow_nan=False)+";\n",encoding="utf-8")
     print("Private web/data.js generated for",len(events),"events.")
 

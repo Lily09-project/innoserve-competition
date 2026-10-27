@@ -12,6 +12,7 @@ import traceback
 import numpy as np
 
 from pipeline import TrainOnlyBank, run_event, B_NAMES
+from network_contract import build_network_scenario, verify_network_receipt
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -59,11 +60,7 @@ def main():
                     progress("建立隔離Mininet並驗證策略，規則於30秒到期回復")
                     folder=ROOT / "evidence/live_network" / job_id
                     folder.mkdir(parents=True)
-                    scenario={"event_id":event_id,"true_label":B_NAMES[event["validation_label"]],
-                              "reason_label":B_NAMES[event["prediction"]],
-                              "assessment":event["result"]["judge"]["assessment"],
-                              "action":policy["action"] if policy["allowed"] else "capture_evidence",
-                              "ttl_seconds":30}
+                    scenario=build_network_scenario(event)
                     scenario_path=folder / "scenario.json";output_path=folder / "result.json"
                     scenario_path.write_text(json.dumps(scenario,ensure_ascii=False,indent=2),encoding="utf-8")
                     def linux(p):
@@ -75,6 +72,7 @@ def main():
                     (folder / "process.log").write_bytes(process.stdout+process.stderr)
                     if process.returncode!=0 or not output_path.exists():raise RuntimeError("isolated_network_test_failed")
                     result=json.loads(output_path.read_text(encoding="utf-8"))
+                    if not verify_network_receipt(scenario,result):raise RuntimeError("network_receipt_binding_failed")
                 with job_lock:jobs[job_id].update({"state":"done","phase":"執行完成","result":result})
             except Exception:
                 folder=ROOT / "validation";folder.mkdir(exist_ok=True)
@@ -93,7 +91,7 @@ def main():
             super().end_headers()
         def do_GET(self):
             if self.path=="/api/status":
-                self.json_response({"product":"ai-security-demo.v1","model_ready":engine["value"] is not None,"live_event_ids":live_ids});return
+                self.json_response({"product":"ai-security-demo.v2","model_ready":engine["value"] is not None,"live_event_ids":live_ids});return
             if self.path.startswith("/api/jobs/"):
                 key=self.path.split("/")[-1]
                 with job_lock:value=dict(jobs.get(key,{}))
@@ -122,6 +120,7 @@ def main():
                     if action=="network":
                         if key not in live_results:raise ValueError()
                         e=live_results[key]
+                        if request.get("execution_id")!=e["execution_id"]:raise ValueError("stale_execution")
                         if e["prediction"] not in B_NAMES or e["validation_label"] not in B_NAMES:raise ValueError()
                     job_id=create_job(action,key)
                     self.json_response({"job_id":job_id},202) if job_id else self.json_response({"error":"busy"},409)
