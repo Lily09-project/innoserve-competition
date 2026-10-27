@@ -4,7 +4,7 @@ import path from 'node:path';
 import {createRequire} from 'node:module';
 import {spawn,execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
-import {frameSvg,duration,chapters} from '../web/film/scene.mjs';
+import {frameSvg,duration,chapters} from '../media/film/scene.mjs';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const require=createRequire(process.env.RENDER_NODE_MODULES+'/package.json');
 const sharp=require('sharp');

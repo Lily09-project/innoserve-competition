@@ -1,12 +1,9 @@
-"""Publish verified aggregate results only; no event fixtures or private assets."""
+"""Validate recorded aggregate results against counts and confusion matrices."""
 
-import argparse
 import hashlib
 import json
 import math
 from pathlib import Path
-import shutil
-import subprocess
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCES = {
@@ -123,101 +120,3 @@ def validate_results(data):
         ):
             raise ValueError("Invalid expiry evidence")
     return data
-
-
-def build_public_site(output, root=ROOT):
-    root, output = Path(root).resolve(), Path(output).resolve()
-    if (
-        output == root
-        or output in root.parents
-        or (output.exists() and any(output.iterdir()))
-    ):
-        raise FileExistsError("Choose a separate empty publication directory")
-    data = validate_results(read_results(root))
-    revision = subprocess.check_output(
-        ["git", "rev-parse", "HEAD"], cwd=root, text=True
-    ).strip()
-    shutil.copytree(root / "public", output, dirs_exist_ok=True)
-    index = output / "index.html"
-    page = index.read_text(encoding="utf-8")
-    for asset in ("styles.css", "site.js", "results-data.js"):
-        page = page.replace(
-            '"' + asset + '"', '"' + asset + "?v=" + revision[:12] + '"'
-        )
-    index.write_text(page, encoding="utf-8")
-    (output / "results").mkdir()
-    hashes = {}
-    for name in SOURCES.values():
-        source = root / "results" / name
-        shutil.copy2(source, output / "results" / name)
-        hashes["results/" + name] = hashlib.sha256(source.read_bytes()).hexdigest()
-    (output / "results-data.js").write_text(
-        "window.VERIFIED_RESULTS="
-        + json.dumps(
-            {**data, "revision": revision}, ensure_ascii=False, allow_nan=False
-        )
-        + ";\n",
-        encoding="utf-8",
-    )
-    (output / "figures").mkdir()
-    shutil.copy2(
-        root / "deliverables/figures/fig_architecture.png",
-        output / "figures/fig_architecture.png",
-    )
-    (output / "film").mkdir()
-    for name in ("index.html", "player.mjs", "scene.mjs"):
-        shutil.copy2(root / "web/film" / name, output / "film" / name)
-    film = output / "film/index.html"
-    film.write_text(
-        film.read_text(encoding="utf-8")
-        .replace("← 回事件工作台", "← 回成果首頁")
-        .replace("</head>", '<link rel="stylesheet" href="../film-chrome.css"></head>'),
-        encoding="utf-8",
-    )
-    film.write_text(
-        film.read_text(encoding="utf-8")
-        .replace('src="player.mjs"', 'src="player.mjs?v=' + revision[:12] + '"')
-        .replace("../film-chrome.css", "../film-chrome.css?v=" + revision[:12]),
-        encoding="utf-8",
-    )
-    player = output / "film/player.mjs"
-    player.write_text(
-        player.read_text(encoding="utf-8").replace(
-            "'./scene.mjs'", "'./scene.mjs?v=" + revision[:12] + "'"
-        ),
-        encoding="utf-8",
-    )
-    (output / "deliverables").mkdir()
-    for source, destination in (
-        ("決賽簡報_AI資安框架.pptx", "finals-deck.pptx"),
-        ("AI資安框架_系統展示影片_40秒快版.mp4", "method-film-40s.mp4"),
-    ):
-        shutil.copy2(
-            root / "deliverables" / source, output / "deliverables" / destination
-        )
-    manifest = {
-        "revision": revision,
-        "data_type": "recorded_experiment_aggregates",
-        "theme": "console-chrome",
-        "source_files_sha256": hashes,
-        "detection_samples": data["detection"]["OOF Gate"]["n"],
-        "retrieval_queries": data["retrieval"]["queries"],
-        "network_cases": data["framework"]["network_cases"],
-        "scope": "Recorded results only; model inference and network execution run locally",
-    }
-    (output / "publication-manifest.json").write_text(
-        json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8"
-    )
-    (output / ".nojekyll").write_text("", encoding="utf-8")
-    forbidden = ("data.js", "config.local.json", "events.json", "train_bank.npz")
-    for file in output.rglob("*"):
-        if file.is_file() and file.name in forbidden:
-            raise ValueError("Private or event fixture payload in publication")
-    print("Verified public results site:", output)
-    return output
-
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--output", type=Path, required=True)
-    build_public_site(parser.parse_args().output)

@@ -24,7 +24,6 @@ def main():
         bank=TrainOnlyBank.load(folder / "train_bank.npz",folder / "train_bank_manifest.json")
         for name in ("events.json","live_inputs_private.npz","judge_records_private.jsonl"):
             if not (folder / name).is_file():raise FileNotFoundError(name)
-        if not (ROOT / "web/data.js").is_file():raise FileNotFoundError("Generate web/data.js")
         return {"train_cases":len(bank.ids),"representation":bank.representation_id}
     def models():
         ref=asset_path("ids_reference_root")

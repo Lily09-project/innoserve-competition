@@ -2,8 +2,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
-from functools import partial
-from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 import threading
 import subprocess
@@ -78,7 +77,7 @@ def create_server(port=8765, root=ROOT):
                 with job_lock:jobs[job_id].update({"state":"error","phase":"執行中止，已保留本機診斷紀錄"})
         threading.Thread(target=work,daemon=True).start()
         return job_id
-    class Handler(SimpleHTTPRequestHandler):
+    class Handler(BaseHTTPRequestHandler):
         def json_response(self,value,status=200):
             encoded=json.dumps(value,ensure_ascii=False,allow_nan=False).encode("utf-8")
             self.send_response(status);self.send_header("Content-Type","application/json; charset=utf-8")
@@ -95,7 +94,7 @@ def create_server(port=8765, root=ROOT):
                 with job_lock:value=dict(jobs.get(key,{}))
                 self.json_response(value,200 if value else 404);return
             if self.path.startswith("/api/"):self.send_error(404);return
-            return super().do_GET()
+            self.send_error(404, "API-only service");return
         def discard_body(self):
             # Read an unused request body before rejecting it; closing with unread bytes makes Windows reset the connection
             # before the client sees the status. Bodies beyond the cap are not drained and the connection is simply closed.
@@ -145,7 +144,7 @@ def create_server(port=8765, root=ROOT):
                 self.json_response(replay if self.path=="/api/export" else {**result,"replay_event":replay})
             except (ValueError, KeyError, TypeError): self.json_response({"error":"invalid_request","message":"事件、批次或請求格式不符，請重新選擇事件。"},400)
         def log_message(self, fmt, *args): pass
-    server = ThreadingHTTPServer(("127.0.0.1", port), partial(Handler, directory=str(root / "web")))
+    server = ThreadingHTTPServer(("127.0.0.1", port), Handler)
     server.daemon_threads=True
     return server
 

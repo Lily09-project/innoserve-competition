@@ -16,8 +16,6 @@ def main():
     if target.exists() and any(target.iterdir()):raise FileExistsError("Private assets already exist; no files were overwritten")
     target.parent.mkdir(parents=True,exist_ok=True)
     shutil.copytree(source / "evidence/fresh17",target,dirs_exist_ok=True)
-    web=ROOT / "web/data.js"
-    if (source / "web/data.js").exists() and not web.exists():shutil.copy2(source / "web/data.js",web)
     print("Private assets imported locally. They remain excluded by .gitignore.")
 
 
