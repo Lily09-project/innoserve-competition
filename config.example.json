@@ -1,0 +1,6 @@
+{
+  "ids_reference_root": "PATH_TO_FROZEN_IDS_REFERENCE_RUN",
+  "ids_data_root": "PATH_TO_TRAIN_VALIDATION_TEST_JSONL",
+  "llama_model_dir": "PATH_TO_LOCAL_LLAMA_3_8B_INSTRUCT_SNAPSHOT",
+  "python_executable": "PATH_TO_PYTHON_WITH_REQUIREMENTS_INSTALLED"
+}

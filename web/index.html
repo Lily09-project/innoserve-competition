@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI 資安閉環框架｜決賽展示</title><link rel="stylesheet" href="styles.css"></head>
+<body>
+<header><div><span class="eyebrow">AI SECURITY FRAMEWORK</span><h1>AI 資安閉環框架</h1></div><div class="header-controls"><span class="mode">本次實測結果重播</span><button id="stop-service">停止服務</button></div></header>
+<nav aria-label="主選單"><button id="events-tab" aria-selected="true">事件流程</button><button id="results-tab" aria-selected="false">驗證成果</button><button id="method-tab" aria-selected="false">方法說明</button></nav>
+<div class="operation-bar"><button id="warmup">預載本機模型</button><button id="live-run" class="primary">即時重跑完整事件</button><button id="network-run">隔離交易與到期回復驗證</button><span id="operation-status" role="status">連接本機服務後可即時執行</span></div>
+<main>
+<section id="events-view" class="view">
+<aside><h2>選擇驗證事件</h2><label for="class-filter">事件類別</label><select id="class-filter"></select><label for="case-filter">案例範圍</label><select id="case-filter"><option value="all">全部驗證案例</option><option value="live">可即時重跑的17類輸入</option><option value="error">偵測誤判案例</option><option value="review">稽核複核案例</option><option value="support">稽核支持案例</option></select><p id="case-count" class="muted"></p><div id="case-list" class="case-list" aria-label="事件清單"></div></aside>
+<article>
+<div class="event-heading"><div><p id="event-id" class="mono"></p><h2 id="event-title"></h2></div><div class="controls"><button id="reset">重設步驟</button><button id="next" class="primary">下一步</button><button id="show-all">顯示完整流程</button></div></div>
+<ol id="steps" class="steps" aria-label="事件處理階段"><li>17類偵測</li><li>Top-5證據</li><li>AI稽核</li><li>策略檢核</li></ol>
+<div id="event-content" aria-live="polite"></div>
+<div class="recompute"><button id="recompute">重新執行案例檢索與策略檢核</button><span id="api-status" class="muted">資料來自已保存的真實推論與檢索結果</span></div>
+<div id="network-result" aria-live="polite"></div>
+<details><summary>事件追溯紀錄</summary><button id="export-event">匯出此事件紀錄</button><pre id="ledger"></pre></details>
+</article>
+</section>
+<section id="results-view" class="view" hidden><h2>實測成果與驗證範圍</h2><p>17類偵測、17類整合重跑與Fine-11歷史模組實驗各自保留評估範圍。</p><div id="results-content"></div></section>
+<section id="method-view" class="view" hidden><h2>方法與事件交接</h2><div class="method"><h3>01　內容相依時序方向判定</h3><p>CTBM讀取封包內容、時間與傳輸方向，PBCNN補充短窗位元組模式。兩分支經校準與OOF Gate融合，輸出固定17類機率。</p><h3>02　任務導向案例檢索</h3><p>512維CTBM表徵與17維正式機率組成529維向量，完成L2正規化，再從僅含真實訓練資料的案例庫取得Top-5。測試標籤只用於本機評估。</p><h3>03　證據稽核</h3><p>本機Llama 3 8B Instruct接收預測、信心、分支結果及相似案例，輸出支持、複核或不確定。正式分類維持偵測結果，逐筆回覆綁定該次事件與證據。</p><h3>04　受控策略與驗證</h3><p>策略閘門檢查類別、稽核狀態、白名單與有效時間。展示頁產生結構化動作；網路效果由獨立Mininet隔離測試提供。</p></div><p class="note">本次17類檢索向量與歷史Fine-11、522維FE-Net實驗分別驗證。</p></section>
+</main>
+<footer>同一事件識別碼串接判定、證據與策略紀錄。此展示頁不直接變更實際網路設備。</footer>
+<script src="data.js"></script><script src="app.js"></script>
+</body></html>

@@ -1,0 +1,36 @@
+# Credentials and workstation configuration
+.env
+.env.*
+!.env.example
+config.local.json
+*.local.json
+.venv/
+venv/
+runtime/
+
+# Private data, models, per-event traces and generated web payload
+evidence/
+web/data.js
+data/
+datasets/
+models/
+checkpoints/
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.npz
+*.pcap
+*.pcapng
+*.jsonl
+
+# Build and diagnostic outputs
+build/
+validation/
+slides/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.log
+.DS_Store
+Thumbs.db

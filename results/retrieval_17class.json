@@ -1,0 +1,176 @@
+{
+  "experiment": "new 17-class CTBM+Gate task-vector retrieval rebuild",
+  "seed": 42,
+  "bank_rows": 1550,
+  "queries": 463,
+  "label_count": 17,
+  "selection": "first 100 real train and first 30 real test rows per class, source order; no tuning on query labels",
+  "top5": 0.9762419006479481,
+  "mrr5": 0.9389488840892728,
+  "precision5": 0.9187904967602591,
+  "query_class_counts": {
+    "FTP-BruteForce": 30,
+    "SSH-Bruteforce": 30,
+    "DoS-Slowloris": 30,
+    "DoS-SlowHTTPTest": 30,
+    "DoS-Hulk": 30,
+    "DoS-GoldenEye": 30,
+    "Heartbleed": 3,
+    "Web-BruteForce": 30,
+    "Web-XSS": 30,
+    "SQL-Injection": 10,
+    "BENIGN": 30,
+    "Infiltration": 30,
+    "Bot": 30,
+    "PortScan": 30,
+    "DDoS-LOIC-HTTP": 30,
+    "DDoS-LOIC-UDP": 30,
+    "DDOS-HOIC": 30
+  },
+  "train_class_counts": {
+    "BENIGN": 100,
+    "FTP-BruteForce": 100,
+    "SSH-Bruteforce": 100,
+    "DoS-Slowloris": 100,
+    "DoS-SlowHTTPTest": 100,
+    "DoS-Hulk": 100,
+    "DoS-GoldenEye": 100,
+    "Heartbleed": 7,
+    "Web-BruteForce": 100,
+    "Web-XSS": 100,
+    "SQL-Injection": 43,
+    "Infiltration": 100,
+    "Bot": 100,
+    "PortScan": 100,
+    "DDoS-LOIC-HTTP": 100,
+    "DDoS-LOIC-UDP": 100,
+    "DDOS-HOIC": 100
+  },
+  "fresh_prediction_agreement": 1.0,
+  "test_source_sha256": "9ea77d21feff59f0e6bd2dfd375976983df9a4dae30d0d1e761c721cb3500963",
+  "train_test_id_overlap": 0,
+  "representation_id": "ctbm512_plus_frozen_gate17_concat_l2.v1",
+  "inference_batch_measurements": [
+    {
+      "batch_size": 16,
+      "milliseconds": 8.919900050386786
+    },
+    {
+      "batch_size": 16,
+      "milliseconds": 7.414699997752905
+    },
+    {
+      "batch_size": 16,
+      "milliseconds": 15.990700107067823
+    },
+    {
+      "batch_size": 16,
+      "milliseconds": 15.842400025576353
+    },
+    {
+      "batch_size": 16,
+      "milliseconds": 16.17050007916987
+    },
+    {
+      "batch_size": 16,
+      "milliseconds": 15.99130011163652
+    },
+    {
+      "batch_size": 16,
+      "milliseconds": 15.506899915635586
+    },
+    {
+      "batch_size": 16,
+      "milliseconds": 15.833900077268481
+    },
+    {
+      "batch_size": 16,
+      "milliseconds": 16.358300112187862
+    },
+    {
+      "batch_size": 16,
+      "milliseconds": 15.825399896129966
+    },
+    {
+      "batch_size": 16,
+      "milliseconds": 16.121800057590008
+    },
+    {
+      "batch_size": 16,
+      "milliseconds": 15.638999873772264
+    },
+    {
+      "batch_size": 16,
+      "milliseconds": 15.645400155335665
+    },
+    {
+      "batch_size": 16,
+      "milliseconds": 16.0756001714617
+    },
+    {
+      "batch_size": 16,
+      "milliseconds": 16.51949994266033
+    },
+    {
+      "batch_size": 16,
+      "milliseconds": 25.339199928566813
+    },
+    {
+      "batch_size": 16,
+      "milliseconds": 15.530700096860528
+    },
+    {
+      "batch_size": 16,
+      "milliseconds": 15.807099873200059
+    },
+    {
+      "batch_size": 16,
+      "milliseconds": 17.977199982851744
+    },
+    {
+      "batch_size": 16,
+      "milliseconds": 17.35129998996854
+    },
+    {
+      "batch_size": 16,
+      "milliseconds": 15.791400102898479
+    },
+    {
+      "batch_size": 16,
+      "milliseconds": 15.259100124239922
+    },
+    {
+      "batch_size": 16,
+      "milliseconds": 15.263500157743692
+    },
+    {
+      "batch_size": 16,
+      "milliseconds": 16.982499975711107
+    },
+    {
+      "batch_size": 16,
+      "milliseconds": 15.969899948686361
+    },
+    {
+      "batch_size": 16,
+      "milliseconds": 15.61630005016923
+    },
+    {
+      "batch_size": 16,
+      "milliseconds": 15.583200147375464
+    },
+    {
+      "batch_size": 16,
+      "milliseconds": 15.151199884712696
+    },
+    {
+      "batch_size": 15,
+      "milliseconds": 34.39049981534481
+    }
+  ],
+  "retrieval_ms_median": 1.011400017887354,
+  "device": "cuda",
+  "llm_calls": 0,
+  "llm_status": "manual_review_until_configured_authorized_model_response",
+  "scope": "new bounded integration experiment, not the historical 1550/463 or Fine-11 FE-Net experiment"
+}
