@@ -182,18 +182,18 @@ notes(s, "【1:20–2:00】三項創新各解決一個瓶頸：第一，內容�
 
 # ================================================================ 5 video
 s = prs.slides.add_slide(blank)
-header(s, "04　系統展示", "一筆事件的輸入、處理與輸出")
+header(s, "04　系統展示", "Packet Tracer 模擬：一筆事件的輸入、處理與輸出")
 vw = 9.6; vh = vw * 9 / 16
 rbox(s, 0.55, 1.4, vw + 0.1, vh + 0.1, fill=PANEL, line=LINE, radius=0.02)
 s.shapes.add_movie(str(VIDEO), E(0.6), E(1.45), E(vw), E(vh), poster_frame_image=str(POSTER), mime_type="video/mp4")
 x0 = 10.55
 text(s, x0, 1.45, 2.3, 0.35, "影片段落 · 60 秒", size=16, bold=True, color=MUTED, spacing=1.0)
-for k, (lab, d) in enumerate(zip(STAGE_L, ["流量 → 模型張量", "張量 → 17 類機率", "529 維 → Top-5", "證據 → 三態 JSON", "策略 → 套用・回復", "事件鏈 → 匯出"])):
+for k, (lab, d) in enumerate(zip(STAGE_L, ["Mirror-TAP · 流量→張量", "IDS-Server · 17 類機率", "RAG-Store · Top-5", "LLM-Judge · 稽核 JSON", "Policy-Guard · ACL・回復", "Event Record · 匯出"])):
     y = 1.95 + k * 0.78
     box(s, x0, y + 0.06, 0.22, 0.22, fill=STAGE_C[k], shape=MSO_SHAPE.OVAL)
     text(s, x0 + 0.35, y, 2.3, 0.3, lab, size=16, bold=True, spacing=1.0)
     text(s, x0 + 0.35, y + 0.33, 2.3, 0.3, d, size=12, color=MUTED, spacing=1.0)
-notes(s, "【2:00–3:05】點擊播放影片（60 秒）。旁白重點：輸入是原始流量，處理是雙分支偵測、任務檢索、AI 稽核與受控處置，"
+notes(s, "【2:00–3:05】點擊播放影片（60 秒，Packet Tracer 模擬模式）。旁白重點：輸入是原始流量，處理是雙分支偵測、任務檢索、AI 稽核與受控處置，"
          "輸出是 17 類機率、Top-5 證據、結構化 JSON 稽核與網路處置回條。Bot 事件實測：攻擊型測試交易成功率 100% 降到 0%，"
          "背景服務 100% 保留，30.12 秒到期撤銷後完整回復。影片同時是網路不穩時的備案。")
 
