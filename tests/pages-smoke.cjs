@@ -36,6 +36,15 @@ const site = path.join(temporary, "site");
       dom.window.eval(fs.readFileSync(path.join(site, name), "utf8"));
     await new Promise((r) => setTimeout(r, 30));
     const doc = dom.window.document;
+    assert.equal(
+      new URL(
+        doc
+          .querySelector('[aria-label="AI 資安框架首頁"]')
+          .getAttribute("href"),
+        dom.window.location.href,
+      ).pathname,
+      "/innoserve-competition/index.html",
+    );
     assert.equal(doc.querySelectorAll("#case-list button").length, 17);
     assert.match(
       doc.getElementById("operation-status").textContent,
