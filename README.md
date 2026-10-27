@@ -72,6 +72,8 @@ python scripts/import_local_assets.py --source PATH_TO_LOCAL_DELIVERY
 
 複核與不確定事件維持蒐證或人工確認；無既有驗證策略的類別走蒐證處理。展示服務只綁定127.0.0.1。
 
+決賽上場前，啟動服務後執行`python scripts/preflight.py --warmup`，核對模型與案例庫版本、CUDA、WSL隔離環境及模型預載。預檢不部署網路規則，結果保存在本機`validation/finals_preflight.json`。
+
 ## 測試
 
 合約測試不需要模型權重或原始流量：
