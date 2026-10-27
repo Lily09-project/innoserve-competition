@@ -7,6 +7,7 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
+import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
@@ -57,6 +58,39 @@ class PublicResultsTests(unittest.TestCase):
             self.assertIn('"queries": 463', script)
             with self.assertRaises(FileExistsError):
                 build_public_site(output)
+
+    def test_deck_and_film_are_synchronized(self):
+        deck = ROOT / "deliverables/決賽簡報_AI資安框架.pptx"
+        film = ROOT / "deliverables/AI資安框架_系統展示影片_40秒快版.mp4"
+        with zipfile.ZipFile(deck) as archive:
+            xml = [
+                archive.read(name).decode("utf-8")
+                for name in archive.namelist()
+                if name.endswith(".xml")
+                and name.startswith(
+                    (
+                        "ppt/slides/slide",
+                        "ppt/notesSlides/notesSlide",
+                        "ppt/charts/chart",
+                    )
+                )
+            ]
+            self.assertGreaterEqual(len(xml), 18)
+            text = "".join(xml)
+            for obsolete in ("96.76%", "94.25%", "95.83%", "鏡像流量，免改"):
+                self.assertNotIn(obsolete, text)
+            for expected in ("97.62%", "93.89%", "隔離TCP"):
+                self.assertIn(expected, text)
+            movies = [
+                archive.read(name)
+                for name in archive.namelist()
+                if name.endswith(".mp4")
+            ]
+            self.assertEqual(len(movies), 1)
+            self.assertEqual(
+                hashlib.sha256(movies[0]).hexdigest(),
+                hashlib.sha256(film.read_bytes()).hexdigest(),
+            )
 
     def test_method_animation_has_no_fabricated_outputs(self):
         source = (ROOT / "web/film/scene.mjs").read_text(encoding="utf-8")
