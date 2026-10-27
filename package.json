@@ -1,0 +1,14 @@
+{
+  "devDependencies": {
+    "prettier": "3.6.2",
+    "jsdom": "26.1.0"
+  },
+  "name": "innoserve-competition",
+  "private": true,
+  "packageManager": "pnpm@11.25.0",
+  "scripts": {
+    "format:check": "prettier --check \"web/**/*.{js,css,html}\" \"tests/*.cjs\"",
+    "format": "prettier --write \"web/**/*.{js,css,html}\" \"tests/*.cjs\"",
+    "test:frontend": "node tests/frontend-smoke.cjs"
+  }
+}

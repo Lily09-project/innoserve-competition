@@ -1,1 +1,3 @@
+# Only numpy is required by the pinned shadow-experiment submodule import.
 numpy>=1.26,<3
+ruff==0.14.2

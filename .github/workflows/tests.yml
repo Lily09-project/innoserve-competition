@@ -1,9 +1,12 @@
-name: Integration contracts
+name: Public quality checks
 on:
   push:
   pull_request:
+permissions:
+  contents: read
 jobs:
   unit-tests:
+    name: Python contracts
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -14,3 +17,35 @@ jobs:
           python-version: '3.11'
       - run: python -m pip install -r requirements-test.txt
       - run: python -m unittest discover -s tests -v
+  quality:
+    name: Lint and public audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install ruff==0.14.2
+      - run: python -m ruff check app scripts tests
+      - run: python -m ruff format --check app scripts tests
+      - run: python scripts/check_public_files.py
+  frontend:
+    name: Frontend smoke
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install -r requirements-test.txt
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: pnpm/action-setup@v4
+        with:
+          version: '11.25.0'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run format:check
+      - run: pnpm run test:frontend

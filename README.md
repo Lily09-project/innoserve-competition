@@ -27,10 +27,20 @@ python -m venv .venv
 啟用虛擬環境後安裝：
 
 ```bash
-python -m pip install -r requirements.txt
+python -m pip install -r requirements-test.txt
 ```
 
-依執行設備選擇適合的PyTorch安裝來源。本機模型展示已於RTX 4090驗證。
+以上安裝足以啟動公開合成展示，不需要 PyTorch、模型權重或私有資料：
+
+```bash
+python app/server.py --demo
+```
+
+開啟 http://127.0.0.1:8765/ 。服務自動在 `runtime/synthetic-demo/` 產生17筆合成事件及85筆合成案例，畫面標示「合成資料，非實測」。可操作流程、重算檢索及匯出紀錄；模型、AI生成及網路處置均停用。重算走正式的檢索與策略合約，沒有模型推論成效宣稱。
+
+也可先執行 `python scripts/make_demo_assets.py --output PATH_TO_EMPTY_DEMO_FOLDER`，再用 `python app/server.py --demo --demo-root PATH_TO_EMPTY_DEMO_FOLDER` 啟動。產生器拒絕覆寫非空資料夾。已生成展示資產不會自動更新；修改介面後請指定新的空展示目錄。
+
+完整本機模型模式再安裝 `python -m pip install -r requirements.txt`。依設備先從 PyTorch 官方來源安裝符合 CUDA 的版本（requirements 要求 torch>=2.7,<3），再安裝其餘需求；pip 會保留符合範圍的既有版本。本機模型展示已於 RTX 4090 驗證。
 
 ## 本機資產設定
 
@@ -87,7 +97,10 @@ python -m unittest discover -s tests -v
 
 ```text
 app/                    事件介面、策略閘門與本機模型服務
-web/                    展示介面
+web/                    展示介面（私有 data.js 不提交）
+web/film/               程式動畫
+design-system/          介面設計規範
+.github/                CI、PR 範本及 CODEOWNERS
 scripts/                資料重建、稽核與隔離驗證
 tests/                  合約與異常處理測試
 results/                可公開彙整結果
@@ -95,8 +108,33 @@ sources/paper_code/     研究B固定版本submodule
 config.example.json     本機資產設定範例
 ```
 
-來源與使用範圍見[NOTICE.md](NOTICE.md)。
+原創程式採 [Apache-2.0](LICENSE)。第三方來源與使用範圍見 [NOTICE.md](NOTICE.md)，協作流程見 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
 ## 產品動畫與介面
 
 工作台採用淺色介面，設計決策見 [介面規格](design-system/MASTER.md)。啟動服務後，點選「產品動畫」即可播放九章、150 秒的程式動畫，支援暫停、跳章及全螢幕。動畫來源、影片輸出方式及示意範圍見 [動畫說明](web/film/README.md)。
+
+## 架構
+
+```mermaid
+flowchart LR
+  Input[17類事件輸入] --> Detector[CTBM / PBCNN + OOF Gate]
+  Detector --> Vector[512維表徵 + 17維機率]
+  Vector --> Retrieve[訓練案例 Top-5]
+  Retrieve --> Judge[本機 AI 證據稽核]
+  Judge --> Guard[策略檢核與人工複核分流]
+  Guard --> Network[隔離網路驗證與回復]
+  Network --> Ledger[同事件／同批次雜湊紀錄]
+```
+
+正式分類保持不變；17類均有明確策略路徑，其中11類具有已驗證的隔離流量設定，其餘採蒐證或複核。`LABELS` 是17類模型輸出順序，`B_NAMES` 是其中11類對應上游隔離設定的名稱，不能以其長度取代正式分類數。
+
+## 設定與品質檢查
+
+`config.example.json` 列出資產位置、WSL 發行版／使用者、掛載根目錄、網路逾時、工作保留時間與服務埠。預設只綁定 localhost；設定寫入不提交的 `config.local.json`，不需修改原始碼。
+
+CI 使用最小 Python 依賴驗證合約與公開展示，另執行 Ruff、Prettier、公開檔案／常見憑證模式掃描及實際 DOM 煙霧測試。輕量掃描不能取代完整憑證稽核。前端測試需 Node.js 24 與 pnpm 11.25.0，完整指令見 CONTRIBUTING.md。
+
+## English abstract
+
+This prototype connects fixed 17-class intrusion detection, task-oriented train-only retrieval, local AI evidence review, and reversible policy validation in an isolated network. Event and execution identifiers bind detection, evidence, review, and network receipts. A standalone synthetic demo supports public collaboration without redistributing private datasets or model weights; synthetic fixtures are explicitly labelled and are not experimental results.

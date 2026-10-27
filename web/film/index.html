@@ -1,3 +1,203 @@
-<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AI 資安框架｜產品流程動畫</title><style>
-:root{color-scheme:light}*{box-sizing:border-box}body{margin:0;background:#f4f7fb;color:#192b46;font:15px/1.6 "Microsoft JhengHei",sans-serif}header,main{max-width:1440px;margin:auto;padding:20px 28px}header{display:flex;justify-content:space-between;gap:20px}a{color:#1558d6;text-decoration:none}h1{font-size:18px;margin:0}header p{font-size:12px;color:#5d6c80;margin:0}.screen{background:#fff;border:1px solid #dce4ef;border-radius:12px;overflow:hidden;aspect-ratio:16/9}.screen svg{display:block;width:100%;height:100%}.controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:18px 0}button,select{background:#fff;border:1px solid #ccd8e8;border-radius:6px;padding:9px 14px;min-height:44px;cursor:pointer;color:#192b46;font:inherit}button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid #1558d6;outline-offset:3px}#play{background:#1558d6;color:#fff;border-color:#1558d6}input{flex:1;min-width:100px;accent-color:#1558d6}output{font-variant-numeric:tabular-nums;font-size:13px;min-width:90px}.chapters{display:flex;gap:8px;flex-wrap:wrap}.chapters button{font-size:12px;min-height:38px}.chapters button[aria-current=true]{background:#edf3ff;border-color:#1558d6;color:#1558d6}.caption{font-size:13px;color:#5d6c80}body.fullscreen header,body.fullscreen .controls,body.fullscreen .chapters,body.fullscreen .caption{display:none}body.fullscreen main{max-width:none;padding:0;display:grid;place-items:center;min-height:100vh;background:#fff}body.fullscreen .screen{width:min(100vw,177.7778vh);border:0;border-radius:0}@media(max-width:640px){header,main{padding:14px}header{display:block}header a{display:block;margin-top:10px}.controls{gap:8px}.controls button,.controls select{font-size:12px;padding:8px}h1{font-size:16px}}
-</style></head><body><header><div><h1>AI 資安閉環框架｜產品流程動畫</h1><p>純程式動畫 · 02:30 · 可暫停、跳章與全螢幕</p></div><a href="../index.html">← 回事件工作台</a></header><main><div class="screen" id="screen" role="img" aria-label="以網路拓樸、封包移動與事件狀態說明資安框架"></div><div class="controls"><button id="play">播放動畫</button><button id="restart">重新播放</button><label for="seek">進度</label><input id="seek" type="range" min="0" max="150" step="0.1" value="0"><output id="clock">00:00 / 02:30</output><label for="speed">速度</label><select id="speed"><option value="1">1×</option><option value="1.5">1.5×</option><option value="2">2×</option></select><button id="fullscreen">全螢幕</button></div><div class="chapters" id="chapters"></div><p class="caption">網路與封包為流程示意，非 Packet Tracer 軟體錄製；隔離驗證使用合成 TCP 交易。畫面中的成果數字取自已完成實測。影片無語音，可獨立搭配現場口述。</p><p class="caption" id="scene-status" role="status"></p></main><script type="module" src="player.mjs"></script></body></html>
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>AI 資安框架｜產品流程動畫</title>
+    <style>
+      :root {
+        color-scheme: light;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: #f4f7fb;
+        color: #192b46;
+        font:
+          15px/1.6 "Microsoft JhengHei",
+          sans-serif;
+      }
+      header,
+      main {
+        max-width: 1440px;
+        margin: auto;
+        padding: 20px 28px;
+      }
+      header {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+      }
+      a {
+        color: #1558d6;
+        text-decoration: none;
+      }
+      h1 {
+        font-size: 18px;
+        margin: 0;
+      }
+      header p {
+        font-size: 12px;
+        color: #5d6c80;
+        margin: 0;
+      }
+      .screen {
+        background: #fff;
+        border: 1px solid #dce4ef;
+        border-radius: 12px;
+        overflow: hidden;
+        aspect-ratio: 16/9;
+      }
+      .screen svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+      .controls {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin: 18px 0;
+      }
+      button,
+      select {
+        background: #fff;
+        border: 1px solid #ccd8e8;
+        border-radius: 6px;
+        padding: 9px 14px;
+        min-height: 44px;
+        cursor: pointer;
+        color: #192b46;
+        font: inherit;
+      }
+      button:focus-visible,
+      select:focus-visible,
+      input:focus-visible,
+      a:focus-visible {
+        outline: 3px solid #1558d6;
+        outline-offset: 3px;
+      }
+      #play {
+        background: #1558d6;
+        color: #fff;
+        border-color: #1558d6;
+      }
+      input {
+        flex: 1;
+        min-width: 100px;
+        accent-color: #1558d6;
+      }
+      output {
+        font-variant-numeric: tabular-nums;
+        font-size: 13px;
+        min-width: 90px;
+      }
+      .chapters {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .chapters button {
+        font-size: 12px;
+        min-height: 38px;
+      }
+      .chapters button[aria-current="true"] {
+        background: #edf3ff;
+        border-color: #1558d6;
+        color: #1558d6;
+      }
+      .caption {
+        font-size: 13px;
+        color: #5d6c80;
+      }
+      body.fullscreen header,
+      body.fullscreen .controls,
+      body.fullscreen .chapters,
+      body.fullscreen .caption {
+        display: none;
+      }
+      body.fullscreen main {
+        max-width: none;
+        padding: 0;
+        display: grid;
+        place-items: center;
+        min-height: 100vh;
+        background: #fff;
+      }
+      body.fullscreen .screen {
+        width: min(100vw, 177.7778vh);
+        border: 0;
+        border-radius: 0;
+      }
+      @media (max-width: 640px) {
+        header,
+        main {
+          padding: 14px;
+        }
+        header {
+          display: block;
+        }
+        header a {
+          display: block;
+          margin-top: 10px;
+        }
+        .controls {
+          gap: 8px;
+        }
+        .controls button,
+        .controls select {
+          font-size: 12px;
+          padding: 8px;
+        }
+        h1 {
+          font-size: 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div>
+        <h1>AI 資安閉環框架｜產品流程動畫</h1>
+        <p>純程式動畫 · 02:30 · 可暫停、跳章與全螢幕</p>
+      </div>
+      <a href="../index.html">← 回事件工作台</a>
+    </header>
+    <main>
+      <div
+        class="screen"
+        id="screen"
+        role="img"
+        aria-label="以網路拓樸、封包移動與事件狀態說明資安框架"
+      ></div>
+      <div class="controls">
+        <button id="play">播放動畫</button><button id="restart">重新播放</button
+        ><label for="seek">進度</label
+        ><input
+          id="seek"
+          type="range"
+          min="0"
+          max="150"
+          step="0.1"
+          value="0"
+        /><output id="clock">00:00 / 02:30</output
+        ><label for="speed">速度</label
+        ><select id="speed">
+          <option value="1">1×</option>
+          <option value="1.5">1.5×</option>
+          <option value="2">2×</option></select
+        ><button id="fullscreen">全螢幕</button>
+      </div>
+      <div class="chapters" id="chapters"></div>
+      <p class="caption">
+        網路與封包為流程示意，非 Packet Tracer 軟體錄製；隔離驗證使用合成 TCP
+        交易。畫面中的成果數字取自已完成實測。影片無語音，可獨立搭配現場口述。
+      </p>
+      <p class="caption" id="scene-status" role="status"></p>
+    </main>
+    <script type="module" src="player.mjs"></script>
+  </body>
+</html>
