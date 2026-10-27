@@ -2,7 +2,7 @@
 
 啟動作品後開啟 `http://127.0.0.1:8765/film/index.html`，或從事件工作台點「系統展示影片」。
 
-全片 60 秒，嵌入決賽 5 分鐘簡報（另留 1 分鐘緩衝），也是現場網路不穩時的離線備案。畫面採 Packet Tracer 模擬模式的呈現方式：
+全片60秒，網站預設1.5倍速約40秒，亦可切換原速或2倍速約30秒。嵌入決賽 5 分鐘簡報（另留 1 分鐘緩衝），也是現場網路不穩時的離線備案。畫面採 Packet Tracer 模擬模式的呈現方式：
 
 - **網路拓樸**：User-PC、Bot-PC、Switch、Mirror-TAP、Router、Policy-Guard、Web-Server，以及 IDS-Server、RAG-Store、LLM-Judge 三台 AI 節點。
 - **PDU 封包**：信封圖示沿連線移動；正常流量（綠）持續通行，Bot 流量（紅）在 ACL 生效期間於策略閘道被攔下，到期後恢復。
@@ -18,7 +18,7 @@
 | 0:39 | Policy-Guard | 支持事件 → ACL 套用、讀回、30 秒到期回復 |
 | 0:50 | Event Record | 各階段結果 → 雜湊綁定的事件紀錄 |
 
-畫面上的數字全部取自 `results/` 與系統概述文件；處置段落使用 `results/framework_validation.json` 的 Bot 情境實測值（攻擊型測試交易成功率 100%→0%、背景服務 100%、30.12 秒到期撤銷）。封包內容一律以去識別化方式呈現。
+畫面上的數字全部取自 `results/` 的17類實測彙整檔；處置段落使用 `results/framework_validation.json` 的 Bot 情境實測值（攻擊型測試交易成功率 100%→0%、背景服務 100%、30.12 秒到期撤銷）。封包內容一律以去識別化方式呈現。
 
 - `scene.mjs`：時間軸、鏡頭、拓樸與純函式 `frameSvg(time)`。
 - `player.mjs`：播放、暫停、拖曳進度、速度、跳章、全螢幕與鍵盤。
@@ -36,3 +36,5 @@ python scripts/render_film_resvg.py PATH_TO_NODE REPO_DIR OUTPUT.mp4
 ```
 
 輸出 1920×1080、24fps、H.264／yuv420p、無語音。
+
+拓樸、封包路徑及PDU視窗是方法視覺化，保存數字與實際模型輸入範圍分開標示；本機推論使用真實預處理張量。本版不混用歷史Fine-11稽核結果。

@@ -1,5 +1,5 @@
 // Packet Tracer–style simulation film. Pure time -> SVG; shared by the browser player and the MP4 renderer.
-// Every figure shown comes from results/ or the overview document; packet contents stay de-identified.
+// Recorded aggregate figures come from results/. Topology, packet paths and PDU windows illustrate the method.
 export const TITLE_ZH=['融合新型內容相依時序方向模型','入侵偵測與任務導向檢索增強稽核','之 AI 資安框架'];
 export const TITLE_EN='An AI Security Framework Integrating Novel Content Dependent Temporal Directional Intrusion Detection and Task Oriented Retrieval Augmented';
 export const duration=60;
@@ -110,66 +110,65 @@ function ptWindow(t,a,b,title,device,color,body){
 }
 const lbl=(x,y,s,c)=>R(x,y-15,s.length*7.6+22,22,c+'14','none',11)+T(x+11,y,s,12,c,700);
 
-function stage1(t){return ptWindow(t,9.6,16.8,'輸入：鏡像流量　→　輸出：模型張量','Mirror-TAP',C.blue,(x,y)=>{
- let s=lbl(x+16,y+124,'Inbound · 原始封包（去識別化）',C.blue);
- for(let k=0;k<6;k++){const o=out((t-10.2-k*.25)/.3),up=[1,0,1,1,0,1][k],w=60+hash(k+9)*110;
-  s+=G(o,R(x+16,y+136+k*25,210,21,k%2?C.panel:'#F1F5FB','none',4)+M(x+24,y+151+k*25,`#${String(k+1).padStart(2,'0')}`,11,C.muted)+M(x+60,y+151+k*25,up?'→':'←',12,up?C.blue:C.green,700)+`<rect x="${x+84}" y="${y+142+k*25}" width="${w.toFixed(0)}" height="9" rx="3" fill="${up?C.blue:C.green}" fill-opacity=".3"/>`)}
- s+=G(out((t-12)/.6),lbl(x+246,y+124,'Process',C.blue)+['雙向 Flow 組裝','IP／Port 去識別化','三種模型輸入'].map((l,k)=>G(out((t-12.2-k*.45)/.4),R(x+246,y+136+k*44,212,36,'#F1F5FB','none',8)+T(x+260,y+159+k*44,`${k+1}  ${l}`,13,C.ink,700))).join(''));
- const q=out((t-13.6)/.6);
- s+=G(q,lbl(x+16,y+312,'Outbound · 內容 bytes',C.blue));
- for(let r=0;r<5;r++)for(let k=0;k<20;k++){const v=hash(r*31+k)**1.6;s+=G(q*out((t-13.8-k*.03)/.3),`<rect x="${x+16+k*10.5}" y="${y+324+r*11}" width="9.5" height="10" fill="${C.blue}" fill-opacity="${(.1+v*.85).toFixed(2)}"/>`)}
- s+=G(out((t-14.4)/.5),lbl(x+246,y+312,'Δt × 方向序列',C.blue)+Array.from({length:18},(_,k)=>{const up=hash(k+50)>.45,hh=(6+hash(k+70)*22)*out((t-14.6-k*.04)/.3);return `<rect x="${x+248+k*11.5}" y="${(up?y+356-hh:y+356).toFixed(1)}" width="8" height="${hh.toFixed(1)}" fill="${up?C.blue:'#93C5FD'}"/>`}).join('')+L(x+246,y+356,x+458,y+356,C.muted,1));
- s+=G(out((t-15)/.5),T(x+16,y+418,'資料集：CICIDS2017 · CSE-CIC-IDS2018（同一事件格式）',12,C.muted));
+function stage1(t){return ptWindow(t,9.6,16.8,'前處理方法 → 真實模型輸入張量','Mirror-TAP',C.blue,(x,y)=>{
+ let s=lbl(x+16,y+124,'輸入資料格式',C.blue);
+ [['內容位元組','封包內容矩陣'],['時間差 Δt','封包到達時間差'],['傳輸方向','雙向Flow的方向編碼']].forEach(([title,description],k)=>{
+  s+=G(out((t-10.2-k*.4)/.5),R(x+16,y+140+k*66,442,54,'#F1F5FB','none',8)+T(x+30,y+163+k*66,title,16,C.blue,700)+T(x+30,y+184+k*66,description,12,C.muted));
+ });
+ s+=G(out((t-13)/.5),lbl(x+16,y+372,'模型資料來源',C.blue)+T(x+24,y+404,'CICIDS2017 · CSE-CIC-IDS2018',15,C.ink,700));
+ s+=G(out((t-14)/.5),T(x+24,y+432,'本機執行使用已備妥的真實預處理張量',12,C.muted));
  return s;})}
 
-function stage2(t){return ptWindow(t,17.6,24.8,'輸入：模型張量　→　輸出：17 類正式機率','IDS-Server',C.teal,(x,y)=>{
- let s=lbl(x+16,y+124,'Process · 雙分支融合',C.teal);
- [['CTBM','內容・時間差・方向'],['PBCNN','短窗位元組'],['溫度校準','降低過度自信'],['OOF Gate','59 項證據融合']].forEach(([a,b],k)=>{const o=spring((t-18.1-k*.35)/.7),xx=x+16+(k%2)*222,yy=y+136+Math.floor(k/2)*58;
-  s+=G(clamp(o*1.5),`<g transform="translate(${xx+107} ${yy+25}) scale(${Math.min(o,1.06).toFixed(3)}) translate(${-xx-107} ${-yy-25})">`+R(xx,yy,214,50,'#F0FAF7',C.teal+'66',8)+T(xx+14,yy+22,a,14,C.teal,700)+T(xx+14,yy+41,b,11.5,C.muted)+'</g>')});
- s+=G(out((t-19.8)/.8),lbl(x+16,y+278,'Outbound · 17 類機率',C.teal));
- for(let k=0;k<17;k++){const h=(k===13?92:6+hash(k+3)*12)*out((t-20-k*.05)/.6);if(h>0)s+=`<rect x="${x+20+k*15}" y="${(y+388-h).toFixed(1)}" width="10" height="${h.toFixed(1)}" rx="2" fill="${k===13?C.teal:'#A7DCD3'}"/>`}
- s+=G(out((t-21.2)/.4),L(x+16,y+388,x+272,y+388,C.muted,1)+T(x+20+13*15+5,y+290,'Bot',12,C.teal,700,'middle')+M(x+16,y+404,'0 BENIGN',10,C.faint)+M(x+272,y+404,'16 Heartbleed',10,C.faint,400,'end'));
- [['Accuracy','98.08%'],['Macro-F1','93.05%'],['Bot Recall','98.40%']].forEach(([a,b],k)=>{s+=G(out((t-21.6-k*.3)/.4),R(x+292,y+296+k*44,166,36,'#F0FAF7','none',8)+T(x+304,y+319+k*44,a,12,C.muted)+T(x+448,y+320+k*44,b,15,C.teal,700,'end'))});
- s+=G(out((t-22.6)/.4),T(x+16,y+432,'18,998 筆封存測試 · 固定 17 類順序',12,C.muted));
+function stage2(t){return ptWindow(t,17.6,24.8,'模型張量 → 雙分支融合 → 17類正式分類','IDS-Server',C.teal,(x,y)=>{
+ let s=lbl(x+16,y+124,'雙分支方法',C.teal);
+ [['CTBM','內容・時間差・方向'],['PBCNN','短窗位元組模式'],['溫度校準','校準模型信心'],['OOF Gate','融合兩支模型判定']].forEach(([title,description],k)=>{
+  const xx=x+16+(k%2)*222,yy=y+140+Math.floor(k/2)*66;
+  s+=G(out((t-18-k*.4)/.5),R(xx,yy,214,56,'#F0FAF7','none',8)+T(xx+12,yy+24,title,16,C.teal,700)+T(xx+12,yy+45,description,12,C.muted));
+ });
+ s+=G(out((t-20)/.5),lbl(x+16,y+304,'18,998筆測試的彙整結果',C.teal));
+ [['98.08%','Accuracy'],['93.05%','Macro-F1'],['98.40%','Bot Recall']].forEach(([value,label],k)=>{
+  s+=G(out((t-20.5-k*.4)/.5),R(x+16+k*150,y+326,142,76,'#F0FAF7','none',8)+T(x+28+k*150,y+357,value,23,C.teal,700)+T(x+28+k*150,y+384,label,12,C.muted));
+ });
+ s+=G(out((t-22)/.4),T(x+16,y+432,'正式輸出：固定17類機率，保留512維表徵',12,C.muted));
  return s;})}
 
-function stage3(t){return ptWindow(t,25.6,31.8,'輸入：529 維任務向量　→　輸出：Top-5 案例證據','RAG-Store',C.violet,(x,y)=>{
- let s=lbl(x+16,y+124,'Inbound · 512 維表徵 ∥ 17 維機率',C.violet);
- for(let k=0;k<40;k++)s+=G(out((t-25.9-k*.02)/.3),`<rect x="${x+16+k*10.8}" y="${y+136}" width="9" height="30" fill="${k<36?C.violet:'#EA580C'}" fill-opacity="${(.2+hash(k)*.7).toFixed(2)}"/>`);
- const cx=x+130,cy=y+290;s+=G(out((t-26.6)/.5),lbl(x+16,y+196,'Process · 餘弦相似度',C.violet));
- for(let k=0;k<70;k++){const a=hash(k)*6.283,r=22+hash(k+200)*80;s+=G(out((t-26.8-k*.008)/.3),`<circle cx="${(cx+Math.cos(a)*r*1.25).toFixed(1)}" cy="${(cy+Math.sin(a)*r*.75).toFixed(1)}" r="3" fill="${C.faint}" fill-opacity=".5"/>`)}
- const sweep=out((t-27.6)/1.2);
- s+=G(sweep,`<circle cx="${cx}" cy="${cy}" r="${(10+sweep*36).toFixed(1)}" fill="${C.violet}" fill-opacity=".07" stroke="${C.violet}" stroke-dasharray="4 4"/>`);
- [[-20,-12],[16,-18],[24,10],[-12,20],[-30,4]].forEach(([dx,dy],k)=>{s+=G(out((t-28-k*.2)/.3),L(cx,cy,cx+dx*1.4,cy+dy*1.4,C.violet,1.5)+`<circle cx="${cx+dx*1.4}" cy="${cy+dy*1.4}" r="5" fill="${C.violet}"/>`)});
- s+=G(out((t-27.4)/.3),`<circle cx="${cx}" cy="${cy}" r="7" fill="#EA580C" stroke="#fff" stroke-width="2"/>`);
- s+=G(out((t-28.4)/.4),lbl(x+262,y+196,'Outbound · Top-5',C.violet));
- for(let k=0;k<5;k++){const o=out((t-28.6-k*.18)/.35);s+=G(o,M(x+262,y+228+k*30,`#${k+1}`,12,C.violet,700)+`<rect x="${x+292}" y="${y+218+k*30}" width="${((150-k*14)*o).toFixed(1)}" height="12" rx="6" fill="${C.violet}" fill-opacity="${(1-k*.13).toFixed(2)}"/>`)}
- [['Top-5','96.76%'],['MRR@5','94.25%']].forEach(([a,b],k)=>{s+=G(out((t-29.6-k*.3)/.4),R(x+262+k*100,y+384,92,48,'#F5F1FE','none',8)+T(x+272+k*100,y+402,a,11,C.muted)+T(x+272+k*100,y+424,b,15,C.violet,700))});
- s+=G(out((t-29.8)/.4),T(x+16,y+424,'案例庫 1,550 筆 · 檢索中位數 1.01 ms',12,C.muted));
+function stage3(t){return ptWindow(t,25.6,31.8,'529維任務向量 → Top-5證據欄位','RAG-Store',C.violet,(x,y)=>{
+ let s=lbl(x+16,y+124,'任務向量組合',C.violet);
+ [['512','流量表徵'],['17','正式分類機率'],['529','串接與L2正規化']].forEach(([value,label],k)=>{
+  s+=G(out((t-25.9-k*.3)/.4),R(x+16+k*150,y+140,142,70,'#F5F1FE','none',8)+T(x+30+k*150,y+172,value,24,C.violet,700)+T(x+30+k*150,y+194,label,11,C.muted));
+ });
+ s+=G(out((t-27)/.5),lbl(x+16,y+244,'餘弦排序 → 取回前五筆',C.violet));
+ ['案例識別碼','案例類別','相似度與排名'].forEach((label,k)=>{
+  s+=G(out((t-27.3-k*.3)/.4),R(x+16,y+262+k*32,442,26,'#F5F1FE','none',5)+T(x+30,y+280+k*32,label,13,C.ink,700));
+ });
+ [['97.62%','Top-5'],['93.89%','MRR@5']].forEach(([value,label],k)=>{
+  s+=G(out((t-29-k*.3)/.4),R(x+16+k*224,y+370,214,50,'#F5F1FE','none',8)+T(x+30+k*224,y+401,value,23,C.violet,700)+T(x+150+k*224,y+399,label,12,C.muted));
+ });
+ s+=G(out((t-30)/.4),T(x+16,y+440,'實測：1,550筆訓練案例・463筆測試查詢',12,C.muted));
  return s;})}
 
-function stage4(t){return ptWindow(t,32.6,38.8,'輸入：類別＋信心＋Top-5　→　輸出：稽核 JSON','LLM-Judge',C.amber,(x,y)=>{
- let s=lbl(x+16,y+124,'Inbound · 稽核提示',C.amber);
- ['正式類別與信心','CTBM／PBCNN 分支觀察','Top-5 標籤與相似度'].forEach((l,k)=>{s+=G(out((t-32.9-k*.25)/.35),R(x+16,y+136+k*34,200,28,'#FFF7ED','none',6)+T(x+28,y+155+k*34,l,12.5,C.ink,700))});
- s+=G(out((t-33.8)/.35),R(x+16,y+238,200,28,'#FEF2F2','none',6)+T(x+28,y+257,'測試答案不進入提示',12.5,C.red,700));
- s+=G(out((t-34)/.5),lbl(x+234,y+124,'Outbound · 結構化回覆',C.amber)+R(x+234,y+136,224,134,'#0B1B33','none',8));
- const lines=['{','  "assessment": "support",','  "reason": "Top-5 證據一致",','  "classification_changed":','      false','}'];
- const typed=Math.floor(clamp((t-34.3)/2.2)*lines.join('').length);let used=0;
- lines.forEach((l,k)=>{const n=clamp(typed-used,0,l.length);used+=l.length;if(n>0)s+=M(x+246,y+158+k*19,l.slice(0,n),11.5,k===1?'#6EE7B7':'#CFE0F7')});
- [['支持','415',C.teal],['複核','13',C.amber],['不確定','35',C.amber]].forEach(([a,n,c],k)=>{const p=spring((t-35.4-k*.25)/.7);if(p>0)s+=`<g transform="translate(${x+51+k*76} ${y+316}) scale(${Math.min(p,1.1).toFixed(3)})">`+R(-35,-22,70,44,c+'14',c,10)+T(0,-3,a,12,c,700,'middle')+T(0,14,`${n} 筆`,11,C.muted,400,'middle')+'</g>'});
- [['有效 JSON','463 / 463'],['分類被改寫','0 筆'],['外部 API','0 次']].forEach(([a,b],k)=>{s+=G(out((t-36.2-k*.3)/.4),R(x+250,y+290+k*42,208,34,'#FFF7ED','none',8)+T(x+262,y+312+k*42,a,12,C.muted)+T(x+448,y+313+k*42,b,14,C.amber,700,'end'))});
- s+=G(out((t-37)/.4),T(x+16,y+374,'463 筆整合查詢 · 只有「支持」可進入處置',12,C.muted));
+function stage4(t){return ptWindow(t,32.6,38.8,'分類與Top-5 → 證據稽核與三態分流','LLM-Judge',C.amber,(x,y)=>{
+ let s=lbl(x+16,y+124,'結構化回覆欄位',C.amber);
+ [['assessment','支持／複核／不確定'],['reason','依案例證據形成稽核理由']].forEach(([key,description],k)=>{
+  s+=G(out((t-33-k*.5)/.5),R(x+16,y+140+k*68,442,56,'#FFF7ED','none',8)+M(x+30,y+164+k*68,key,15,C.amber,700)+T(x+30,y+185+k*68,description,12,C.muted));
+ });
+ s+=G(out((t-34.4)/.4),lbl(x+16,y+296,'463筆本機稽核實際分流',C.amber));
+ [['支持','415',C.teal],['複核','13',C.amber],['不確定','35',C.amber]].forEach(([label,count,color],k)=>{
+  s+=G(out((t-34.8-k*.35)/.5),R(x+16+k*150,y+314,142,70,color+'12','none',8)+T(x+30+k*150,y+347,count,25,color,700)+T(x+30+k*150,y+371,label,12,C.muted));
+ });
+ s+=G(out((t-36.4)/.5),T(x+16,y+412,'有效JSON：463筆・正式分類改寫：0筆',13,C.ink,700));
+ s+=G(out((t-37)/.4),T(x+16,y+438,'支持精確率97.11%・處置另經策略閘門檢核',12,C.muted));
  return s;})}
 
-function stage5(t){return ptWindow(t,39.6,49.4,'輸入：支持事件　→　輸出：處置回條（Bot 實測）','Policy-Guard',C.orange,(x,y)=>{
+function stage5(t){return ptWindow(t,39.6,49.4,'支持事件 → 隔離TCP交易回條（Bot）','Policy-Guard',C.orange,(x,y)=>{
  let s=lbl(x+16,y+124,'Process · 處置門檻與動作',C.orange);
  [['稽核結果 = 支持',39.9],['分類信心 ≥ 0.80',40.2],['Top-5 同類 ≥ 4',40.5],['套用 block_c2_destination（1 條）',41.2],['規則讀回一致',41.8],['TTL 30 秒到期撤銷',46.2]].forEach(([l,at],k)=>{const o=spring((t-at)/.6);
   if(o>0)s+=`<g transform="translate(${x+28} ${y+150+k*30}) scale(${Math.min(o,1.15).toFixed(3)})"><circle r="9" fill="${k<3?C.teal:C.orange}"/><path d="M-4 0l3 3 6-6" stroke="#fff" stroke-width="2.2" fill="none"/></g>`+G(clamp(o),T(x+46,y+155+k*30,l,13,C.ink,k>=3?700:400))});
  const ttl=clamp((t-42)/4.2),done=t>46.2;
  s+=G(out((t-41.8)/.4),`<circle cx="${x+400}" cy="${y+190}" r="44" fill="none" stroke="#FDE7D9" stroke-width="9"/><circle cx="${x+400}" cy="${y+190}" r="44" fill="none" stroke="${C.orange}" stroke-width="9" stroke-linecap="round" stroke-dasharray="${(276.5*ttl).toFixed(1)} 400" transform="rotate(-90 ${x+400} ${y+190})"/>`+T(x+400,y+188,done?'已撤銷':'TTL',done?15:17,C.orange,700,'middle')+T(x+400,y+208,done?'30.12 秒':'30 秒',12,C.muted,400,'middle'));
  s+=G(out((t-42.4)/.5),lbl(x+16,y+344,'Outbound · 交易成功率',C.orange));
- [['攻擊型 套用前',1,C.muted,42.6],['攻擊型 套用後',0,C.red,43.4],['背景服務',1,C.green,44.2],['回復後',1,C.green,46.8]].forEach(([l,v,c,at],k)=>{const o=out((t-at)/.6),xx=x+16,yy=y+356+k*24;
-  s+=G(clamp((t-at)/.2),T(xx,yy+13,l,12,C.ink)+R(xx+120,yy+3,260,12,'#F1F5FB','none',6)+`<rect x="${xx+120}" y="${yy+3}" width="${Math.max(3,260*v*o).toFixed(1)}" height="12" rx="6" fill="${c}"/>`+T(xx+442,yy+14,`${Math.round(v*100*o)}%`,13,c,700,'end'))});
+ [['目標交易 套用前',1,C.muted,42.6],['目標交易 套用後',0,C.red,43.4],['背景服務',1,C.green,44.2],['回復後',1,C.green,46.8]].forEach(([l,v,c,at],k)=>{const o=out((t-at)/.6),xx=x+16,yy=y+356+k*24;
+  s+=G(clamp((t-at)/.2),T(xx,yy+13,l,12,C.ink)+R(xx+120,yy+3,260,12,'#F1F5FB','none',6)+`<rect x="${xx+120}" y="${yy+3}" width="${Math.max(0,260*v).toFixed(1)}" height="12" rx="6" fill="${c}"/>`+T(xx+442,yy+14,`${Math.round(v*100)}%`,13,c,700,'end'))});
  return s;})}
 
 function stage6(t){
@@ -219,7 +218,7 @@ function titleCard(t,closing){
  }else{
   s+=G(a(.1),T(110,190,'CONCLUSION',15,C.blue,700,'start',' letter-spacing="2"'));
   ['偵測有依據','稽核有證據','處置可回復'].forEach((l,k)=>{const p=spring((t-.3-k*.3)/.8);s+=G(clamp(p*1.2),`<g transform="translate(${110+k*360} ${(300+(1-Math.min(p,1))*30).toFixed(1)})">${T(0,0,l,46,[C.blue,C.violet,C.teal][k],700)}</g>`)});
-  [['98.08%','17 類偵測 Accuracy'],['96.76%','任務檢索 Top-5'],['95.83%','改良 RAG 錯誤攔截率'],['6 / 6','隔離情境完整回復']].forEach(([v,l],k)=>{s+=G(a(1.2+k*.2),R(110+k*270,380,250,104,C.panel,C.line,14)+T(130+k*270,436,v,36,[C.blue,C.violet,C.violet,C.teal][k],700)+T(130+k*270,464,l,14,C.muted))});
+  [['98.08%','17 類偵測 Accuracy'],['97.62%','任務檢索 Top-5'],['97.11%','本機稽核支持精確率'],['6 / 6','隔離情境完整回復']].forEach(([v,l],k)=>{s+=G(a(1.2+k*.2),R(110+k*270,380,250,104,C.panel,C.line,14)+T(130+k*270,436,v,36,[C.blue,C.violet,C.violet,C.teal][k],700)+T(130+k*270,464,l,14,C.muted))});
   s+=G(a(2.2),T(110,560,'融合新型內容相依時序方向模型入侵偵測與任務導向檢索增強稽核之 AI 資安框架',18,C.ink,700));
  }
  return s;
@@ -241,5 +240,5 @@ export function frameSvg(time){
  }
  if(titleO>0)s+=G(titleO,`<rect width="1280" height="720" fill="${C.bg}"/>`+titleCard(t,false));
  if(closeO>0)s+=G(closeO,`<rect width="1280" height="720" fill="${C.bg}"/>`+titleCard(t-56,true));
- return s+'</svg>';
+ s+=T(1254,708,'方法流程示意 · 隔離TCP交易實測',11,C.muted,400,'end');return s+'</svg>';
 }
