@@ -152,7 +152,7 @@ function render() {
   if (step >= 3)
     html += block(
       "策略檢核與動作編譯",
-      `<div class="split"><div><p class="status ${r.policy.allowed ? "" : "warn"}">${r.policy.allowed ? "通過策略檢核" : "保留人工複核"}</p><p>${esc(r.policy.action)}</p><p>${esc(r.policy.reason)}</p></div><div><h3>執行範圍</h3><p>此頁顯示結構化動作與策略結果。</p><p>即時重跑後，可按上方「隔離處置與回復」，實際套用本次策略、讀回規則及驗證回復。</p></div></div>`,
+      `<div class="split"><div><p class="status ${r.policy.allowed ? "" : "warn"}">${r.policy.allowed ? "通過策略檢核" : "保留人工複核"}</p><p>${esc(r.policy.action)}</p><p>${esc(r.policy.reason)}</p></div><div><h3>執行範圍</h3><p>此頁顯示結構化動作與策略結果。</p><p>${staticSite ? "線上版提供事件與證據互動；本機版接續模型推論、隔離處置與回復驗證。" : "即時重跑後，可按上方「隔離處置與回復」，實際套用本次策略、讀回規則及驗證回復。"}</p></div></div>`,
     );
   $("event-content").innerHTML = html;
   $("network-result").innerHTML = e.network_receipt

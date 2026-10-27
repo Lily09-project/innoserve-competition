@@ -19,6 +19,14 @@ document.getElementById("restart-video").onclick = () => startAt(0);
 document.querySelectorAll("[data-time]").forEach((button) => {
   button.onclick = () => startAt(Number(button.dataset.time));
 });
+let lastSecond = -1;
+video.addEventListener("timeupdate", () => {
+  const second = Math.floor(video.currentTime);
+  if (second !== lastSecond) {
+    lastSecond = second;
+    announce();
+  }
+});
 video.addEventListener("seeked", announce);
 video.addEventListener("play", announce);
 video.addEventListener("ended", () => {
