@@ -26,7 +26,7 @@ jobs:
         with:
           python-version: '3.11'
       - run: python -m pip install ruff==0.14.2
-      - run: python -m ruff check scripts/build_public_site.py scripts/check_public_files.py tests/test_public_results.py --select E9,F63,F7,F82
+      - run: python -m ruff check scripts/validate_results.py scripts/check_public_files.py tests/test_public_results.py --select E9,F63,F7,F82
       - run: python scripts/check_public_files.py
   frontend:
     name: Frontend smoke
@@ -46,5 +46,5 @@ jobs:
         with:
           version: '11.25.0'
       - run: pnpm install --frozen-lockfile
-      - run: pnpm run test:public
-      - run: pnpm run check:public
+      - run: pnpm run test:media
+      - run: pnpm run check:media

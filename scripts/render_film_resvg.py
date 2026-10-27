@@ -1,8 +1,8 @@
-"""Render web/film/scene.mjs to MP4 without sharp: node emits SVG frames, resvg rasterizes, ffmpeg encodes."""
+"""Render media/film/scene.mjs to MP4 without sharp: node emits SVG frames, resvg rasterizes, ffmpeg encodes."""
 import json, subprocess, sys, resvg_py, imageio_ffmpeg
 node, repo, out = sys.argv[1:4]
 fps = 24
-js = f"""import {{frameSvg,duration}} from 'file:///{repo}/web/film/scene.mjs';
+js = f"""import {{frameSvg,duration}} from 'file:///{repo}/media/film/scene.mjs';
 const n=Math.round(duration*{fps});for(let f=0;f<n;f++)process.stdout.write(JSON.stringify(frameSvg(f/{fps}))+String.fromCharCode(10));"""
 src = subprocess.Popen([node, '--input-type=module', '-e', js], stdout=subprocess.PIPE)
 enc = subprocess.Popen([imageio_ffmpeg.get_ffmpeg_exe(), '-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', str(fps), '-i', '-',

@@ -4,9 +4,9 @@
 
 ## 發布資料
 
-公開網站只打包 `results/` 四份實測彙整、正式方法影片、簡報及架構圖。私有事件、模型回覆、案例向量庫、設定、原始流量與權重不提交。
+公開儲存庫只收錄 `results/` 四份實測彙整、正式方法影片、簡報及架構圖。私有事件、模型回覆、案例向量庫、設定、原始流量與權重不提交。
 
-更新實驗數據時先保留原始執行紀錄與評估範圍，再更新results來源；網站由建置程式讀取。動畫與簡報必須同步核對，歷史11類與現行17類結果不得混用。方法視覺化不使用虛構單筆機率或AI回覆。
+更新實驗數據時先保留原始執行紀錄與評估範圍，再更新results來源；各交付物引用相同來源。動畫與簡報必須同步核對，歷史11類與現行17類結果不得混用。方法視覺化不使用虛構單筆機率或AI回覆。
 
 ## 驗證
 
@@ -14,8 +14,8 @@
 python -m pip install -r requirements-test.txt
 python -m unittest discover -s tests -v
 pnpm install --frozen-lockfile
-pnpm run test:public
-pnpm run check:public
+pnpm run test:media
+pnpm run check:media
 python scripts/check_public_files.py
 ```
 

@@ -37,3 +37,9 @@ Thumbs.db
 
 node_modules/
 .ruff_cache/
+
+# Presentation production workspace
+projects/
+
+!deliverables/source/slides/
+!deliverables/source/slides/*.svg

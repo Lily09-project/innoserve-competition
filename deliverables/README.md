@@ -1,20 +1,15 @@
-# 決賽交付檔案
+# 決賽交付
 
-| 檔案 | 說明 |
-|---|---|
-| `決賽簡報_AI資安框架.pptx` | 8頁決賽簡報（已嵌入40秒快版方法影片，備忘稿含逐頁講稿；數據取自本repo四份實測彙整） |
-| `AI資安框架_系統展示影片_40秒快版.mp4` | 正式展示用快版，已嵌入簡報，可直接離線播放 |
-| `AI資安框架_系統展示影片_60秒.mp4` | Packet Tracer風格方法動畫（1080p、60秒；網站預設1.5倍速約40秒，可切換原速或2倍速） |
-| `figures/fig_architecture.png` | 系統架構圖（Python 繪製） |
-| `figures/fig_problem.png` | 問題與解方對照圖 |
+| 檔案 | 用途 |
+| --- | --- |
+| 決賽簡報_AI資安框架.pptx | 8頁可編輯簡報，附講者備忘稿；影片獨立播放 |
+| 決賽簡報_AI資安框架.pdf | 簡報預覽與離線備援 |
+| AI資安框架_系統展示影片_40秒快版.mp4 | 1080p、1.5倍速正式展示 |
+| AI資安框架_系統展示影片_60秒.mp4 | 1080p原速版 |
+| figures/fig_architecture.png | 四分塊架構圖，2560×1280 |
+| source/architecture.svg | 文字可編輯原稿 |
+| source/slides/ | 逐頁可編輯SVG |
 
-重新產生：`python scripts/presentation/figures.py deliverables/figures`、`python scripts/render_film_resvg.py NODE . deliverables/AI資安框架_系統展示影片_60秒.mp4`、`python scripts/presentation/build_deck.py deliverables/決賽簡報_AI資安框架.pptx deliverables/figures deliverables/AI資安框架_系統展示影片_40秒快版.mp4 deliverables/figures/video_poster.png`。
+簡報與影片採黑白章節、藍色重點。所有數值取自results四份實測彙整；動畫拓樸為方法說明，隔離驗證效果為TCP測試交易與回條。交付內容保持匿名。影片與簡報分開，現場可自由決定播放順序。
 
-
-## 正式呈現口徑
-
-本版簡報與影片採用同一組17類實測彙整：偵測Accuracy98.08%、Macro-F1 93.05%；檢索Top-5 97.62%、MRR@5 93.89%；稽核415筆支持、13筆複核、35筆不確定。六種隔離情境包含四種規則套用與兩種監測／蒐證，不將六種都描述為套用規則。
-
-影片的網路設備、封包路徑及PDU視窗用於方法解說；數據取自實測彙整。完整模型實測使用真實預處理張量，隔離測試量測TCP交易與規則回復。
-
-[正式成果網站](https://lily09-project.github.io/innoserve-competition/)提供相同數據、互動圖表及下載。現場答詢見[決賽展示與答詢](../docs/決賽展示與答詢.md)。
+製作來源：scripts/presentation/editorial_assets.py、media/film/scene.mjs、scripts/render_product_film.mjs。PPTX以PPT Master原生DrawingML編譯，圖示為AI生成，流程與文字由Python排版。詳見source/README.md與design-system/DESIGN.md。

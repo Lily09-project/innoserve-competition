@@ -7,8 +7,7 @@
     "prettier": "3.6.2"
   },
   "scripts": {
-    "test:public": "node tests/public-site-smoke.cjs",
-    "format:public": "prettier --write \"public/**/*.{js,css,html}\"",
-    "check:public": "prettier --check \"public/**/*.{js,css,html}\""
+    "test:media": "node tests/media-smoke.cjs",
+    "check:media": "node --check media/film/scene.mjs"
   }
 }

@@ -1,0 +1,31 @@
+{
+  "files": {
+    "deliverables/決賽簡報_AI資安框架.pptx": {
+      "bytes": 828106,
+      "sha256": "146eb1b8176864f630a5e153ef56364f885d741dce9a160076de5dc97c8831e3"
+    },
+    "deliverables/決賽簡報_AI資安框架.pdf": {
+      "bytes": 313970,
+      "sha256": "50487b63d74380702bfdac8552119f38cd71d5483879d45993185d0413b815e5"
+    },
+    "deliverables/AI資安框架_系統展示影片_40秒快版.mp4": {
+      "bytes": 1323698,
+      "sha256": "9d3b2b70464df76e8d6a07432a192a2d0470110b0eb0d570ea2a98da488f2e66"
+    },
+    "deliverables/AI資安框架_系統展示影片_60秒.mp4": {
+      "bytes": 1566370,
+      "sha256": "21583d05329a4a12ac3998d136d1c6d0c98e04954e1d3b4c870e61adff741c62"
+    },
+    "deliverables/figures/fig_architecture.png": {
+      "bytes": 390553,
+      "sha256": "934342052a1553ef97b389bccd5ca74e1af27ea62dab27f9ca6dbf48ce6fd47e"
+    }
+  },
+  "slides": 8,
+  "python_tests": 27,
+  "website": "removed; GitHub Pages disabled",
+  "review": "independent sampled-frame and PowerPoint review passed",
+  "video": "1920x1080 H264 24fps; 40s and 60s; no audio",
+  "image_generation": "built-in image_gen; text-free icons only",
+  "results_changed": false
+}
