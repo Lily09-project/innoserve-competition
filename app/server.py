@@ -96,15 +96,22 @@ def create_server(port=8765, root=ROOT):
                 self.json_response(value,200 if value else 404);return
             if self.path.startswith("/api/"):self.send_error(404);return
             return super().do_GET()
+        def discard_body(self):
+            # Read an unused request body before rejecting it; closing with unread bytes makes Windows reset the connection
+            # before the client sees the status. Bodies beyond the cap are not drained and the connection is simply closed.
+            try:size=int(self.headers.get("Content-Length","0"))
+            except ValueError:size=0
+            if 0<size<=65536:self.rfile.read(size)
+            self.close_connection=True
         def do_POST(self):
-            if self.path not in {"/api/retrieve","/api/operate","/api/stop","/api/export"}: self.send_error(404); return
+            if self.path not in {"/api/retrieve","/api/operate","/api/stop","/api/export"}: self.discard_body(); self.send_error(404); return
             origin = self.headers.get("Origin")
-            if origin and origin != "http://127.0.0.1:" + str(server.server_port): self.send_error(403); return
+            if origin and origin != "http://127.0.0.1:" + str(server.server_port): self.discard_body(); self.send_error(403); return
             if self.headers.get("Content-Type", "").split(";")[0].strip() != "application/json":
-                self.send_error(415); return
+                self.discard_body(); self.send_error(415); return
             try:
                 size = int(self.headers.get("Content-Length", "0"))
-                if not 0 < size < 2048: raise ValueError()
+                if not 0 < size < 2048: self.discard_body(); raise ValueError()
                 request = json.loads(self.rfile.read(size))
                 if not isinstance(request,dict):raise ValueError("request_must_be_object")
                 if self.path=="/api/stop":
