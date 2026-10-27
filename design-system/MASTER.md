@@ -2,6 +2,8 @@
 
 適用：web/index.html、web/styles.css、web/app.js、web/film。
 
+公開成果網站 `public/` 已依使用者提供的 design.md 改採 Console Chrome；目前公開站排版以 [public-console.md](pages/public-console.md) 為準。以下原規格保留供本機工作台與既有簡報參照。
+
 依 UI/UX Pro Max 檢索「security operations light dashboard」。採用回傳的 Minimalism & Swiss Style，保留清楚網格、留白、可見焦點及狀態文字；回傳的深色配色與行銷轉換區塊不符本案，因此不採用。使用者明確要求整體淺色，以下為本案正式決策。
 
 ## 視覺（2026-10 決賽版）

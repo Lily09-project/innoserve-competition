@@ -16,300 +16,416 @@
   </head>
   <body>
     <a class="skip" href="#main">跳至主要內容</a>
-    <header>
-      <a class="brand" href="./"
-        >◈ <span>AI 資安框架<small>VERIFIED RESULTS</small></span></a
-      >
-      <nav aria-label="主要導覽">
-        <a href="#method">方法架構</a><a href="#results">實測成果</a
-        ><a href="#validation">隔離驗證</a><a href="#delivery">作品交付</a>
+    <div class="console-shell">
+      <div class="masthead">
+        <div class="mascot-bubble">
+          <svg width="49" height="48" viewBox="0 0 49 48" aria-hidden="true">
+            <path
+              fill="#3d4f97"
+              d="M8 3h31v5h6v23h-6v6h-6v6H16v-6h-6v-6H4V9h4z"
+            />
+            <path
+              fill="#c0d5e6"
+              d="M12 8h23v5h5v16h-6v6h-7v4h-6v-4h-7v-6H9V14h3z"
+            />
+            <path fill="#fff" d="M13 15h9v8h-9zm15 0h9v8h-9z" />
+            <path
+              fill="#21242e"
+              d="M17 17h4v5h-4zm12 0h4v5h-4zM19 28h13v3H19z"
+            />
+          </svg>
+          <p>歡迎進入資安框架<span>判定有依據，事件可追溯。</span></p>
+        </div>
+        <form id="quick-find" class="quick-find" role="search">
+          <label for="quick-search"
+            >CLASS FINDER <span>攻擊類別查詢</span></label
+          >
+          <div>
+            <input
+              id="quick-search"
+              type="search"
+              placeholder="Bot / Web / SSH"
+              autocomplete="off"
+            /><button class="utility" type="submit">
+              GO <span aria-hidden="true">›</span>
+            </button>
+          </div>
+        </form>
+      </div>
+      <header class="command-bar">
+        <a class="brand" href="./" aria-label="AI資安框架首頁"
+          ><span>AI SECURITY</span><small>FRAMEWORK</small></a
+        ><button
+          id="menu-toggle"
+          class="menu-toggle"
+          type="button"
+          aria-controls="main-navigation"
+          aria-expanded="false"
+        >
+          選單 <span aria-hidden="true">▾</span>
+        </button>
+        <nav id="main-navigation" aria-label="主要導覽">
+          <a href="#method">方法架構</a><a href="#results">實測成果</a
+          ><a href="#validation">隔離驗證</a><a href="#delivery">作品交付</a>
+        </nav>
+        <a class="utility data-chip" href="#sources"
+          >DATA BANK <span aria-hidden="true">›</span></a
+        >
+      </header>
+      <nav class="subnav" aria-label="工具導覽">
+        <a href="#overview">系統概述</a><a href="#class-explorer">17類結果</a
+        ><a href="#audit-summary">AI稽核統計</a><a href="film/">方法影片</a
+        ><a href="publication-manifest.json">版本來源</a
+        ><a href="https://github.com/Lily09-project/innoserve-competition"
+          >程式文件 ↗</a
+        >
       </nav>
-      <a class="button small" href="film/">觀看方法短片 ↗</a>
-    </header>
-    <main id="main">
-      <section class="hero section">
-        <div class="hero-copy">
-          <p class="eyebrow">DETECTION → EVIDENCE → AUDIT → RESPONSE</p>
-          <p class="badge">資安技術組 · 決賽作品</p>
-          <h1>從威脅判定，<br /><span>走到有證據的應變。</span></h1>
-          <p class="lead">
-            融合內容相依時序方向偵測與任務導向證據檢索，讓正式分類、AI
-            稽核及策略驗證沿同一事件銜接，保留可回查的處理紀錄。
-          </p>
-          <div class="actions">
-            <a class="button primary" href="#results">檢視實測成果</a
-            ><a class="button" href="film/">40 秒方法導覽 ▷</a>
-          </div>
-          <p class="work-title">
-            融合新型內容相依時序方向模型入侵偵測與任務導向檢索增強稽核之 AI
-            資安框架
-          </p>
-          <p class="hero-note">
-            公開版提供已完成實驗的彙整結果；完整模型推論與網路處置由本機系統執行。
-          </p>
-        </div>
-        <div class="hero-visual" aria-label="同事件的四階段處理鏈">
-          <div class="event-chip">同一事件 · 同一執行批次</div>
-          <ol>
-            <li>
-              <span class="node teal">01</span>
-              <div>
-                <strong>判定威脅</strong>
-                <p>CTBM ＋ PBCNN → 17 類</p>
-              </div>
-            </li>
-            <li>
-              <span class="node violet">02</span>
-              <div>
-                <strong>取回證據</strong>
-                <p>529 維任務向量 → Top-5</p>
-              </div>
-            </li>
-            <li>
-              <span class="node amber">03</span>
-              <div>
-                <strong>稽核與分流</strong>
-                <p>支持／複核／不確定 → 策略檢核</p>
-              </div>
-            </li>
-            <li>
-              <span class="node blue">04</span>
-              <div>
-                <strong>驗證與回復</strong>
-                <p>隔離套用 → 讀回 → 到期撤銷</p>
-              </div>
-            </li>
-          </ol>
-          <div class="chain-foot">事件識別碼 ＋ 執行批次 ＋ 雜湊紀錄</div>
-        </div>
-      </section>
-      <section
-        class="metrics"
-        aria-label="核心實測數據"
-        id="headline-metrics"
-      ></section>
-      <section id="method" class="section">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">METHOD & INNOVATION</p>
-            <h2>把判定、證據與處理接在一起</h2>
-          </div>
-          <p>
-            每個模組保留明確輸入與輸出，讓分析人員能追溯事件如何形成，以及後續策略如何決定。
-          </p>
-        </div>
-        <div class="method-grid">
-          <article class="card">
-            <span class="number teal-text">01</span>
-            <h3>內容、時間與方向共同判定</h3>
-            <p>
-              CTBM 分析封包內容、時間差與傳輸方向；PBCNN
-              補充短窗位元組模式，由凍結 OOF Gate 融合正式分類。
-            </p>
-            <div class="formula">兩支模型 → 校準與融合 → 17 類機率</div>
-          </article>
-          <article class="card">
-            <span class="number violet-text">02</span>
-            <h3>用分類任務引導案例檢索</h3>
-            <p>
-              512
-              維表徵與17維正式機率組成任務向量，從只包含訓練資料的案例庫取回相似證據，讓判定有依據可查。
-            </p>
-            <div class="formula">512 ＋ 17 → 529 維 → Top-5</div>
-          </article>
-          <article class="card">
-            <span class="number amber-text">03</span>
-            <h3>依證據稽核，依規則處理</h3>
-            <p>
-              本機 AI
-              回傳稽核狀態與理由，保留原始分類；策略閘門檢查信心、案例共識、動作白名單與有效期，再交付隔離驗證。
-            </p>
-            <div class="formula">AI 稽核 → 策略檢核 → 可回復處置</div>
-          </article>
-        </div>
-        <figure class="architecture">
-          <img
-            src="figures/fig_architecture.png"
-            alt="四階段系統架構：流量輸入、17類偵測、任務檢索、AI稽核、受控處置與事件輸出"
-            loading="lazy"
-          />
-          <figcaption>
-            系統架構｜事件與執行批次貫穿偵測、證據、稽核及處置回條。
-          </figcaption>
-        </figure>
-      </section>
-      <section id="results" class="section">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">MEASURED PERFORMANCE</p>
-            <h2>成果有數字，也有評估範圍</h2>
-          </div>
-          <p>
-            下列圖表直接讀取 repository
-            的實測彙整檔。模型比較使用相同18,998筆測試；檢索與稽核使用463筆整合查詢。
-          </p>
-        </div>
-        <div class="two-col">
-          <article class="card">
-            <div class="card-top">
-              <h3>雙分支融合的偵測表現</h3>
-              <span class="tag">Macro-F1 · 相同測試集</span>
-            </div>
-            <div id="model-bars"></div>
-            <p id="model-gain" class="insight"></p>
-            <a href="results/detection_17class.json" download
-              >下載偵測彙整 JSON ↗</a
-            >
-          </article>
-          <article class="card">
-            <div class="card-top">
-              <h3>任務檢索與本機稽核</h3>
-              <span class="tag">17 類 · 463 筆</span>
-            </div>
-            <div id="retrieval-metrics" class="mini-metrics"></div>
-            <div id="judge-counts" class="assessment-grid"></div>
-            <p id="audit-detail" class="insight"></p>
-            <details>
-              <summary>評估口徑與稽核分流</summary>
-              <p>
-                每類取前100筆訓練案例及前30筆測試查詢；稀有類別依可用數量納入。查詢標籤不參與檢索調整。支持精確率是415筆「支持」中分類正確的比例，與分類準確率不同。
+      <div class="chassis">
+        <nav class="edge-tabs" aria-label="快速區域">
+          <a href="#results">RESULTS</a><a href="#method">METHOD</a
+          ><a href="#validation">VERIFY</a>
+        </nav>
+        <main id="main">
+          <section class="hero section" id="overview">
+            <div class="hero-copy">
+              <p class="eyebrow">INTRUSION DETECTION / EVIDENCE AUDIT</p>
+              <h1>AI SECURITY<br /><span>FRAMEWORK</span></h1>
+              <p class="hero-tagline">從威脅判定，走到有證據的應變。</p>
+              <p class="lead">
+                17類偵測・任務導向檢索・本機AI稽核<br />沿同一事件，核對依據與處理結果。
               </p>
-              <p id="audit-scope"></p>
-              <a href="results/local_judge_17class.json" download
-                >下載稽核統計 ↗</a
+              <a class="hero-go" href="#results"
+                ><span class="round-arrow" aria-hidden="true">›</span
+                >探索實測成果</a
               >
-            </details>
-          </article>
-        </div>
-        <article class="card class-card">
-          <div class="card-top">
-            <div>
-              <h3>17 類偵測結果</h3>
-              <p>選擇模型或搜尋類別，查看 F1、精確率、召回率與測試筆數。</p>
             </div>
-            <div class="filters">
-              <label
-                >模型<select id="model-filter">
-                  <option>OOF Gate</option>
-                  <option>CTBM</option>
-                  <option>PBCNN</option>
-                </select></label
-              ><label
-                >搜尋類別<input
-                  id="class-search"
-                  type="search"
-                  placeholder="例如 Bot、Web、SSH"
-              /></label>
+            <div class="hero-device">
+              <img
+                src="assets/security-console.svg"
+                alt="資安框架的設備與封包流程圖形"
+                width="350"
+                height="270"
+              />
+              <p>DETECT → RETRIEVE → AUDIT → VERIFY</p>
             </div>
+            <p class="work-title">
+              融合新型內容相依時序方向模型入侵偵測與任務導向檢索增強稽核之 AI
+              資安框架
+            </p>
+          </section>
+          <section
+            class="metrics"
+            aria-label="核心實測數據"
+            id="headline-metrics"
+          ></section>
+          <div class="body-grid">
+            <div class="content-stack">
+              <section id="method" class="section">
+                <div class="section-heading">
+                  <div>
+                    <p class="eyebrow">METHOD & INNOVATION</p>
+                    <h2>方法架構與三項創新</h2>
+                  </div>
+                  <p>
+                    每個模組保留明確輸入與輸出，讓分析人員能追溯事件如何形成，以及後續策略如何決定。
+                  </p>
+                </div>
+                <div class="method-grid">
+                  <article class="card">
+                    <span class="number teal-text">01</span>
+                    <h3>內容、時間與方向共同判定</h3>
+                    <p>
+                      CTBM 分析封包內容、時間差與傳輸方向；PBCNN
+                      補充短窗位元組模式，由凍結 OOF Gate 融合正式分類。
+                    </p>
+                    <div class="formula">兩支模型 → 校準與融合 → 17 類機率</div>
+                  </article>
+                  <article class="card">
+                    <span class="number violet-text">02</span>
+                    <h3>用分類任務引導案例檢索</h3>
+                    <p>
+                      512
+                      維表徵與17維正式機率組成任務向量，從只包含訓練資料的案例庫取回相似證據，讓判定有依據可查。
+                    </p>
+                    <div class="formula">512 ＋ 17 → 529 維 → Top-5</div>
+                  </article>
+                  <article class="card">
+                    <span class="number amber-text">03</span>
+                    <h3>依證據稽核，依規則處理</h3>
+                    <p>
+                      本機 AI
+                      回傳稽核狀態與理由，保留原始分類；策略閘門檢查信心、案例共識、動作白名單與有效期，再交付隔離驗證。
+                    </p>
+                    <div class="formula">AI 稽核 → 策略檢核 → 可回復處置</div>
+                  </article>
+                </div>
+                <figure class="architecture">
+                  <img
+                    src="figures/fig_architecture.png"
+                    alt="四階段系統架構：流量輸入、17類偵測、任務檢索、AI稽核、受控處置與事件輸出"
+                    loading="lazy"
+                  />
+                  <figcaption>
+                    系統架構｜事件與執行批次貫穿偵測、證據、稽核及處置回條。
+                  </figcaption>
+                </figure>
+              </section>
+              <section id="results" class="section">
+                <div class="section-heading">
+                  <div>
+                    <p class="eyebrow">MEASURED PERFORMANCE</p>
+                    <h2>成果有數字，也有評估範圍</h2>
+                  </div>
+                  <p>
+                    下列圖表直接讀取 repository
+                    的實測彙整檔。模型比較使用相同18,998筆測試；檢索與稽核使用463筆整合查詢。
+                  </p>
+                </div>
+                <div class="two-col">
+                  <article class="card">
+                    <div class="card-top">
+                      <h3>雙分支融合的偵測表現</h3>
+                      <span class="tag">Macro-F1 · 相同測試集</span>
+                    </div>
+                    <div id="model-bars"></div>
+                    <p id="model-gain" class="insight"></p>
+                    <a href="results/detection_17class.json" download
+                      >下載偵測彙整 JSON ↗</a
+                    >
+                  </article>
+                  <article class="card">
+                    <div class="card-top">
+                      <h3 id="audit-summary">任務檢索與本機稽核</h3>
+                      <span class="tag">17 類 · 463 筆</span>
+                    </div>
+                    <div id="retrieval-metrics" class="mini-metrics"></div>
+                    <div id="judge-counts" class="assessment-grid"></div>
+                    <p id="audit-detail" class="insight"></p>
+                    <details>
+                      <summary>評估口徑與稽核分流</summary>
+                      <p>
+                        每類取前100筆訓練案例及前30筆測試查詢；稀有類別依可用數量納入。查詢標籤不參與檢索調整。支持精確率是415筆「支持」中分類正確的比例，與分類準確率不同。
+                      </p>
+                      <p id="audit-scope"></p>
+                      <a href="results/local_judge_17class.json" download
+                        >下載稽核統計 ↗</a
+                      >
+                    </details>
+                  </article>
+                </div>
+                <article class="card class-card" id="class-explorer">
+                  <div class="card-top">
+                    <div>
+                      <h3>17 類偵測結果</h3>
+                      <p>
+                        選擇模型或搜尋類別，查看 F1、精確率、召回率與測試筆數。
+                      </p>
+                    </div>
+                    <div class="filters">
+                      <label
+                        >模型<select id="model-filter">
+                          <option>OOF Gate</option>
+                          <option>CTBM</option>
+                          <option>PBCNN</option>
+                        </select></label
+                      ><label
+                        >搜尋類別<input
+                          id="class-search"
+                          type="search"
+                          placeholder="例如 Bot、Web、SSH"
+                      /></label>
+                    </div>
+                  </div>
+                  <div class="table-wrap">
+                    <table>
+                      <caption class="sr-only">
+                        各類別實測偵測表現
+                      </caption>
+                      <thead>
+                        <tr>
+                          <th scope="col">類別</th>
+                          <th scope="col">F1</th>
+                          <th scope="col">精確率</th>
+                          <th scope="col">召回率</th>
+                          <th scope="col">測試筆數</th>
+                        </tr>
+                      </thead>
+                      <tbody id="class-table"></tbody>
+                    </table>
+                  </div>
+                  <p id="class-status" role="status" class="fine-print"></p>
+                </article>
+              </section>
+              <section id="validation" class="section">
+                <div class="section-heading">
+                  <div>
+                    <p class="eyebrow">INTEGRATION & RECOVERY</p>
+                    <h2>同事件銜接，驗證處理與回復</h2>
+                  </div>
+                  <p>
+                    17類真實預處理輸入完成模型與本機AI重跑；六種事件接續同次結果，於
+                    Mininet 隔離網路驗證策略。
+                  </p>
+                </div>
+                <div id="validation-metrics" class="metrics compact"></div>
+                <article class="card">
+                  <div class="card-top">
+                    <h3>六種隔離情境實測</h3>
+                    <span class="tag">規則套用 · 背景服務 · 到期回復</span>
+                  </div>
+                  <div class="table-wrap">
+                    <table>
+                      <caption class="sr-only">
+                        六種隔離網路實驗結果
+                      </caption>
+                      <thead>
+                        <tr>
+                          <th scope="col">情境／策略</th>
+                          <th scope="col">規則</th>
+                          <th scope="col">目標交易<br />套用前 → 套用後</th>
+                          <th scope="col">背景交易</th>
+                          <th scope="col">回復完整性</th>
+                          <th scope="col">撤銷時間</th>
+                        </tr>
+                      </thead>
+                      <tbody id="network-table"></tbody>
+                    </table>
+                  </div>
+                  <p class="fine-print">
+                    驗證使用隔離網路中的測試TCP交易，量測策略套用後的交易變化、背景服務與回復完整性。表內數值為該測試的實際紀錄，評估範圍限於隔離交易與規則驗證。
+                  </p>
+                  <a href="results/framework_validation.json" download
+                    >下載整合驗證結果 ↗</a
+                  >
+                </article>
+              </section>
+              <section id="delivery" class="section delivery">
+                <div>
+                  <p class="eyebrow">FINAL DELIVERABLES</p>
+                  <h2>方法展示與作品交付</h2>
+                  <p>
+                    簡報、短片與彙整數據使用同一組17類整合結果，方便展示、核對與離線備份。
+                  </p>
+                  <div class="actions">
+                    <a class="button primary" href="film/">播放40秒方法導覽</a
+                    ><a
+                      class="button"
+                      href="deliverables/finals-deck.pptx"
+                      download
+                      >下載決賽簡報</a
+                    ><a
+                      class="button"
+                      href="deliverables/method-film-40s.mp4"
+                      download
+                      >下載方法影片</a
+                    >
+                  </div>
+                </div>
+                <aside>
+                  <h3>完整本機系統</h3>
+                  <p>
+                    本機版提供模型預載、真實事件重跑、Top-5檢索、AI稽核、隔離處置與事件匯出。公開網站展示實測成果，提供核對數據及方法導覽。
+                  </p>
+                  <a
+                    href="https://github.com/Lily09-project/innoserve-competition#本機資產設定"
+                    >安裝與啟動說明 ↗</a
+                  >
+                </aside>
+              </section>
+              <section id="sources" class="section source-section">
+                <div>
+                  <h2>數據來源</h2>
+                  <p>
+                    所有成果直接來自四份公開彙整檔；可查看檔案、下載資料，或核對發布來源雜湊。
+                  </p>
+                </div>
+                <div id="source-links"></div>
+                <p id="version" class="fine-print"></p>
+              </section>
+            </div>
+            <aside class="action-rail" aria-label="作品操作與資料">
+              <h2 class="rail-heading">CONTROL CENTER</h2>
+              <a class="rail-action" href="film/"
+                ><span class="action-icon" aria-hidden="true">▷</span
+                ><span>觀看方法動畫<small>40 SECOND QUICK TOUR</small></span
+                ><b aria-hidden="true">›</b></a
+              ><a
+                class="rail-action"
+                href="deliverables/finals-deck.pptx"
+                download
+                ><span class="action-icon" aria-hidden="true">▤</span
+                ><span>下載決賽簡報<small>8 SLIDES / EDITABLE PPTX</small></span
+                ><b aria-hidden="true">›</b></a
+              ><a
+                class="rail-action"
+                href="deliverables/method-film-40s.mp4"
+                download
+                ><span class="action-icon" aria-hidden="true">↓</span
+                ><span>下載40秒快版<small>OFFLINE / MP4</small></span
+                ><b aria-hidden="true">›</b></a
+              ><a class="rail-action" href="#sources"
+                ><span class="action-icon" aria-hidden="true">≡</span
+                ><span>查看數據來源<small>RESULTS / JSON</small></span
+                ><b aria-hidden="true">›</b></a
+              >
+              <section class="info-box">
+                <h3>WHAT'S INSIDE?</h3>
+                <div>
+                  <strong>從判定到可回復處置</strong>
+                  <p>
+                    512維表徵與17維機率組成任務向量，取回Top-5案例，再由本機AI稽核及策略閘門銜接。
+                  </p>
+                  <a class="inline-go" href="#method"
+                    >查看方法 <span aria-hidden="true">›</span></a
+                  >
+                </div>
+              </section>
+              <section class="rail-promo">
+                <span class="chrome-label">MEASURED / NOTED</span>
+                <h3>成果有數字，<br />依據可回查。</h3>
+                <p>18,998筆偵測測試<br />463筆整合查詢<br />6種隔離TCP情境</p>
+                <a class="round-arrow" href="#results" aria-label="前往實測成果"
+                  >›</a
+                >
+              </section>
+              <section class="rail-module">
+                <h3 class="section-label">EVENT CHAIN</h3>
+                <ol>
+                  <li><b>01</b> 判定威脅<span>CTBM + PBCNN</span></li>
+                  <li><b>02</b> 取回證據<span>529-D / TOP-5</span></li>
+                  <li><b>03</b> 稽核分流<span>LOCAL AI / POLICY</span></li>
+                  <li><b>04</b> 驗證回復<span>ISOLATED TCP</span></li>
+                </ol>
+              </section>
+              <section class="rail-module">
+                <h3 class="section-label">LOCAL SYSTEM</h3>
+                <div class="rail-copy">
+                  <p>
+                    公開網站呈現已完成的實測彙整；模型推論與網路處置由本機系統執行。
+                  </p>
+                  <a
+                    class="inline-go"
+                    href="https://github.com/Lily09-project/innoserve-competition#本機資產設定"
+                    >安裝與啟動 <span aria-hidden="true">›</span></a
+                  >
+                </div>
+              </section>
+            </aside>
           </div>
-          <div class="table-wrap">
-            <table>
-              <caption class="sr-only">
-                各類別實測偵測表現
-              </caption>
-              <thead>
-                <tr>
-                  <th scope="col">類別</th>
-                  <th scope="col">F1</th>
-                  <th scope="col">精確率</th>
-                  <th scope="col">召回率</th>
-                  <th scope="col">測試筆數</th>
-                </tr>
-              </thead>
-              <tbody id="class-table"></tbody>
-            </table>
-          </div>
-          <p id="class-status" role="status" class="fine-print"></p>
-        </article>
-      </section>
-      <section id="validation" class="section">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">INTEGRATION & RECOVERY</p>
-            <h2>同事件銜接，驗證處理與回復</h2>
-          </div>
-          <p>
-            17類真實預處理輸入完成模型與本機AI重跑；六種事件接續同次結果，於
-            Mininet 隔離網路驗證策略。
-          </p>
-        </div>
-        <div id="validation-metrics" class="metrics compact"></div>
-        <article class="card">
-          <div class="card-top">
-            <h3>六種隔離情境實測</h3>
-            <span class="tag">規則套用 · 背景服務 · 到期回復</span>
-          </div>
-          <div class="table-wrap">
-            <table>
-              <caption class="sr-only">
-                六種隔離網路實驗結果
-              </caption>
-              <thead>
-                <tr>
-                  <th scope="col">情境／策略</th>
-                  <th scope="col">規則</th>
-                  <th scope="col">目標交易<br />套用前 → 套用後</th>
-                  <th scope="col">背景交易</th>
-                  <th scope="col">回復完整性</th>
-                  <th scope="col">撤銷時間</th>
-                </tr>
-              </thead>
-              <tbody id="network-table"></tbody>
-            </table>
-          </div>
-          <p class="fine-print">
-            驗證使用隔離網路中的測試TCP交易，量測策略套用後的交易變化、背景服務與回復完整性。表內數值為該測試的實際紀錄，評估範圍限於隔離交易與規則驗證。
-          </p>
-          <a href="results/framework_validation.json" download
-            >下載整合驗證結果 ↗</a
-          >
-        </article>
-      </section>
-      <section id="delivery" class="section delivery">
-        <div>
-          <p class="eyebrow">FINAL DELIVERABLES</p>
-          <h2>方法展示與作品交付</h2>
-          <p>
-            簡報、短片與彙整數據使用同一組17類整合結果，方便展示、核對與離線備份。
-          </p>
-          <div class="actions">
-            <a class="button primary" href="film/">播放40秒方法導覽</a
-            ><a class="button" href="deliverables/finals-deck.pptx" download
-              >下載決賽簡報</a
-            ><a class="button" href="deliverables/method-film-40s.mp4" download
-              >下載方法影片</a
-            >
-          </div>
-        </div>
-        <aside>
-          <h3>完整本機系統</h3>
-          <p>
-            本機版提供模型預載、真實事件重跑、Top-5檢索、AI稽核、隔離處置與事件匯出。公開網站展示實測成果，提供核對數據及方法導覽。
-          </p>
-          <a
-            href="https://github.com/Lily09-project/innoserve-competition#本機資產設定"
-            >安裝與啟動說明 ↗</a
-          >
-        </aside>
-      </section>
-      <section class="section source-section">
-        <div>
-          <h2>數據來源</h2>
-          <p>
-            所有成果直接來自四份公開彙整檔；可查看檔案、下載資料，或核對發布來源雜湊。
-          </p>
-        </div>
-        <div id="source-links"></div>
-        <p id="version" class="fine-print"></p>
-      </section>
-    </main>
-    <footer>
-      <strong>AI 資安框架</strong
-      ><span>17 類偵測 · 任務導向檢索 · 本機稽核 · 可回復驗證</span
-      ><a href="https://github.com/Lily09-project/innoserve-competition"
-        >程式與文件 ↗</a
-      >
-    </footer>
+        </main>
+      </div>
+      <footer>
+        <strong>AI SECURITY FRAMEWORK</strong
+        ><span>17類偵測 / 任務證據 / 本機稽核 / 可回復驗證</span
+        ><a href="https://github.com/Lily09-project/innoserve-competition"
+          >SOURCE & DOCUMENTS <b aria-hidden="true">›</b></a
+        >
+      </footer>
+      <div class="bottom-ridge">
+        <span>AI 資安框架 · 實測成果展示</span
+        ><span>DETECT. AUDIT. VERIFY.</span>
+      </div>
+    </div>
     <script src="results-data.js"></script>
     <script src="site.js"></script>
   </body>
