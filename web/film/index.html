@@ -54,11 +54,11 @@ body.fullscreen .screen{width:min(100vw,177.7778vh);border:0;border-radius:0}
     <input id="seek" type="range" min="0" max="60" step="0.1" value="0">
     <output id="clock">00:00 / 01:00</output>
     <label for="speed">速度</label>
-    <select id="speed"><option value="1">1×</option><option value="1.5">1.5×</option><option value="2">2×</option></select>
+    <select id="speed"><option value="1">1× · 60秒</option><option value="1.5" selected>1.5× · 約40秒</option><option value="2">2× · 約30秒</option></select>
     <button id="fullscreen">全螢幕</button>
   </div>
   <div class="chapters" id="chapters"></div>
-  <p class="caption">以 Packet Tracer 模擬模式呈現：封包在拓樸中移動，每台設備的 PDU 視窗顯示該階段的輸入、處理與輸出；成果數字取自 18,998 筆偵測測試、463 筆整合查詢與 Mininet 隔離網路實測。</p>
+  <p class="caption">以 Packet Tracer 模擬模式呈現：封包在拓樸中移動，每台設備的 PDU 視窗顯示該階段的輸入、處理與輸出；成果數字取自18,998筆偵測測試、463筆整合查詢與Mininet隔離網路實測。拓樸、封包路徑與PDU視窗用於說明方法；即時模型以真實預處理張量作為輸入。</p>
   <p class="caption" id="scene-status" role="status"></p>
 </main>
 <script type="module" src="player.mjs"></script>

@@ -1,5 +1,6 @@
-"""Finals deck (16:9, light theme, 6-minute talk incl. embedded video). Numbers follow 系統概述.docx and results/."""
+"""Finals deck (16:9, light theme, 6-minute talk incl. embedded video). Numbers follow validated results/."""
 import sys
+import json
 from pathlib import Path
 from pptx import Presentation
 from pptx.chart.data import CategoryChartData
@@ -8,6 +9,10 @@ from pptx.enum.chart import XL_CHART_TYPE, XL_LEGEND_POSITION, XL_LABEL_POSITION
 from pptx.enum.shapes import MSO_SHAPE, MSO_CONNECTOR
 from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
 from pptx.util import Emu, Pt
+
+ROOT = Path(__file__).resolve().parents[2]
+DETECTION=json.loads((ROOT / "results/detection_17class.json").read_text(encoding="utf-8"))
+JUDGE=json.loads((ROOT / "results/local_judge_17class.json").read_text(encoding="utf-8"))
 
 OUT, FIG, VIDEO, POSTER = (Path(a) for a in sys.argv[1:5])
 
@@ -109,7 +114,7 @@ text(s, 0.8, 1.55, 7.7, 2.7, [[("融合新型", {}), ("內容相依時序方向�
                               [("之 AI 資安框架", {})]], size=34, bold=True, spacing=1.3)
 box(s, 0.82, 4.45, 1.3, 0.06, fill=BLUE)
 text(s, 0.8, 4.7, 7.6, 0.8, TITLE_EN, size=13, color=MUTED, spacing=1.3, font="Segoe UI")
-for k, (v, l) in enumerate([("98.08%", "17 類偵測 Accuracy"), ("96.76%", "任務檢索 Top-5"), ("6 / 6", "隔離情境完整回復")]):
+for k, (v, l) in enumerate([("98.08%", "17 類偵測 Accuracy"), ("97.62%", "任務檢索 Top-5"), ("6 / 6", "隔離情境完整回復")]):
     x = 0.8 + k * 2.55
     line(s, x, 5.9, x + 2.25, 5.9, LINE, 1.25)
     text(s, x, 6.0, 2.4, 0.5, v, size=24, bold=True, color=[BLUE, VIOLET, TEAL][k], spacing=1.0, font="Segoe UI")
@@ -143,10 +148,10 @@ notes(s, "【0:10–0:35】校園與企業每天有大量告警，一般 IDS 只
 
 # ================================================================ 3 architecture
 s = prs.slides.add_slide(blank)
-header(s, "02　系統架構", "四階段端到端架構：從原始流量到可回復處置")
+header(s, "02　系統架構", "四階段事件鏈：判定、證據、受控處置")
 fw = 10.55; fh = fw * 1848 / 3520
 s.shapes.add_picture(str(FIG / "fig_architecture.png"), E((W - fw) / 2), E(1.45), E(fw), E(fh))
-notes(s, "【0:35–1:20】這是完整架構。① 原始流量組成雙向 Flow、去識別化，轉成內容位元組、時間差與方向三種輸入。"
+notes(s, "【0:35–1:20】這是完整架構。① 流量前處理產生內容位元組、時間差與方向張量，本機展示使用已備妥的真實張量輸入。"
          "② CTBM 讀內容、時序與方向，PBCNN 補短窗位元組，經溫度校準與 OOF Gate 輸出固定 17 類。"
          "③ 512 維表徵加 17 維機率組成 529 維任務向量，從訓練案例庫取回 Top-5，再由本機大語言模型三態稽核。"
          "④ Policy Guard 檢查白名單與門檻後才套用規則，讀回驗證並 30 秒到期自動回復。下方是貫穿全程的同一事件識別碼。")
@@ -155,12 +160,12 @@ notes(s, "【0:35–1:20】這是完整架構。① 原始流量組成雙向 Flo
 s = prs.slides.add_slide(blank)
 header(s, "03　核心技術創新", "三項創新，各自解決一個關鍵瓶頸")
 cards = [
-    (BLUE, "01", "內容相依時序方向偵測", "解決：只有標籤、少數類別判不準",
+    (BLUE, "01", "內容相依時序方向偵測", "重點：三種特徵與雙分支互補",
      ["CTBM：內容×時間差×方向", "PBCNN：短窗位元組模式", "溫度校準＋OOF Gate 融合", "class-F1 guard 保護少數類別"], "93.05%", "Macro-F1（17 類）"),
     (VIOLET, "02", "任務導向證據檢索", "解決：判定沒有可回查依據",
-     ["529 維任務向量＝表徵 ∥ 機率", "L2 正規化＋餘弦相似度", "只查訓練資料案例庫", "檢索中位數 1.01 ms"], "96.76%", "Top-5 命中率"),
+     ["529 維任務向量＝表徵 ∥ 機率", "L2 正規化＋餘弦相似度", "只查訓練資料案例庫", "檢索中位數 1.01 ms"], "97.62%", "Top-5 命中率"),
     (TEAL, "03", "受控 AI 稽核與可回復處置", "解決：AI 幻覺與誤阻斷",
-     ["本機 LLM 三態證據稽核", "AI 不覆寫分類、不產生指令", "Policy Guard 白名單＋門檻", "TTL 到期撤銷與回復驗證"], "95.83%", "改良 RAG 錯誤攔截率"),
+     ["本機 LLM 三態證據稽核", "AI 不覆寫分類、不產生指令", "Policy Guard 白名單＋門檻", "TTL 到期撤銷與回復驗證"], "0 / 463", "AI 改寫正式分類"),
 ]
 for k, (c, n, t_, why, pts, kpi, kl) in enumerate(cards):
     x = 0.6 + k * 4.08
@@ -177,23 +182,23 @@ for k, (c, n, t_, why, pts, kpi, kl) in enumerate(cards):
     text(s, x + 0.45, 5.6, 3.0, 0.6, kpi, size=30, bold=True, color=c, spacing=1.0, font="Segoe UI")
     text(s, x + 0.45, 6.2, 3.0, 0.3, kl, size=14, color=MUTED, spacing=1.0)
 notes(s, "【1:20–2:00】三項創新各解決一個瓶頸：第一，內容相依時序方向偵測，17 類 Macro-F1 93.05%；"
-         "第二，任務導向檢索，讓每個判定都有 Top-5 案例可回查，命中率 96.76%；"
-         "第三，AI 只做證據稽核、不覆寫分類，處置交給 Policy Guard 並且一定可回復，錯誤攔截率 95.83%。接著用影片看一筆事件的實際輸入與輸出。")
+         "第二，任務導向檢索，讓每個判定都有 Top-5 案例可回查，命中率 97.62%；"
+         "第三，AI 只做證據稽核、不覆寫分類，處置交給 Policy Guard 並且一定可回復，463筆事件的正式分類改寫0筆。接著用影片看一筆事件的實際輸入與輸出。")
 
 # ================================================================ 5 video
 s = prs.slides.add_slide(blank)
-header(s, "04　系統展示", "Packet Tracer 模擬：一筆事件的輸入、處理與輸出")
+header(s, "04　系統展示", "方法流程動畫：真實張量判定與隔離TCP驗證")
 vw = 9.6; vh = vw * 9 / 16
 rbox(s, 0.55, 1.4, vw + 0.1, vh + 0.1, fill=PANEL, line=LINE, radius=0.02)
 s.shapes.add_movie(str(VIDEO), E(0.6), E(1.45), E(vw), E(vh), poster_frame_image=str(POSTER), mime_type="video/mp4")
 x0 = 10.55
-text(s, x0, 1.45, 2.3, 0.35, "影片段落 · 60 秒", size=16, bold=True, color=MUTED, spacing=1.0)
+text(s, x0, 1.45, 2.3, 0.35, "影片段落 · 40 秒", size=16, bold=True, color=MUTED, spacing=1.0)
 for k, (lab, d) in enumerate(zip(STAGE_L, ["Mirror-TAP · 流量→張量", "IDS-Server · 17 類機率", "RAG-Store · Top-5", "LLM-Judge · 稽核 JSON", "Policy-Guard · ACL・回復", "Event Record · 匯出"])):
     y = 1.95 + k * 0.78
     box(s, x0, y + 0.06, 0.22, 0.22, fill=STAGE_C[k], shape=MSO_SHAPE.OVAL)
     text(s, x0 + 0.35, y, 2.3, 0.3, lab, size=16, bold=True, spacing=1.0)
     text(s, x0 + 0.35, y + 0.33, 2.3, 0.3, d, size=12, color=MUTED, spacing=1.0)
-notes(s, "【2:00–3:05】點擊播放影片（60 秒，Packet Tracer 模擬模式）。旁白重點：輸入是原始流量，處理是雙分支偵測、任務檢索、AI 稽核與受控處置，"
+notes(s, "【2:00–3:05】點擊播放影片（40秒快版，Packet Tracer 模擬模式）。旁白重點：輸入是真實預處理張量，處理是雙分支偵測、任務檢索、AI 稽核與受控處置，"
          "輸出是 17 類機率、Top-5 證據、結構化 JSON 稽核與網路處置回條。Bot 事件實測：攻擊型測試交易成功率 100% 降到 0%，"
          "背景服務 100% 保留，30.12 秒到期撤銷後完整回復。影片同時是網路不穩時的備案。")
 
@@ -213,40 +218,40 @@ def chart(s, x, y, w, h, cats, series, colors, xmin, xmax):
     ca = ch.category_axis; ca.tick_labels.font.size = Pt(14); ca.tick_labels.font.name = FONT; ca.tick_labels.font.color.rgb = rgb(INK)
     ca.format.line.color.rgb = rgb(LINE)
     pl = ch.plots[0]; pl.gap_width = 60; pl.overlap = -10; pl.has_data_labels = True
-    dl = pl.data_labels; dl.number_format = "0.00"; dl.number_format_is_linked = False; dl.position = XL_LABEL_POSITION.OUTSIDE_END
+    dl = pl.data_labels; dl.number_format = "0" if series[0][0] == "事件數" else "0.00"; dl.number_format_is_linked = False; dl.position = XL_LABEL_POSITION.OUTSIDE_END
     dl.font.size = Pt(12); dl.font.bold = True; dl.font.color.rgb = rgb(INK)
     for sr, c in zip(pl.series, list(reversed(colors))):
         sr.format.fill.solid(); sr.format.fill.fore_color.rgb = rgb(c)
 
 
 s = prs.slides.add_slide(blank)
-header(s, "05　實驗成果", "與基準方法相比，偵測與稽核皆明顯領先")
+header(s, "05　實驗成果", "同一實驗口徑，呈現偵測與稽核成果")
 kp = [("98.08%", "Accuracy", "17 類 · 18,998 筆", BLUE), ("93.05%", "Macro-F1", "17 類 · 18,998 筆", BLUE),
-      ("96.76%", "Top-5", "1,550 案例 / 463 查詢", VIOLET), ("94.25%", "MRR@5", "1,550 案例 / 463 查詢", VIOLET)]
+      ("97.62%", "Top-5", "1,550 案例 / 463 查詢", VIOLET), ("93.89%", "MRR@5", "1,550 案例 / 463 查詢", VIOLET)]
 for k, (v, l, sc, c) in enumerate(kp):
     x = 0.6 + k * 3.06
     rbox(s, x, 1.5, 2.86, 1.25, fill=PANEL, line=LINE, radius=0.08)
     text(s, x + 0.25, 1.58, 2.5, 0.6, v, size=30, bold=True, color=c, spacing=1.0, font="Segoe UI")
     text(s, x + 0.25, 2.17, 2.5, 0.3, l, size=14, bold=True, spacing=1.0, font="Segoe UI")
     text(s, x + 0.25, 2.43, 2.5, 0.3, sc, size=11, color=MUTED, spacing=1.0)
-for k, (ttl, sub) in enumerate([("偵測模組比較（%）", "相同測試設定"), ("檢索稽核比較（%）", "Fine-11 配對 1,830 筆")]):
+for k, (ttl, sub) in enumerate([("偵測模組比較（%）", "相同測試設定"), ("本機 AI 稽核分流（筆）", "17 類 · 463 筆事件")]):
     x = 0.6 + k * 6.12
     rbox(s, x, 2.95, 5.92, 3.95, fill=PANEL, line=LINE, radius=0.04)
     text(s, x + 0.25, 3.07, 4, 0.35, ttl, size=16, bold=True, spacing=1.0)
     text(s, x + 3.17, 3.1, 2.5, 0.3, sub, size=11, color=MUTED, align=PP_ALIGN.RIGHT, spacing=1.0)
-chart(s, 0.75, 3.45, 5.6, 3.4, ["PBCNN-20", "SPIN-IDS-15", "OOF Gate（本作）"], [("Accuracy", [90.06, 96.00, 97.89]), ("Macro-F1", [87.91, 91.69, 93.03])], [BLUE, "93C5FD"], 80, 100)
-chart(s, 6.87, 3.45, 5.6, 3.4, ["No-RAG", "原始 RAG", "改良 RAG（本作）"], [("Judge 準確率", [93.44, 93.72, 98.85]), ("錯誤攔截率", [48.15, 52.31, 95.83])], [VIOLET, "F59E0B"], 0, 110)
-notes(s, "【3:05–3:45】成果：17 類偵測 Accuracy 98.08%、Macro-F1 93.05%；任務檢索 Top-5 96.76%、MRR@5 94.25%。"
-         "相同設定下 OOF Gate 比 PBCNN-20 的 Macro-F1 高 5.12 個百分點；加入改良 RAG 後，錯誤攔截率從 48.15% 提升到 95.83%，約兩倍。")
+chart(s, 0.75, 3.45, 5.6, 3.4, ["PBCNN", "CTBM", "OOF Gate（本作）"], [("Accuracy", [DETECTION[k]["accuracy"]*100 for k in ("PBCNN","CTBM","OOF Gate")]), ("Macro-F1", [DETECTION[k]["macro_f1"]*100 for k in ("PBCNN","CTBM","OOF Gate")])], [BLUE, "93C5FD"], 0, 110)
+chart(s, 6.87, 3.45, 5.6, 3.4, ["支持", "複核", "不確定"], [("事件數", [JUDGE["assessment_counts"][k] for k in ("support","review","uncertain")])], [VIOLET], 0, 500)
+notes(s, "【3:05–3:45】成果：17 類偵測 Accuracy 98.08%、Macro-F1 93.05%；任務檢索 Top-5 97.62%、MRR@5 93.89%。"
+         "相同測試集下，融合模型 Macro-F1 較 PBCNN 提高13.30個百分點。463筆稽核分為415筆支持、13筆複核及35筆不確定；30筆偵測誤判中攔截18筆，12筆得到支持，策略閘門另行檢核。")
 
 # ================================================================ 7 advantages / feasibility
 s = prs.slides.add_slide(blank)
-header(s, "06　競爭優勢與落地可行性", "可以直接部署、可驗證、可擴充")
+header(s, "06　競爭優勢與落地可行性", "本機完成執行，事件與回條可核對")
 adv = [
     (BLUE, "穩定性", ["AI 改寫分類 0 / 463 筆", "稽核 JSON 有效率 463 / 463", "任一檢核失敗即轉人工複核"]),
-    (TEAL, "成熟度", ["17 類即時重跑 17 / 17", "6 / 6 隔離情境背景服務保留", "6 / 6 情境 30 秒到期完整回復"]),
+    (TEAL, "成熟度", ["17 類即時重跑 17 / 17", "6/6隔離TCP情境保留背景服務", "4 情境套規則，30 秒到期回復"]),
     (VIOLET, "完整性", ["偵測→證據→稽核→處置→回條", "事件 ID 與執行 ID 雙重綁定", "雜湊鏈紀錄可匯出稽核"]),
-    (ORANGE, "擴充性", ["封存檔或鏡像流量，免改原架構", "模型、案例庫、白名單獨立更新", "全程本機推論，外部 API 0 次"]),
+    (ORANGE, "擴充性", ["真實預處理張量作為模型輸入", "模型、案例庫、白名單獨立更新", "全程本機推論，外部 API 0 次"]),
 ]
 for k, (c, t_, pts) in enumerate(adv):
     x, y = 0.6 + (k % 2) * 4.0, 1.5 + (k // 2) * 2.7
@@ -256,20 +261,20 @@ for k, (c, t_, pts) in enumerate(adv):
     for j, p in enumerate(pts):
         text(s, x + 0.3, y + 0.85 + j * 0.5, 3.45, 0.35, [[("✓  ", {"color": c, "bold": True, "font": "Segoe UI Symbol"}), (p, {})]], size=14, spacing=1.0)
 rbox(s, 8.75, 1.5, 3.98, 5.2, fill=PANEL, line=LINE, radius=0.04)
-text(s, 9.05, 1.68, 3.5, 0.4, "與典型方案比較", size=18, bold=True, spacing=1.0)
-cmp_ = [("告警內容", "類別＋分數", "17 類＋校準信心"), ("判定依據", "人工查找", "Top-5 案例證據"), ("AI 角色", "開放式建議", "限定證據稽核"),
-        ("執行方式", "直接下規則", "白名單劇本"), ("安全控制", "手動撤銷", "TTL・讀回・回復")]
+text(s, 9.05, 1.68, 3.5, 0.4, "事件處理的輸入與輸出", size=18, bold=True, spacing=1.0)
+cmp_ = [("威脅判定", "預處理張量", "17 類＋校準信心"), ("案例檢索", "529 維向量", "Top-5 案例證據"), ("AI 稽核", "分類與證據", "三態稽核與理由"),
+        ("策略檢核", "稽核與門檻", "動作與執行範圍"), ("隔離驗證", "同事件策略", "讀回與回復回條")]
 text(s, 9.05, 2.22, 1.2, 0.3, "面向", size=11, color=MUTED, spacing=1.0)
-text(s, 10.2, 2.22, 1.2, 0.3, "典型", size=11, color=MUTED, spacing=1.0)
-text(s, 11.35, 2.22, 1.3, 0.3, "本框架", size=11, color=BLUE, bold=True, spacing=1.0)
+text(s, 10.2, 2.22, 1.2, 0.3, "輸入", size=11, color=MUTED, spacing=1.0)
+text(s, 11.35, 2.22, 1.3, 0.3, "輸出", size=11, color=BLUE, bold=True, spacing=1.0)
 for j, (a, b, c_) in enumerate(cmp_):
     y = 2.6 + j * 0.8
     line(s, 9.05, y - 0.08, 12.45, y - 0.08, LINE, 1)
     text(s, 9.05, y + 0.08, 1.15, 0.5, a, size=13, bold=True, spacing=1.1)
     text(s, 10.2, y + 0.08, 1.15, 0.5, b, size=12, color=MUTED, spacing=1.1)
     text(s, 11.35, y + 0.08, 1.3, 0.6, c_, size=12, color=BLUE, bold=True, spacing=1.1)
-notes(s, "【3:45–4:35】落地可行性對應四個面向：穩定性，AI 從不改寫分類、輸出格式 100% 有效；成熟度，17 類即時重跑、6 種隔離情境全部完整回復；"
-         "完整性，一個事件 ID 串起所有紀錄；擴充性，直接吃封存檔或鏡像流量，模型、案例庫、白名單都能獨立更新，而且全程本機推論。")
+notes(s, "【3:45–4:35】落地可行性對應四個面向：穩定性，本次463筆分類改寫0筆、輸出格式463筆有效；成熟度，17 類即時重跑、6 種隔離情境全部完整回復；"
+         "完整性，一個事件 ID 串起所有紀錄；擴充性，使用真實預處理張量作為輸入，模型、案例庫、白名單都能獨立更新，而且全程本機推論。")
 
 # ================================================================ 8 closing
 s = prs.slides.add_slide(blank); page[0] += 1

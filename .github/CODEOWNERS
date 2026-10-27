@@ -1,0 +1,12 @@
+# Core contract changes require the repository owner's review.
+/app/ @Lily09-project
+/scripts/ @Lily09-project
+/tests/ @Lily09-project
+/.github/ @Lily09-project
+/config.example.json @Lily09-project
+/requirements*.txt @Lily09-project
+/pyproject.toml @Lily09-project
+/package.json @Lily09-project
+/pnpm-lock.yaml @Lily09-project
+/LICENSE @Lily09-project
+/NOTICE.md @Lily09-project

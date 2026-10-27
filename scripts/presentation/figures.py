@@ -20,7 +20,6 @@ STAGE = [  # (header, fill, border)
     ("#6D28D9", "#F4F0FE", "#CFC0F5"),
     ("#C2410C", "#FFF4EC", "#F5C9A8"),
 ]
-rng = np.random.default_rng(7)
 
 
 def rbox(ax, x, y, w, h, fc="white", ec=LINE, lw=1.2, r=1.2, z=2, ls="-"):
@@ -104,7 +103,7 @@ def ic_lock(ax, x, y, c, s=1.0):
 
 # ---------------------------------------------------------------- mini charts
 def mini_heat(ax, x, y, w, h, cmap="Blues", rows=10, cols=18, seed=0):
-    r = np.random.default_rng(seed); m = r.random((rows, cols)) ** 1.8
+    m = np.full((rows, cols),0.35)
     m[:, :4] *= 0.4
     ax.imshow(m, extent=(x, x + w, y, y + h), cmap=cmap, aspect="auto", zorder=7, vmin=0, vmax=1, interpolation="nearest")
     ax.add_patch(Rectangle((x, y), w, h, fc="none", ec=LINE, lw=0.8, zorder=8))
@@ -118,9 +117,8 @@ def mini_bars(ax, x, y, w, h, vals, c, hi=None, hc=None):
 
 
 def mini_seq(ax, x, y, w, h, c1, c2, n=20, seed=3):
-    r = np.random.default_rng(seed)
     for k in range(n):
-        up = r.random() > 0.45; v = 0.3 + 0.7*r.random()
+        up = k % 2 == 0; v = 0.7
         ax.add_patch(Rectangle((x + k*w/n, y + (h/2 if up else h/2 - h/2*v)), w/n*0.7, h/2*v, fc=c1 if up else c2, ec="none", zorder=7))
     ax.plot([x, x + w], [y + h/2, y + h/2], color=MUTED, lw=0.6, zorder=8)
 
@@ -129,9 +127,9 @@ def mini_seq(ax, x, y, w, h, c1, c2, n=20, seed=3):
 def architecture():
     fig = plt.figure(figsize=(16, 8.4), dpi=220)
     ax = fig.add_axes([0, 0, 1, 1]); ax.set_xlim(0, 160); ax.set_ylim(0, 84); ax.axis("off")
-    t(ax, 80, 81, "AI 資安框架　系統架構：從原始流量到可回復處置的四階段事件鏈", 15, INK, "bold")
+    t(ax, 80, 81, "AI 資安框架　系統架構：判定、證據與可回復處置的四階段事件鏈", 15, INK, "bold")
     heads = ["① 資料輸入與前處理", "② 內容相依時序方向偵測", "③ 任務導向檢索與 AI 稽核", "④ 受控處置與回復驗證"]
-    subs = ["PCAP / 鏡像流量 → 模型張量", "CTBM ＋ PBCNN → 17 類機率", "529 維任務向量 → Top-5 → 三態", "Policy Guard → 套用・讀回・Rollback"]
+    subs = ["流量前處理 → 真實輸入張量", "CTBM ＋ PBCNN → 17 類機率", "529 維任務向量 → Top-5 → 三態", "Policy Guard → 套用・讀回・Rollback"]
     X = [2, 41.5, 81, 120.5]; W = 37.5; Y0, H0 = 14, 63
     for i, x in enumerate(X):
         hc, fc, ec = STAGE[i]
@@ -157,9 +155,9 @@ def architecture():
     ic_swap(ax, x + 27.7, 62.6, c, 1.15)
     card(x + 1.5, 43.5, 16.5, 12.0, "去識別化", c, "IP／Port 移除")
     ic_lock(ax, x + 9.7, 49.3, c, 1.0)
-    card(x + 19.5, 43.5, 16.5, 12.0, "封包位元組矩陣", c, "前 20 封包 × bytes")
+    card(x + 19.5, 43.5, 16.5, 12.0, "內容張量結構", c, "前20封包 × bytes")
     mini_heat(ax, x + 20.6, 46.6, 14.3, 6.0, "Blues", seed=1)
-    card(x + 1.5, 28.5, 34.5, 13.0, "時間差 × 傳輸方向序列", c, "↑ 用戶端→服務端　↓ 服務端→用戶端")
+    card(x + 1.5, 28.5, 34.5, 13.0, "時序與方向輸入格式", c, "↑ 用戶端→服務端　↓ 服務端→用戶端")
     mini_seq(ax, x + 3.0, 31.8, 31.5, 6.6, c, "#93C5FD")
     rbox(ax, x + 1.5, 16, 34.5, 10.5, fc=c + "12", ec=c, lw=1.0, r=1.0, z=3, ls="--")
     t(ax, x + 18.75, 23.6, "輸出：模型輸入張量", 8.6, c, "bold")
@@ -183,27 +181,28 @@ def architecture():
     t(ax, x + 26.6, 44.4, "g", 9, c, "bold", z=8, style="italic")
     arrow(ax, x + 9.75, 51.8, x + 9.75, 50.2, c=c); arrow(ax, x + 27.75, 51.8, x + 27.75, 50.2, c=c)
     card(x + 1.5, 16, 34.5, 20.0, "輸出：17 類正式機率", c, "BENIGN … Heartbleed；保留 512 維表徵")
-    v = np.r_[rng.random(17) * 0.12 + 0.02]; v[13] = 0.92
-    mini_bars(ax, x + 3.0, 20.2, 31.5, 11.0, v, "#99D5CA", hi=13, hc=c)
-    t(ax, x + 3.0 + 31.5/17*13.5, 32.4, "Bot", 7.2, c, "bold")
+    for k in range(17):
+        xx=x+3.1+k*1.8
+        ax.add_patch(Rectangle((xx,29.0),1.4,2.6,fc=c+"22",ec=c,lw=0.5,zorder=6))
+        t(ax,xx+0.7,30.3,str(k),5,c)
+    t(ax,x+18.75,26.8,"固定類別順序 → 每類機率與校準信心",7.2,c,"bold")
+    t(ax,x+18.75,23.6,"512維表徵 → 後段任務檢索",7.2,INK)
 
     # ---- stage 3
     c = STAGE[2][0]; x = X[2]
     card(x + 1.5, 57.0, 34.5, 12.1, "529 維任務向量", c, "512 維流量表徵 ∥ 17 維機率 → L2 正規化")
     for k in range(32):
-        ax.add_patch(Rectangle((x + 3.0 + k*0.84, 61.0), 0.74, 3.6, fc=plt.cm.Purples(0.25 + 0.6*rng.random()), ec="none", zorder=7))
+        ax.add_patch(Rectangle((x + 3.0 + k*0.84, 61.0), 0.74, 3.6, fc=plt.cm.Purples(0.55), ec="none", zorder=7))
     for k in range(6):
-        ax.add_patch(Rectangle((x + 30.4 + k*0.84, 61.0), 0.74, 3.6, fc=plt.cm.Oranges(0.3 + 0.6*rng.random()), ec="none", zorder=7))
+        ax.add_patch(Rectangle((x + 30.4 + k*0.84, 61.0), 0.74, 3.6, fc=plt.cm.Oranges(0.55), ec="none", zorder=7))
     t(ax, x + 16.2, 66.0, "512", 6.5, c); t(ax, x + 32.7, 66.0, "17", 6.5, "#C2410C")
     card(x + 1.5, 39.5, 12.5, 15.4, "案例庫", c, "train-only")
     ic_db(ax, x + 7.75, 47.6, c, 1.05)
     card(x + 15.5, 39.5, 20.5, 15.4, "Top-5 相似案例", c, "餘弦相似度")
-    sims = [0.98, 0.95, 0.93, 0.90, 0.86]
-    for k, s_ in enumerate(sims):
-        yy = 50.9 - k*1.85
-        t(ax, x + 17.2, yy, f"#{k+1}", 6.0, MUTED, ha="left")
-        ax.add_patch(Rectangle((x + 19.4, yy - 0.55), 14.5, 1.1, fc="#EDE9FE", ec="none", zorder=6))
-        ax.add_patch(Rectangle((x + 19.4, yy - 0.55), 14.5*s_, 1.1, fc=c if k < 4 else "#C4B5FD", ec="none", zorder=7))
+    for k in range(5):
+        yy=50.9-k*1.85
+        t(ax,x+17.2,yy,f"#{k+1}",6.0,MUTED,ha="left")
+        t(ax,x+19.4,yy,"案例ID・類別・相似度",5.8,c,ha="left")
     arrow(ax, x + 14.0, 47.2, x + 15.4, 47.2, c=c)
     card(x + 1.5, 16, 34.5, 21.5, "AI Judge 證據稽核", c, "本機 LLM・結構化 JSON・不覆寫分類")
     ic_robot(ax, x + 8.0, 27.6, c, 1.25)

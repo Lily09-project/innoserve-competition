@@ -13,7 +13,7 @@ fs.mkdirSync(output,{recursive:true});
 const fps=24,width=1920,height=1080;
 const ffmpeg=process.env.FFMPEG_BINARY;if(!ffmpeg)throw Error('Set FFMPEG_BINARY to installed encoder');
 const mode=process.argv.includes('--preview')?'preview':'full';
-const sampleTimes=chapters.map((c,i)=>Math.min(duration-0.1,c.at+(c.card?3.5:8)));
+const sampleTimes=chapters.map((c,i)=>Math.min(duration-0.1,c.at+((chapters[i+1]?.at||duration)-c.at)*0.8));
 for(let i=0;i<sampleTimes.length;i++)await sharp(Buffer.from(frameSvg(sampleTimes[i]))).resize(width,height).png().toFile(path.join(output,`chapter-${i+1}.png`));
 if(mode==='preview'){console.log(JSON.stringify({preview_frames:sampleTimes.length,output}));process.exit(0)}
 const file=path.join(output,'AI資安框架_系統展示影片_60秒.mp4');
