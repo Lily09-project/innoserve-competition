@@ -34,12 +34,15 @@ def main():
         if commands:
             while time.monotonic()-applied<ttl:time.sleep(min(.2,max(0,ttl-(time.monotonic()-applied))))
         reset_policy(router)
-        rollback=time.monotonic();recovered=query(subject,port,payload);recovered_bg=query(background);empty=not inspect_policy(router)["iptables"]
+        rollback=time.monotonic();recovered=query(subject,port,payload);recovered_bg=query(background)
+        rollback_state=inspect_policy(router);empty=not rollback_state["iptables"]
         result={"event_id":scenario["event_id"],"action":scenario["action"],"assessment":scenario["assessment"],
                 "mode":"live_isolated_mininet_transaction_test","baseline":baseline,"background_baseline":base_bg,
                 "subject_after":after,"background_after":after_bg,"recovery":recovered,"background_recovery":recovered_bg,
                 "rollback_integrity":empty and recovered["success_rate"]==1 and recovered_bg["success_rate"]==1,
-                "rule_readback":state,"rules_applied":sum(line.startswith("-A ") for line in state["iptables"].splitlines()),
+                "rule_readback":state,"rollback_rule_readback":rollback_state,
+                "network_test_executed":True,"network_action_executed":bool(commands),
+                "rules_applied":sum(line.startswith("-A ") for line in state["iptables"].splitlines()),
                 "commands_executed":len(commands),"ttl_seconds":ttl,
                 "ttl_rollback_elapsed_seconds":rollback-applied if commands else None,
                 "expiry_mode":"actual_monotonic_ttl_scheduler" if commands else "non_disruptive_no_rule",

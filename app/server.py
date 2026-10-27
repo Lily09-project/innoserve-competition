@@ -16,11 +16,9 @@ from network_contract import build_network_scenario, verify_network_receipt
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--port", type=int, default=8765)
-    args = parser.parse_args()
-    data = ROOT / "evidence/fresh17"
+def create_server(port=8765, root=ROOT):
+    root=Path(root)
+    data = root / "evidence/fresh17"
     bank = TrainOnlyBank.load(data / "train_bank.npz", data / "train_bank_manifest.json")
     events = {e["event_id"]: e for e in json.loads((data / "events.json").read_text(encoding="utf-8"))}
     cached = {}
@@ -56,9 +54,8 @@ def main():
                         live_results[event_id]=result
                 else:
                     event=live_results[event_id]
-                    policy=event["result"]["policy"]
                     progress("建立隔離Mininet並驗證策略，規則於30秒到期回復")
-                    folder=ROOT / "evidence/live_network" / job_id
+                    folder=root / "evidence/live_network" / job_id
                     folder.mkdir(parents=True)
                     scenario=build_network_scenario(event)
                     scenario_path=folder / "scenario.json";output_path=folder / "result.json"
@@ -67,15 +64,16 @@ def main():
                         value=str(p).replace("\\","/")
                         return "/mnt/"+value[0].lower()+value[2:] if len(value)>2 and value[1]==":" else value
                     process=subprocess.run(["wsl","-d","Ubuntu-24.04","-u","root","--","python3",
-                         linux(ROOT / "scripts/live_network_test.py"),"--scenario",linux(scenario_path),"--output",linux(output_path)],
+                         linux(root / "scripts/live_network_test.py"),"--scenario",linux(scenario_path),"--output",linux(output_path)],
                          capture_output=True,timeout=100)
                     (folder / "process.log").write_bytes(process.stdout+process.stderr)
                     if process.returncode!=0 or not output_path.exists():raise RuntimeError("isolated_network_test_failed")
                     result=json.loads(output_path.read_text(encoding="utf-8"))
                     if not verify_network_receipt(scenario,result):raise RuntimeError("network_receipt_binding_failed")
+                    event["network_receipt"]=result
                 with job_lock:jobs[job_id].update({"state":"done","phase":"執行完成","result":result})
             except Exception:
-                folder=ROOT / "validation";folder.mkdir(exist_ok=True)
+                folder=root / "validation";folder.mkdir(exist_ok=True)
                 (folder / ("job-"+job_id+".log")).write_text(traceback.format_exc(),encoding="utf-8")
                 with job_lock:jobs[job_id].update({"state":"error","phase":"執行中止，已保留本機診斷紀錄"})
         threading.Thread(target=work,daemon=True).start()
@@ -91,7 +89,7 @@ def main():
             super().end_headers()
         def do_GET(self):
             if self.path=="/api/status":
-                self.json_response({"product":"ai-security-demo.v2","model_ready":engine["value"] is not None,"live_event_ids":live_ids});return
+                self.json_response({"product":"ai-security-demo.v3","model_ready":engine["value"] is not None,"live_event_ids":live_ids});return
             if self.path.startswith("/api/jobs/"):
                 key=self.path.split("/")[-1]
                 with job_lock:value=dict(jobs.get(key,{}))
@@ -99,20 +97,21 @@ def main():
             if self.path.startswith("/api/"):self.send_error(404);return
             return super().do_GET()
         def do_POST(self):
-            if self.path not in {"/api/retrieve","/api/operate","/api/stop"}: self.send_error(404); return
+            if self.path not in {"/api/retrieve","/api/operate","/api/stop","/api/export"}: self.send_error(404); return
             origin = self.headers.get("Origin")
-            if origin and origin != "http://127.0.0.1:" + str(args.port): self.send_error(403); return
+            if origin and origin != "http://127.0.0.1:" + str(server.server_port): self.send_error(403); return
             if self.headers.get("Content-Type", "").split(";")[0].strip() != "application/json":
                 self.send_error(415); return
-            if self.path=="/api/stop":
-                with job_lock:active=any(j["state"]=="running" for j in jobs.values())
-                if active:self.json_response({"error":"busy"},409);return
-                self.json_response({"stopped":True})
-                threading.Thread(target=server.shutdown,daemon=True).start();return
             try:
                 size = int(self.headers.get("Content-Length", "0"))
                 if not 0 < size < 2048: raise ValueError()
                 request = json.loads(self.rfile.read(size))
+                if not isinstance(request,dict):raise ValueError("request_must_be_object")
+                if self.path=="/api/stop":
+                    with job_lock:active=any(j["state"]=="running" for j in jobs.values())
+                    if active:self.json_response({"error":"busy"},409);return
+                    self.json_response({"stopped":True})
+                    threading.Thread(target=server.shutdown,daemon=True).start();return
                 if self.path=="/api/operate":
                     action=request.get("action");key=request.get("event_id")
                     if action not in {"warmup","live","network"}:raise ValueError()
@@ -123,15 +122,33 @@ def main():
                         if request.get("execution_id")!=e["execution_id"]:raise ValueError("stale_execution")
                         if e["prediction"] not in B_NAMES or e["validation_label"] not in B_NAMES:raise ValueError()
                     job_id=create_job(action,key)
-                    self.json_response({"job_id":job_id},202) if job_id else self.json_response({"error":"busy"},409)
+                    self.json_response({"job_id":job_id},202) if job_id else self.json_response({"error":"busy","message":"已有本機工作執行中，請稍後重試。"},409)
                     return
+                if self.path=="/api/export" and request.get("mode")=="live_local_models":
+                    event=live_results[request["event_id"]]
+                    if request.get("execution_id")!=event["execution_id"]:raise ValueError("stale_export_execution")
+                    # Keep Python's original JSON number representation intact for hash verification.
+                    self.json_response(event);return
+                if self.path=="/api/export" and request.get("mode")!="saved_prediction_replay":raise ValueError("invalid_export_mode")
                 event = events[request["event_id"]]
                 with lock: result = run_event(event, bank, cached.get(event["event_id"]))
-                self.json_response(result)
-            except (ValueError, KeyError, TypeError): self.send_error(400, "Invalid or unbound event request")
+                # Return a complete frozen snapshot; never combine it with a live prediction in the client.
+                replay={k:v for k,v in event.items() if k not in {"embedding","model_sha256","execution_id","timings","network_receipt"}}
+                replay.update({"result":result,"evidence":result["evidence"],"execution_mode":"saved_prediction_retrieval_recomputed"})
+                self.json_response(replay if self.path=="/api/export" else {**result,"replay_event":replay})
+            except (ValueError, KeyError, TypeError): self.json_response({"error":"invalid_request","message":"事件、批次或請求格式不符，請重新選擇事件。"},400)
         def log_message(self, fmt, *args): pass
-    server = ThreadingHTTPServer(("127.0.0.1", args.port), partial(Handler, directory=str(ROOT / "web")))
-    print(f"http://127.0.0.1:{args.port}", flush=True)
+    server = ThreadingHTTPServer(("127.0.0.1", port), partial(Handler, directory=str(root / "web")))
+    server.daemon_threads=True
+    return server
+
+
+def main():
+    parser=argparse.ArgumentParser()
+    parser.add_argument("--port",type=int,default=8765)
+    args=parser.parse_args()
+    server=create_server(args.port)
+    print(f"http://127.0.0.1:{server.server_port}", flush=True)
     try: server.serve_forever()
     except KeyboardInterrupt: pass
     finally: server.server_close()

@@ -7,7 +7,7 @@ from pathlib import Path
 import numpy as np
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT / "app"))
-from settings import asset_path
+from settings import asset_path, optional_asset_path
 from pipeline import digest, audit_payload, LABELS
 
 
@@ -45,7 +45,7 @@ def main():
     with np.load(data / "live_inputs_private.npz",allow_pickle=False) as inputs:
         assert len(inputs["event_ids"])==17
         assert set(inputs["event_ids"].tolist())=={e["event_id"] for e in fresh}
-    files=[ref.parent / "gate_soft_oof_search.py",ref / "gate_results/augmented/seed_42/gate_summary.json",
+    files=[optional_asset_path("gate_impl_path",ref.parent / "gate_soft_oof_search.py"),ref / "gate_results/augmented/seed_42/gate_summary.json",
         ref / "gate_exports/augmented/seed_42/ctbm_validation_predictions.csv",
         ref / "gate_exports/augmented/seed_42/pbcnn_validation_predictions.csv"]
     result={"checkpoint_hashes_match_bank_manifest":True,"checkpoint_count":len(hashes),

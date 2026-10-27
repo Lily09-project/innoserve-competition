@@ -103,11 +103,7 @@ def main():
             print("JUDGE", len(existing), "/", len(events), flush=True)
     for event in events:
         record = existing[event["event_id"]]
-        event["result"] = run_event(event, bank, record)
-        event["result"]["judge"]["mode"] = "fresh_local_llm_saved_replay"
-        # Ledger retains the actual inference response provenance via bound cache validation.
-        event["result"]["judge"]["model"] = record["model"]
-        event["result"]["judge"]["valid_json"] = record["valid_json"]
+        event["result"] = run_event(event, bank, {**record,"execution_mode":"fresh_local_llm_saved_replay"})
     dump(out / "events.json", events)
     wrong = [e for e in events if e["prediction"] != e["validation_label"]]
     supported = [e for e in events if existing[e["event_id"]]["assessment"] == "support"]

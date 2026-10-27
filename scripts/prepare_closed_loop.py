@@ -19,9 +19,8 @@ def main():
     scenarios = []
     updated = []
     for e in events:
-        result = run_event(e, bank, records[e["event_id"]])
-        result["judge"]["mode"] = "fresh_local_llm_saved_replay"
-        result["judge"]["model"] = records[e["event_id"]]["model"]
+        record={**records[e["event_id"]],"execution_mode":"fresh_local_llm_saved_replay"}
+        result = run_event(e, bank, record)
         assert verify_ledger(result["ledger"])
         e["result"] = result
         updated.append(e)
@@ -39,7 +38,9 @@ def main():
                            "ttl_seconds":300, "rollback_mode":"explicit_test_rollback_not_ttl_expiry_measurement"}})
     (data / "events.json").write_text(json.dumps(updated,ensure_ascii=False,indent=2),encoding="utf-8")
     payload={"scenarios":scenarios,"scope":"17-class pipeline, 11 shared traffic-profile classes, first per predicted class, no correctness-based selection; same-event local LLM responses reused"}
-    (ROOT / "evidence/network/closed_loop_scenarios.json").write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding="utf-8")
+    network=ROOT / "evidence/network"
+    network.mkdir(parents=True,exist_ok=True)
+    (network / "closed_loop_scenarios.json").write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding="utf-8")
     print(json.dumps({"events_checked":len(events),"selected_scenarios":len(scenarios),
                       "actions":[[x["reason_label"],x["assessment"],x["action"]] for x in scenarios]},ensure_ascii=False))
 

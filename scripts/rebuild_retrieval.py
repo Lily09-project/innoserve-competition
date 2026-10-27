@@ -25,7 +25,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "app"))
 from pipeline import LABELS, TrainOnlyBank, task_vector, digest, run_event
 
-from settings import asset_path
+from settings import asset_path, optional_asset_path
 REF = asset_path("ids_reference_root")
 DATA = asset_path("ids_data_root")
 OUT = ROOT / "evidence" / "fresh17"
@@ -63,7 +63,7 @@ def model_module(path, name):
 
 
 def load_gate():
-    p = REF.parents[0] / "gate_soft_oof_search.py"
+    p = optional_asset_path("gate_impl_path",REF.parent / "gate_soft_oof_search.py")
     spec = importlib.util.spec_from_file_location("frozen_gate_impl", p)
     g = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(g)

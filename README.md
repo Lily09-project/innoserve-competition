@@ -37,7 +37,7 @@ python -m pip install -r requirements.txt
 公開版包含程式與彙整結果。模型權重、原始封包、逐筆資料、模型回覆及本機設定不納入Git。
 
 1. 將`config.example.json`複製為`config.local.json`，填入正式IDS結果目錄、流量資料目錄與本機Llama模型目錄。
-2. 正式IDS結果目錄需包含`runtime_sources/`、`models/augmented/seed_42/`、`gate_exports/`及`gate_results/`。模型、標籤順序與前處理版本必須一致。
+2. 正式IDS結果目錄需包含`runtime_sources/`、`models/augmented/seed_42/`、`gate_exports/`及`gate_results/`。以`gate_impl_path`指定對應的`gate_soft_oof_search.py`；未設定時使用正式結果目錄上一層的同名檔案。模型、標籤順序與前處理版本必須一致。
 3. 依序執行重建與稽核：
 
 ```bash

@@ -44,7 +44,7 @@ def main():
         raise TimeoutError(action)
 
     status=request("/api/status")
-    assert status["product"]=="ai-security-demo.v2"
+    assert status["product"]=="ai-security-demo.v3"
     print("WARMUP",flush=True)
     operation("warmup")
     source={e["event_id"]:e for e in json.loads((ROOT / "evidence/fresh17/events.json").read_text(encoding="utf-8"))}

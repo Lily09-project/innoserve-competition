@@ -24,7 +24,7 @@ class LiveEngine:
     def __init__(self,progress):
         import torch
         from transformers import AutoTokenizer,AutoModelForCausalLM
-        from rebuild_retrieval import model_module,load_gate,REF,MODEL_ROOT
+        from rebuild_retrieval import model_module,load_gate,REF,MODEL_ROOT,sha
         from run_local_judge import MODEL,PROMPT,payload_for
         self.torch=torch
         self.prompt=PROMPT
@@ -32,6 +32,12 @@ class LiveEngine:
         self.model_revision=MODEL.name
         self.device=torch.device("cuda" if torch.cuda.is_available() else "cpu")
         torch.set_num_threads(4)
+        progress("核對偵測權重、案例庫與類別版本")
+        manifest=json.loads((ROOT / "evidence/fresh17/train_bank_manifest.json").read_text(encoding="utf-8"))
+        model_hashes={name:sha(MODEL_ROOT / name / "best_model.pt") for name in ["CTBM_Full","PBCNN_M1","PBCNN_M2"]}
+        if model_hashes!=manifest["model_hashes"] or digest(model_hashes)!=manifest["model_sha256"]:
+            raise ValueError("live_checkpoint_bank_hash_mismatch")
+        self.bank=TrainOnlyBank.load(ROOT / "evidence/fresh17/train_bank.npz",ROOT / "evidence/fresh17/train_bank_manifest.json")
         progress("載入17類偵測模型與Gate")
         c=model_module(REF / "runtime_sources/ctbm_full_none_real_only_seed_42.py","live_ctbm")
         b=model_module(REF / "runtime_sources/SMOTE_校準式類別感知Gate動態融合訓練_nofilm.py","live_pbcnn")
@@ -53,7 +59,6 @@ class LiveEngine:
         self.tokenizer.pad_token=self.tokenizer.eos_token
         self.llm=AutoModelForCausalLM.from_pretrained(str(MODEL),torch_dtype=torch.float16,
                    local_files_only=True,attn_implementation="sdpa").to(self.device).eval()
-        self.bank=TrainOnlyBank.load(ROOT / "evidence/fresh17/train_bank.npz",ROOT / "evidence/fresh17/train_bank_manifest.json")
         with np.load(ROOT / "evidence/fresh17/live_inputs_private.npz",allow_pickle=False) as inputs:
             self.inputs={k:inputs[k].copy() for k in inputs.files}
         self.index={key:i for i,key in enumerate(self.inputs["event_ids"].tolist())}
@@ -61,6 +66,8 @@ class LiveEngine:
 
     def infer(self,event,progress):
         torch=self.torch
+        if event["model_sha256"]!=self.bank.model_sha256 or event["representation_id"]!=self.bank.representation_id:
+            raise ValueError("live_event_model_provenance_mismatch")
         if event["event_id"] not in self.index: raise ValueError("live_input_not_available")
         i=self.index[event["event_id"]]
         def t(key):return torch.from_numpy(self.inputs[key][i:i+1]).to(self.device)
