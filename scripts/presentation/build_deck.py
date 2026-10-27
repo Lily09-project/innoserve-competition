@@ -124,7 +124,7 @@ for k, (lab, sub) in enumerate([("資料輸入", "PCAP・鏡像流量"), ("17 �
     text(s, 9.26, y + 0.22, 0.44, 0.3, f"{k + 1}", size=12, bold=True, color=STAGE_C[k], align=PP_ALIGN.CENTER, spacing=1.0, font="Segoe UI")
     text(s, 9.95, y + 0.08, 3.0, 0.35, lab, size=16, bold=True, spacing=1.0)
     text(s, 9.95, y + 0.43, 3.0, 0.3, sub, size=12, color=MUTED, spacing=1.0)
-notes(s, "【0:00–0:15】各位評審好，我們的作品是「融合新型內容相依時序方向模型入侵偵測與任務導向檢索增強稽核之 AI 資安框架」。"
+notes(s, "【0:00–0:10】各位評審好，我們的作品是「融合新型內容相依時序方向模型入侵偵測與任務導向檢索增強稽核之 AI 資安框架」。"
          "一句話：把只有標籤的告警，變成可查證、可稽核、可回復的事件鏈。")
 
 # ================================================================ 2 problem -> solution
@@ -138,7 +138,7 @@ for k, (v, l, c) in enumerate([("缺乏佐證", "告警只給類別與分數", R
     text(s, x + 0.3, 2.08, 3.5, 0.3, l, size=14, color=MUTED, spacing=1.0)
 s.shapes.add_picture(str(FIG / "fig_problem.png"), E(0.6), E(2.7), E(12.13), E(12.13 * 1232 / 3520))
 text(s, 0.6, 6.78, 12.1, 0.3, "本框架以同一事件識別碼串接偵測、證據、稽核與處置，任何一段未通過檢核即降級為人工複核。", size=14, color=MUTED, spacing=1.0)
-notes(s, "【0:15–0:45】校園與企業每天有大量告警，一般 IDS 只輸出攻擊類別，後面的查證、處置與確認恢復都靠人工，"
+notes(s, "【0:10–0:35】校園與企業每天有大量告警，一般 IDS 只輸出攻擊類別，後面的查證、處置與確認恢復都靠人工，"
          "告警一多就慢，也容易誤阻斷。我們把這四段人工接力，換成四個有依據、可回溯的自動化步驟。")
 
 # ================================================================ 3 architecture
@@ -146,7 +146,7 @@ s = prs.slides.add_slide(blank)
 header(s, "02　系統架構", "四階段端到端架構：從原始流量到可回復處置")
 fw = 10.55; fh = fw * 1848 / 3520
 s.shapes.add_picture(str(FIG / "fig_architecture.png"), E((W - fw) / 2), E(1.45), E(fw), E(fh))
-notes(s, "【0:45–1:45】這是完整架構。① 原始流量組成雙向 Flow、去識別化，轉成內容位元組、時間差與方向三種輸入。"
+notes(s, "【0:35–1:20】這是完整架構。① 原始流量組成雙向 Flow、去識別化，轉成內容位元組、時間差與方向三種輸入。"
          "② CTBM 讀內容、時序與方向，PBCNN 補短窗位元組，經溫度校準與 OOF Gate 輸出固定 17 類。"
          "③ 512 維表徵加 17 維機率組成 529 維任務向量，從訓練案例庫取回 Top-5，再由本機大語言模型三態稽核。"
          "④ Policy Guard 檢查白名單與門檻後才套用規則，讀回驗證並 30 秒到期自動回復。下方是貫穿全程的同一事件識別碼。")
@@ -176,7 +176,7 @@ for k, (c, n, t_, why, pts, kpi, kl) in enumerate(cards):
     rbox(s, x + 0.25, 5.5, 3.38, 1.15, fill=BG, line=None, radius=0.1)
     text(s, x + 0.45, 5.6, 3.0, 0.6, kpi, size=30, bold=True, color=c, spacing=1.0, font="Segoe UI")
     text(s, x + 0.45, 6.2, 3.0, 0.3, kl, size=14, color=MUTED, spacing=1.0)
-notes(s, "【1:45–2:30】三項創新各解決一個瓶頸：第一，內容相依時序方向偵測，17 類 Macro-F1 93.05%；"
+notes(s, "【1:20–2:00】三項創新各解決一個瓶頸：第一，內容相依時序方向偵測，17 類 Macro-F1 93.05%；"
          "第二，任務導向檢索，讓每個判定都有 Top-5 案例可回查，命中率 96.76%；"
          "第三，AI 只做證據稽核、不覆寫分類，處置交給 Policy Guard 並且一定可回復，錯誤攔截率 95.83%。接著用影片看一筆事件的實際輸入與輸出。")
 
@@ -187,13 +187,13 @@ vw = 9.6; vh = vw * 9 / 16
 rbox(s, 0.55, 1.4, vw + 0.1, vh + 0.1, fill=PANEL, line=LINE, radius=0.02)
 s.shapes.add_movie(str(VIDEO), E(0.6), E(1.45), E(vw), E(vh), poster_frame_image=str(POSTER), mime_type="video/mp4")
 x0 = 10.55
-text(s, x0, 1.45, 2.3, 0.35, "影片段落 · 96 秒", size=16, bold=True, color=MUTED, spacing=1.0)
+text(s, x0, 1.45, 2.3, 0.35, "影片段落 · 60 秒", size=16, bold=True, color=MUTED, spacing=1.0)
 for k, (lab, d) in enumerate(zip(STAGE_L, ["流量 → 模型張量", "張量 → 17 類機率", "529 維 → Top-5", "證據 → 三態 JSON", "策略 → 套用・回復", "事件鏈 → 匯出"])):
     y = 1.95 + k * 0.78
     box(s, x0, y + 0.06, 0.22, 0.22, fill=STAGE_C[k], shape=MSO_SHAPE.OVAL)
     text(s, x0 + 0.35, y, 2.3, 0.3, lab, size=16, bold=True, spacing=1.0)
     text(s, x0 + 0.35, y + 0.33, 2.3, 0.3, d, size=12, color=MUTED, spacing=1.0)
-notes(s, "【2:30–4:10】點擊播放影片（96 秒）。旁白重點：輸入是原始流量，處理是雙分支偵測、任務檢索、AI 稽核與受控處置，"
+notes(s, "【2:00–3:05】點擊播放影片（60 秒）。旁白重點：輸入是原始流量，處理是雙分支偵測、任務檢索、AI 稽核與受控處置，"
          "輸出是 17 類機率、Top-5 證據、結構化 JSON 稽核與網路處置回條。Bot 事件實測：攻擊型測試交易成功率 100% 降到 0%，"
          "背景服務 100% 保留，30.12 秒到期撤銷後完整回復。影片同時是網路不穩時的備案。")
 
@@ -236,7 +236,7 @@ for k, (ttl, sub) in enumerate([("偵測模組比較（%）", "相同測試設�
     text(s, x + 3.17, 3.1, 2.5, 0.3, sub, size=11, color=MUTED, align=PP_ALIGN.RIGHT, spacing=1.0)
 chart(s, 0.75, 3.45, 5.6, 3.4, ["PBCNN-20", "SPIN-IDS-15", "OOF Gate（本作）"], [("Accuracy", [90.06, 96.00, 97.89]), ("Macro-F1", [87.91, 91.69, 93.03])], [BLUE, "93C5FD"], 80, 100)
 chart(s, 6.87, 3.45, 5.6, 3.4, ["No-RAG", "原始 RAG", "改良 RAG（本作）"], [("Judge 準確率", [93.44, 93.72, 98.85]), ("錯誤攔截率", [48.15, 52.31, 95.83])], [VIOLET, "F59E0B"], 0, 110)
-notes(s, "【4:10–4:50】成果：17 類偵測 Accuracy 98.08%、Macro-F1 93.05%；任務檢索 Top-5 96.76%、MRR@5 94.25%。"
+notes(s, "【3:05–3:45】成果：17 類偵測 Accuracy 98.08%、Macro-F1 93.05%；任務檢索 Top-5 96.76%、MRR@5 94.25%。"
          "相同設定下 OOF Gate 比 PBCNN-20 的 Macro-F1 高 5.12 個百分點；加入改良 RAG 後，錯誤攔截率從 48.15% 提升到 95.83%，約兩倍。")
 
 # ================================================================ 7 advantages / feasibility
@@ -268,7 +268,7 @@ for j, (a, b, c_) in enumerate(cmp_):
     text(s, 9.05, y + 0.08, 1.15, 0.5, a, size=13, bold=True, spacing=1.1)
     text(s, 10.2, y + 0.08, 1.15, 0.5, b, size=12, color=MUTED, spacing=1.1)
     text(s, 11.35, y + 0.08, 1.3, 0.6, c_, size=12, color=BLUE, bold=True, spacing=1.1)
-notes(s, "【4:50–5:40】落地可行性對應四個面向：穩定性，AI 從不改寫分類、輸出格式 100% 有效；成熟度，17 類即時重跑、6 種隔離情境全部完整回復；"
+notes(s, "【3:45–4:35】落地可行性對應四個面向：穩定性，AI 從不改寫分類、輸出格式 100% 有效；成熟度，17 類即時重跑、6 種隔離情境全部完整回復；"
          "完整性，一個事件 ID 串起所有紀錄；擴充性，直接吃封存檔或鏡像流量，模型、案例庫、白名單都能獨立更新，而且全程本機推論。")
 
 # ================================================================ 8 closing
@@ -285,7 +285,7 @@ for k, (t_, d, c) in enumerate([("偵測有依據", "內容相依時序方向判
     text(s, x + 0.3, 4.05, 3.6, 0.35, d, size=14, color=MUTED, spacing=1.0)
 text(s, 0.8, 5.55, 11.8, 0.4, "融合新型內容相依時序方向模型入侵偵測與任務導向檢索增強稽核之 AI 資安框架", size=16, bold=True, spacing=1.0)
 text(s, 0.8, 6.0, 11.8, 0.35, "感謝聆聽　敬請指教", size=20, color=BLUE, bold=True, spacing=1.0)
-notes(s, "【5:40–6:00】總結：偵測有依據、稽核有證據、處置可回復。感謝評審聆聽，敬請指教。")
+notes(s, "【4:35–5:00】總結：偵測有依據、稽核有證據、處置可回復。感謝評審聆聽，敬請指教。")
 
 prs.save(OUT)
 print("saved", OUT, len(prs.slides), "slides")

@@ -2,8 +2,10 @@
 // Every figure on screen comes from results/ (measured runs); per-event values are not invented.
 export const TITLE_ZH=['融合新型內容相依時序方向模型','入侵偵測與任務導向檢索增強稽核','之 AI 資安框架'];
 export const TITLE_EN='An AI Security Framework Integrating Novel Content Dependent Temporal Directional Intrusion Detection and Task Oriented Retrieval Augmented';
-export const duration=96;
-export const chapters=[
+const BASE=96;
+export const SPEED=1.6; // 96 s storyboard played at 1.6x -> 60 s for the 5-minute finals slot
+export const duration=BASE/SPEED;
+const BASE_CHAPTERS=[
  {at:0,title:'作品名稱',card:'open'},
  {at:6,title:'資料輸入與前處理',stage:0,caption:'原始流量整理為雙向連線並移除 IP 與 Port，轉成內容位元組、時間差與方向三種模型輸入。'},
  {at:20,title:'內容相依時序方向偵測',stage:1,caption:'CTBM 與 PBCNN 雙分支判讀，經溫度校準與 OOF Gate 融合，輸出固定 17 類正式機率。'},
@@ -29,7 +31,9 @@ const chip=(x,y,s,c,w=null)=>{const ww=w??(s.length*13+26);return rect(x,y,ww,28
 // Deterministic pseudo-random for decorative textures (heatmap/vector cells), never shown as values.
 const hash=n=>{const x=Math.sin(n*127.1+311.7)*43758.5453;return x-Math.floor(x)};
 
-export function chapterAt(t){let i=chapters.length-1;while(i>0&&t<chapters[i].at)i--;return i}
+export const chapters=BASE_CHAPTERS.map(c=>({...c,at:c.at/SPEED}));
+const baseAt=t=>{let i=BASE_CHAPTERS.length-1;while(i>0&&t<BASE_CHAPTERS[i].at)i--;return i};
+export function chapterAt(t){return baseAt(t*SPEED)}
 
 function panel(x,y,w,h,label,c,o=1){return fade(o,rect(x,y,w,h)+rect(x,y,w,36,c+'12','none',12)+`<rect x="${x}" y="${y+24}" width="${w}" height="12" fill="${c}12"/>`+line(x,y+36,x+w,y+36,C.line,1)+txt(x+16,y+24,label,14,c,700))}
 function tracker(stage){
@@ -184,15 +188,15 @@ function ch6(local){ // output
 }
 
 export function frameSvg(time){
- const t=clamp(time,0,duration),i=chapterAt(t),ch=chapters[i],local=t-ch.at,next=chapters[i+1]?.at??duration;
+ const t=clamp(time*SPEED,0,BASE),i=baseAt(t),ch=BASE_CHAPTERS[i],local=t-ch.at,next=BASE_CHAPTERS[i+1]?.at??BASE;
  const out=clamp((next-t)/0.45),inn=clamp(local/0.45),o=Math.min(out,inn);
  let s=`<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" font-family="Microsoft JhengHei, Noto Sans TC, Segoe UI, Arial, sans-serif"><rect width="1280" height="720" fill="${C.bg}"/>`;
- if(ch.card){s+=fade(i===0?out:inn,titleCard(local,ch.card==='close'))+`<rect x="0" y="714" width="${1280*(t/duration)}" height="6" fill="${C.blue}"/></svg>`;return s}
+ if(ch.card){s+=fade(i===0?out:inn,titleCard(local,ch.card==='close'))+`<rect x="0" y="714" width="${1280*(t/BASE)}" height="6" fill="${C.blue}"/></svg>`;return s}
  const c=C.s[ch.stage];
  s+=`<rect x="0" y="0" width="1280" height="6" fill="${c}"/>`;
  s+=txt(40,46,'AI 資安框架',15,C.ink,700)+txt(132,46,'· 端到端事件處理流程',15,C.muted)+txt(1240,46,`${String(ch.stage+1).padStart(2,'0')} / 06　${ch.title}`,15,c,700,'end');
  s+=tracker(ch.stage);
  s+=fade(o,[ch1,ch2,ch3,ch4,ch5,ch6][ch.stage](local));
  s+=fade(o,rect(40,620,1200,64,C.panel,C.line,12)+`<rect x="40" y="620" width="6" height="64" rx="3" fill="${c}"/>`+txt(640,659,ch.caption,18,C.ink,500,'middle'));
- s+=`<rect x="0" y="714" width="${1280*(t/duration)}" height="6" fill="${c}"/></svg>`;return s;
+ s+=`<rect x="0" y="714" width="${1280*(t/BASE)}" height="6" fill="${c}"/></svg>`;return s;
 }
