@@ -138,6 +138,13 @@ def build_public_site(output, root=ROOT):
         ["git", "rev-parse", "HEAD"], cwd=root, text=True
     ).strip()
     shutil.copytree(root / "public", output, dirs_exist_ok=True)
+    index = output / "index.html"
+    page = index.read_text(encoding="utf-8")
+    for asset in ("styles.css", "site.js", "results-data.js"):
+        page = page.replace(
+            '"' + asset + '"', '"' + asset + "?v=" + revision[:12] + '"'
+        )
+    index.write_text(page, encoding="utf-8")
     (output / "results").mkdir()
     hashes = {}
     for name in SOURCES.values():
@@ -162,7 +169,22 @@ def build_public_site(output, root=ROOT):
         shutil.copy2(root / "web/film" / name, output / "film" / name)
     film = output / "film/index.html"
     film.write_text(
-        film.read_text(encoding="utf-8").replace("← 回事件工作台", "← 回成果首頁"),
+        film.read_text(encoding="utf-8")
+        .replace("← 回事件工作台", "← 回成果首頁")
+        .replace("</head>", '<link rel="stylesheet" href="../film-chrome.css"></head>'),
+        encoding="utf-8",
+    )
+    film.write_text(
+        film.read_text(encoding="utf-8")
+        .replace('src="player.mjs"', 'src="player.mjs?v=' + revision[:12] + '"')
+        .replace("../film-chrome.css", "../film-chrome.css?v=" + revision[:12]),
+        encoding="utf-8",
+    )
+    player = output / "film/player.mjs"
+    player.write_text(
+        player.read_text(encoding="utf-8").replace(
+            "'./scene.mjs'", "'./scene.mjs?v=" + revision[:12] + "'"
+        ),
         encoding="utf-8",
     )
     (output / "deliverables").mkdir()
@@ -176,6 +198,7 @@ def build_public_site(output, root=ROOT):
     manifest = {
         "revision": revision,
         "data_type": "recorded_experiment_aggregates",
+        "theme": "console-chrome",
         "source_files_sha256": hashes,
         "detection_samples": data["detection"]["OOF Gate"]["n"],
         "retrieval_queries": data["retrieval"]["queries"],

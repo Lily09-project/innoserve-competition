@@ -1,0 +1,214 @@
+/* Companion faceplate for the product-method player. */
+:root {
+  color-scheme: light;
+  --bg: #7a8aba;
+  --panel: #dce4f1;
+  --line: #3d4f97;
+  --ink: #21242e;
+  --muted: #3d4f75;
+}
+body {
+  background: repeating-linear-gradient(
+    0deg,
+    #7586b1 0,
+    #7586b1 1px,
+    #7182ad 1px,
+    #7182ad 3px
+  );
+  font-family: Arial, Helvetica, "Microsoft JhengHei", sans-serif;
+  font-size: 12px;
+}
+header,
+main {
+  max-width: 830px;
+  padding: 12px;
+}
+header {
+  margin-top: 16px;
+  background-color: #21242e;
+  background-image: radial-gradient(#414755 0.65px, transparent 0.8px);
+  background-size: 3px 3px;
+  border: 1px solid #101728;
+  border-top: 2px solid #c6d5ee;
+  box-shadow: 0 3px #3d4f97;
+  color: #fff;
+  gap: 20px;
+}
+header h1 {
+  font-size: 16px;
+  line-height: 1.65;
+  color: #fff;
+  margin: 4px 0;
+}
+header p,
+header .eyebrow {
+  color: #bdcde8;
+  font-size: 9px;
+}
+header a {
+  color: #f5ad45;
+  font-size: 11px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+main {
+  background: #8b9dca;
+  border: 1px solid #3d4f97;
+  border-top-color: #dce8fc;
+  box-shadow: inset 1px 1px #c6d6f5;
+}
+.screen {
+  border-radius: 0;
+  border: 2px solid #3d4f97;
+  border-top-color: #dce7f9;
+  background: #fff;
+  box-shadow: 2px 2px #53659b;
+  overflow: hidden;
+}
+.controls {
+  gap: 6px;
+  padding: 10px 0;
+  font-size: 11px;
+}
+.controls button,
+.controls select {
+  background: linear-gradient(#ffd18b, #ecab37);
+  border: 1px solid #785025;
+  border-top-color: #fff0cb;
+  border-left-color: #ffe0a7;
+  border-radius: 2px;
+  padding: 8px 10px;
+  box-shadow: 1px 1px #3d4f97;
+  font:
+    700 10px Arial,
+    "Microsoft JhengHei",
+    sans-serif;
+  min-height: 38px;
+  color: #21242e;
+}
+.controls button:active {
+  box-shadow: inset 1px 1px #956520;
+  background: #e48600;
+}
+.controls input {
+  accent-color: #3d4f97;
+}
+.controls label,
+.controls output {
+  color: #25385c;
+  font-size: 10px;
+}
+.chapters {
+  gap: 4px;
+}
+.chapters button {
+  border: 1px solid #121b2e;
+  border-top-color: #8296bc;
+  background-color: #21242e;
+  background-image: radial-gradient(#414755 0.65px, transparent 0.8px);
+  background-size: 3px 3px;
+  border-radius: 0;
+  box-shadow: 1px 1px #4c5e98;
+  padding: 8px 10px;
+  color: #dce6f7;
+  min-height: 38px;
+  font-size: 10px;
+}
+.chapters button[aria-current="true"] {
+  color: #ffbd68;
+  border-bottom: 2px solid #f68d1f;
+}
+.caption {
+  color: #253654;
+  font-size: 10px;
+  line-height: 1.65;
+  border-top: 1px dotted #60619c;
+  padding-top: 9px;
+}
+a:focus-visible,
+button:focus-visible,
+select:focus-visible,
+input:focus-visible {
+  outline: 3px solid #17326b;
+  outline-offset: 3px;
+}
+header a:focus-visible {
+  outline-color: #fff;
+}
+@media (max-width: 720px) {
+  header {
+    margin: 8px 8px 0;
+    padding: 12px;
+    display: block;
+  }
+  header h1 {
+    font-size: 14px;
+  }
+  header a {
+    min-height: 44px;
+    margin-top: 4px;
+  }
+  main {
+    margin: 0 8px;
+    padding: 8px;
+  }
+  .controls button,
+  .controls select,
+  .chapters button {
+    min-height: 44px;
+    font-size: 11px;
+  }
+  .caption {
+    font-size: 11px;
+  }
+  .controls {
+    flex-wrap: wrap;
+  }
+  .controls input[type="range"] {
+    min-width: 120px;
+  }
+  .controls label,
+  .controls output {
+    font-size: 11px;
+  }
+}
+
+header .kicker,
+header p.meta {
+  color: #bdcde8;
+  font-size: 9px;
+}
+.controls {
+  border-radius: 0;
+  background: linear-gradient(#b2c3e2, #8ea2ce);
+  border: 1px solid #3d4f97;
+  border-top-color: #e4edff;
+  box-shadow: 1px 2px #53679d;
+  padding: 9px;
+}
+.controls #play {
+  background: linear-gradient(#ffbc70, #f68d1f);
+  border: 1px solid #94500f;
+  border-top-color: #ffe5b6;
+  border-left-color: #ffd79b;
+  box-shadow: 1px 1px #3d4f97;
+  color: #21242e;
+  min-width: 92px;
+}
+.controls #play:active {
+  background: #e48600;
+  box-shadow: inset 1px 1px #8d5417;
+}
+.chapters button[aria-current="true"] {
+  background-color: #303c58;
+  background-image: radial-gradient(#414755 0.65px, transparent 0.8px);
+  border-color: #6d7c9e;
+  border-bottom-color: #f68d1f;
+  color: #ffd084;
+}
+body.fullscreen main {
+  border: 0;
+  box-shadow: none;
+}

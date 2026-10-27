@@ -128,4 +128,28 @@
     `<a class="source-link" href="publication-manifest.json">發布來源與檔案雜湊 ↗</a>`;
   $("version").textContent =
     `資料來源：四份實測彙整檔 · 版本 ${D.revision.slice(0, 7)} · 本頁只呈現保存結果，不在瀏覽器執行偵測模型或部署網路策略。`;
+  const menuToggle = $("menu-toggle");
+  menuToggle.onclick = () => {
+    const expanded = menuToggle.getAttribute("aria-expanded") !== "true";
+    menuToggle.setAttribute("aria-expanded", String(expanded));
+    menuToggle.closest("header").classList.toggle("menu-open", expanded);
+  };
+  document.querySelectorAll("#main-navigation a").forEach((link) => {
+    link.addEventListener("click", () => {
+      menuToggle.setAttribute("aria-expanded", "false");
+      menuToggle.closest("header").classList.remove("menu-open");
+    });
+  });
+  $("quick-find").addEventListener("submit", (event) => {
+    event.preventDefault();
+    $("class-search").value = $("quick-search").value.trim();
+    classTable();
+    $("class-explorer").scrollIntoView?.({
+      behavior: window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
+        ? "auto"
+        : "smooth",
+      block: "start",
+    });
+    $("class-search").focus({ preventScroll: true });
+  });
 })();

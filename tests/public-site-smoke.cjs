@@ -49,6 +49,20 @@ try {
   select.dispatchEvent(new dom.window.Event("change"));
   assert.match(doc.getElementById("class-status").textContent, /PBCNN/);
   assert.equal(doc.querySelectorAll("#network-table tr").length, 6);
+  const toggle = doc.getElementById("menu-toggle");
+  toggle.click();
+  assert.equal(toggle.getAttribute("aria-expanded"), "true");
+  doc.querySelector("#main-navigation a").click();
+  assert.equal(toggle.getAttribute("aria-expanded"), "false");
+  doc.getElementById("quick-search").value = "SSH";
+  doc
+    .getElementById("quick-find")
+    .dispatchEvent(
+      new dom.window.Event("submit", { bubbles: true, cancelable: true }),
+    );
+  assert.equal(doc.getElementById("class-search").value, "SSH");
+  assert.equal(doc.querySelectorAll("#class-table tr").length, 1);
+
   assert.deepEqual(errors, []);
   for (const anchor of doc.querySelectorAll("a[href]")) {
     const href = anchor.getAttribute("href");
