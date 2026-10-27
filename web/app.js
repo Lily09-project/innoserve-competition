@@ -1,6 +1,9 @@
 /* Local model execution and evidence replay; network tests use isolated Mininet only. */
 const { summary: S, events: E } = window.FINAL_DATA;
 const synthetic = S.synthetic === true;
+const staticSite = S.static_site === true;
+const transport = (...args) =>
+  window.STATIC_DEMO ? window.STATIC_DEMO.fetch(...args) : fetch(...args);
 const $ = (id) => document.getElementById(id);
 const esc = (s) =>
   String(s ?? "").replace(
@@ -29,7 +32,7 @@ async function requestJson(path, options = {}, timeout = 12000) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeout);
   try {
-    const response = await fetch(path, {
+    const response = await transport(path, {
       ...options,
       signal: controller.signal,
     });
@@ -280,9 +283,10 @@ $("recompute").onclick = async () => {
     render();
     list();
     $("api-status").textContent =
-      `已重新載入同筆封存判定並重算檢索與策略，檢索耗時${data.retrieval_ms.toFixed(2)} ms。${synthetic ? "合成案例採人工複核分流，未生成AI回覆。" : "稽核使用同事件保存回覆。"}`;
-    $("operation-status").textContent =
-      "目前顯示封存事件重算結果；再次部署前請重新執行模型。";
+      `${staticSite ? "已在瀏覽器重算Top-5排序；檢索耗時" : "已重新載入同筆封存判定並重算檢索與策略，檢索耗時"}${data.retrieval_ms.toFixed(2)} ms。${synthetic ? "合成案例採人工複核分流，未生成AI回覆。" : "稽核使用同事件保存回覆。"}`;
+    $("operation-status").textContent = staticSite
+      ? "瀏覽器Top-5排序已與合成案例核對；模型與網路執行請使用本機版。"
+      : "目前顯示封存事件重算結果；再次部署前請重新執行模型。";
   } catch (error) {
     $("api-status").textContent =
       error.message || "本機服務無法連線，請確認啟動作品.cmd已開啟。";
@@ -298,7 +302,7 @@ function controls() {
       !current ||
       (id === "next" && step >= 3) ||
       (id === "recompute" && !backend);
-  $("stop-service").disabled = !backend || busy;
+  $("stop-service").disabled = staticSite || !backend || busy;
   $("warmup").disabled = synthetic || !backend || busy;
   $("live-run").disabled =
     synthetic || !backend || busy || !current || !liveIds.has(current.event_id);
@@ -408,7 +412,7 @@ $("export-event").onclick = async () => {
   const controller = new AbortController(),
     timer = setTimeout(() => controller.abort(), 12000);
   try {
-    const response = await fetch("/api/export", {
+    const response = await transport("/api/export", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -477,7 +481,9 @@ requestJson("/api/status")
     list();
     render();
     $("operation-status").textContent = synthetic
-      ? "合成展示可重算檢索；模型與網路處置已停用。"
+      ? staticSite
+        ? "GitHub Pages 瀏覽器展示：可重算Top-5與匯出；模型及網路處置由本機版執行。"
+        : "合成展示可重算檢索；模型與網路處置已停用。"
       : v.model_ready
         ? "模型已預載，可選擇17類輸入即時執行。"
         : "可選「預載本機模型」，或直接重跑事件。";
@@ -503,7 +509,14 @@ if (synthetic) {
     metric(S.bank_rows, "合成案例") +
     metric(S.queries, "合成事件");
   const tag = document.querySelector(".intro-tag");
-  if (tag) tag.textContent = "公開合成展示";
+  if (tag)
+    tag.textContent = staticSite ? "GitHub Pages · 免安裝展示" : "公開合成展示";
+  if (staticSite) {
+    document.querySelector(".operation-copy h2").textContent =
+      "直接探索事件與證據";
+    document.querySelector("footer").textContent =
+      "瀏覽器互動展示｜合成資料，非實測｜完整模型與隔離驗證請使用本機版";
+  }
   const hint = document.querySelector(".operation-hint");
   if (hint) hint.textContent = "可逐步查看合成事件、重算Top-5與匯出紀錄。";
 }

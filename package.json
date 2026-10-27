@@ -9,6 +9,7 @@
   "scripts": {
     "format:check": "prettier --check \"web/**/*.{js,css,html}\" \"tests/*.cjs\"",
     "format": "prettier --write \"web/**/*.{js,css,html}\" \"tests/*.cjs\"",
-    "test:frontend": "node tests/frontend-smoke.cjs"
+    "test:frontend": "node tests/frontend-smoke.cjs",
+    "test:pages": "node tests/pages-smoke.cjs"
   }
 }

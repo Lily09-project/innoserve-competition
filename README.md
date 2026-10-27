@@ -1,5 +1,7 @@
 # 資服競賽
 
+**[直接開啟線上展示](https://lily09-project.github.io/innoserve-competition/)** · **[45秒產品動畫](https://lily09-project.github.io/innoserve-competition/film/)**
+
 AI資安框架展示專案，整合固定17類入侵偵測、任務導向Top-5案例檢索、本機AI稽核與可回復的隔離策略驗證。
 
 正式作品名稱：融合新型內容相依時序方向模型入侵偵測與任務導向檢索增強稽核之 AI 資安框架。
@@ -112,7 +114,7 @@ config.example.json     本機資產設定範例
 
 ## 產品動畫與介面
 
-工作台採用淺色介面，設計決策見 [介面規格](design-system/MASTER.md)。啟動服務後，點選「產品動畫」即可播放九章、150 秒的程式動畫，支援暫停、跳章及全螢幕。動畫來源、影片輸出方式及示意範圍見 [動畫說明](web/film/README.md)。
+工作台採用淺色介面，設計決策見 [介面規格](design-system/MASTER.md)。啟動服務後，點選「產品動畫」即可播放45秒快版，另可切換約30秒／23秒播放，支援暫停、跳章及全螢幕。動畫來源、影片輸出方式及示意範圍見 [動畫說明](web/film/README.md)。
 
 ## 架構
 
@@ -138,3 +140,16 @@ CI 使用最小 Python 依賴驗證合約與公開展示，另執行 Ruff、Pret
 ## English abstract
 
 This prototype connects fixed 17-class intrusion detection, task-oriented train-only retrieval, local AI evidence review, and reversible policy validation in an isolated network. Event and execution identifiers bind detection, evidence, review, and network receipts. A standalone synthetic demo supports public collaboration without redistributing private datasets or model weights; synthetic fixtures are explicitly labelled and are not experimental results.
+
+## GitHub Pages 線上展示
+
+GitHub Pages 版不需安裝或啟動 Python：可篩選17類合成事件、逐步查看分類／證據／稽核／策略、在瀏覽器重算Top-5排序並核對保存案例，以及匯出原始合成事件紀錄。模型、AI生成與網路處置按鈕停用，保留完整本機版功能邊界。線上匯出沿用建置時的原始Python JSON字串，避免JavaScript重新序列化破壞雜湊格式。
+
+`.github/workflows/pages.yml` 只打包新產生的合成資料與公開web檔案，不會上傳私有evidence或本機設定。候選分支與main可部署；PR合併前線上版對應候選分支。部署後的實際版本以Actions紀錄為準。
+
+```bash
+python scripts/build_pages.py --output build/pages
+pnpm run test:pages
+```
+
+建置拒絕覆寫非空目錄。影片以約1.8MB的720p快版提供點擊播放，減少等待與流量。

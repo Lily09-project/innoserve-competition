@@ -114,6 +114,19 @@ class MaintenanceTests(unittest.TestCase):
             with self.assertRaises(FileNotFoundError):
                 check_assets(root)
 
+    def test_pages_build_excludes_private_assets(self):
+        from build_pages import build_pages
+
+        with tempfile.TemporaryDirectory() as folder:
+            output = build_pages(Path(folder) / "site")
+            self.assertFalse((output / "evidence").exists())
+            self.assertFalse((output / "config.local.json").exists())
+            manifest = json.loads((output / "site-manifest.json").read_text())
+            self.assertTrue(manifest["synthetic"])
+            self.assertEqual(manifest["video_seconds"], 45)
+            with self.assertRaises(FileExistsError):
+                build_pages(output)
+
     def test_public_demo_contract(self):
         with tempfile.TemporaryDirectory() as folder:
             root = make_demo_assets(Path(folder) / "demo")
