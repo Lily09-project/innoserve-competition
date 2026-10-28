@@ -14,7 +14,7 @@
 | Communication Intent | 以圖形說明創新方法及已量測效果 |
 | Desired Audience Outcome | 了解同事件的偵測、證據稽核與受控處置 |
 | Core Message / Ask / Action | 完整框架以事件回條連結判定、證據及回復 |
-| Delivery Context | presenter-led；六分鐘含展示，七分鐘答詢 |
+| Delivery Context | presenter-led；五分鐘含展示，另留一分鐘緩衝，七分鐘答詢 |
 | Artifact Afterlife | GitHub審查及離線展演 |
 | Reading Mode | presentation |
 | Content Strategy | 保留正式實測範圍，精簡文字，重畫方法圖 |
@@ -193,6 +193,6 @@
 - **Generation**: enabled
 - **Filename**: match SVG names under notes/
 - **Content**: 只解說頁面與實測範圍。
-- **Total duration**: 六分鐘含30秒、2倍速方法動畫。
+- **Total duration**: 五分鐘含30秒、2倍速方法動畫及正常操作，另留一分鐘緩衝。
 - **Notes style**: 正式口語繁體中文。
 - **Presentation purpose**: 說明方法創新與實測成果。

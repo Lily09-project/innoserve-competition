@@ -23,7 +23,7 @@
     }
   },
   "slides": 8,
-  "talk_budget_seconds": 360,
+  "talk_budget_seconds": 300,
   "film_seconds": 30,
   "film_speed": 2,
   "maximum_film_seconds": 40,
@@ -45,5 +45,7 @@
   "review": "passed: actual PowerPoint pages and sampled video frames; no blocking findings",
   "results_changed": false,
   "markdown_documents": 15,
-  "local_links_checked": 23
+  "local_links_checked": 23,
+  "presentation_limit_seconds": 360,
+  "buffer_seconds": 60
 }
