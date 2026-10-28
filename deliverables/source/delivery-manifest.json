@@ -1,13 +1,13 @@
 {
-  "base_revision": "330d21a",
+  "base_revision": "5a750de",
   "files": {
     "deliverables/決賽簡報_AI資安框架.pptx": {
-      "bytes": 2249304,
-      "sha256": "a8ba6a01e96f52b22f79b588531f1ba91cd49a4522f719c7da1092df35b0f4b6"
+      "bytes": 2255646,
+      "sha256": "9c6c1b91cdc96e8cbba228bca7466060babff9030d8e4068d731cb902e790cc0"
     },
     "deliverables/決賽簡報_AI資安框架.pdf": {
-      "bytes": 405494,
-      "sha256": "27acfb4ef739b5a2b7078d7f8bfc072d8afbc5443faeb4d7f65375c94db0666a"
+      "bytes": 424938,
+      "sha256": "49008d73f2e2b2cbb45df229a9951c2bc6859c1abd1e3c91d9d948e4b5171148"
     },
     "deliverables/AI資安框架_系統展示影片_30秒快版.mp4": {
       "bytes": 1281365,
@@ -42,7 +42,7 @@
   ],
   "python_tests": 29,
   "website": "removed; API-only",
-  "review": "Independent review passed: 12 actual PowerPoint pages, sampled film frames and corrected six-diagram Q&A; embedded media identity and autoplay verified",
+  "review": "Current 12-page actual PowerPoint output visually checked; embedded video identity and playback checked; movie unchanged from independent reviewed version",
   "results_changed": false,
   "markdown_documents": 15,
   "local_links_checked": 25,
@@ -80,5 +80,6 @@
   "qa_questions": 6,
   "qa_start_slide": 10,
   "qa_in_formal_talk": false,
-  "qa_presentation": "six diagrams with evidence; prose answers in speaker notes"
+  "qa_presentation": "six diagrams with evidence; prose answers in speaker notes",
+  "visual_revision": "Illustrated native object explanations plus original transparent icons; consistent capability imagery and improved dataset label spacing"
 }

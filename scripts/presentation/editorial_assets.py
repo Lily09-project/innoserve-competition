@@ -112,6 +112,53 @@ def arrow(points, color=BLUE, dashed=False):
     return f'<path d="{path}" fill="none" stroke="{color}" stroke-width="2.5"{dash}/><path d="{head}" fill="none" stroke="{color}" stroke-width="2.5"/>'
 
 
+def glyph(kind,x,y,size=64):
+    """Qualitative device/object illustrations: no data values are encoded."""
+    def line(a,b,c,d,color=BLUE,width=2.5):
+        return f'<line x1="{a}" y1="{b}" x2="{c}" y2="{d}" stroke="{color}" stroke-width="{width}" stroke-linecap="round"/>'
+    def circle(cx,cy,r,fill='none'):
+        return f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="{fill}" stroke="{BLUE}" stroke-width="2.5"/>'
+    body=''
+    if kind=='packet':
+        body=rect(5,15,54,36,'#FFFFFF',5,BLUE)+line(5,15,32,35)+line(32,35,59,15)
+    elif kind=='clock':
+        body=circle(32,32,25,'#FFFFFF')+line(32,32,32,14)+line(32,32,46,39)
+        body+=line(32,4,32,9)+line(32,55,32,60)
+    elif kind=='firewall':
+        body=rect(5,8,54,48,'#FFFFFF',4,BLUE)
+        for yy in (24,40):body+=line(5,yy,59,yy,'#8DB5D9',2)
+        for xx,a,b in [(23,8,24),(43,8,24),(15,24,40),(37,24,40),(23,40,56),(43,40,56)]:body+=line(xx,a,xx,b,'#8DB5D9',2)
+    elif kind=='server':
+        for j in range(3):body+=rect(9,7+j*18,46,14,'#FFFFFF',3,BLUE)+circle(47,14+j*18,2,BLUE)+line(15,14+j*18,35,14+j*18,'#A7C7E3',2)
+    elif kind=='document':
+        body=rect(12,5,40,54,'#FFFFFF',4,BLUE)
+        for yy in (18,29,40,51):body+=line(21,yy,44,yy,'#95BADC',2)
+    elif kind=='vector':
+        body=line(12,7,5,7)+line(5,7,5,57)+line(5,57,12,57)+line(52,7,59,7)+line(59,7,59,57)+line(59,57,52,57)
+        for yy in (16,27,38,49):body+=rect(18,yy-3,28,6,'#8EB9DE',2)
+    elif kind=='search':
+        body=circle(26,26,19,'#FFFFFF')+line(40,40,59,59,BLUE,5)
+    elif kind=='check':
+        body=circle(32,32,25,'#E7F1FB')+line(18,32,28,42,BLUE,4)+line(28,42,47,21,BLUE,4)
+    elif kind=='review':
+        body=circle(26,26,17,'#FFFFFF')+line(39,39,56,56,BLUE,4)
+    elif kind=='question':
+        body=circle(32,32,25,'#E7F1FB')
+    else:
+        body=rect(12,12,40,40,'#FFFFFF',5,BLUE)+rect(23,23,18,18,'#E7F1FB',2,BLUE)
+        for v in (20,32,44):body+=line(v,3,v,12)+line(v,52,v,61)+line(3,v,12,v)+line(52,v,61,v)
+    result=f'<g transform="translate({x} {y}) scale({size/64})">{body}</g>'
+    if kind=='question':result+=text(x+size/2,y+size*.7,'?',size*.59,BLUE,600,'middle')
+    return result
+
+
+def capability_icon(index,x,y,size):
+    if index==0:return image(x,y,size,size,'icon-2.png')
+    if index==1:return image(x,y,size,size,'icon-3.png')
+    if index==2:return glyph('document',x,y,size*.9)+glyph('check',x+size*.56,y+size*.56,size*.4)
+    return image(x,y,size,size,'icon-4.png')
+
+
 def graphic_page(n,title,body,kicker='METHOD',role='content',bg='#FFFFFF'):
     heading=group('headline',rect(64,27,4,30,BLUE,1)+text(80,49,kicker,17,BLUE,600)+text(64,116,title,42,'#121314',300))
     footer=group('footer',f'<line x1="64" y1="667" x2="1216" y2="667" stroke="#E3EAF2" stroke-width="1"/>'+text(64,692,'AI 資安框架 · 資安技術組',15,'#6B6B6B')+text(1216,692,(f'{PAGE_NUMBERS[n]:02d} / 09' if n<=9 else f'答詢備用 {n-9} / 3'),15,'#6B6B6B',400,'end'))
@@ -133,7 +180,7 @@ def build_pages(limit=12):
     s+=text(64,430,'從流量判定，走到有證據的處置。',28,'#6B6B6B')
     for i,label in enumerate(['偵測','檢索','稽核','回復']):
         x=64+i*222
-        s+=rect(x,500,188,72)+text(x+94,546,label,28,BLUE,600,'middle')
+        s+=rect(x,500,188,72)+capability_icon(i,x+8,509,50)+text(x+115,546,label,26,BLUE,600,'middle')
         if i<3:s+=arrow([(x+188,536),(x+222,536)])
     s+=image(976,414,222,222,'icon-4.png')
     pages.append(graphic_page(1,'',s,'2026 資安技術組 · 決賽','cover'))
@@ -149,16 +196,16 @@ def build_pages(limit=12):
         s+=text(86,y,label,24)+rect(196,y-24,66,30,'#E2EDF8',4)
         for z in range(4):s+=rect(202+z*13,y-18,7,18 if j!=1 else 8+z*3,BLUE,1)
     s+=arrow([(284,365),(328,365),(328,270),(370,270)])+arrow([(328,365),(328,455),(370,455)])
-    s+=rect(370,196,340,148)+text(394,240,'CTBM',32,BLUE,600)+text(394,286,'內容 × 時間差 × 方向',24)+text(394,319,'讀取流量的時序關係',21,'#6B6B6B')
-    s+=rect(370,381,340,148)+text(394,425,'PBCNN',32,BLUE,600)+text(394,471,'短視窗位元組模式',24)+text(394,504,'補充局部內容特徵',21,'#6B6B6B')
+    s+=rect(370,196,340,148)+image(390,211,82,82,'icon-2.png')+text(492,240,'CTBM',32,BLUE,600)+text(492,278,'內容・時序・方向',21)+text(394,323,'讀取流量的時序關係',21,'#6B6B6B')
+    s+=rect(370,381,340,148)+glyph('packet',394,398,70)+text(492,425,'PBCNN',32,BLUE,600)+text(492,465,'短窗位元組模式',21)+text(394,508,'補充局部內容特徵',21,'#6B6B6B')
     s+=arrow([(710,270),(760,270),(760,365),(810,365)])+arrow([(710,455),(760,455),(760,365)])
     s+=rect(810,273,406,180,'#EAF3FC')+text(835,320,'校準＋OOF Gate',30,BLUE,600)+text(835,365,'依事件證據融合',25)+text(835,412,'形成同一次正式判定',23,'#6B6B6B')
     s+=arrow([(1013,453),(1013,565)])+rect(64,565,1152,64)+text(88,605,'17 類判定  ＋  校準信心  ＋  模型表徵  →  後段檢索與稽核',25)
     pages.append(graphic_page(3,'互補模型，形成同一次判定',s,'DETECTION'))
     # P04: vector composition is qualitative, not a falsely scaled 512:17 chart.
     s=text(64,192,'01  組合任務向量',23,BLUE,600)
-    s+=rect(64,226,260,75)+text(194,272,'512 維流量表徵',24,anchor='middle')
-    s+=text(194,335,'＋',30,BLUE,600,'middle')+rect(64,357,260,75)+text(194,403,'17 維類別機率',24,anchor='middle')
+    s+=rect(64,226,260,75)+glyph('vector',77,238,49)+text(220,272,'512 維表徵',24,anchor='middle')
+    s+=text(194,335,'＋',30,BLUE,600,'middle')+rect(64,357,260,75)+glyph('vector',77,370,49)+text(220,403,'17 維類別機率',23,anchor='middle')
     s+=arrow([(324,264),(350,264),(350,460),(194,460),(194,478)])+arrow([(194,432),(194,478)])
     s+=rect(64,478,260,98,'#EAF3FC')+text(194,521,'529 維任務向量',26,BLUE,600,'middle')+text(194,556,'L2 正規化',21,'#6B6B6B',400,'middle')
     s+=arrow([(324,527),(390,527),(390,323),(430,323)])
@@ -177,17 +224,19 @@ def build_pages(limit=12):
     s+=text(850,520,'保留正式分類',25)+text(850,557,'稽核結論附回事件紀錄',21,'#6B6B6B')
     s+=text(64,628,'同一事件 ID：分類結果與檢索證據一路可追溯。',24)
     pages.append(graphic_page(4,'把偵測表徵，變成可核對的證據',s,'EVIDENCE'))
-    # P05: actual action sequence and a separate non-disruptive branch.
+    # P05: four object illustrations explain controlled execution and expiry.
     s=''
-    labels=[('政策檢查','範圍・白名單・期限'),('套用規則','受允許策略才執行'),('讀回驗證','確認規則及事件回條'),('到期回復','撤銷並確認服務恢復')]
-    for i,(a,b) in enumerate(labels):
+    stages=[('政策檢查','範圍・白名單・期限','shield'),('套用規則','受允許策略才執行','firewall'),('讀回驗證','核對規則與事件回條','document'),('到期回復','撤銷並確認服務恢復','clock')]
+    for i,(label,detail,kind) in enumerate(stages):
         x=64+i*294
-        s+=rect(x,230,270,200,'#EAF3FC' if i==0 else '#F5F7FA')+text(x+24,269,f'0{i+1}',20,BLUE,600)
-        s+=text(x+24,331,a,30)+text(x+24,383,b,21,'#6B6B6B')
-        if i<3:s+=arrow([(x+270,330),(x+294,330)])
-    s+=arrow([(199,430),(199,505),(424,505)],'#6B6B6B',True)
-    s+=rect(424,473,792,68)+text(448,516,'複核／不確定  →  監測或蒐證，保留事件紀錄',25)
-    s+=rect(64,574,1152,66)+text(88,615,'6 種隔離 TCP 情境：4 種套用規則、2 種監測或蒐證；背景保留與回復皆 6/6。',22)
+        s+=rect(x,195,270,257,'#EAF3FC' if i==0 else '#F5F7FA')
+        s+=text(x+22,232,f'0{i+1}',20,BLUE,600)
+        s+=image(x+77,239,116,116,'icon-4.png') if kind=='shield' else glyph(kind,x+87,250,96)
+        s+=text(x+135,391,label,29,'#121314',400,'middle')+text(x+135,431,detail,20,'#6B6B6B',400,'middle')
+        if i<3:s+=arrow([(x+270,323),(x+294,323)])
+    s+=arrow([(199,452),(199,513),(424,513)],'#6B6B6B',True)
+    s+=rect(424,478,792,69)+glyph('document',442,490,42)+text(500,521,'複核／不確定 → 監測或蒐證',26)
+    s+=rect(64,576,1152,64)+text(88,616,'6 種隔離 TCP 情境：4 種套用規則、2 種監測或蒐證；背景保留與回復皆 6/6。',22)
     pages.append(graphic_page(5,'受控執行，留下可回復的處置紀錄',s,'CONTROL'))
     # P06: native 16:9 movie frame; embedded in the packaging pass.
     s=rect(192,151,896,504,'#F5F7FA',8,'#D6E1EC')
@@ -218,7 +267,7 @@ def build_pages(limit=12):
     s+=arrow([(823,260),(823,298),(576,298),(576,336)])+arrow([(823,298),(823,336)])+arrow([(823,298),(1070,298),(1070,336)])
     for i,(value,label) in enumerate([('415','支持'),('13','複核'),('35','不確定')]):
         x=470+i*247
-        s+=rect(x,336,212,151)+text(x+106,395,value,42,BLUE,300,'middle')+text(x+106,447,label,25,anchor='middle')
+        s+=rect(x,336,212,151)+glyph(['check','review','question'][i],x+86,348,40)+text(x+106,429,value,39,BLUE,300,'middle')+text(x+106,468,label,24,anchor='middle')
     s+=text(470,538,'支持精確率 97.11% · 正式分類保持可追溯',23)
     s+=rect(64,584,1152,61,'#EAF3FC')+text(88,624,'18 / 30 偵測誤判分流至複核或不確定；其餘 12 筆仍獲支持。',25)
     pages.append(graphic_page(8,'案例提供證據，AI完成分流',s,'MEASURED RESULTS'))
@@ -226,13 +275,13 @@ def build_pages(limit=12):
     s=text(64,195,'偵測有依據，稽核有證據，處置可回復。',36,'#121314',300)
     for i,(a,b) in enumerate([('正式判定','17 類＋信心'),('檢索證據','Top-5 訓練案例'),('稽核結論','支持／複核／不確定'),('處置回條','讀回＋到期回復')]):
         x=64+i*294
-        s+=rect(x,292,270,174,'#FFFFFF',8)+text(x+24,347,a,30,BLUE,600)+text(x+24,409,b,21,'#6B6B6B')
-        if i<3:s+=arrow([(x+270,379),(x+294,379)])
+        s+=rect(x,292,270,174,'#FFFFFF',8)+glyph(['document','search','check','clock'][i],x+104,305,62)+text(x+135,401,a,27,BLUE,600,'middle')+text(x+135,443,b,20,'#6B6B6B',400,'middle')
+        if i<3:s+=arrow([(x+270,381),(x+294,381)])
     s+=rect(64,502,1152,56,'#E2EDF8')+text(640,540,'同一事件 ID，串起分類、證據、判斷與回復紀錄。',26,anchor='middle')
     s+=text(64,604,'17 類真實張量重跑 · 6 種隔離 TCP 情境驗證',26)+text(64,645,'感謝聆聽，敬請指教。',24,BLUE)
     pages.append(graphic_page(9,'一套可展示、可查核的資安框架',s,'AI SECURITY FRAMEWORK','ending','#F2F7FC'))
     pages=[pages[i] for i in [0,5,1,2,3,4,6,7,8]]
-    qa=[('創新在哪裡？與一般 IDS 加上 RAG 有何不同？', ['把流量表徵與類別機率組成任務向量，檢索相關證據。', 'AI 保留正式分類，同一事件一路連到策略與回復回條。'], '529 維', '任務導向證據向量', '互補判定 → 案例檢索 → 證據稽核 → 受控處置'), ('如何證明前段判斷與後段處置已經串起來？', ['17 類本機推論與 AI 稽核已逐類執行，產物使用同一事件 ID。', '6 種隔離情境的回條綁定同次執行，過期執行 ID 會被拒絕。'], '同一 ID', '事件與執行可追溯', '分類、Top-5、Judge、策略與回條綁定同一事件'), ('評估資料如何切分？案例庫是否洩漏測試答案？', ['偵測比較使用相同 18,998 筆測試；案例庫只由訓練資料建立。', '檢索使用 1,550 筆案例、463 筆查詢，訓練與查詢沒有重疊。'], '0', '訓練／查詢重疊', '偵測與檢索分開評估；AI 輸入不包含真實標籤'), ('AI 若支持錯誤判斷，如何避免直接誤封？', ['30 筆偵測誤判有 18 筆分流；其餘 12 筆仍獲 AI 支持。', '處置另經信心、政策、白名單與期限檢查，並可到期撤銷。'], '18 / 30', '偵測誤判分流', '12 筆為支持統計；處置與回復另以隔離情境驗證'), ('6/6 是否代表各種真實攻擊都能完全防住？', ['6/6 指隔離 TCP 情境中的背景服務保留及回復完整性。', '4 種情境套用規則、2 種監測或蒐證；不等同真實攻擊防禦率。'], '6 / 6', '背景保留與回復', '6/6 驗證服務保留與回復；不等同真實攻擊防禦率'), ('如何部署、保護資料，並接到既有環境？', ['本機 GPU 模型與本機案例庫處理事件，敏感欄位先遮罩。', '17 類已以前處理張量驗證；場域接入依資料介面配置。'], '0', '外部 API 呼叫', '本機 AI 稽核；私有權重、輸入及逐筆回覆不公開')]
+    qa=[('創新在哪裡？與一般 IDS 加上 RAG 有何不同？', ['把流量表徵與類別機率組成任務向量，檢索相關證據。', 'AI 保留正式分類，同一事件一路連到策略與回復回條。'], '529 維', '任務導向證據向量', '正式分類保留 · 稽核證據可追溯 · 策略可回復'), ('如何證明前段判斷與後段處置已經串起來？', ['17 類本機推論與 AI 稽核已逐類執行，產物使用同一事件 ID。', '6 種隔離情境的回條綁定同次執行，過期執行 ID 會被拒絕。'], '同一 ID', '事件與執行可追溯', '分類、Top-5、Judge、策略與回條綁定同一事件'), ('評估資料如何切分？案例庫是否洩漏測試答案？', ['偵測比較使用相同 18,998 筆測試；案例庫只由訓練資料建立。', '檢索使用 1,550 筆案例、463 筆查詢，訓練與查詢沒有重疊。'], '0', '訓練／查詢重疊', '訓練庫只讀 · 查詢不重疊 · AI 不看真實標籤'), ('AI 若支持錯誤判斷，如何避免直接誤封？', ['30 筆偵測誤判有 18 筆分流；其餘 12 筆仍獲 AI 支持。', '處置另經信心、政策、白名單與期限檢查，並可到期撤銷。'], '18 / 30', '偵測誤判分流', '12 筆為支持統計；處置與回復另以隔離情境驗證'), ('6/6 是否代表各種真實攻擊都能完全防住？', ['6/6 指隔離 TCP 情境中的背景服務保留及回復完整性。', '4 種情境套用規則、2 種監測或蒐證；不等同真實攻擊防禦率。'], '6 / 6', '背景保留與回復', '6/6 驗證服務保留與回復；不等同真實攻擊防禦率'), ('如何部署、保護資料，並接到既有環境？', ['本機 GPU 模型與本機案例庫處理事件，敏感欄位先遮罩。', '17 類已以前處理張量驗證；場域接入依資料介面配置。'], '0', '外部 API 呼叫', '本機 AI 稽核；私有權重、輸入及逐筆回覆不公開')]
     def qa_node(x,y,w,label,fill='#FFFFFF',size=22):
         return rect(x,y,w,48,fill,6)+text(x+w/2,y+32,label,size,'#121314',400,'middle')
 
@@ -247,18 +296,17 @@ def build_pages(limit=12):
             if qi==0:
                 for j,label in enumerate(['互補判定','529 維檢索','AI 稽核','策略與回復']):
                     x=88+j*210
-                    content+=qa_node(x,y+85,188,label,'#FFFFFF')
-                    if j<3:content+=arrow([(x+188,y+109),(x+210,y+109)])
+                    content+=capability_icon(j,x+52,y+66,84)+text(x+94,y+177,label,22,anchor='middle')
+                    if j<3:content+=arrow([(x+149,y+108),(x+247,y+108)])
             elif qi==1:
                 for j,label in enumerate(['正式類別','Top-5 案例','稽核結論','處置回條']):
                     x=88+j*210
-                    content+=qa_node(x,y+75,188,label)
-                    if j<3:content+=arrow([(x+188,y+99),(x+210,y+99)])
-                content+=rect(88,y+137,818,38,'#E2EDF8',6)+text(497,y+164,'同一 event_id  ＋  同次 execution_id',22,BLUE,400,'middle')
+                    content+=glyph('document',x+69,y+67,51)+text(x+94,y+140,label,21,anchor='middle')
+                    if j<3:content+=arrow([(x+127,y+96),(x+272,y+96)])
+                content+=rect(88,y+151,818,31,'#E2EDF8',6)+text(497,y+174,'同一 event_id  ＋  同次 execution_id',22,BLUE,400,'middle')
             elif qi==2:
-                content+=qa_node(88,y+86,242,'訓練案例 1,550')+qa_node(400,y+86,212,'Top-5 檢索','#E2EDF8')+qa_node(690,y+86,242,'測試查詢 463')
-                content+=arrow([(330,y+110),(400,y+110)])+arrow([(690,y+110),(612,y+110)])
-                content+=text(506,y+163,'訓練庫只讀  ·  兩集合不重疊',23,BLUE,400,'middle')
+                content+=image(172,y+72,74,74,'icon-3.png')+text(209,y+161,'訓練案例 1,550',23,'#121314',400,'middle')+glyph('search',475,y+71,68)+text(506,y+161,'Top-5 檢索',23,BLUE,400,'middle')+glyph('document',780,y+75,62)+text(811,y+161,'測試查詢 463',23,'#121314',400,'middle')
+                content+=arrow([(280,y+110),(465,y+110)])+arrow([(764,y+110),(553,y+110)])
             elif qi==3:
                 content+=qa_node(88,y+107,150,'30 筆誤判')
                 content+=arrow([(238,y+131),(274,y+131),(274,y+91),(312,y+91)])+arrow([(274,y+131),(274,y+153),(312,y+153)])
@@ -266,14 +314,14 @@ def build_pages(limit=12):
                 content+=arrow([(552,y+91),(612,y+91)])+arrow([(552,y+153),(612,y+153)])
                 content+=qa_node(612,y+67,296,'監測／蒐證','#E2EDF8')+qa_node(612,y+129,296,'若觸發 → 策略檢查','#E2EDF8',21)
             elif qi==4:
-                content+=rect(88,y+76,330,100,'#FFFFFF',6)+text(253,y+110,'隔離 TCP 測試床',24,'#121314',400,'middle')+text(253,y+151,'4 規則＋2 監測',23,BLUE,400,'middle')
+                content+=rect(88,y+70,330,109,'#FFFFFF',6)+text(253,y+96,'隔離 TCP 測試床',22,'#121314',400,'middle')+glyph('server',124,y+107,40)+glyph('firewall',233,y+107,40)+glyph('server',342,y+107,40)+arrow([(166,y+128),(233,y+128)])+arrow([(275,y+128),(342,y+128)])+text(253,y+170,'4 規則＋2 監測',20,BLUE,400,'middle')
                 content+=arrow([(418,y+126),(450,y+126),(450,y+96),(480,y+96)])+arrow([(450,y+126),(450,y+152),(480,y+152)])
                 content+=qa_node(480,y+72,428,'背景服務保留 6 / 6','#E2EDF8')+qa_node(480,y+128,428,'回復完整性 6 / 6','#E2EDF8')
             else:
                 content+=rect(88,y+74,820,103,'#E2EDF8',7)+text(110,y+99,'本機工作站  ·  GPU 模型與案例庫',22,BLUE)
                 for j,label in enumerate(['欄位遮罩','17 類推論','檢索＋AI','策略回條']):
                     x=104+j*200
-                    content+=qa_node(x,y+114,170,label,'#FFFFFF',22)
+                    content+=rect(x,y+114,170,48,'#FFFFFF',6)+(glyph('document',x+3,y+118,40) if j==0 else image(x+3,y+118,40,40,f'icon-{j+1}.png'))+text(x+108,y+145,label,20,anchor='middle')
                     if j<3:content+=arrow([(x+170,y+138),(x+200,y+138)])
             content+=text(88,y+204,proof,20,BLUE)
             content+=text(1095,y+97,metric,38,BLUE,400,'middle')+text(1095,y+147,metric_label,21,'#6B6B6B',400,'middle')
