@@ -1,17 +1,17 @@
 {
-  "base_revision": "f4f6b1c",
+  "base_revision": "ec02496",
   "files": {
     "deliverables/決賽簡報_AI資安框架.pptx": {
-      "bytes": 829581,
-      "sha256": "68c7c9fd60f177a0b622f3de583f61ffadf29ef0a5708bd5272357976fec17c1"
+      "bytes": 829601,
+      "sha256": "9ffd0d21404719f96b2e94c7188135cc344d88a3ceee19f370e1bd893452f1a7"
     },
     "deliverables/決賽簡報_AI資安框架.pdf": {
-      "bytes": 275437,
-      "sha256": "a1d5272ed65d6e1297318057b620996f65c712bb58b34e02135a7cd3ecb33a7b"
+      "bytes": 275525,
+      "sha256": "54ae1bb74bdb3215bbe61c88c5e3708251efd763199d6f95808b35026a296e8f"
     },
     "deliverables/AI資安框架_系統展示影片_30秒快版.mp4": {
-      "bytes": 1151335,
-      "sha256": "5be48fe12dbe9a4f6ece2652557ccce80d9b8d48e91796b7b8073cb5a6e605ea"
+      "bytes": 1106216,
+      "sha256": "cef014140e875440b9dab5b25a2d35128773f9d79d19ec1efb81038bc0d11044"
     },
     "deliverables/figures/fig_architecture.png": {
       "bytes": 266210,
@@ -40,12 +40,23 @@
     2560,
     1072
   ],
-  "python_tests": 28,
+  "python_tests": 29,
   "website": "removed; API-only",
   "review": "passed: actual PowerPoint pages and sampled video frames; no blocking findings",
   "results_changed": false,
   "markdown_documents": 15,
   "local_links_checked": 23,
   "presentation_limit_seconds": 360,
-  "buffer_seconds": 60
+  "buffer_seconds": 60,
+  "visual_theme": "light canvas: white, pale gray and blue emphasis",
+  "workstation_preflight": "passed",
+  "fresh_live_classes": 17,
+  "fresh_local_llm_calls": 17,
+  "fresh_network_cases": 6,
+  "fresh_background_preserved_cases": 6,
+  "fresh_rollback_passed_cases": 6,
+  "model_lineage_checkpoints": 3,
+  "maximum_live_saved_probability_delta": 0.00011988392251005564,
+  "live_audit_source": "current delivered API source; not a previously running checkout",
+  "fresh_audit_status": "passed"
 }

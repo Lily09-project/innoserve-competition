@@ -41,9 +41,12 @@ def main():
         if not list(llm.glob("*.safetensors")) or not (llm / "config.json").is_file():raise FileNotFoundError("local Llama weights")
         return {"verified_checkpoints":len(hashes),"local_llm_weights":True}
     def gpu():
-        import torch
-        if not torch.cuda.is_available():raise RuntimeError("This finals setup requires the validated CUDA workstation")
-        return {"device":torch.cuda.get_device_name(0),"torch":torch.__version__}
+        # Check the configured model interpreter, as used by inference workers.
+        executable=optional_asset_path("python_executable",sys.executable)
+        code="import json,torch; assert torch.cuda.is_available(), 'CUDA unavailable'; print(json.dumps({'device':torch.cuda.get_device_name(0),'torch':torch.__version__}))"
+        result=subprocess.run([str(executable),"-c",code],capture_output=True,text=True,timeout=30)
+        if result.returncode:raise RuntimeError("Configured model Python failed CUDA check: "+result.stderr.strip()[-500:])
+        return json.loads(result.stdout.strip().splitlines()[-1])
     def network():
         code="import mininet; from mininet.net import Mininet; import shutil; assert shutil.which('iptables'); print('MININET_READY')"
         result=subprocess.run(["wsl","-d","Ubuntu-24.04","-u","root","--","python3","-c",code],capture_output=True,timeout=20)

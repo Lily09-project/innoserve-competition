@@ -1,4 +1,4 @@
-"""Build original black/white/blue presentation art from verified results.
+"""Build original light-canvas/blue presentation art from verified results.
 
 Python composes the architecture; AI supplies only four text-free icon cutouts.
 All diagram labels remain editable SVG text. No generated experimental values.
@@ -94,6 +94,36 @@ def page(n,title,body,dark=False,kicker='METHOD'):
     return svg(s,bg=bg)
 
 
+def light_canvas(source):
+    """Use light page fields; retain white labels only inside blue controls."""
+    import xml.etree.ElementTree as ET
+    root = ET.fromstring(source)
+    controls = []
+    for node in root.iter():
+        tag = node.tag.rsplit('}', 1)[-1]
+        color = node.get('fill', '').upper()
+        if tag == 'rect':
+            full = node.get('width') == '1280' and node.get('height') == '720'
+            if full:
+                node.set('fill', '#F2F7FC' if color == BLUE else '#FFFFFF')
+            elif color == '#181818':
+                node.set('fill', '#F5F7FA')
+            elif color == BLUE:
+                controls.append(tuple(float(node.get(k, 0)) for k in ('x','y','width','height')))
+    for node in root.iter():
+        tag = node.tag.rsplit('}', 1)[-1]
+        color = node.get('fill', '').upper()
+        if tag == 'text':
+            x, y = float(node.get('x', 0)), float(node.get('y', 0))
+            in_control = any(a <= x <= a+w and b <= y <= b+h for a,b,w,h in controls)
+            if color == '#FFFFFF' and not in_control: node.set('fill', '#121314')
+            elif color == '#CCCCCC': node.set('fill', '#6B6B6B')
+            elif color == '#53B1FF': node.set('fill', BLUE)
+        if node.get('stroke', '').upper() == '#53B1FF': node.set('stroke', BLUE)
+    ET.register_namespace('', 'http://www.w3.org/2000/svg')
+    return ET.tostring(root, encoding='unicode')
+
+
 def build_pages(limit=8):
     global SY, OY
     out = PROJECT/'svg_output'; out.mkdir(parents=True,exist_ok=True)
@@ -151,7 +181,7 @@ def build_pages(limit=8):
     for i,l in enumerate(['偵測有依據','稽核有證據','處置可回復']):s+=text(64,225+i*85,l,56,'#FFFFFF',300)
     s+=image(900,175,275,275,'icon-4.png')+text(64,570,'17 類真實張量重跑 · 6 種隔離情境驗證',28,'#FFFFFF')+text(64,620,'方法動畫獨立交付，可搭配本機流程與回條展示。',22,'#FFFFFF')
     pages.append(svg(s,bg=BLUE))
-    for i,p in enumerate(pages[:limit]):(out/f'{i+1:02d}_slide.svg').write_text(p,encoding='utf-8')
+    for i,p in enumerate(pages[:limit]):(out/f'{i+1:02d}_slide.svg').write_text(light_canvas(p),encoding='utf-8')
     print(f'Authored {min(limit,len(pages))} slides')
 
 

@@ -18,7 +18,7 @@
 | Artifact Afterlife | GitHub審查及離線展演 |
 | Reading Mode | presentation |
 | Content Strategy | 保留正式實測範圍，精簡文字，重畫方法圖 |
-| Design Style | 黑白章節與精準藍色強調；原創產品視覺 |
+| Design Style | 白底與淺灰章節，藍色重點；原創產品視覺 |
 | AI Image Acquisition Path | built-in image_gen |
 | Generation Mode | continuous |
 | Spec Refinement | disabled |
@@ -44,7 +44,7 @@
 - **Mode**: custom
 - **Mode Behavior**: 一頁一個主張，以方法流程引出實測結果。
 - **Visual style**: custom
-- **Visual Style Behavior**: 黑白全幅章節交替，結尾一頁#0070D1；輕量大標題、8px資訊面板、原創白藍AI圖示。
+- **Visual Style Behavior**: 白底與淺灰章節，結語淺藍底#F2F7FC；輕量大標題、8px資訊面板、原創白藍AI圖示。
 - **Theme**: 相同事件的四階段延續。
 - **Tone**: 正式、簡潔、可核對。
 
@@ -53,10 +53,10 @@
 | Role | HEX | Purpose |
 | --- | --- | --- |
 | Background | #FFFFFF | light canvas |
-| Secondary background | #000000 | dark canvas |
+| Secondary background | #F2F7FC | pale blue canvas |
 | Primary | #0070D1 | main emphasis |
-| Accent | #53B1FF | dark-canvas emphasis |
-| Secondary accent | #181818 | dark panels |
+| Accent | #0070D1 | blue emphasis |
+| Secondary accent | #F5F7FA | light panels |
 | Body text | #000000 | light ink |
 | Secondary text | #6B6B6B | captions |
 | Divider | #CCCCCC | hairline |
