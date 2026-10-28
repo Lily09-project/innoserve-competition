@@ -11,7 +11,7 @@ import numpy as np
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1] / "app"))
 from pipeline import LABELS, task_vector, verify_ledger
-from server import create_server
+from server import create_server, source_revision
 
 
 class HttpContractTests(unittest.TestCase):
@@ -89,6 +89,14 @@ class HttpContractTests(unittest.TestCase):
         self.assertEqual(self.request("/evidence/fresh17/events.json")[0],404)
         self.assertEqual(self.request("/../evidence/fresh17/events.json")[0],404)
         self.assertEqual(self.request("/api/jobs/unknown")[0],404)
+
+    def test_status_identifies_loaded_source_without_local_paths(self):
+        status, body = self.request('/api/status')
+        self.assertEqual(status, 200)
+        value = json.loads(body)
+        self.assertEqual(value['source_revision'], source_revision())
+        self.assertEqual(len(value['source_revision']), 64)
+        self.assertNotIn(b'Users', body)
 
     def test_export_preserves_canonical_numeric_format_and_ledger(self):
         status,body=self.request("/api/export",b'{"event_id":"query","mode":"saved_prediction_replay"}')

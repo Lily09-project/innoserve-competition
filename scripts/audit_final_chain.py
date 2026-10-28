@@ -18,15 +18,17 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "app"))
 from network_contract import build_network_scenario, verify_network_receipt, valid_ledger
 from pipeline import LABELS
+from server import source_revision
 
 
 def scan_delivery_anonymity(root=ROOT):
     """Scan delivered text, not the retired website or the public repository UI."""
     targets = {}
-    with zipfile.ZipFile(root / "deliverables/決賽簡報_AI資安框架.pptx") as archive:
-        for name in archive.namelist():
-            if name.endswith(".xml") and name.startswith(("ppt/slides/slide", "ppt/notesSlides/notesSlide")):
-                targets[name] = " ".join(ET.fromstring(archive.read(name)).itertext())
+    for artifact in ('決賽簡報_AI資安框架.pptx', '決賽海報_AI資安框架_A2.pptx'):
+        with zipfile.ZipFile(root / 'deliverables' / artifact) as archive:
+            for name in archive.namelist():
+                if name.endswith(('.xml', '.rels')):
+                    targets[artifact+'::'+name] = ' '.join(ET.fromstring(archive.read(name)).itertext())+' '+archive.read(name).decode('utf-8')
     for name in ("deliverables/source/architecture.svg", "media/film/scene.mjs"):
         targets[name] = (root / name).read_text(encoding="utf-8")
     forbidden = ("Lily09", "Da-Xiong-Chen", "github.com", "陳信安", "蘇櫟", "指導教授", "學校名稱", "C:\\Users\\")
@@ -63,6 +65,7 @@ def main():
 
     status=request("/api/status")
     assert status["product"]=="ai-security-demo.v3"
+    assert status.get('source_revision') == source_revision(), 'Running service differs from current checkout'
     print("WARMUP",flush=True)
     operation("warmup")
     source={e["event_id"]:e for e in json.loads((ROOT / "evidence/fresh17/events.json").read_text(encoding="utf-8"))}
@@ -72,6 +75,7 @@ def main():
         assert value["execution_mode"]=="live_local_models"
         assert value["result"]["prediction"]==value["prediction"]==source[event_id]["prediction"]
         assert value["result"]["judge"]["mode"]=="live_local_llm_inference"
+        assert value['result']['judge']['valid_json'] is True
         assert value["result"]["ledger"][2]["mode"]=="live_local_llm_inference"
         assert valid_ledger(value["result"]["ledger"])
         assert len(value["evidence"])==5
@@ -100,7 +104,7 @@ def main():
     except urllib.error.HTTPError as error:assert error.code==400
     anonymous=scan_delivery_anonymity()
     save("anonymous_display_scan.json",anonymous)
-    summary={"status":"passed", "started_utc":stamp,"api_version":status["product"],
+    summary={"status":"passed", "started_utc":stamp,"api_version":status["product"],"source_revision":status['source_revision'],
         "real_live_classes":17,"real_local_llm_calls":17,"network_cases":len(network),
         "network_validation_labels":[LABELS[c] for c in (0,1,2,7,11,13)],
         "network_receipts_bound_to_same_execution":True,"stale_execution_rejected":True,

@@ -3,7 +3,6 @@ from __future__ import annotations
 import hashlib
 import json
 import os
-import re
 import sys
 import time
 import uuid
@@ -13,6 +12,7 @@ from pathlib import Path
 import numpy as np
 ROOT=Path(__file__).resolve().parents[1]
 from settings import optional_asset_path
+from judge_response import parse_judge_response
 sys.path.insert(0,str(optional_asset_path("judge_packages_dir",ROOT / "runtime/judge_packages")))
 sys.path.insert(0,str(ROOT / "scripts"))
 os.environ["HF_HUB_OFFLINE"]="1"
@@ -103,10 +103,9 @@ class LiveEngine:
         llm_ms=(time.perf_counter()-began)*1000
         valid=False
         try:
-            value=json.loads(re.search(r"\{.*?\}",raw,re.S).group(0))
-            if value.get("assessment") not in {"support","review","uncertain"} or not isinstance(value.get("reason"),str):raise ValueError()
+            value=parse_judge_response(raw)
             valid=True
-        except Exception:value={"assessment":"uncertain","reason":"Invalid model response; manual review required."}
+        except ValueError:value={"assessment":"uncertain","reason":"Invalid model response; manual review required."}
         record={"input_sha256":digest({"event_id":fresh["event_id"],"prediction":fresh["prediction"],"evidence":fresh["evidence"]}),
                 "assessment":value["assessment"],"reason":value["reason"],"model":"Meta-Llama-3-8B-Instruct",
                 "prompt_sha256":hashlib.sha256(self.prompt.encode()).hexdigest(),"store":False,

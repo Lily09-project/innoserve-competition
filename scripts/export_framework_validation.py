@@ -11,7 +11,7 @@ def main():
     assert summary["status"]=="passed"
     live=read("live_events_private.json")
     rows=read("network_receipts_private.json")
-    result={k:summary[k] for k in ("started_utc","api_version","real_live_classes","real_local_llm_calls",
+    result={k:summary[k] for k in ("started_utc","api_version","source_revision","real_live_classes","real_local_llm_calls",
         "network_cases","network_validation_labels","network_receipts_bound_to_same_execution",
         "stale_execution_rejected","background_preserved_cases","rollback_passed_cases","non_disruptive_network_cases","scope")}
     result["frozen_prediction_agreement_cases"]=len(live)

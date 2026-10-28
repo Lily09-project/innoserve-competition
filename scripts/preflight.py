@@ -11,6 +11,7 @@ ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT / "app"))
 from settings import asset_path,optional_asset_path
 from pipeline import TrainOnlyBank,digest
+from server import source_revision
 
 
 def main():
@@ -55,6 +56,7 @@ def main():
     def service():
         with urllib.request.urlopen("http://127.0.0.1:8765/api/status",timeout=5) as res:value=json.load(res)
         if value["product"]!="ai-security-demo.v3" or len(value["live_event_ids"])!=17:raise ValueError("wrong service or inputs")
+        if value.get('source_revision') != source_revision():raise ValueError('Running service differs from this checkout; restart the local API')
         if args.warmup and not value["model_ready"]:
             req=urllib.request.Request("http://127.0.0.1:8765/api/operate",data=b'{"action":"warmup"}',headers={"Content-Type":"application/json"})
             with urllib.request.urlopen(req,timeout=10) as res:job=json.load(res)

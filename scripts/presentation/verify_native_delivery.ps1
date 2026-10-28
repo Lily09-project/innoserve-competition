@@ -1,7 +1,8 @@
-param([string]$Root = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path)
+param([string]$Root = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path,
+      [string]$OutputFolder = 'validation\palette-powerpoint')
 $ErrorActionPreference = 'Stop'
 $source = Join-Path $Root 'deliverables\決賽簡報_AI資安框架.pptx'
-$folder = Join-Path $Root 'validation\palette-powerpoint'
+$folder = Join-Path $Root $OutputFolder
 [void][System.IO.Directory]::CreateDirectory($folder)
 $app = New-Object -ComObject PowerPoint.Application
 $deck = $null
