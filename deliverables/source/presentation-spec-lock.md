@@ -38,13 +38,14 @@
 
 ## typography
 
-- font_family: Microsoft JhengHei, Arial
-- title_family: Microsoft JhengHei, Arial
-- body_family: Microsoft JhengHei, Arial
+- font_family: DFKai-SB, Times New Roman
+- title_family: DFKai-SB, Times New Roman
+- body_family: DFKai-SB, Times New Roman
 - body: 24
 - title: 44
 - subtitle: 28
 - annotation: 18
+- support: 21
 - footer: 14
 - card_title: 32
 - display: 56
@@ -57,13 +58,14 @@
 ## page_rhythm
 
 - P01: anchor
-- P02: dense
-- P03: anchor
+- P02: anchor
+- P03: dense
 - P04: anchor
 - P05: anchor
-- P06: breathing
+- P06: anchor
 - P07: breathing
-- P08: anchor
+- P08: breathing
+- P09: anchor
 
 ## pptx_structure
 

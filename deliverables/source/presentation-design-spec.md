@@ -8,7 +8,7 @@
 | --- | --- |
 | Project Name | Finals Editorial |
 | Canvas Format | PPT 16:9, 1280×720 |
-| Page Count | 8 |
+| Page Count | 9 |
 | Primary Language | zh-TW |
 | Target Audience | 資安技術組決賽評審 |
 | Communication Intent | 以圖形說明創新方法及已量測效果 |
@@ -23,7 +23,7 @@
 | Generation Mode | continuous |
 | Spec Refinement | disabled |
 | Speaker Notes | enabled — workflow default |
-| Custom Animations | disabled — workflow default；影片獨立 |
+| Custom Animations | disabled；所有換頁及物件動畫關閉；影片第2頁預留，未嵌入 |
 | Narration Audio | disabled — workflow default |
 | Created Date | 2026-10-28 |
 
@@ -74,10 +74,10 @@
 
 | Role | Character (Reference) | Primary | English if non-English | Fallback tail |
 | --- | --- | --- | --- | --- |
-| Title | light | Microsoft JhengHei | Arial | Helvetica |
-| Body | clear | Microsoft JhengHei | Arial | Helvetica |
-- **Title stack**: Microsoft JhengHei, Arial
-- **Body stack**: Microsoft JhengHei, Arial
+| Title | light | DFKai-SB | Times New Roman | none |
+| Body | clear | DFKai-SB | Times New Roman | none |
+- **Title stack**: DFKai-SB, Times New Roman
+- **Body stack**: DFKai-SB, Times New Roman
 
 ### Font Size Hierarchy
 
@@ -118,81 +118,123 @@
 
 #### Slide 01 - 融合新型內容相依時序方向模型入侵偵測與任務導向檢索增強稽核之 AI 資安框架
 
-- **Audience move**: 理解本頁方法與結果。
-- **Relationships**: 同範圍資料的比較與說明。
+- **Audience move**: 看懂本頁資料流及可核對的成果。
+- **Relationships**: order：偵測→檢索→稽核→回復
+- **Topology**: yes
+- **Composition**: 封面標題搭配四節點事件鏈
+- **Geometry signature**: 融合新型內容相依時序方向模型入侵偵測與任務導向檢索增強稽核之 AI 資安框架 → 封面標題搭配四節點事件鏈 → 淺色原生形狀與藍色連線。
 - **Title**: 融合新型內容相依時序方向模型入侵偵測與任務導向檢索增強稽核之 AI 資安框架
-- **Core message**: 完整作品名稱；從流量判定到有證據的處置。
-- **Content**: 完整作品名稱；從流量判定到有證據的處置。
+- **Core message**: 四個互相銜接的能力，從流量走到可回復處置。
+- **Content**: 四個互相銜接的能力，從流量走到可回復處置。
 - **Fact IDs**: results/detection_17class.json; results/retrieval_17class.json; results/local_judge_17class.json; results/framework_validation.json
 
-#### Slide 02 - 一個框架，四個連續階段
+#### Slide 02 - 一個事件，走完完整流程
 
-- **Audience move**: 理解本頁方法與結果。
-- **Relationships**: CTBM與PBCNN平行，校準融合後交接檢索稽核，處置回條以同一事件ID串接。
+- **Audience move**: 看懂本頁資料流及可核對的成果。
+- **Relationships**: none
+- **Topology**: no
+- **Composition**: 淺色16:9空間與置中播放提示
+- **Geometry signature**: 一個事件，走完完整流程 → 淺色16:9空間與置中播放提示 → 淺色原生形狀與藍色連線。
+- **Title**: 一個事件，走完完整流程
+- **Core message**: 保留16:9影片位置，產品方法動畫30秒、2倍速，先不嵌入影片。
+- **Content**: 保留16:9影片位置，產品方法動畫30秒、2倍速，先不嵌入影片。
+- **Fact IDs**: results/detection_17class.json; results/retrieval_17class.json; results/local_judge_17class.json; results/framework_validation.json
+
+#### Slide 03 - 一個框架，四個連續階段
+
+- **Audience move**: 看懂本頁資料流及可核對的成果。
+- **Relationships**: link / membership：四區及同事件交接
+- **Topology**: yes
+- **Composition**: 沿用兩層完整總架構
+- **Geometry signature**: 一個框架，四個連續階段 → 沿用兩層完整總架構 → 淺色原生形狀與藍色連線。
 - **Title**: 一個框架，四個連續階段
-- **Core message**: 四區巢狀：流量表徵→雙模型並行與17類融合→529維檢索與AI稽核→受控處置回復；同一事件ID。
-- **Content**: 四區巢狀：流量表徵→雙模型並行與17類融合→529維檢索與AI稽核→受控處置回復；同一事件ID。
+- **Core message**: 四區巢狀架構，CTBM/PBCNN並行，529維檢索，本機AI及受控處置。
+- **Content**: 四區巢狀架構，CTBM/PBCNN並行，529維檢索，本機AI及受控處置。
 - **Fact IDs**: results/detection_17class.json; results/retrieval_17class.json; results/local_judge_17class.json; results/framework_validation.json
 
-#### Slide 03 - 創新一：讓互補模型共同判斷
+#### Slide 04 - 互補模型，形成同一次判定
 
-- **Audience move**: 理解本頁方法與結果。
-- **Relationships**: CTBM與PBCNN平行，校準融合後交接檢索稽核，處置回條以同一事件ID串接。
-- **Title**: 創新一：讓互補模型共同判斷
-- **Core message**: 同一流量平行送入CTBM與PBCNN，分別讀取內容時序與短窗模式，再由校準後OOF Gate融合。
-- **Content**: 同一流量平行送入CTBM與PBCNN，分別讀取內容時序與短窗模式，再由校準後OOF Gate融合。
+- **Audience move**: 看懂本頁資料流及可核對的成果。
+- **Relationships**: link：同輸入平行兩支，再匯流至Gate
+- **Topology**: yes
+- **Composition**: 雙分支匯流，圖中列出模型讀取的資訊
+- **Geometry signature**: 互補模型，形成同一次判定 → 雙分支匯流，圖中列出模型讀取的資訊 → 淺色原生形狀與藍色連線。
+- **Title**: 互補模型，形成同一次判定
+- **Core message**: 內容、時間差、方向進入CTBM；短窗位元組模式進入PBCNN；校準融合後17類、信心及表徵交接。
+- **Content**: 內容、時間差、方向進入CTBM；短窗位元組模式進入PBCNN；校準融合後17類、信心及表徵交接。
 - **Fact IDs**: results/detection_17class.json; results/retrieval_17class.json; results/local_judge_17class.json; results/framework_validation.json
 
-#### Slide 04 - 創新二：用任務證據完成稽核
+#### Slide 05 - 把偵測表徵，變成可核對的證據
 
-- **Audience move**: 理解本頁方法與結果。
-- **Relationships**: 依序串接同一事件。
-- **Title**: 創新二：用任務證據完成稽核
-- **Core message**: 512＋17＝529維；Top-5訓練案例；本機AI支持、複核、不確定。
-- **Content**: 512＋17＝529維；Top-5訓練案例；本機AI支持、複核、不確定。
+- **Audience move**: 看懂本頁資料流及可核對的成果。
+- **Relationships**: order / link：向量組合→檢索→稽核分支
+- **Topology**: yes
+- **Composition**: 向量拼接與案例卡列，接三態稽核
+- **Geometry signature**: 把偵測表徵，變成可核對的證據 → 向量拼接與案例卡列，接三態稽核 → 淺色原生形狀與藍色連線。
+- **Title**: 把偵測表徵，變成可核對的證據
+- **Core message**: 512維表徵＋17維機率形成529維任務向量；L2正規化後檢索訓練庫Top-5，本機AI輸出支持/複核/不確定。
+- **Content**: 512維表徵＋17維機率形成529維任務向量；L2正規化後檢索訓練庫Top-5，本機AI輸出支持/複核/不確定。
 - **Fact IDs**: results/detection_17class.json; results/retrieval_17class.json; results/local_judge_17class.json; results/framework_validation.json
 
-#### Slide 05 - 創新三：處置可驗證，也可回復
+#### Slide 06 - 受控執行，留下可回復的處置紀錄
 
-- **Audience move**: 理解本頁方法與結果。
-- **Relationships**: 依序串接同一事件。
-- **Title**: 創新三：處置可驗證，也可回復
-- **Core message**: 政策閘門→套用與讀回→到期回復；4規則＋2監測，背景6/6與回復6/6。
-- **Content**: 政策閘門→套用與讀回→到期回復；4規則＋2監測，背景6/6與回復6/6。
+- **Audience move**: 看懂本頁資料流及可核對的成果。
+- **Relationships**: order / link：通過路徑與蒐證分支
+- **Topology**: yes
+- **Composition**: 四站主路徑與低位蒐證支線
+- **Geometry signature**: 受控執行，留下可回復的處置紀錄 → 四站主路徑與低位蒐證支線 → 淺色原生形狀與藍色連線。
+- **Title**: 受控執行，留下可回復的處置紀錄
+- **Core message**: 政策檢查→套用→讀回→到期回復，複核/不確定分流蒐證，6種隔離TCP情境背景與回復6/6。
+- **Content**: 政策檢查→套用→讀回→到期回復，複核/不確定分流蒐證，6種隔離TCP情境背景與回復6/6。
 - **Fact IDs**: results/detection_17class.json; results/retrieval_17class.json; results/local_judge_17class.json; results/framework_validation.json
 
-#### Slide 06 - 互補融合，提升整體辨識效果
+#### Slide 07 - 互補融合，提升整體辨識效果
 
-- **Audience move**: 理解本頁方法與結果。
-- **Relationships**: 同範圍資料的比較與說明。
+- **Audience move**: 看懂本頁資料流及可核對的成果。
+- **Relationships**: contrast：同資料集三方法比較
+- **Topology**: no
+- **Composition**: 0–100%水平長條與獨立準確率面板
+- **Geometry signature**: 互補融合，提升整體辨識效果 → 0–100%水平長條與獨立準確率面板 → 淺色原生形狀與藍色連線。
 - **Title**: 互補融合，提升整體辨識效果
-- **Core message**: 同18,998筆：PBCNN79.75%、CTBM92.10%、OOF Gate93.05% Macro-F1；Accuracy98.08%。
-- **Content**: 同18,998筆：PBCNN79.75%、CTBM92.10%、OOF Gate93.05% Macro-F1；Accuracy98.08%。
+- **Core message**: 同18,998筆測試Macro-F1：79.75%、92.10%、93.05%；Accuracy98.08%。
+- **Content**: 同18,998筆測試Macro-F1：79.75%、92.10%、93.05%；Accuracy98.08%。
+- **Fact IDs**: results/detection_17class.json; results/retrieval_17class.json; results/local_judge_17class.json; results/framework_validation.json
+- **Visualization**: detector-comparison | horizontal_bar_chart | direct-calc | Macro-F1, scale 0–100%, same 18,998 tests; rect x=200,y=220,x_max=850,y_max=550.
+- **Native-ready**: detector-comparison=no; editable native SVG shapes, not an embedded chart object.
+
+#### Slide 08 - 案例提供證據，AI完成分流
+
+- **Audience move**: 看懂本頁資料流及可核對的成果。
+- **Relationships**: link / parent：463事件分成三個稽核結論
+- **Topology**: yes
+- **Composition**: 左側檢索效果，右側三態分流，底部誤判結果
+- **Geometry signature**: 案例提供證據，AI完成分流 → 左側檢索效果，右側三態分流，底部誤判結果 → 淺色原生形狀與藍色連線。
+- **Title**: 案例提供證據，AI完成分流
+- **Core message**: 1550訓練案例、463查詢；Top5 97.62%、MRR@5 93.89%；415支持13複核35不確定；18/30誤判分流。
+- **Content**: 1550訓練案例、463查詢；Top5 97.62%、MRR@5 93.89%；415支持13複核35不確定；18/30誤判分流。
 - **Fact IDs**: results/detection_17class.json; results/retrieval_17class.json; results/local_judge_17class.json; results/framework_validation.json
 
-#### Slide 07 - 從相似案例，走到可核對的結論
+#### Slide 09 - 偵測有依據，稽核有證據，處置可回復
 
-- **Audience move**: 理解本頁方法與結果。
-- **Relationships**: 同範圍資料的比較與說明。
-- **Title**: 從相似案例，走到可核對的結論
-- **Core message**: 463查詢、1550案例；Top-5 97.62%、MRR@5 93.89%、支持精確率97.11%；415/13/35；18/30誤判分流。
-- **Content**: 463查詢、1550案例；Top-5 97.62%、MRR@5 93.89%、支持精確率97.11%；415/13/35；18/30誤判分流。
-- **Fact IDs**: results/detection_17class.json; results/retrieval_17class.json; results/local_judge_17class.json; results/framework_validation.json
-
-#### Slide 08 - 偵測有依據，稽核有證據，處置可回復
-
-- **Audience move**: 理解本頁方法與結果。
-- **Relationships**: 同範圍資料的比較與說明。
+- **Audience move**: 看懂本頁資料流及可核對的成果。
+- **Relationships**: order / membership：同事件四個證據產物
+- **Topology**: yes
+- **Composition**: 四個具體產物串成完整作品結語
+- **Geometry signature**: 偵測有依據，稽核有證據，處置可回復 → 四個具體產物串成完整作品結語 → 淺色原生形狀與藍色連線。
 - **Title**: 偵測有依據，稽核有證據，處置可回復
-- **Core message**: 17類真實張量重跑、6種隔離情境；獨立方法動畫。
-- **Content**: 17類真實張量重跑、6種隔離情境；獨立方法動畫。
+- **Core message**: 17類真實張量與6種隔離情境，事件ID串起分類、證據與回條。
+- **Content**: 17類真實張量與6種隔離情境，事件ID串起分類、證據與回條。
 - **Fact IDs**: results/detection_17class.json; results/retrieval_17class.json; results/local_judge_17class.json; results/framework_validation.json
 
 ## X. Speaker Notes Requirements
 
 - **Generation**: enabled
 - **Filename**: match SVG names under notes/
-- **Content**: 只解說頁面與實測範圍。
-- **Total duration**: 五分鐘含30秒、2倍速方法動畫及正常操作，另留一分鐘緩衝。
-- **Notes style**: 正式口語繁體中文。
-- **Presentation purpose**: 說明方法創新與實測成果。
+- **Content**: 正式口語；第2頁預留播放30秒，不另加講解。
+- **Total duration**: 260秒口述＋30秒影片＋10秒正常操作＝5分鐘；另留1分鐘緩衝。
+- **Notes style**: 繁體中文。
+- **Transitions**: none；manual advance；所有頁面無p:transition或p:timing。
+
+## XI. Script-specific fonts
+
+中文及中文標點使用標楷體DFKai-SB；英文、數字與其他符號使用Times New Roman，混合文字在同一文字框依字元分段。影片預留頁置於封面後，第2頁，影片不嵌入。

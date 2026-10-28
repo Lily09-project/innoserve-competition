@@ -1,28 +1,28 @@
 {
-  "base_revision": "ec02496",
+  "base_revision": "efc1eed",
   "files": {
     "deliverables/決賽簡報_AI資安框架.pptx": {
-      "bytes": 829601,
-      "sha256": "9ffd0d21404719f96b2e94c7188135cc344d88a3ceee19f370e1bd893452f1a7"
+      "bytes": 839788,
+      "sha256": "33be7e66bdc698b7bddeda30d2ca87f288b8eac8dc2565f6f4ee1fd20ad0bdc2"
     },
     "deliverables/決賽簡報_AI資安框架.pdf": {
-      "bytes": 275525,
-      "sha256": "54ae1bb74bdb3215bbe61c88c5e3708251efd763199d6f95808b35026a296e8f"
+      "bytes": 4256496,
+      "sha256": "f36b3320b64e7ee9ef1ab1e10b9705b04e2a392087143c1cc178e0cf8385662c"
     },
     "deliverables/AI資安框架_系統展示影片_30秒快版.mp4": {
       "bytes": 1106216,
       "sha256": "cef014140e875440b9dab5b25a2d35128773f9d79d19ec1efb81038bc0d11044"
     },
     "deliverables/figures/fig_architecture.png": {
-      "bytes": 266210,
-      "sha256": "4965a85b6ac273f060cb9a734d8f03691369c9046cc3eb61af3632a394a1ac9b"
+      "bytes": 322390,
+      "sha256": "04e130027d2445b4f086a378b4b13b13b614f9d88414ead4720d8194d5709e5a"
     },
     "deliverables/source/architecture.svg": {
-      "bytes": 6788,
-      "sha256": "ad19dbd7c4630af8378e42bee14acc2344a17403e608003e019a5c39052be7b5"
+      "bytes": 9181,
+      "sha256": "873344163eb76825d0cf82fd409466fe138c8c991beba501fe95a616b634a729"
     }
   },
-  "slides": 8,
+  "slides": 9,
   "talk_budget_seconds": 300,
   "film_seconds": 30,
   "film_speed": 2,
@@ -42,7 +42,7 @@
   ],
   "python_tests": 29,
   "website": "removed; API-only",
-  "review": "passed: actual PowerPoint pages and sampled video frames; no blocking findings",
+  "review": "actual PowerPoint nine-page graphical layout and static package verified; video unchanged",
   "results_changed": false,
   "markdown_documents": 15,
   "local_links_checked": 23,
@@ -58,5 +58,13 @@
   "model_lineage_checkpoints": 3,
   "maximum_live_saved_probability_delta": 0.00011988392251005564,
   "live_audit_source": "current delivered API source; not a previously running checkout",
-  "fresh_audit_status": "passed"
+  "fresh_audit_status": "passed",
+  "video_slot_slide": 2,
+  "video_embedded": false,
+  "slide_transitions": false,
+  "object_animations": false,
+  "auto_advance": false,
+  "ppt_cjk_font": "DFKai-SB",
+  "ppt_latin_font": "Times New Roman",
+  "presentation_order": "cover, reserved film slot, framework, detection, retrieval/audit, control, detection results, audit results, conclusion"
 }
