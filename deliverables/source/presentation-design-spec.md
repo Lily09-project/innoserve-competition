@@ -1,4 +1,5 @@
 <!-- ppt-master-schema: design-spec/v1 -->
+
 # Finals Editorial - Design Spec
 
 ## I. Project Information
@@ -13,7 +14,7 @@
 | Communication Intent | 以圖形說明創新方法及已量測效果 |
 | Desired Audience Outcome | 了解同事件的偵測、證據稽核與受控處置 |
 | Core Message / Ask / Action | 完整框架以事件回條連結判定、證據及回復 |
-| Delivery Context | presenter-led；六分鐘含展示，七分鐘答詢 |
+| Delivery Context | presenter-led；五分鐘含展示，另留一分鐘緩衝，七分鐘答詢 |
 | Artifact Afterlife | GitHub審查及離線展演 |
 | Reading Mode | presentation |
 | Content Strategy | 保留正式實測範圍，精簡文字，重畫方法圖 |
@@ -27,6 +28,7 @@
 | Created Date | 2026-10-28 |
 
 ## II. Canvas Specification
+
 | Property | Value |
 | --- | --- |
 | Format | PPT 16:9 |
@@ -34,15 +36,20 @@
 | viewBox | `0 0 1280 720` |
 | Margins | 64px |
 | Content Area | 1152 × 592 |
+
 ## III. Visual Theme
+
 ### Theme Style
+
 - **Mode**: custom
 - **Mode Behavior**: 一頁一個主張，以方法流程引出實測結果。
 - **Visual style**: custom
 - **Visual Style Behavior**: 黑白全幅章節交替，結尾一頁#0070D1；輕量大標題、8px資訊面板、原創白藍AI圖示。
 - **Theme**: 相同事件的四階段延續。
 - **Tone**: 正式、簡潔、可核對。
+
 ### Color Scheme
+
 | Role | HEX | Purpose |
 | --- | --- | --- |
 | Background | #FFFFFF | light canvas |
@@ -53,20 +60,27 @@
 | Body text | #000000 | light ink |
 | Secondary text | #6B6B6B | captions |
 | Divider | #CCCCCC | hairline |
+
 ### AI Image Strategy
+
 - **Image Rendering**: custom
 - **Image Rendering Behavior**: 白色陶瓷與精確藍色細節的原創圖示。
 - **Visual**: 四個透明圖示，Python排版，文字另層。
 - **Mood**: 專業技術產品。
+
 ## IV. Typography System
+
 ### Font Plan
+
 | Role | Character (Reference) | Primary | English if non-English | Fallback tail |
 | --- | --- | --- | --- | --- |
 | Title | light | Microsoft JhengHei | Arial | Helvetica |
 | Body | clear | Microsoft JhengHei | Arial | Helvetica |
 - **Title stack**: Microsoft JhengHei, Arial
 - **Body stack**: Microsoft JhengHei, Arial
+
 ### Font Size Hierarchy
+
 | Purpose | Anchor Size (px) |
 | --- | ---: |
 | Body | 24 |
@@ -76,17 +90,23 @@
 | Footer | 14 |
 | Card title | 32 |
 | Display | 56 |
+
 ## V. Layout Principles
+
 - **Hierarchy direction**: 一個主張，再看圖，再看來源範圍。
 - **Composition tendency**: 大圖與大型數值交替。
 - **Cross-page continuity**: 四階段模型與原創圖示。
 - **Spacing posture**: 章節寬鬆、流程緊密。
 - **Spacing anchors**: margin64, gap24, gutter32, radius8, leading36。
+
 ## VI. Icon Usage Specification
+
 - **Primary bundled library**: none
 | Icon Path | Suitable Scenarios |
 | --- | --- |
+
 ## VIII. Image Resource List
+
 | Filename | Dimensions | Ratio | Purpose | Type | Image pattern | Crop Policy | Acquire Via | Status | Reference | text_policy | page_role |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | icon-1.png | 600×600 | 1:1 | 方法節點 | Illustrated icon | isolated diagram cue | no-crop | slice | Generated | security-icons-sheet.png | none | support |
@@ -97,6 +117,7 @@
 ## IX. Content Outline
 
 #### Slide 01 - 融合新型內容相依時序方向模型入侵偵測與任務導向檢索增強稽核之 AI 資安框架
+
 - **Audience move**: 理解本頁方法與結果。
 - **Relationships**: 同範圍資料的比較與說明。
 - **Title**: 融合新型內容相依時序方向模型入侵偵測與任務導向檢索增強稽核之 AI 資安框架
@@ -105,22 +126,25 @@
 - **Fact IDs**: results/detection_17class.json; results/retrieval_17class.json; results/local_judge_17class.json; results/framework_validation.json
 
 #### Slide 02 - 一個框架，四個連續階段
+
 - **Audience move**: 理解本頁方法與結果。
-- **Relationships**: 依序串接同一事件。
+- **Relationships**: CTBM與PBCNN平行，校準融合後交接檢索稽核，處置回條以同一事件ID串接。
 - **Title**: 一個框架，四個連續階段
-- **Core message**: 流量表徵→17類判定→證據檢索與稽核→受控處置與回復；同一事件ID。
-- **Content**: 流量表徵→17類判定→證據檢索與稽核→受控處置與回復；同一事件ID。
+- **Core message**: 四區巢狀：流量表徵→雙模型並行與17類融合→529維檢索與AI稽核→受控處置回復；同一事件ID。
+- **Content**: 四區巢狀：流量表徵→雙模型並行與17類融合→529維檢索與AI稽核→受控處置回復；同一事件ID。
 - **Fact IDs**: results/detection_17class.json; results/retrieval_17class.json; results/local_judge_17class.json; results/framework_validation.json
 
 #### Slide 03 - 創新一：讓互補模型共同判斷
+
 - **Audience move**: 理解本頁方法與結果。
-- **Relationships**: 依序串接同一事件。
+- **Relationships**: CTBM與PBCNN平行，校準融合後交接檢索稽核，處置回條以同一事件ID串接。
 - **Title**: 創新一：讓互補模型共同判斷
-- **Core message**: CTBM內容與時序；PBCNN短窗模式；校準後OOF Gate融合。
-- **Content**: CTBM內容與時序；PBCNN短窗模式；校準後OOF Gate融合。
+- **Core message**: 同一流量平行送入CTBM與PBCNN，分別讀取內容時序與短窗模式，再由校準後OOF Gate融合。
+- **Content**: 同一流量平行送入CTBM與PBCNN，分別讀取內容時序與短窗模式，再由校準後OOF Gate融合。
 - **Fact IDs**: results/detection_17class.json; results/retrieval_17class.json; results/local_judge_17class.json; results/framework_validation.json
 
 #### Slide 04 - 創新二：用任務證據完成稽核
+
 - **Audience move**: 理解本頁方法與結果。
 - **Relationships**: 依序串接同一事件。
 - **Title**: 創新二：用任務證據完成稽核
@@ -129,6 +153,7 @@
 - **Fact IDs**: results/detection_17class.json; results/retrieval_17class.json; results/local_judge_17class.json; results/framework_validation.json
 
 #### Slide 05 - 創新三：處置可驗證，也可回復
+
 - **Audience move**: 理解本頁方法與結果。
 - **Relationships**: 依序串接同一事件。
 - **Title**: 創新三：處置可驗證，也可回復
@@ -137,6 +162,7 @@
 - **Fact IDs**: results/detection_17class.json; results/retrieval_17class.json; results/local_judge_17class.json; results/framework_validation.json
 
 #### Slide 06 - 互補融合，提升整體辨識效果
+
 - **Audience move**: 理解本頁方法與結果。
 - **Relationships**: 同範圍資料的比較與說明。
 - **Title**: 互補融合，提升整體辨識效果
@@ -145,6 +171,7 @@
 - **Fact IDs**: results/detection_17class.json; results/retrieval_17class.json; results/local_judge_17class.json; results/framework_validation.json
 
 #### Slide 07 - 從相似案例，走到可核對的結論
+
 - **Audience move**: 理解本頁方法與結果。
 - **Relationships**: 同範圍資料的比較與說明。
 - **Title**: 從相似案例，走到可核對的結論
@@ -153,6 +180,7 @@
 - **Fact IDs**: results/detection_17class.json; results/retrieval_17class.json; results/local_judge_17class.json; results/framework_validation.json
 
 #### Slide 08 - 偵測有依據，稽核有證據，處置可回復
+
 - **Audience move**: 理解本頁方法與結果。
 - **Relationships**: 同範圍資料的比較與說明。
 - **Title**: 偵測有依據，稽核有證據，處置可回復
@@ -161,9 +189,10 @@
 - **Fact IDs**: results/detection_17class.json; results/retrieval_17class.json; results/local_judge_17class.json; results/framework_validation.json
 
 ## X. Speaker Notes Requirements
+
 - **Generation**: enabled
 - **Filename**: match SVG names under notes/
 - **Content**: 只解說頁面與實測範圍。
-- **Total duration**: 六分鐘含40秒方法動畫。
+- **Total duration**: 五分鐘含30秒、2倍速方法動畫及正常操作，另留一分鐘緩衝。
 - **Notes style**: 正式口語繁體中文。
 - **Presentation purpose**: 說明方法創新與實測成果。

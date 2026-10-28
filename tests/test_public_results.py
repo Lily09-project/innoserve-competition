@@ -35,7 +35,7 @@ class PublicResultsTests(unittest.TestCase):
 
     def test_deck_and_film_are_synchronized(self):
         deck = ROOT / "deliverables/決賽簡報_AI資安框架.pptx"
-        film = ROOT / "deliverables/AI資安框架_系統展示影片_40秒快版.mp4"
+        film = ROOT / "deliverables/AI資安框架_系統展示影片_30秒快版.mp4"
         with zipfile.ZipFile(deck) as archive:
             xml = [
                 archive.read(name).decode("utf-8")
@@ -79,3 +79,9 @@ class PublicResultsTests(unittest.TestCase):
             text = (ROOT / name).read_text(encoding="utf-8")
             for obsolete in ("96.76", "94.25", "95.83"):
                 self.assertNotIn(obsolete, text, name)
+
+    def test_current_documentation_and_movie_contract(self):
+        from check_delivery_docs import audit
+        report = audit()
+        self.assertEqual(report['errors'], [])
+        self.assertGreaterEqual(report['document_count'], 13)

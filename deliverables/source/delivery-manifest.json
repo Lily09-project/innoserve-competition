@@ -1,31 +1,51 @@
 {
+  "base_revision": "f4f6b1c",
   "files": {
     "deliverables/決賽簡報_AI資安框架.pptx": {
-      "bytes": 828106,
-      "sha256": "146eb1b8176864f630a5e153ef56364f885d741dce9a160076de5dc97c8831e3"
+      "bytes": 829581,
+      "sha256": "68c7c9fd60f177a0b622f3de583f61ffadf29ef0a5708bd5272357976fec17c1"
     },
     "deliverables/決賽簡報_AI資安框架.pdf": {
-      "bytes": 313970,
-      "sha256": "50487b63d74380702bfdac8552119f38cd71d5483879d45993185d0413b815e5"
+      "bytes": 275437,
+      "sha256": "a1d5272ed65d6e1297318057b620996f65c712bb58b34e02135a7cd3ecb33a7b"
     },
-    "deliverables/AI資安框架_系統展示影片_40秒快版.mp4": {
-      "bytes": 1323698,
-      "sha256": "9d3b2b70464df76e8d6a07432a192a2d0470110b0eb0d570ea2a98da488f2e66"
-    },
-    "deliverables/AI資安框架_系統展示影片_60秒.mp4": {
-      "bytes": 1566370,
-      "sha256": "21583d05329a4a12ac3998d136d1c6d0c98e04954e1d3b4c870e61adff741c62"
+    "deliverables/AI資安框架_系統展示影片_30秒快版.mp4": {
+      "bytes": 1151335,
+      "sha256": "5be48fe12dbe9a4f6ece2652557ccce80d9b8d48e91796b7b8073cb5a6e605ea"
     },
     "deliverables/figures/fig_architecture.png": {
-      "bytes": 390553,
-      "sha256": "934342052a1553ef97b389bccd5ca74e1af27ea62dab27f9ca6dbf48ce6fd47e"
+      "bytes": 266210,
+      "sha256": "4965a85b6ac273f060cb9a734d8f03691369c9046cc3eb61af3632a394a1ac9b"
+    },
+    "deliverables/source/architecture.svg": {
+      "bytes": 6788,
+      "sha256": "ad19dbd7c4630af8378e42bee14acc2344a17403e608003e019a5c39052be7b5"
     }
   },
   "slides": 8,
-  "python_tests": 27,
-  "website": "removed; GitHub Pages disabled",
-  "review": "independent sampled-frame and PowerPoint review passed",
-  "video": "1920x1080 H264 24fps; 40s and 60s; no audio",
-  "image_generation": "built-in image_gen; text-free icons only",
-  "results_changed": false
+  "talk_budget_seconds": 300,
+  "film_seconds": 30,
+  "film_speed": 2,
+  "maximum_film_seconds": 40,
+  "width": 1920,
+  "height": 1080,
+  "fps": 24,
+  "frames": 720,
+  "audio": false,
+  "architecture_svg_size": [
+    1280,
+    536
+  ],
+  "architecture_png_size": [
+    2560,
+    1072
+  ],
+  "python_tests": 28,
+  "website": "removed; API-only",
+  "review": "passed: actual PowerPoint pages and sampled video frames; no blocking findings",
+  "results_changed": false,
+  "markdown_documents": 15,
+  "local_links_checked": 23,
+  "presentation_limit_seconds": 360,
+  "buffer_seconds": 60
 }

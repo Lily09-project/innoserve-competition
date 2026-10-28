@@ -48,36 +48,48 @@ def split_icons():
 
 
 def architecture(save=True):
-    s = ''
-    blocks = [
-        ('a', '流量表徵', ['封包內容・時間差・方向', '遮罩識別欄位・流量切窗'], ['輸入：真實前處理張量', '輸出：統一事件表徵']),
-        ('b', '17 類判定', ['CTBM＋PBCNN', '校準信心・OOF Gate'], ['輸出：正式類別', '512 維表徵＋17 維機率']),
-        ('c', '證據檢索與稽核', ['529 維任務向量 → Top-5', '本機 AI 核對訓練案例'], ['支持／複核／不確定', '稽核不改寫正式分類']),
-        ('d', '受控處置與回復', ['策略閘門檢查範圍與期限', '套用 → 讀回 → 到期撤銷'], ['輸出：處置與回復回條', '複核事件保留蒐證'])
-    ]
-    for i, (letter,title,steps,outputs) in enumerate(blocks):
-        x = 20+i*315
-        s += rect(x,38,295,492,'#F5F7FA',8,'#CCCCCC')
-        s += text(x+18,76,letter,22,BLUE,700)+text(x+48,76,title,23,'#000000',600)
-        s += image(x+86,92,120,120,f'icon-{i+1}.png')
-        for k,line in enumerate(steps):
-            s += text(x+16,258+k*40,line,22)
-        s += rect(x+14,334,267,160,'#FFFFFF',8)
-        for k,line in enumerate(outputs):
-            s += text(x+25,378+k*48,line,20,'#000000')
-        if i<3:
-            s += f'<path d="M{x+297} {316*SY+OY}H{x+311}m-6-6 6 6-6 6" fill="none" stroke="{BLUE}" stroke-width="3"/>'
-    s += f'<path d="M1110 {532*SY+OY}V{571*SY+OY}H165V{532*SY+OY}" fill="none" stroke="#6B6B6B" stroke-width="2" stroke-dasharray="7 5"/>'
-    s += text(640,607,'同一事件 ID 串接偵測、證據、稽核與處置回條',22,'#000000',400,'middle')
-    # Save with sibling icon paths for standalone viewing.
-    standalone = svg(s,640).replace('../images/','')
+    # Two tiers preserve readable labels without stretching imagery. The IDS
+    # branches are parallel; retrieval receives their final event representation.
+    def route(points, color=BLUE, dashed=False):
+        d='M'+' L'.join(f'{x} {y*SY+OY}' for x,y in points)
+        (px,py),(x,y)=points[-2:]
+        if x>px: tip=f'M{x-7} {y*SY+OY-5}L{x} {y*SY+OY}L{x-7} {y*SY+OY+5}'
+        elif y>py: tip=f'M{x-5} {y*SY+OY-7}L{x} {y*SY+OY}L{x+5} {y*SY+OY-7}'
+        else: tip=f'M{x-5} {y*SY+OY+7}L{x} {y*SY+OY}L{x+5} {y*SY+OY+7}'
+        dash=' stroke-dasharray="5 4"' if dashed else ''
+        return f'<path d="{d}" fill="none" stroke="{color}" stroke-width="2"{dash}/><path d="{tip}" fill="none" stroke="{color}" stroke-width="2"/>'
+    s=rect(16,16,226,205,'#F5F7FA',8,'#CCCCCC')
+    s+=text(34,48,'a  流量表徵',24,BLUE,600)+image(190,20,34,34,'icon-1.png')
+    s+=text(34,97,'真實前處理張量',21)+text(34,142,'封包內容',22)+text(34,174,'時間差・方向',22)
+    s+=text(34,204,'遮罩欄位・流量切窗',20,'#6B6B6B')
+    s+=rect(266,16,998,205,'#F5F7FA',8,'#CCCCCC')
+    s+=image(282,22,36,36,'icon-2.png')+text(328,48,'b  互補模型與 17 類判定',24,BLUE,600)
+    for y,title,sub in [(70,'CTBM','內容・時間差・方向'),(148,'PBCNN','短窗位元組模式')]:
+        s+=rect(292,y,300,60,'#FFFFFF',8,'#CCCCCC')+text(310,y+26,title,24,weight=600)+text(310,y+50,sub,20)
+    s+=rect(660,90,278,90,'#FFFFFF',8,'#CCCCCC')+text(682,123,'校準＋OOF Gate',24,weight=600)+text(682,160,'依事件證據融合',22)
+    s+=rect(966,90,276,90,'#FFFFFF',8,'#CCCCCC')+text(986,123,'17 類正式判定',24,weight=600)+text(986,160,'512 維表徵＋17 維機率',20)
+    s+=route([(242,118),(280,118),(280,100),(292,100)])+route([(280,118),(280,178),(292,178)])
+    s+=route([(592,100),(625,100),(625,135),(660,135)])+route([(592,178),(625,178),(625,135),(660,135)])+route([(938,135),(966,135)])
+    s+=rect(16,282,840,186,'#F5F7FA',8,'#CCCCCC')+image(34,288,36,36,'icon-3.png')+text(80,314,'c  任務導向檢索與 AI 稽核',24,BLUE,600)
+    for x,w,title,sub in [(40,190,'529 維任務向量','L2 正規化'),(260,244,'Top-5 相似案例','僅訓練資料案例庫'),(540,292,'本機 AI 稽核','支持／複核／不確定')]:
+        s+=rect(x,340,w,82,'#FFFFFF',8,'#CCCCCC')+text(x+14,374,title,22,weight=600)+text(x+14,405,sub,20)
+    s+=route([(1104,180),(1104,249),(5,249),(5,381),(40,381)])
+    s+=text(620,240,'正式類別・信心・模型表徵',22,anchor='middle')
+    s+=route([(230,381),(260,381)])+route([(504,381),(540,381)])
+    s+=text(380,454,'訓練案例庫',20,'#6B6B6B',anchor='middle')+route([(380,434),(380,422)],'#6B6B6B',True)
+    s+=text(554,454,'稽核保留正式分類',20,'#6B6B6B')
+    s+=rect(880,282,384,186,'#F5F7FA',8,'#CCCCCC')+image(898,287,36,36,'icon-4.png')+text(944,314,'d  受控處置與回復',24,BLUE,600)
+    s+=text(904,364,'策略檢查 → 套用',24)+text(904,401,'讀回 → 到期撤銷',24)+text(904,451,'複核／不確定 → 蒐證',20,'#6B6B6B')
+    s+=route([(832,381),(880,381)])
+    s+=rect(16,484,1248,38,'#F5F7FA',8,'#CCCCCC')+text(640,510,'共用事件 ID：正式判定｜Top-5 證據｜AI 稽核｜處置與回復回條',22,anchor='middle')
+    standalone = svg(s,536).replace('../images/','')
     if save: (DEST/'architecture.svg').write_text(standalone,encoding='utf-8')
     return s
 
 
 def page(n,title,body,dark=False,kicker='METHOD'):
     bg,ink,muted = ('#000000','#FFFFFF','#CCCCCC') if dark else ('#FFFFFF','#000000','#6B6B6B')
-    s = text(64,57,kicker,16,BLUE,600)+text(64,120,title,44,ink,300)
+    s = text(64,57,kicker,16,'#53B1FF' if dark else BLUE,600)+text(64,120,title,44,ink,300)
     s += body + text(64,687,'AI 資安框架 · 資安技術組',14,muted)+text(1216,687,f'{n:02d} / 08',14,muted,400,'end')
     return svg(s,bg=bg)
 
@@ -97,16 +109,16 @@ def build_pages(limit=8):
     s+=rect(64,520,266,48,BLUE,24)+text(197,552,'偵測 → 檢索 → 稽核 → 回復',17,'#FFFFFF',600,'middle')
     s+=image(900,385,250,250,'icon-4.png')
     pages.append(svg(s,bg='#000000'))
-    SY, OY=.78,145
+    SY, OY=1,142
     body = architecture(False)
     SY, OY=1,0
     pages.append(page(2,'一個框架，四個連續階段',body,kicker='FRAMEWORK'))
-    s = ''
-    for i,(title,sub,file) in enumerate([('內容與時序','CTBM 讀取內容、時間與方向',2),('短窗模式','PBCNN 補充局部位元組特徵',1),('融合判定','校準後依事件證據動態調權',2)]):
-        x=64+i*395
-        s+=image(x+55,180,230,200,f'icon-{file}.png')+text(x,440,title,30, '#FFFFFF',300)
-        s+=text(x,486,sub,20,'#CCCCCC')
-        if i<2:s+=text(x+340,302,'→',36,'#53B1FF')
+    s=rect(64,220,210,220,'#181818',8)+image(104,237,130,110,'icon-1.png')+text(95,395,'同一流量輸入',24,'#FFFFFF')
+    for y,title,sub in [(190,'CTBM','內容・時間差・方向'),(370,'PBCNN','短窗位元組模式')]:
+        s+=rect(370,y,340,130,'#181818',8)+text(398,y+45,title,30,'#FFFFFF',600)+text(398,y+92,sub,24,'#CCCCCC')
+    s+='<path d="M274 330H322V255H370 M322 330V435H370 M710 255H780V345H870 M710 435H780V345" fill="none" stroke="#53B1FF" stroke-width="3"/>'
+    s+='<path d="M364 249L370 255L364 261 M364 429L370 435L364 441 M864 339L870 345L864 351" fill="none" stroke="#53B1FF" stroke-width="3"/>'
+    s+=rect(870,270,346,150,'#181818',8)+text(896,322,'校準＋OOF Gate',30,'#FFFFFF')+text(896,374,'依事件證據融合',24,'#CCCCCC')
     s+=rect(64,550,1152,56,'#181818',8)+text(88,588,'固定 17 類輸出，連同校準信心與模型表徵交給後端。',24,'#FFFFFF')
     pages.append(page(3,'創新一：讓互補模型共同判斷',s,True,'DETECTION'))
     s=image(60,182,250,250,'icon-3.png')

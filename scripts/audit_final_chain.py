@@ -9,6 +9,8 @@ import sys
 import time
 import urllib.error
 import urllib.request
+import zipfile
+import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -16,6 +18,22 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "app"))
 from network_contract import build_network_scenario, verify_network_receipt, valid_ledger
 from pipeline import LABELS
+
+
+def scan_delivery_anonymity(root=ROOT):
+    """Scan delivered text, not the retired website or the public repository UI."""
+    targets = {}
+    with zipfile.ZipFile(root / "deliverables/決賽簡報_AI資安框架.pptx") as archive:
+        for name in archive.namelist():
+            if name.endswith(".xml") and name.startswith(("ppt/slides/slide", "ppt/notesSlides/notesSlide")):
+                targets[name] = " ".join(ET.fromstring(archive.read(name)).itertext())
+    for name in ("deliverables/source/architecture.svg", "media/film/scene.mjs"):
+        targets[name] = (root / name).read_text(encoding="utf-8")
+    forbidden = ("Lily09", "Da-Xiong-Chen", "github.com", "陳信安", "蘇櫟", "指導教授", "學校名稱", "C:\\Users\\")
+    findings = [{"path": name, "identity_matches": [s for s in forbidden if s in text]} for name, text in targets.items()]
+    if any(row["identity_matches"] for row in findings):
+        raise ValueError("Identifying text in competition deliverables")
+    return findings
 
 
 def main():
@@ -80,12 +98,7 @@ def main():
         request("/api/operate",{"action":"network","event_id":live[0]["event_id"],"execution_id":"stale-run"})
         raise AssertionError("stale execution accepted")
     except urllib.error.HTTPError as error:assert error.code==400
-    anonymous=[]
-    for path in ("/","/app.js","/data.js"):
-        with urllib.request.urlopen(base+path) as response:text=response.read().decode("utf-8")
-        matches=[s for s in ("Lily09","Da-Xiong-Chen","github.com","陳信安","蘇櫟","指導教授","學校名稱","C:\\Users\\") if s in text]
-        anonymous.append({"path":path,"identity_matches":matches})
-        assert not matches,(path,matches)
+    anonymous=scan_delivery_anonymity()
     save("anonymous_display_scan.json",anonymous)
     summary={"status":"passed", "started_utc":stamp,"api_version":status["product"],
         "real_live_classes":17,"real_local_llm_calls":17,"network_cases":len(network),
