@@ -11,12 +11,20 @@ ROOT = Path(__file__).resolve().parents[2]
 DEST = ROOT / 'deliverables/source'
 PROJECT = ROOT / 'projects/finals_editorial_ppt169_20261028'
 BLUE = '#0070D1'
-FONT = 'Microsoft JhengHei'
+FONT = 'Times New Roman'
+CJK_FONT = 'DFKai-SB'
+PAGE_NUMBERS = {1:1, 6:2, 2:3, 3:4, 4:5, 5:6, 7:7, 8:8, 9:9}
 SY, OY = 1, 0
 
 
 def text(x, y, value, size=26, color='#000000', weight=400, anchor='start'):
-    return f'<text x="{x}" y="{y*SY+OY}" font-size="{size}" fill="{color}" font-weight="{weight}" text-anchor="{anchor}">{escape(str(value))}</text>'
+    import re
+    runs=[]
+    for part in re.split(r'([\u2E80-\u9FFF\uF900-\uFAFF\u3000-\u303F\uFF00-\uFFEF]+)',str(value)):
+        if not part:continue
+        family=CJK_FONT if re.fullmatch(r'[\u2E80-\u9FFF\uF900-\uFAFF\u3000-\u303F\uFF00-\uFFEF]+',part) else FONT
+        runs.append(f'<tspan font-family="{family}">{escape(part)}</tspan>')
+    return f'<text x="{x}" y="{y*SY+OY}" font-size="{size}" fill="{color}" font-weight="{weight}" text-anchor="{anchor}">{"".join(runs)}</text>'
 
 
 def rect(x, y, w, h, fill='#F5F7FA', radius=8, stroke='none'):
@@ -106,7 +114,7 @@ def arrow(points, color=BLUE, dashed=False):
 
 def graphic_page(n,title,body,kicker='METHOD',role='content',bg='#FFFFFF'):
     heading=group('headline',text(64,56,kicker,16,BLUE,600)+text(64,116,title,42,'#121314',300))
-    footer=group('footer',text(64,687,'AI 資安框架 · 資安技術組',14,'#6B6B6B')+text(1216,687,f'{n:02d} / 09',14,'#6B6B6B',400,'end'))
+    footer=group('footer',text(64,687,'AI 資安框架 · 資安技術組',14,'#6B6B6B')+text(1216,687,f'{PAGE_NUMBERS[n]:02d} / 09',14,'#6B6B6B',400,'end'))
     background=rect(0,0,1280,720,bg,0).replace('<rect ','<rect id="page-background" data-pptx-role="background" ',1)
     return f'<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" font-family="{FONT}" data-pptx-page-role="{role}">{background}{heading}{group("page-content",body)}{footer}</svg>'
 
@@ -223,6 +231,7 @@ def build_pages(limit=9):
     s+=rect(64,502,1152,56,'#E2EDF8')+text(640,540,'同一事件 ID，串起分類、證據、判斷與回復紀錄。',26,anchor='middle')
     s+=text(64,621,'17 類真實張量重跑 · 6 種隔離 TCP 情境驗證',26)
     pages.append(graphic_page(9,'一套可展示、可查核的資安框架',s,'AI SECURITY FRAMEWORK','ending','#F2F7FC'))
+    pages=[pages[i] for i in [0,5,1,2,3,4,6,7,8]]
     for i,p in enumerate(pages[:limit]):(out/f'{i+1:02d}_slide.svg').write_text(p,encoding='utf-8')
     print(f'Authored {min(limit,len(pages))} graphical slides; all static.')
 

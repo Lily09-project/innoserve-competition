@@ -61,7 +61,7 @@ class PublicResultsTests(unittest.TestCase):
                 if name.endswith(".mp4")
             ]
             self.assertEqual(len(movies), 0)
-            slot = archive.read("ppt/slides/slide6.xml").decode("utf-8")
+            slot = archive.read("ppt/slides/slide2.xml").decode("utf-8")
             self.assertIn("產品方法動畫", slot)
             self.assertEqual(len([n for n in archive.namelist() if n.startswith("ppt/slides/slide") and n.endswith(".xml")]), 9)
             for name in archive.namelist():
@@ -103,6 +103,11 @@ class PublicResultsTests(unittest.TestCase):
                 slide = ET.fromstring(archive.read(f"ppt/slides/slide{number}.xml"))
                 self.assertIsNone(slide.find("p:transition", ns))
                 self.assertIsNone(slide.find("p:timing", ns))
+                for run in slide.findall(".//a:r", ns):
+                    properties = run.find("a:rPr", ns)
+                    self.assertIsNotNone(properties)
+                    self.assertEqual(properties.find("a:latin", ns).get("typeface"), "Times New Roman")
+                    self.assertEqual(properties.find("a:ea", ns).get("typeface"), "DFKai-SB")
                 fill = slide.find(".//p:bg/p:bgPr/a:solidFill", ns)
                 self.assertIsNotNone(fill)
                 color = list(fill)[0]

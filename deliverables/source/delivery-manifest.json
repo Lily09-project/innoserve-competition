@@ -2,24 +2,24 @@
   "base_revision": "efc1eed",
   "files": {
     "deliverables/決賽簡報_AI資安框架.pptx": {
-      "bytes": 838887,
-      "sha256": "36e8d009ed832dc3108838579dc935a5e7940f02a40d48403f3231cb036f65b4"
+      "bytes": 839788,
+      "sha256": "33be7e66bdc698b7bddeda30d2ca87f288b8eac8dc2565f6f4ee1fd20ad0bdc2"
     },
     "deliverables/決賽簡報_AI資安框架.pdf": {
-      "bytes": 4278687,
-      "sha256": "6a05cbc6d4b23eec3eae0c8c4278b9246c4118f5c58a882b9876fb9d98ef4db6"
+      "bytes": 4256496,
+      "sha256": "f36b3320b64e7ee9ef1ab1e10b9705b04e2a392087143c1cc178e0cf8385662c"
     },
     "deliverables/AI資安框架_系統展示影片_30秒快版.mp4": {
       "bytes": 1106216,
       "sha256": "cef014140e875440b9dab5b25a2d35128773f9d79d19ec1efb81038bc0d11044"
     },
     "deliverables/figures/fig_architecture.png": {
-      "bytes": 266210,
-      "sha256": "4965a85b6ac273f060cb9a734d8f03691369c9046cc3eb61af3632a394a1ac9b"
+      "bytes": 322390,
+      "sha256": "04e130027d2445b4f086a378b4b13b13b614f9d88414ead4720d8194d5709e5a"
     },
     "deliverables/source/architecture.svg": {
-      "bytes": 6788,
-      "sha256": "ad19dbd7c4630af8378e42bee14acc2344a17403e608003e019a5c39052be7b5"
+      "bytes": 9181,
+      "sha256": "873344163eb76825d0cf82fd409466fe138c8c991beba501fe95a616b634a729"
     }
   },
   "slides": 9,
@@ -59,9 +59,12 @@
   "maximum_live_saved_probability_delta": 0.00011988392251005564,
   "live_audit_source": "current delivered API source; not a previously running checkout",
   "fresh_audit_status": "passed",
-  "video_slot_slide": 6,
+  "video_slot_slide": 2,
   "video_embedded": false,
   "slide_transitions": false,
   "object_animations": false,
-  "auto_advance": false
+  "auto_advance": false,
+  "ppt_cjk_font": "DFKai-SB",
+  "ppt_latin_font": "Times New Roman",
+  "presentation_order": "cover, reserved film slot, framework, detection, retrieval/audit, control, detection results, audit results, conclusion"
 }
