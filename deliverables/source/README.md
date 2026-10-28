@@ -8,7 +8,7 @@
 
 AI圖示prompt：transparent background; four isolated evenly spaced icons: network flow switch, neural model chip, retrieval database with magnifier, shield with check and return arrow; no text/numerals/logos; white ceramic, satin pale gray, precise #0070D1 accents, publication-quality scientific illustration. Python僅裁出四個圖示與組合流程，未以AI產生數據、標籤或測試結論。
 
-製作方式：內建image_gen，生成2026-10-28。架構圖參考Nature圖表指南的整齊分區、可編輯標籤與清楚閱讀順序，投影版放大字體，使用原創資安圖像。品牌視覺依使用者指定的黑白藍色章節設計轉譯，不含PlayStation商標或SST專有字型。
+製作方式：內建image_gen，生成2026-10-28。架構圖參考Nature圖表指南的整齊分區、可編輯標籤與清楚閱讀順序，投影版放大字體，使用原創資安圖像。品牌視覺依使用者指定的淺色底與藍色重點設計轉譯，不含PlayStation商標或SST專有字型。
 
 正式成片：30秒、2倍速、1080p／24fps。原始程式時間軸以60秒定義，輸出時直接採樣至30秒，並非交付60秒影片。簡報保留8頁；第2頁與本架構SVG採同一排版來源，第3頁雙模型明確並行。
 

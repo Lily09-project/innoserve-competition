@@ -80,6 +80,33 @@ class PublicResultsTests(unittest.TestCase):
             for obsolete in ("96.76", "94.25", "95.83"):
                 self.assertNotIn(obsolete, text, name)
 
+    def test_deck_metadata_namespaces_and_light_backgrounds(self):
+        import io
+        import xml.etree.ElementTree as ET
+        with zipfile.ZipFile(ROOT / "deliverables/決賽簡報_AI資安框架.pptx") as archive:
+            core = archive.read("docProps/core.xml")
+            namespaces = dict(item for _, item in ET.iterparse(io.BytesIO(core), events=["start-ns"]))
+            tree = ET.fromstring(core)
+            for node in tree.iter():
+                value = node.get("{http://www.w3.org/2001/XMLSchema-instance}type", "")
+                if ":" in value:
+                    self.assertIn(value.split(":", 1)[0], namespaces)
+            ns = {"p": "http://schemas.openxmlformats.org/presentationml/2006/main",
+                  "a": "http://schemas.openxmlformats.org/drawingml/2006/main"}
+            for number in range(1, 9):
+                slide = ET.fromstring(archive.read(f"ppt/slides/slide{number}.xml"))
+                fill = slide.find(".//p:bg/p:bgPr/a:solidFill", ns)
+                self.assertIsNotNone(fill)
+                color = list(fill)[0]
+                if color.tag.endswith("schemeClr"):
+                    theme = ET.fromstring(archive.read("ppt/theme/theme1.xml"))
+                    theme_color = theme.find(".//a:clrScheme/a:" + color.get("val") + "/a:srgbClr", ns)
+                    self.assertIsNotNone(theme_color)
+                    resolved = theme_color.get("val")
+                else:
+                    resolved = color.get("val")
+                self.assertIn(resolved, ("FFFFFF", "F2F7FC"))
+
     def test_current_documentation_and_movie_contract(self):
         from check_delivery_docs import audit
         report = audit()

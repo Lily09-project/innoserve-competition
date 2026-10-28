@@ -23,15 +23,15 @@
 ## visual_style
 
 - visual_style: custom
-- visual_style_behavior: 黑白章節交替，單頁藍色收尾，輕量標題，8px平面面板與原創圖示。
+- visual_style_behavior: 白底與淺灰章節，結語淺藍底，藍色重點，輕量標題，8px平面面板與原創圖示。
 
 ## colors
 
 - background: #FFFFFF
-- secondary_bg: #000000
+- secondary_bg: #F2F7FC
 - primary: #0070D1
-- accent: #53B1FF
-- secondary_accent: #181818
+- accent: #0070D1
+- secondary_accent: #F5F7FA
 - body_text: #000000
 - secondary_text: #6B6B6B
 - divider: #CCCCCC

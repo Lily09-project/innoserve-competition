@@ -48,16 +48,16 @@ const messages=[
  ['受控處置與回復','策略檢查 → 套用 → 讀回','到期撤銷，保留事件回條']
 ];
 export function frameSvg(t){
- const i=chapterAt(t),local=t-chapters[i].at,dark=[0,3,5].includes(i),bg=i===7?B:dark?'#000000':'#FFFFFF',ink=dark?'#FFFFFF':'#000000',muted=dark?'#CCCCCC':'#6B6B6B';
+ const i=chapterAt(t),local=t-chapters[i].at,dark=false,bg=i===7?'#F2F7FC':'#FFFFFF',ink=dark?'#FFFFFF':'#000000',muted=dark?'#CCCCCC':'#6B6B6B';
  let s=box(0,0,1280,720,bg,0);
  if(i===0){
-  s+=tx(64,78,'AI SECURITY FRAMEWORK',18,'#53B1FF',600);
-  ['融合新型內容相依時序方向模型','入侵偵測與任務導向檢索增強稽核','之 AI 資安框架'].forEach((v,k)=>s+=`<g opacity="${ease((local-.25*k)/.9)}" transform="translate(0 ${(1-ease((local-.25*k)/.9))*30})">${tx(64,230+k*76,v,45,'#FFFFFF',300)}</g>`);
-  s+=tx(64,556,'從流量判定，走到有證據的處置。',30,'#CCCCCC');
+  s+=tx(64,78,'AI SECURITY FRAMEWORK',18,B,600);
+  ['融合新型內容相依時序方向模型','入侵偵測與任務導向檢索增強稽核','之 AI 資安框架'].forEach((v,k)=>s+=`<g opacity="${ease((local-.25*k)/.9)}" transform="translate(0 ${(1-ease((local-.25*k)/.9))*30})">${tx(64,230+k*76,v,45,'#121314',300)}</g>`);
+  s+=tx(64,556,'從流量判定，走到有證據的處置。',30,'#6B6B6B');
  }else if(i===7){
-  s+=tx(64,94,'實測成果',44,'#FFFFFF',300);
-  [['98.08%','17類偵測 Accuracy'],['97.62%','Top-5 命中率'],['6 / 6','隔離情境完整回復']].forEach(([v,l],k)=>{const x=64+k*400;s+=tx(x,310,v,56,'#FFFFFF',300)+tx(x,375,l,24,'#FFFFFF');});
-  s+=tx(64,525,'偵測有依據，稽核有證據，處置可回復。',34,'#FFFFFF',300)+tx(64,610,'18,998筆偵測測試／463筆檢索稽核／6種隔離情境',23,'#FFFFFF');
+  s+=tx(64,94,'實測成果',44,'#121314',300);
+  [['98.08%','17類偵測 Accuracy'],['97.62%','Top-5 命中率'],['6 / 6','隔離情境完整回復']].forEach(([v,l],k)=>{const x=64+k*400;s+=tx(x,310,v,56,B,300)+tx(x,375,l,24,'#121314');});
+  s+=tx(64,525,'偵測有依據，稽核有證據，處置可回復。',34,'#121314',300)+tx(64,610,'18,998筆偵測測試／463筆檢索稽核／6種隔離情境',23,'#6B6B6B');
  }else{
   s+=tx(64,65,`0${i} / 06`,18,dark?'#53B1FF':B,600)+tx(64,128,messages[i][0],44,ink,300);
   const scale=.96+.04*ease(local/.9);
@@ -78,7 +78,7 @@ export function frameSvg(t){
   });
   s+=tx(64,625,'同一事件 ID：判定 → 案例 → 稽核 → 處置回條',25,ink);
  }
- s+=tx(64,688,'方法流程示意 · 隔離TCP交易實測',22,i===7?'#FFFFFF':muted);
- s+=box(0,714,1280*t/duration,6,i===7?'#FFFFFF':B,0);
+ s+=tx(64,688,'方法流程示意 · 隔離TCP交易實測',22,muted);
+ s+=box(0,714,1280*t/duration,6,B,0);
  return `<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" font-family="${FONT}">${s}</svg>`;
 }

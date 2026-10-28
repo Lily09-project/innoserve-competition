@@ -11,6 +11,7 @@ const assert = require('node:assert/strict');
     const document = new JSDOM(source, {contentType: 'image/svg+xml'}).window.document;
     assert.equal(document.querySelector('parsererror'), null);
     assert.ok(document.querySelector('svg'));
+    assert.ok(['#FFFFFF','#F2F7FC'].includes(document.querySelector('svg > rect').getAttribute('fill')), 'film chapters must use light canvas');
     assert.ok(!source.includes('NaN'));
   }
   console.log('Media smoke: deterministic, valid SVG across all chapters');

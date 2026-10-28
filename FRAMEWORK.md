@@ -45,7 +45,7 @@
 4. 在隔離測試床中，以 `action=network`、同一 `event_id` 與 `execution_id` 檢查規則、交易、背景服務與到期回復。服務拒絕不符或過期的執行ID。
 5. 以 `POST /api/export`、`mode=live_local_models`、同一事件與執行ID匯出結果；保存事件重播使用 `mode=saved_prediction_replay`，不取得即時部署資格。
 
-網站介面已移除，以上均為本機API。完整17類與6種隔離情境驗證在展前執行；現場使用8頁簡報及30秒、2倍速影片，總報告6分鐘。
+網站介面已移除，以上均為本機API。完整17類與6種隔離情境驗證在展前執行；現場使用8頁簡報及30秒、2倍速影片，正式報告5分鐘，另留1分鐘緩衝。
 
 ```bash
 python scripts/preflight.py --warmup
