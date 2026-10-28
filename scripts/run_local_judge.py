@@ -4,7 +4,6 @@ from __future__ import annotations
 import hashlib
 import json
 import os
-import re
 import sys
 import time
 from collections import Counter
@@ -13,6 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "app"))
 from settings import optional_asset_path
+from judge_response import parse_judge_response
 sys.path.insert(0, str(optional_asset_path("judge_packages_dir", ROOT / "runtime/judge_packages")))
 os.environ["HF_HUB_OFFLINE"] = "1"
 os.environ["TRANSFORMERS_OFFLINE"] = "1"
@@ -83,12 +83,9 @@ def main():
             for event, text in zip(chunk, texts):
                 valid = False
                 try:
-                    match = re.search(r"\{.*?\}", text, re.S)
-                    value = json.loads(match.group(0))
-                    if value.get("assessment") not in {"support", "review", "uncertain"}: raise ValueError()
-                    if not isinstance(value.get("reason"), str): raise ValueError()
+                    value = parse_judge_response(text)
                     valid = True
-                except Exception:
+                except ValueError:
                     value = {"assessment":"uncertain", "reason":"Local model returned an invalid structured response; manual review required."}
                 record = {"event_id":event["event_id"], "input_sha256":digest({"event_id":event["event_id"],
                           "prediction":event["prediction"], "evidence":event["evidence"]}),

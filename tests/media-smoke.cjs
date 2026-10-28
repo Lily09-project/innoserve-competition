@@ -11,6 +11,8 @@ const assert = require('node:assert/strict');
   assert.ok(presentationDuration<=maxDuration && maxDuration<=40);
   assert.ok(frameSvg(24).includes('#FDB338'), 'active states use the supplied gold');
   assert.ok(frameSvg(24).includes('#092B42'), 'gold highlights use dark navy labels');
+  assert.equal(chapters.find(c=>c.title==='實測成果').at,52, 'results receive 2.5 seconds at 2x');
+  assert.ok(frameSvg(51.5).includes('到期回復'), 'recovery remains visible before the results cut');
   for (const t of [...chapters.map(c => c.at + 1), 59.9]) {
     const source = frameSvg(t);
     assert.equal(source, frameSvg(t), 'frames must be deterministic');

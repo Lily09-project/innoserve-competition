@@ -1,5 +1,6 @@
 from __future__ import annotations
 import argparse
+import hashlib
 import json
 import sys
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -15,7 +16,18 @@ from network_contract import build_network_scenario, verify_network_receipt
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def source_revision():
+    """Fingerprint the code actually loaded when this server is created."""
+    names = ('server.py', 'live_engine.py', 'judge_response.py', 'pipeline.py', 'network_contract.py', 'settings.py')
+    digest = hashlib.sha256()
+    for name in names:
+        digest.update(name.encode('utf-8'))
+        digest.update((ROOT / 'app' / name).read_bytes().replace(b'\r\n', b'\n'))
+    return digest.hexdigest()
+
+
 def create_server(port=8765, root=ROOT):
+    loaded_revision = source_revision()
     root=Path(root)
     data = root / "evidence/fresh17"
     bank = TrainOnlyBank.load(data / "train_bank.npz", data / "train_bank_manifest.json")
@@ -88,7 +100,7 @@ def create_server(port=8765, root=ROOT):
             super().end_headers()
         def do_GET(self):
             if self.path=="/api/status":
-                self.json_response({"product":"ai-security-demo.v3","model_ready":engine["value"] is not None,"live_event_ids":live_ids});return
+                self.json_response({"product":"ai-security-demo.v3","source_revision":loaded_revision,"model_ready":engine["value"] is not None,"live_event_ids":live_ids});return
             if self.path.startswith("/api/jobs/"):
                 key=self.path.split("/")[-1]
                 with job_lock:value=dict(jobs.get(key,{}))

@@ -1,17 +1,17 @@
 {
-  "base_revision": "2125e11",
+  "base_revision": "bd92338",
   "files": {
     "deliverables/決賽簡報_AI資安框架.pptx": {
-      "bytes": 2253246,
-      "sha256": "6aa43c55653700bf99818ec4d2c328dd54fed3fb39aa6bbfb5b56adda02abdc4"
+      "bytes": 2300440,
+      "sha256": "23c533f2fb62c52db658acfc8d0ce488168fac6bed862cc20c6961079e7901c0"
     },
     "deliverables/決賽簡報_AI資安框架.pdf": {
-      "bytes": 551328,
-      "sha256": "b93be5cfcc2243a3ba3f516ad6163e04a68d74af8b2022493cbf8ddca15ede97"
+      "bytes": 551115,
+      "sha256": "36554b07b9e87bc7f73b1b198bc5dca347d033360b95417e6eaa7c23b83aac37"
     },
     "deliverables/AI資安框架_系統展示影片_30秒快版.mp4": {
-      "bytes": 1276150,
-      "sha256": "c994ac16cfe815875c10f57e88a97c762f00c0bf3123564d4723f18bed1e6255"
+      "bytes": 1323584,
+      "sha256": "5ba0e786d169a974eb42c0905e11b43b33869ff43d5f88a8fdd2104308667976"
     },
     "deliverables/figures/fig_architecture.png": {
       "bytes": 324231,
@@ -22,16 +22,16 @@
       "sha256": "28aaf7bd717424fac80e78bcce537625d8c77d7c85305b3a73ef54c2929b3e01"
     },
     "deliverables/決賽海報_AI資安框架_A2.pptx": {
-      "bytes": 817649,
-      "sha256": "be523cda77b374d9a4ea325ea4a9464e43c6ba5c876f8af56b18b3e3405141da"
+      "bytes": 817688,
+      "sha256": "8846c5f6ca77062b952d46af8987acb611f149313438d104163bd7a881abbda8"
     },
     "deliverables/決賽海報_AI資安框架_A2.pdf": {
-      "bytes": 221813,
-      "sha256": "1441dc56221412158f63b3a24b5d366bdbdfaeba144f262eca73e9e2b0a46fc9"
+      "bytes": 235692,
+      "sha256": "a1fc379f05878795581c3cf2ecc2d781daac1ba0ef11d7f393fd229ed790280a"
     },
     "deliverables/決賽離線展示包.zip": {
-      "bytes": 4831274,
-      "sha256": "8c77c45494154232a06d5b193f4b88c97890a8f38dfe558c9f023c775f760e15"
+      "bytes": 4937222,
+      "sha256": "23c90aa37ef94fb8bc7099316ba76a2656b62c9d558a01d87124c851ad8605b3"
     }
   },
   "slides": 12,
@@ -52,12 +52,12 @@
     2560,
     1072
   ],
-  "python_tests": 35,
+  "python_tests": 45,
   "website": "removed; API-only",
-  "review": "Current 12-page actual PowerPoint output and embedded playback checked; 27 encoded movie frames independently reviewed with no blocking findings",
-  "results_changed": false,
-  "markdown_documents": 19,
-  "local_links_checked": 38,
+  "review": "Current native PowerPoint playback and all 12 pages checked; independent 27-frame/PPT/poster review and follow-up closed all blocking findings",
+  "results_changed": true,
+  "markdown_documents": 20,
+  "local_links_checked": 42,
   "presentation_limit_seconds": 360,
   "buffer_seconds": 60,
   "visual_theme": "white and light gray canvas; navy titles, medium blue diagrams, gold highlights, ink body",
@@ -93,7 +93,7 @@
   "qa_start_slide": 10,
   "qa_in_formal_talk": false,
   "qa_presentation": "six diagrams with evidence; prose answers in speaker notes",
-  "visual_revision": "User supplied navy, blue, light gray, gold and ink applied to poster, deck, movie and source; original 3D icon highlights retained",
+  "visual_revision": "Larger film captions and devices, 2.5-second results hold, refined poster hero and concise opening/closing notes; same light navy-blue-gold palette",
   "poster": {
     "format": "A2 portrait",
     "width_mm": 420,
@@ -114,7 +114,8 @@
     "rollback_integrity": true,
     "same_execution_receipt_verified": true,
     "saved_mode_verified": true,
-    "scope": "single-event tool acceptance; recorded aggregate metrics unchanged"
+    "scope": "single-event tool acceptance; recorded aggregate metrics unchanged",
+    "binding_checks": "displayed prediction, probabilities, confidence, Top-5 hash/order, judge, policy, stage sequence and execution mode"
   },
   "palette": {
     "name": "light-navy-blue-gold",
@@ -129,5 +130,11 @@
     "blue_tint": "#EAF0F4",
     "blue_muted": "#7294A9",
     "gold_tint": "#FFF4DD"
-  }
+  },
+  "recorded_detector_and_judge_metrics_changed": false,
+  "fresh_audit_started_utc": "20261028T133519Z",
+  "source_revision": "73581af75ca638a816429727adf96a8ccc0aa356393c84ba475716432442318f",
+  "film_results_seconds": 2.5,
+  "local_judge_parser_regression_cases": 463,
+  "local_judge_parser_assessment_changes": 0
 }

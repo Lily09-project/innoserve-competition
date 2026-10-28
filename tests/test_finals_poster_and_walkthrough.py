@@ -2,6 +2,7 @@
 import copy
 import hashlib
 import json
+import re
 from pathlib import Path
 import sys
 import unittest
@@ -16,6 +17,24 @@ from package_finals import ASSETS, asset_bytes
 
 
 class FinalsDeliveryTests(unittest.TestCase):
+    def test_speaker_notes_match_embedded_notes(self):
+        source = (ROOT / 'deliverables/source/speaker-notes.md').read_text(encoding='utf-8')
+        sections = re.findall(r'^# (\d+)_slide\n\n(.*?)(?=\n\n---|\Z)', source, re.M | re.S)
+        self.assertEqual(len(sections), 12)
+        ns = {'a': 'http://schemas.openxmlformats.org/drawingml/2006/main'}
+        with zipfile.ZipFile(ROOT / 'deliverables/決賽簡報_AI資安框架.pptx') as archive:
+            for number, body in sections:
+                root = ET.fromstring(archive.read(f'ppt/notesSlides/notesSlide{int(number)}.xml'))
+                rendered = ''.join(node.text or '' for node in root.findall('.//a:t', ns))
+                self.assertIn(re.sub(r'\s+', '', body), re.sub(r'\s+', '', rendered), number)
+
+    def test_anonymous_scan_includes_poster_and_deck(self):
+        from audit_final_chain import scan_delivery_anonymity
+        rows = scan_delivery_anonymity()
+        for name in ('決賽簡報_AI資安框架.pptx', '決賽海報_AI資安框架_A2.pptx'):
+            self.assertTrue(any(row['path'].startswith(name+'::') for row in rows))
+        self.assertFalse(any(row['identity_matches'] for row in rows))
+
     def test_user_palette_is_present_in_native_poster_and_slides(self):
         colors = json.loads((ROOT / 'design-system/palette.json').read_text(encoding='utf-8'))
         expected = {'navy': '#092B42', 'blue': '#105186', 'gray': '#F0F2F3', 'gold': '#FDB338', 'ink': '#171C1D'}
@@ -72,20 +91,24 @@ class FinalsDeliveryTests(unittest.TestCase):
         self.assertTrue((ROOT / 'deliverables/決賽海報_AI資安框架_A2.pdf').read_bytes().startswith(b'%PDF'))
 
     def event(self):
+        evidence = [{'rank': i+1, 'label_id': 2, 'label': 'SSH-Bruteforce', 'similarity': .9, 'case_id': 'private-case-'+str(i)} for i in range(5)]
+        judge = {'assessment': 'support', 'mode': 'live_local_llm_inference',
+                 'input_sha256': digest({'event_id': 'private-event', 'prediction': 2, 'evidence': evidence})}
+        policy = {'allowed': True, 'action': 'auth_hardening'}
+        payloads = [{'mode': 'live_checkpoint_inference', 'execution_id': 'private-run', 'prediction': 2},
+                    {'count': 5}, judge, policy]
         rows, previous = [], '0'*64
         for i, stage in enumerate(('detection', 'retrieval', 'judge', 'policy')):
-            row = {'event_id': 'private-event', 'sequence': i, 'previous_sha256': previous, 'stage': stage}
-            if i == 0:
-                row.update(execution_id='private-run', prediction=2)
+            row = {'event_id': 'private-event', 'sequence': i, 'previous_sha256': previous, 'stage': stage, **payloads[i]}
             row['sha256'] = digest(row)
             rows.append(row)
             previous = row['sha256']
         return {'event_id': 'private-event', 'execution_id': 'private-run', 'prediction': 2,
                 'execution_mode': 'live_local_models', 'confidence': .9, 'validation_label': 'secret-truth',
+                'probabilities': [.1, 0, .9]+[0]*14,
                 'raw_response': 'secret-model-reply', 'source_ip': 'secret-address',
                 'result': {'event_id': 'private-event', 'prediction': 2, 'ledger': rows,
-                           'evidence': [{'rank': i+1, 'label': 'SSH-Bruteforce', 'similarity': .9, 'case_id': 'private-case'} for i in range(5)],
-                           'judge': {'assessment': 'support'}, 'policy': {'allowed': True, 'action': 'auth_hardening'}}}
+                           'evidence': evidence, 'judge': judge, 'policy': policy}}
 
     def test_anonymous_summary_drops_private_fields_and_never_claims_execution(self):
         value = summarize(self.event(), 'live')
@@ -104,6 +127,31 @@ class FinalsDeliveryTests(unittest.TestCase):
         event['execution_id'] = 'other-run'
         with self.assertRaises(ValueError):
             summarize(event, 'live')
+
+    def test_display_fields_cannot_disagree_with_bound_evidence(self):
+        for target in ('policy', 'judge', 'evidence', 'confidence', 'prediction', 'mode'):
+            event = self.event()
+            if target == 'policy':
+                event['result']['policy'] = {'allowed': False, 'action': 'capture_evidence'}
+            elif target == 'judge':
+                event['result']['judge'] = {**event['result']['judge'], 'assessment': 'uncertain'}
+            elif target == 'evidence':
+                event['result']['evidence'][0]['similarity'] = .1
+            elif target == 'confidence':
+                event['confidence'] = .99
+            elif target == 'mode':
+                event['execution_mode'] = 'saved_prediction_retrieval_recomputed'
+            else:
+                event['prediction'] = event['result']['prediction'] = 0
+            with self.subTest(target=target), self.assertRaises(ValueError):
+                summarize(event, 'live')
+
+    def test_saved_mode_is_explicit_and_does_not_claim_new_execution(self):
+        event = self.event()
+        event['execution_mode'] = 'saved_prediction_retrieval_recomputed'
+        value = summarize(event, 'saved')
+        self.assertNotIn('execution_token', value)
+        self.assertFalse(value['network_executed_in_this_walkthrough'])
 
     def test_receipt_uses_nested_measurements_not_aggregate_keys(self):
         value = summarize_receipt({'action': 'auth_hardening', 'rules_applied': 2,
