@@ -1,0 +1,14 @@
+{
+  "name": "light-navy-blue-gold",
+  "navy": "#092B42",
+  "blue": "#105186",
+  "gray": "#F0F2F3",
+  "gold": "#FDB338",
+  "ink": "#171C1D",
+  "white": "#FFFFFF",
+  "muted": "#53666E",
+  "line": "#D6DDE0",
+  "blue_tint": "#EAF0F4",
+  "blue_muted": "#7294A9",
+  "gold_tint": "#FFF4DD"
+}

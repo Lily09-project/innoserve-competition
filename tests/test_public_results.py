@@ -131,7 +131,7 @@ class PublicResultsTests(unittest.TestCase):
                     resolved = theme_color.get("val")
                 else:
                     resolved = color.get("val")
-                self.assertIn(resolved, ("FFFFFF", "F2F7FC"))
+                self.assertIn(resolved, ("FFFFFF", "F0F2F3"))
 
     def test_current_documentation_and_movie_contract(self):
         from check_delivery_docs import audit

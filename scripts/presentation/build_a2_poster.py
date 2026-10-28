@@ -1,5 +1,6 @@
 """Build an editable A2 methods poster from validated recorded aggregates."""
 from pathlib import Path
+import json
 import re
 import sys
 
@@ -15,11 +16,12 @@ sys.path.insert(0, str(ROOT / 'scripts'))
 from validate_results import read_results, validate_results
 from finalize_delivery import normalize
 
-BLUE = '0070D1'
-INK = '121314'
-MUTED = '526477'
-PALE = 'EEF5FC'
-LINE = 'CCDCEB'
+PALETTE = json.loads((ROOT/'design-system/palette.json').read_text(encoding='utf-8'))
+BLUE, NAVY, GOLD = (PALETTE[key].lstrip('#') for key in ('blue', 'navy', 'gold'))
+INK = '171C1D'
+MUTED = '53666E'
+PALE = 'F0F2F3'
+LINE = 'D6DDE0'
 
 
 def build():
@@ -86,10 +88,10 @@ def build():
 
     def section(y, number, title):
         text(16, y, 12, 10, number, 20, BLUE, True)
-        text(31, y, 370, 10, title, 24, INK)
+        text(31, y, 370, 10, title, 24, NAVY)
 
     def module(x, y, number, title, image):
-        rect(x, y, 184, 91, 'F5F8FC', LINE)
+        rect(x, y, 184, 91, 'F0F2F3', LINE)
         rect(x, y, 184, 1.3, BLUE)
         text(x+8, y+5, 12, 10, number, 18, BLUE, True)
         text(x+23, y+5, 146, 10, title, 23)
@@ -104,7 +106,7 @@ def build():
 
     # Header: exact official title with print-safe margins.
     text(16, 15, 388, 8, '資安技術組決賽作品', 14, BLUE)
-    text(16, 24, 388, 46, '融合新型內容相依時序方向模型\n入侵偵測與任務導向檢索增強稽核\n之 AI 資安框架', 32)
+    text(16, 24, 388, 46, '融合新型內容相依時序方向模型\n入侵偵測與任務導向檢索增強稽核\n之 AI 資安框架', 32, NAVY)
     text(16, 73, 388, 10, '同一事件串起流量判定、案例證據與可回復的處置', 22, BLUE)
     line(16, 87, 404, 87)
     icon(1, 16, 94, 27)
@@ -133,7 +135,7 @@ def build():
     text(260, 289, 137, 12, '保留分類，附加稽核結論', 19)
     for j, label in enumerate(('支持', '複核', '不確定')):
         xx = 228+j*55
-        rect(xx, 308, 51, 15, 'E2EDF8')
+        rect(xx, 308, 51, 15, 'EAF0F4')
         text(xx, 308, 51, 15, label, 20, BLUE, align=PP_ALIGN.CENTER)
     text(228, 331, 168, 8, '複核與不確定事件保留監測或蒐證', 15, MUTED, align=PP_ALIGN.CENTER)
 
@@ -147,8 +149,8 @@ def build():
             arrow(xx+45, 312, 9, 5)
     text(24, 331, 168, 8, '同次執行回條綁定，規則到期撤銷', 15, MUTED, align=PP_ALIGN.CENTER)
     arrow(202, 291, 16, 8, MSO_SHAPE.LEFT_ARROW)
-    rect(16, 351, 388, 13, PALE)
-    text(20, 351, 380, 13, '同一事件識別碼：正式分類／案例證據／稽核結論／處置回條', 18, BLUE, align=PP_ALIGN.CENTER)
+    rect(16, 351, 388, 13, 'FFF4DD')
+    text(20, 351, 380, 13, '同一事件識別碼：正式分類／案例證據／稽核結論／處置回條', 18, NAVY, align=PP_ALIGN.CENTER)
 
     section(376, '02', '創新落在模型互補與證據銜接')
     innovations = [
@@ -169,8 +171,8 @@ def build():
         y = 476+i*17
         value = data['detection'][name]['macro_f1']*100
         text(16, y, 44, 10, name, 18, BLUE if i == 2 else INK, i == 2)
-        rect(64, y+2, 94, 6, 'E8EEF4')
-        rect(64, y+2, 94*value/100, 6, BLUE if i == 2 else '9DB5CA')
+        rect(64, y+2, 94, 6, 'F0F2F3')
+        rect(64, y+2, 94*value/100, 6, GOLD if i == 2 else '7294A9')
         text(161, y, 39, 10, f'{value:.2f}%', 21, BLUE if i == 2 else INK, i == 2, PP_ALIGN.RIGHT)
     text(16, 530, 184, 9, '融合判定 Accuracy 98.08%', 17, MUTED)
     text(16, 542, 184, 9, '比較使用相同資料與17類標籤', 15, MUTED)

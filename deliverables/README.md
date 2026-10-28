@@ -13,7 +13,7 @@
 | source/architecture.svg | 文字可編輯原稿 |
 | source/slides/ | 逐頁可編輯SVG |
 
-簡報與影片採白底、淺灰章節與藍色重點。所有數值取自results四份實測彙整；動畫拓樸為方法說明，隔離驗證效果為TCP測試交易與回條。交付內容保持匿名。簡報第2頁內嵌影片，並保留獨立MP4備援；正式順序為第1頁封面、第2頁影片、第3至9頁方法與成果；第10至12頁供答詢。
+簡報與影片採白底、淺灰章節及深藍、中藍與金黃重點。所有數值取自results四份實測彙整；動畫拓樸為方法說明，隔離驗證效果為TCP測試交易與回條。交付內容保持匿名。簡報第2頁內嵌影片，並保留獨立MP4備援；正式順序為第1頁封面、第2頁影片、第3至9頁方法與成果；第10至12頁供答詢。
 
 簡報製作來源：scripts/presentation/editorial_assets.py；影片來源：media/film/scene.mjs及scripts/render_product_film.mjs。簡報PPTX以PPT Master原生DrawingML編譯，圖示為AI生成，流程與文字由Python排版。海報另由scripts/presentation/build_a2_poster.py使用python-pptx製作，經PowerPoint輸出與文字框檢查。詳見source/README.md與design-system/DESIGN.md。
 

@@ -16,6 +16,29 @@ from package_finals import ASSETS, asset_bytes
 
 
 class FinalsDeliveryTests(unittest.TestCase):
+    def test_user_palette_is_present_in_native_poster_and_slides(self):
+        colors = json.loads((ROOT / 'design-system/palette.json').read_text(encoding='utf-8'))
+        expected = {'navy': '#092B42', 'blue': '#105186', 'gray': '#F0F2F3', 'gold': '#FDB338', 'ink': '#171C1D'}
+        for key, value in expected.items():
+            self.assertEqual(colors[key], value)
+        for name in ('deliverables/決賽海報_AI資安框架_A2.pptx', 'deliverables/決賽簡報_AI資安框架.pptx'):
+            with zipfile.ZipFile(ROOT / name) as archive:
+                ns = {'a': 'http://schemas.openxmlformats.org/drawingml/2006/main'}
+                theme = ET.fromstring(archive.read('ppt/theme/theme1.xml'))
+                scheme = {}
+                for node in theme.find('.//a:clrScheme', ns):
+                    paint = list(node)[0]
+                    scheme[node.tag.rsplit('}', 1)[-1]] = paint.get('val') if paint.tag.endswith('srgbClr') else paint.get('lastClr')
+                resolved = set()
+                for path in archive.namelist():
+                    if path.startswith('ppt/slides/slide') and path.endswith('.xml'):
+                        slide = ET.fromstring(archive.read(path))
+                        resolved.update(c.get('val') for c in slide.findall('.//a:srgbClr', ns))
+                        resolved.update(scheme.get(c.get('val')) for c in slide.findall('.//a:schemeClr', ns))
+                for color in expected.values():
+                    self.assertIn(color.lstrip('#'), resolved, name)
+                self.assertNotIn('0070D1', resolved)
+
     def test_offline_package_matches_deliverables_and_excludes_private_data(self):
         with zipfile.ZipFile(ROOT / 'deliverables/決賽離線展示包.zip') as archive:
             self.assertEqual(set(archive.namelist()), set(ASSETS) | {'使用說明.txt', 'SHA256SUMS.txt'})
