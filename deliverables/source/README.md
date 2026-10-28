@@ -10,8 +10,10 @@ AI圖示prompt：transparent background; four isolated evenly spaced icons: netw
 
 製作方式：內建image_gen，生成2026-10-28。架構圖參考Nature圖表指南的整齊分區、可編輯標籤與清楚閱讀順序，投影版放大字體，使用原創資安圖像。品牌視覺依使用者指定的淺色底與藍色重點設計轉譯，不含PlayStation商標或SST專有字型。
 
-正式成片：30秒、2倍速、1080p／24fps。原始程式時間軸以60秒定義，輸出時直接採樣至30秒，並非交付60秒影片。簡報保留9頁；第3頁與本架構SVG採同一排版來源，第4頁雙模型明確並行。
+正式成片：30秒、2倍速、1080p／24fps。原始程式時間軸以60秒定義，輸出時直接採樣至30秒，並非交付60秒影片。簡報共12頁，前9頁為正式報告、後3頁為答詢備用；第3頁與本架構SVG採同一排版來源，第4頁雙模型明確並行。
 
 presentation-design-spec.md與presentation-spec-lock.md描述PPT Master製作專案，其中images/指製作工作目錄，editorial_assets.py會同步圖示。交付的slides/另使用相對路徑引用上層icon，直接開啟SVG即可查看。
 
-PPT匯出後以scripts/presentation/finalize_delivery.py設定原生Latin字型Times New Roman及East Asian字型DFKai-SB（標楷體）；SVG同一文字框以tspan分段呈現。影片預留頁為第2頁，封面後先展示，尚未嵌入影片。影片本身的字型維持原版。
+PPT匯出後以scripts/presentation/finalize_delivery.py設定原生Latin字型Times New Roman及East Asian字型DFKai-SB（標楷體）；SVG同一文字框以tspan分段呈現。內嵌影片頁為第2頁，封面後先展示，影片已內嵌。影片同步使用標楷體與Times New Roman。
+
+完整製作順序：PPT Master匯出靜態原生頁→finalize_delivery.py設定字型→embed_opening_film.ps1以PowerPoint內嵌30秒影片至第2頁→finalize_delivery.py再次確認字型並清除作者中繼資料。第2頁SVG是版面來源，實際MP4由包裝步驟加入，不以外部連結播放。影片與PPT均有結束畫面。

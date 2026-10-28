@@ -1,17 +1,17 @@
 {
-  "base_revision": "efc1eed",
+  "base_revision": "330d21a",
   "files": {
     "deliverables/決賽簡報_AI資安框架.pptx": {
-      "bytes": 839788,
-      "sha256": "33be7e66bdc698b7bddeda30d2ca87f288b8eac8dc2565f6f4ee1fd20ad0bdc2"
+      "bytes": 2249304,
+      "sha256": "a8ba6a01e96f52b22f79b588531f1ba91cd49a4522f719c7da1092df35b0f4b6"
     },
     "deliverables/決賽簡報_AI資安框架.pdf": {
-      "bytes": 4256496,
-      "sha256": "f36b3320b64e7ee9ef1ab1e10b9705b04e2a392087143c1cc178e0cf8385662c"
+      "bytes": 405494,
+      "sha256": "27acfb4ef739b5a2b7078d7f8bfc072d8afbc5443faeb4d7f65375c94db0666a"
     },
     "deliverables/AI資安框架_系統展示影片_30秒快版.mp4": {
-      "bytes": 1106216,
-      "sha256": "cef014140e875440b9dab5b25a2d35128773f9d79d19ec1efb81038bc0d11044"
+      "bytes": 1281365,
+      "sha256": "4b6f19fdc443af78a7414929d560701b8ebc153c305470a04b45e74951c0c5b7"
     },
     "deliverables/figures/fig_architecture.png": {
       "bytes": 322390,
@@ -22,7 +22,7 @@
       "sha256": "873344163eb76825d0cf82fd409466fe138c8c991beba501fe95a616b634a729"
     }
   },
-  "slides": 9,
+  "slides": 12,
   "talk_budget_seconds": 300,
   "film_seconds": 30,
   "film_speed": 2,
@@ -42,10 +42,10 @@
   ],
   "python_tests": 29,
   "website": "removed; API-only",
-  "review": "actual PowerPoint nine-page graphical layout and static package verified; video unchanged",
+  "review": "Independent review passed: 12 actual PowerPoint pages, sampled film frames and corrected six-diagram Q&A; embedded media identity and autoplay verified",
   "results_changed": false,
   "markdown_documents": 15,
-  "local_links_checked": 23,
+  "local_links_checked": 25,
   "presentation_limit_seconds": 360,
   "buffer_seconds": 60,
   "visual_theme": "light canvas: white, pale gray and blue emphasis",
@@ -60,11 +60,25 @@
   "live_audit_source": "current delivered API source; not a previously running checkout",
   "fresh_audit_status": "passed",
   "video_slot_slide": 2,
-  "video_embedded": false,
+  "video_embedded": true,
   "slide_transitions": false,
-  "object_animations": false,
+  "object_animations": "none except slide 2 media playback timing",
   "auto_advance": false,
   "ppt_cjk_font": "DFKai-SB",
   "ppt_latin_font": "Times New Roman",
-  "presentation_order": "cover, reserved film slot, framework, detection, retrieval/audit, control, detection results, audit results, conclusion"
+  "presentation_order": "cover, embedded 30-second film, framework, detection, retrieval/audit, control, results, conclusion; three Q&A appendix slides",
+  "video_external_links": false,
+  "video_autoplay": true,
+  "video_loop": false,
+  "video_full_bleed": true,
+  "film_has_ending": true,
+  "film_ending_seconds": 1.5,
+  "ppt_has_ending": true,
+  "playback_verified": "PowerPoint position advances and remains on slide 2 after 35 seconds",
+  "formal_slides": 9,
+  "qa_slides": 3,
+  "qa_questions": 6,
+  "qa_start_slide": 10,
+  "qa_in_formal_talk": false,
+  "qa_presentation": "six diagrams with evidence; prose answers in speaker notes"
 }

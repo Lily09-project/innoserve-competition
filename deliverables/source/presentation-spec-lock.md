@@ -49,6 +49,7 @@
 - footer: 14
 - card_title: 32
 - display: 56
+- qa_metric: 38
 
 ## icons
 
@@ -66,6 +67,9 @@
 - P07: breathing
 - P08: breathing
 - P09: anchor
+- P10: dense
+- P11: dense
+- P12: dense
 
 ## pptx_structure
 

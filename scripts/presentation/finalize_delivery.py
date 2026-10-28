@@ -23,6 +23,11 @@ def normalize(source,target):
                         child.set("typeface",font)
                     changed+=1
                 content=ET.tostring(root,encoding="UTF-8",xml_declaration=True,standalone=True)
+            if info.filename=="docProps/core.xml":
+                root=ET.fromstring(content)
+                for node in root:
+                    if node.tag.rsplit("}",1)[-1] in {"creator","lastModifiedBy"}:node.text=""
+                content=ET.tostring(root,encoding="UTF-8",xml_declaration=True,standalone=True)
             delivery.writestr(info,content)
     print("Normalized native font properties:",changed)
 

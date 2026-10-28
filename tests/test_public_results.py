@@ -49,7 +49,7 @@ class PublicResultsTests(unittest.TestCase):
                     )
                 )
             ]
-            self.assertGreaterEqual(len(xml), 18)
+            self.assertGreaterEqual(len(xml), 24)
             text = "".join(xml)
             for obsolete in ("96.76%", "94.25%", "95.83%", "鏡像流量，免改"):
                 self.assertNotIn(obsolete, text)
@@ -60,13 +60,19 @@ class PublicResultsTests(unittest.TestCase):
                 for name in archive.namelist()
                 if name.endswith(".mp4")
             ]
-            self.assertEqual(len(movies), 0)
+            self.assertEqual(len(movies), 1)
+            self.assertEqual(movies[0], film.read_bytes())
             slot = archive.read("ppt/slides/slide2.xml").decode("utf-8")
-            self.assertIn("產品方法動畫", slot)
-            self.assertEqual(len([n for n in archive.namelist() if n.startswith("ppt/slides/slide") and n.endswith(".xml")]), 9)
-            for name in archive.namelist():
-                if name.endswith(".rels"):
-                    self.assertNotIn("relationships/video", archive.read(name).decode("utf-8"))
+            self.assertIn("OpeningFilm_30s_Embedded", slot)
+            self.assertIn("playFrom(0.0)", slot)
+            self.assertEqual(len([n for n in archive.namelist() if n.startswith("ppt/slides/slide") and n.endswith(".xml")]), 12)
+            relationships = archive.read("ppt/slides/_rels/slide2.xml.rels").decode("utf-8")
+            self.assertIn("relationships/video", relationships)
+            self.assertNotIn('TargetMode="External"', relationships)
+            ending = archive.read("ppt/slides/slide9.xml").decode("utf-8")
+            self.assertIn("感謝聆聽", ending)
+            appendix="".join(archive.read(f"ppt/slides/slide{i}.xml").decode("utf-8") for i in range(10,13))
+            for question in range(1,7):self.assertIn(f"Q{question}",appendix)
             self.assertGreater(film.stat().st_size, 100_000)
 
     def test_method_animation_has_no_fabricated_outputs(self):
@@ -99,10 +105,17 @@ class PublicResultsTests(unittest.TestCase):
                     self.assertIn(value.split(":", 1)[0], namespaces)
             ns = {"p": "http://schemas.openxmlformats.org/presentationml/2006/main",
                   "a": "http://schemas.openxmlformats.org/drawingml/2006/main"}
-            for number in range(1, 10):
+            for number in range(1, 13):
                 slide = ET.fromstring(archive.read(f"ppt/slides/slide{number}.xml"))
                 self.assertIsNone(slide.find("p:transition", ns))
-                self.assertIsNone(slide.find("p:timing", ns))
+                timing = slide.find("p:timing", ns)
+                if number == 2:
+                    self.assertIsNotNone(timing)
+                    self.assertEqual(len(timing.findall(".//p:video", ns)), 1)
+                    self.assertIsNone(timing.find(".//p:anim", ns))
+                    self.assertIsNone(timing.find(".//p:animMotion", ns))
+                else:
+                    self.assertIsNone(timing)
                 for run in slide.findall(".//a:r", ns):
                     properties = run.find("a:rPr", ns)
                     self.assertIsNotNone(properties)
