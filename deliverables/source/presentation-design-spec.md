@@ -8,7 +8,7 @@
 | --- | --- |
 | Project Name | Finals Editorial |
 | Canvas Format | PPT 16:9, 1280×720 |
-| Page Count | 9 |
+| Page Count | 12 |
 | Primary Language | zh-TW |
 | Target Audience | 資安技術組決賽評審 |
 | Communication Intent | 以圖形說明創新方法及已量測效果 |
@@ -23,7 +23,7 @@
 | Generation Mode | continuous |
 | Spec Refinement | disabled |
 | Speaker Notes | enabled — workflow default |
-| Custom Animations | disabled；所有換頁及物件動畫關閉；影片第2頁預留，未嵌入 |
+| Custom Animations | disabled for decoration；第二頁全幅內嵌影片保留媒體播放時序，其他頁面靜態 |
 | Narration Audio | disabled — workflow default |
 | Created Date | 2026-10-28 |
 
@@ -90,6 +90,7 @@
 | Footer | 14 |
 | Card title | 32 |
 | Display | 56 |
+| Q&A evidence metric | 38 |
 
 ## V. Layout Principles
 
@@ -136,8 +137,8 @@
 - **Composition**: 淺色16:9空間與置中播放提示
 - **Geometry signature**: 一個事件，走完完整流程 → 淺色16:9空間與置中播放提示 → 淺色原生形狀與藍色連線。
 - **Title**: 一個事件，走完完整流程
-- **Core message**: 保留16:9影片位置，產品方法動畫30秒、2倍速，先不嵌入影片。
-- **Content**: 保留16:9影片位置，產品方法動畫30秒、2倍速，先不嵌入影片。
+- **Core message**: 保留16:9全幅影片，產品方法動畫30秒、2倍速，以內嵌MP4播放。
+- **Content**: 保留16:9全幅影片，產品方法動畫30秒、2倍速，以內嵌MP4播放。
 - **Fact IDs**: results/detection_17class.json; results/retrieval_17class.json; results/local_judge_17class.json; results/framework_validation.json
 
 #### Slide 03 - 一個框架，四個連續階段
@@ -226,15 +227,56 @@
 - **Content**: 17類真實張量與6種隔離情境，事件ID串起分類、證據與回條。
 - **Fact IDs**: results/detection_17class.json; results/retrieval_17class.json; results/local_judge_17class.json; results/framework_validation.json
 
+#### Slide 10 - 答詢備用 1
+
+- **Audience move**: 以既有證據回答評審提問。
+- **Relationships**: contrast / membership：兩個獨立問題各以圖解與證據回答。
+- **Topology**: no
+- **Composition**: 上下雙問題圖解：事件鏈、集合切分、誤判分支、驗證範圍與本機部署圖；右側突出證據。
+- **Geometry signature**: 問題 → 流程／分支圖解 → 證據標籤。
+- **Title**: 答詢備用 1
+- **Content**: 創新在哪裡？與一般 IDS 加上 RAG 有何不同？ 如何證明前段判斷與後段處置已經串起來？
+- **Fact IDs**: results/detection_17class.json; results/retrieval_17class.json; results/local_judge_17class.json; results/framework_validation.json
+
+#### Slide 11 - 答詢備用 2
+
+- **Audience move**: 以既有證據回答評審提問。
+- **Relationships**: contrast / membership：兩個獨立問題各以圖解與證據回答。
+- **Topology**: no
+- **Composition**: 上下雙問題圖解：事件鏈、集合切分、誤判分支、驗證範圍與本機部署圖；右側突出證據。
+- **Geometry signature**: 問題 → 流程／分支圖解 → 證據標籤。
+- **Title**: 答詢備用 2
+- **Content**: 評估資料如何切分？案例庫是否洩漏測試答案？ AI 若支持錯誤判斷，如何避免直接誤封？
+- **Fact IDs**: results/detection_17class.json; results/retrieval_17class.json; results/local_judge_17class.json; results/framework_validation.json
+
+#### Slide 12 - 答詢備用 3
+
+- **Audience move**: 以既有證據回答評審提問。
+- **Relationships**: contrast / membership：兩個獨立問題各以圖解與證據回答。
+- **Topology**: no
+- **Composition**: 上下雙問題圖解：事件鏈、集合切分、誤判分支、驗證範圍與本機部署圖；右側突出證據。
+- **Geometry signature**: 問題 → 流程／分支圖解 → 證據標籤。
+- **Title**: 答詢備用 3
+- **Content**: 6/6 是否代表各種真實攻擊都能完全防住？ 如何部署、保護資料，並接到既有環境？
+- **Fact IDs**: results/detection_17class.json; results/retrieval_17class.json; results/local_judge_17class.json; results/framework_validation.json
+
 ## X. Speaker Notes Requirements
 
 - **Generation**: enabled
 - **Filename**: match SVG names under notes/
-- **Content**: 正式口語；第2頁預留播放30秒，不另加講解。
+- **Content**: 正式口語；第2頁全幅內嵌播放30秒，不另加講解。
 - **Total duration**: 260秒口述＋30秒影片＋10秒正常操作＝5分鐘；另留1分鐘緩衝。
 - **Notes style**: 繁體中文。
-- **Transitions**: none；manual advance；所有頁面無p:transition或p:timing。
+- **Transitions**: none；manual advance；所有頁面無p:transition；第2頁僅保留影片播放timing，其他頁面無物件動畫。
 
 ## XI. Script-specific fonts
 
-中文及中文標點使用標楷體DFKai-SB；英文、數字與其他符號使用Times New Roman，混合文字在同一文字框依字元分段。影片預留頁置於封面後，第2頁，影片不嵌入。
+中文及中文標點使用標楷體DFKai-SB；英文、數字與其他符號使用Times New Roman，混合文字在同一文字框依字元分段。影片預留頁置於封面後，第2頁，影片以內嵌MP4置入，進入第2頁自動播放一次，結束停留該頁。
+
+## XII. Embedded opening film
+
+第2頁原生內嵌30秒H.264影片，自動播放一次，不循環且不自動換頁。封面後先展示動畫；第9頁為結束頁並保留完整作品價值與答詢提示。影片最後1.5秒獨立結束畫面，兩倍速及30秒總長維持。
+
+## XIII. Q&A appendix
+
+第1至9頁為五分鐘正式報告，第9頁結束；第10至12頁每頁兩題，共六題，只於七分鐘答詢依提問切換，不納入正式講述時間。正文與備詢均以圖解呈現，詳細口語答案放講者備忘稿。問題與答案依實測範圍，不將TCP驗證解讀成原生攻擊防禦率。
