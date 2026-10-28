@@ -1,0 +1,6 @@
+{
+  "cjk": "DFKai-SB",
+  "latin": "Times New Roman",
+  "cjk_pattern": "[\\u2E80-\\u2FFF\\u3000-\\u303F\\u3100-\\u312F\\u31A0-\\u31BF\\u3400-\\u4DBF\\u4E00-\\u9FFF\\uF900-\\uFAFF\\uFF01-\\uFF0F\\uFF1A-\\uFF20\\uFF3B-\\uFF40\\uFF5B-\\uFF65]",
+  "rule": "Chinese characters and Chinese punctuation use DFKai-SB; Latin letters, numerals and other supported symbols use Times New Roman."
+}

@@ -1,30 +1,24 @@
-"""Build original light-canvas/blue presentation art from verified results.
-
-Python composes the architecture; AI supplies only four text-free icon cutouts.
-All diagram labels remain editable SVG text. No generated experimental values.
-"""
+"""Build light-canvas presentation art with the shared flat icon and font system."""
 from pathlib import Path
 from html import escape
 import json
 from PIL import Image
+from style_contract import TYPOGRAPHY, font_runs, icon_fragment
 
 ROOT = Path(__file__).resolve().parents[2]
 DEST = ROOT / 'deliverables/source'
 PROJECT = ROOT / 'projects/finals_editorial_ppt169_20261028'
 PALETTE = json.loads((ROOT/'design-system/palette.json').read_text(encoding='utf-8'))
 BLUE, NAVY, GOLD = (PALETTE[key] for key in ('blue', 'navy', 'gold'))
-FONT = 'Times New Roman'
-CJK_FONT = 'DFKai-SB'
+FONT = TYPOGRAPHY['latin']
+CJK_FONT = TYPOGRAPHY['cjk']
 PAGE_NUMBERS = {1:1, 6:2, 2:3, 3:4, 4:5, 5:6, 7:7, 8:8, 9:9}
 SY, OY = 1, 0
 
 
 def text(x, y, value, size=26, color='#171C1D', weight=400, anchor='start'):
-    import re
     runs=[]
-    for part in re.split(r'([\u2E80-\u9FFF\uF900-\uFAFF\u3000-\u303F\uFF00-\uFFEF]+)',str(value)):
-        if not part:continue
-        family=CJK_FONT if re.fullmatch(r'[\u2E80-\u9FFF\uF900-\uFAFF\u3000-\u303F\uFF00-\uFFEF]+',part) else FONT
+    for part, family in font_runs(value):
         runs.append(f'<tspan font-family="{family}">{escape(part)}</tspan>')
     return f'<text x="{x}" y="{y*SY+OY}" font-size="{size}" fill="{color}" font-weight="{weight}" text-anchor="{anchor}">{"".join(runs)}</text>'
 
@@ -38,7 +32,9 @@ def svg(body, height=720, bg='#FFFFFF'):
 
 
 def image(x, y, w, h, file):
-    return f'<image x="{x}" y="{y*SY+OY}" width="{w}" height="{h*SY}" href="../images/{file}" preserveAspectRatio="xMidYMid meet"/>'
+    index = int(file.rsplit('-', 1)[1].split('.')[0])-1
+    name = ('network', 'model', 'retrieval', 'shield')[index]
+    return f'<g transform="translate({x} {y*SY+OY}) scale({w/64} {h*SY/64})">{icon_fragment(name)}</g>'
 
 
 def split_icons():
@@ -70,11 +66,11 @@ def architecture(save=True):
         return f'<path d="{d}" fill="none" stroke="{color}" stroke-width="2"{dash}/><path d="{tip}" fill="none" stroke="{color}" stroke-width="2"/>'
     s=rect(16,16,226,205,'#F0F2F3',8,'#D6DDE0')
     s+=text(34,48,'a  流量表徵',24,BLUE,600)+image(190,20,34,34,'icon-1.png')
-    s+=text(34,97,'真實前處理張量',21)+text(34,142,'封包內容',22)+text(34,174,'時間差・方向',22)
-    s+=text(34,204,'遮罩欄位・流量切窗',20,'#53666E')
+    s+=text(34,97,'真實前處理張量',21)+text(34,142,'封包內容',22)+text(34,174,'時間差·方向',22)
+    s+=text(34,204,'遮罩欄位·流量切窗',20,'#53666E')
     s+=rect(266,16,998,205,'#F0F2F3',8,'#D6DDE0')
     s+=image(282,22,36,36,'icon-2.png')+text(328,48,'b  互補模型與 17 類判定',24,BLUE,600)
-    for y,title,sub in [(70,'CTBM','內容・時間差・方向'),(148,'PBCNN','短窗位元組模式')]:
+    for y,title,sub in [(70,'CTBM','內容·時間差·方向'),(148,'PBCNN','短窗位元組模式')]:
         s+=rect(292,y,300,60,'#FFFFFF',8,'#D6DDE0')+text(310,y+26,title,24,weight=600)+text(310,y+50,sub,20)
     s+=rect(660,90,278,90,'#FFFFFF',8,'#D6DDE0')+text(682,123,'校準＋OOF Gate',24,weight=600)+text(682,160,'依事件證據融合',22)
     s+=rect(966,90,276,90,'#FFFFFF',8,'#D6DDE0')+text(986,123,'17 類正式判定',24,weight=600)+text(986,160,'512 維表徵＋17 維機率',20)
@@ -84,7 +80,7 @@ def architecture(save=True):
     for x,w,title,sub in [(40,190,'529 維任務向量','L2 正規化'),(260,244,'Top-5 相似案例','僅訓練資料案例庫'),(540,292,'本機 AI 稽核','支持／複核／不確定')]:
         s+=rect(x,340,w,82,'#FFFFFF',8,'#D6DDE0')+text(x+14,374,title,22,weight=600)+text(x+14,405,sub,20)
     s+=route([(1104,180),(1104,249),(5,249),(5,381),(40,381)])
-    s+=text(620,240,'正式類別・信心・模型表徵',22,anchor='middle')
+    s+=text(620,240,'正式類別·信心·模型表徵',22,anchor='middle')
     s+=route([(230,381),(260,381)])+route([(504,381),(540,381)])
     s+=text(380,454,'訓練案例庫',20,'#53666E',anchor='middle')+route([(380,434),(380,422)],'#53666E',True)
     s+=text(554,454,'稽核保留正式分類',20,'#53666E')
@@ -170,10 +166,8 @@ def graphic_page(n,title,body,kicker='METHOD',role='content',bg='#FFFFFF'):
 
 def build_pages(limit=12):
     global SY, OY
-    import json,shutil
+    import json
     out=PROJECT/'svg_output';out.mkdir(parents=True,exist_ok=True)
-    imgs=PROJECT/'images';imgs.mkdir(exist_ok=True)
-    for i in range(1,5):shutil.copy2(DEST/f'icon-{i}.png',imgs/f'icon-{i}.png')
     detector=json.loads((ROOT/'results/detection_17class.json').read_text(encoding='utf-8'))
     pages=[]
     # P01: formal name plus a compact, connected product chain.
@@ -198,7 +192,7 @@ def build_pages(limit=12):
         s+=text(86,y,label,24)+rect(196,y-24,66,30,'#EAF0F4',4)
         for z in range(4):s+=rect(202+z*13,y-18,7,18 if j!=1 else 8+z*3,BLUE,1)
     s+=arrow([(284,365),(328,365),(328,270),(370,270)])+arrow([(328,365),(328,455),(370,455)])
-    s+=rect(370,196,340,148)+image(390,211,82,82,'icon-2.png')+text(492,240,'CTBM',32,BLUE,600)+text(492,278,'內容・時序・方向',21)+text(394,323,'讀取流量的時序關係',21,'#53666E')
+    s+=rect(370,196,340,148)+image(390,211,82,82,'icon-2.png')+text(492,240,'CTBM',32,BLUE,600)+text(492,278,'內容·時序·方向',21)+text(394,323,'讀取流量的時序關係',21,'#53666E')
     s+=rect(370,381,340,148)+glyph('packet',394,398,70)+text(492,425,'PBCNN',32,BLUE,600)+text(492,465,'短窗位元組模式',21)+text(394,508,'補充局部內容特徵',21,'#53666E')
     s+=arrow([(710,270),(760,270),(760,365),(810,365)])+arrow([(710,455),(760,455),(760,365)])
     s+=rect(810,273,406,180,'#EAF0F4')+text(835,320,'校準＋OOF Gate',30,BLUE,600)+text(835,365,'依事件證據融合',25)+text(835,412,'形成同一次正式判定',23,'#53666E')
@@ -228,7 +222,7 @@ def build_pages(limit=12):
     pages.append(graphic_page(4,'把偵測表徵，變成可核對的證據',s,'EVIDENCE'))
     # P05: four object illustrations explain controlled execution and expiry.
     s=''
-    stages=[('政策檢查','範圍・允許動作・期限','shield'),('套用規則','受允許策略才執行','firewall'),('讀回驗證','核對規則與事件回條','document'),('到期回復','撤銷並確認服務恢復','clock')]
+    stages=[('政策檢查','範圍·允許動作·期限','shield'),('套用規則','受允許策略才執行','firewall'),('讀回驗證','核對規則與事件回條','document'),('到期回復','撤銷並確認服務恢復','clock')]
     for i,(label,detail,kind) in enumerate(stages):
         x=64+i*294
         s+=rect(x,195,270,257,'#EAF0F4' if i==0 else '#F0F2F3')
@@ -243,7 +237,7 @@ def build_pages(limit=12):
     # P06: native 16:9 movie frame; embedded in the packaging pass.
     s=rect(192,151,896,504,'#F0F2F3',8,'#D6DDE0')
     s+='<circle cx="640" cy="350" r="40" fill="#EAF0F4"/>'
-    s+=text(640,366,'▶',38,BLUE,400,'middle')+text(640,430,'產品方法動畫',32,'#171C1D',300,'middle')+text(640,476,'30 秒 · 2 倍速',23,'#53666E',400,'middle')
+    s+=text(640,360,'播放',25,BLUE,400,'middle')+text(640,430,'產品方法動畫',32,'#171C1D',300,'middle')+text(640,476,'30 秒 · 2 倍速',23,'#53666E',400,'middle')
     pages.append(graphic_page(6,'一個事件，走完完整流程',group('video-slot',s),'METHOD FILM'))
     # P07: genuine zero-baseline comparison. Plot domain 0..100, x=200..850.
     s=text(64,180,'相同 18,998 筆封存測試 · Macro-F1',24,'#53666E')

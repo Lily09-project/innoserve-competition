@@ -54,7 +54,7 @@
 
 ## icons
 
-- library: original transparent PNG and native editable line art
+- library: shared flat vector icons and native editable line art
 - inventory: network topology, model chip, case retrieval, audit document, policy shield, packet, vector, firewall, readback, expiry clock and assessment states
 
 ## page_rhythm
@@ -77,11 +77,6 @@
 - mode: flat
 
 ## images
-
-- icon1: images/icon-1.png | source=slice | crop=no-crop
-- icon2: images/icon-2.png | source=slice | crop=no-crop
-- icon3: images/icon-3.png | source=slice | crop=no-crop
-- icon4: images/icon-4.png | source=slice | crop=no-crop
 
 ## forbidden
 

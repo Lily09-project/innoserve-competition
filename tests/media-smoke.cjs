@@ -13,6 +13,12 @@ const assert = require('node:assert/strict');
   assert.ok(frameSvg(24).includes('#092B42'), 'gold highlights use dark navy labels');
   assert.equal(chapters.find(c=>c.title==='實測成果').at,52, 'results receive 2.5 seconds at 2x');
   assert.ok(frameSvg(51.5).includes('到期回復'), 'recovery remains visible before the results cut');
+  for(const label of ['正常使用者','異常來源','核心交換器','策略閘道','應用服務','IDS','Top-5','AI Judge','CTBM','PBCNN','校準＋OOF Gate']){
+    const document = new JSDOM(frameSvg(24), {contentType:'image/svg+xml'}).window.document;
+    const node = [...document.querySelectorAll('text')].find(text=>text.textContent===label);
+    assert.ok(node, `missing label: ${label}`);
+    assert.equal(node.getAttribute('text-anchor'),'middle',`label must be explicitly centered: ${label}`);
+  }
   for (const t of [...chapters.map(c => c.at + 1), 59.9]) {
     const source = frameSvg(t);
     assert.equal(source, frameSvg(t), 'frames must be deterministic');

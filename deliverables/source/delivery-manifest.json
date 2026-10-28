@@ -1,37 +1,37 @@
 {
-  "base_revision": "bd92338",
+  "base_revision": "a6958fa",
   "files": {
     "deliverables/決賽簡報_AI資安框架.pptx": {
-      "bytes": 2300440,
-      "sha256": "23c533f2fb62c52db658acfc8d0ce488168fac6bed862cc20c6961079e7901c0"
+      "bytes": 1625083,
+      "sha256": "3ec3d39dac8e5e130275fff6f724d579f73320f69e5f247f010bd248f6368c6f"
     },
     "deliverables/決賽簡報_AI資安框架.pdf": {
-      "bytes": 551115,
-      "sha256": "36554b07b9e87bc7f73b1b198bc5dca347d033360b95417e6eaa7c23b83aac37"
+      "bytes": 480318,
+      "sha256": "7bc9effc6fda6f7a67126d0d28a9df79be0bb8b9adcda6b9da3488f009f1b53e"
     },
     "deliverables/AI資安框架_系統展示影片_30秒快版.mp4": {
-      "bytes": 1323584,
-      "sha256": "5ba0e786d169a974eb42c0905e11b43b33869ff43d5f88a8fdd2104308667976"
+      "bytes": 1352613,
+      "sha256": "79aeac1f03506cd177eb466cbe5ce678036d2f5e1b306b559a8bc1b95bd01984"
     },
     "deliverables/figures/fig_architecture.png": {
-      "bytes": 324231,
-      "sha256": "a6ab452094051155decfc96918c5d3dcaf9a1b02f07bfc3eda9b3bae45b3240e"
+      "bytes": 307476,
+      "sha256": "3c583b8bc89579e3caa9021312b1f77af47f33bdde6108695d728049700c5e75"
     },
     "deliverables/source/architecture.svg": {
-      "bytes": 9181,
-      "sha256": "28aaf7bd717424fac80e78bcce537625d8c77d7c85305b3a73ef54c2929b3e01"
+      "bytes": 10851,
+      "sha256": "e99352554b800b2544969762ed91adaf067a81a6a3efe3efa39560a13a8aea2c"
     },
     "deliverables/決賽海報_AI資安框架_A2.pptx": {
-      "bytes": 817688,
-      "sha256": "8846c5f6ca77062b952d46af8987acb611f149313438d104163bd7a881abbda8"
+      "bytes": 138953,
+      "sha256": "ed2c8d8ceffef5040bf85b17482ef9f7955111fecfb9ec349ef8c01ded86f3ad"
     },
     "deliverables/決賽海報_AI資安框架_A2.pdf": {
-      "bytes": 235692,
-      "sha256": "a1fc379f05878795581c3cf2ecc2d781daac1ba0ef11d7f393fd229ed790280a"
+      "bytes": 219982,
+      "sha256": "25ff186d9497d83acb268013b2f3620e8b5fd51c05b9ebd201e59229f4047385"
     },
     "deliverables/決賽離線展示包.zip": {
-      "bytes": 4937222,
-      "sha256": "23c90aa37ef94fb8bc7099316ba76a2656b62c9d558a01d87124c851ad8605b3"
+      "bytes": 3456093,
+      "sha256": "7565b5b5fc1dd0f71eb07c8821872804229429b1a12a6077d9517418580e2059"
     }
   },
   "slides": 12,
@@ -52,12 +52,12 @@
     2560,
     1072
   ],
-  "python_tests": 45,
+  "python_tests": 49,
   "website": "removed; API-only",
-  "review": "Current native PowerPoint playback and all 12 pages checked; independent 27-frame/PPT/poster review and follow-up closed all blocking findings",
-  "results_changed": true,
+  "review": "Independent final review of 12 native slide outputs, A2 poster and 27 encoded film frames: no visual blocking findings; native playback remains unverified in the scheduled session",
+  "results_changed": false,
   "markdown_documents": 20,
-  "local_links_checked": 42,
+  "local_links_checked": 45,
   "presentation_limit_seconds": 360,
   "buffer_seconds": 60,
   "visual_theme": "white and light gray canvas; navy titles, medium blue diagrams, gold highlights, ink body",
@@ -86,14 +86,14 @@
   "film_has_ending": true,
   "film_ending_seconds": 1.5,
   "ppt_has_ending": true,
-  "playback_verified": "PowerPoint position advances and remains on slide 2 after 35 seconds",
+  "playback_verified": "Previous release played successfully; current scheduled session failed to advance both prior and current media. Current H.264 fully decoded (720 frames); embedded bytes match external MP4. Interactive workstation playback must be checked.",
   "formal_slides": 9,
   "qa_slides": 3,
   "qa_questions": 6,
   "qa_start_slide": 10,
   "qa_in_formal_talk": false,
   "qa_presentation": "six diagrams with evidence; prose answers in speaker notes",
-  "visual_revision": "Larger film captions and devices, 2.5-second results hold, refined poster hero and concise opening/closing notes; same light navy-blue-gold palette",
+  "visual_revision": "Shared palette, flat vector icons and exact two-font declarations; 299 rendered text anchors corrected to left, center or right guides; symmetric poster groups and explicitly centered film labels",
   "poster": {
     "format": "A2 portrait",
     "width_mm": 420,
@@ -136,5 +136,21 @@
   "source_revision": "73581af75ca638a816429727adf96a8ccc0aa356393c84ba475716432442318f",
   "film_results_seconds": 2.5,
   "local_judge_parser_regression_cases": 463,
-  "local_judge_parser_assessment_changes": 0
+  "local_judge_parser_assessment_changes": 0,
+  "font_scope": "All PPTX font declarations: slides, masters, layouts, notes and themes; DFKai-SB for CJK and Chinese punctuation, Times New Roman otherwise",
+  "shared_visual_sources": [
+    "design-system/palette.json",
+    "design-system/typography.json",
+    "design-system/icons.json"
+  ],
+  "alignment": {
+    "native_text_anchors": 299,
+    "tolerance_pt": 0.1,
+    "native_grid_checks": 12,
+    "film_chapters": 9,
+    "film_text_guides": 151,
+    "film_center_checks": 52,
+    "errors": 0
+  },
+  "current_native_playback_verified": false
 }
