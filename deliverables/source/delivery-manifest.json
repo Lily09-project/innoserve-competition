@@ -1,5 +1,5 @@
 {
-  "base_revision": "5a750de",
+  "base_revision": "2125e11",
   "files": {
     "deliverables/決賽簡報_AI資安框架.pptx": {
       "bytes": 2255646,
@@ -20,6 +20,18 @@
     "deliverables/source/architecture.svg": {
       "bytes": 9181,
       "sha256": "873344163eb76825d0cf82fd409466fe138c8c991beba501fe95a616b634a729"
+    },
+    "deliverables/決賽海報_AI資安框架_A2.pptx": {
+      "bytes": 817635,
+      "sha256": "022ff28ac62d50ed3859c3236b4ddb69e8a3e8bb884e913986546258fa7caa4c"
+    },
+    "deliverables/決賽海報_AI資安框架_A2.pdf": {
+      "bytes": 221791,
+      "sha256": "d7c95ca2690989080bc827b11811ade3803dd5bdcb6500fd35ed1eae8ae966a2"
+    },
+    "deliverables/決賽離線展示包.zip": {
+      "bytes": 4823211,
+      "sha256": "e441b4e7b02bc71a0beb9487051ceceb77c557e7500a2a6a841dfb03536b269c"
     }
   },
   "slides": 12,
@@ -40,12 +52,12 @@
     2560,
     1072
   ],
-  "python_tests": 29,
+  "python_tests": 34,
   "website": "removed; API-only",
   "review": "Current 12-page actual PowerPoint output visually checked; embedded video identity and playback checked; movie unchanged from independent reviewed version",
   "results_changed": false,
-  "markdown_documents": 15,
-  "local_links_checked": 25,
+  "markdown_documents": 19,
+  "local_links_checked": 37,
   "presentation_limit_seconds": 360,
   "buffer_seconds": 60,
   "visual_theme": "light canvas: white, pale gray and blue emphasis",
@@ -81,5 +93,26 @@
   "qa_start_slide": 10,
   "qa_in_formal_talk": false,
   "qa_presentation": "six diagrams with evidence; prose answers in speaker notes",
-  "visual_revision": "Illustrated native object explanations plus original transparent icons; consistent capability imagery and improved dataset label spacing"
+  "visual_revision": "Illustrated native object explanations plus original transparent icons; consistent capability imagery and improved dataset label spacing",
+  "poster": {
+    "format": "A2 portrait",
+    "width_mm": 420,
+    "height_mm": 594,
+    "pages": 1,
+    "fonts": "DFKai-SB and Times New Roman",
+    "pdf_fonts_embedded": true,
+    "text_overflow": 0,
+    "physical_print_proof": "requires actual print inspection"
+  },
+  "walkthrough": {
+    "anonymous_terminal": true,
+    "fresh_local_model_test": "SSH-Bruteforce",
+    "isolated_rules_applied": 2,
+    "background_success_rate": 1.0,
+    "recovery_success_rate": 1.0,
+    "rollback_integrity": true,
+    "same_execution_receipt_verified": true,
+    "saved_mode_verified": true,
+    "scope": "single-event tool acceptance; recorded aggregate metrics unchanged"
+  }
 }

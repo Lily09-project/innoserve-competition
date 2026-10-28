@@ -53,8 +53,8 @@
 
 ## icons
 
-- library: none
-- inventory: none
+- library: original transparent PNG and native editable line art
+- inventory: network topology, model chip, case retrieval, audit document, policy shield, packet, vector, firewall, readback, expiry clock and assessment states
 
 ## page_rhythm
 

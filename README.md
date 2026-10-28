@@ -4,6 +4,10 @@
 
 **[下載決賽簡報](deliverables/決賽簡報_AI資安框架.pptx)** · **[觀看／下載30秒方法動畫](deliverables/AI資安框架_系統展示影片_30秒快版.mp4)**
 
+**[A2海報印刷PDF](deliverables/決賽海報_AI資安框架_A2.pdf)** · **[海報可編輯PPTX](deliverables/決賽海報_AI資安框架_A2.pptx)**
+
+[下載離線簡報、影片與海報備援包](deliverables/決賽離線展示包.zip)
+
 ![決賽投影片預覽](deliverables/figures/slides-preview.png)
 
 [![播放30秒方法動畫](deliverables/figures/film-preview.png)](deliverables/AI資安框架_系統展示影片_30秒快版.mp4)
@@ -69,6 +73,10 @@ python scripts/import_local_assets.py --source PATH_TO_LOCAL_DELIVERY
 
 ## 展示交付
 
+- [決賽內容與數據基準](docs/決賽內容基準.md)
+- [本機匿名展示操作單](docs/本機展示操作單.md)
+- [展前驗收與備援](docs/展前驗收與備援.md)
+- [A2海報規格與重製](deliverables/source/poster-a2-spec.md)
 - [方法與現場答詢](docs/決賽展示與答詢.md)
 - [簡報及影片視覺規格](design-system/DESIGN.md)
 - [架構圖可編輯SVG](deliverables/source/architecture.svg)
