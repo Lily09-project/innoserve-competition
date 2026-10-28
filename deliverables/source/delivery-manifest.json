@@ -2,12 +2,12 @@
   "base_revision": "ec02496",
   "files": {
     "deliverables/決賽簡報_AI資安框架.pptx": {
-      "bytes": 829601,
-      "sha256": "9ffd0d21404719f96b2e94c7188135cc344d88a3ceee19f370e1bd893452f1a7"
+      "bytes": 838887,
+      "sha256": "36e8d009ed832dc3108838579dc935a5e7940f02a40d48403f3231cb036f65b4"
     },
     "deliverables/決賽簡報_AI資安框架.pdf": {
-      "bytes": 275525,
-      "sha256": "54ae1bb74bdb3215bbe61c88c5e3708251efd763199d6f95808b35026a296e8f"
+      "bytes": 4278687,
+      "sha256": "6a05cbc6d4b23eec3eae0c8c4278b9246c4118f5c58a882b9876fb9d98ef4db6"
     },
     "deliverables/AI資安框架_系統展示影片_30秒快版.mp4": {
       "bytes": 1106216,
@@ -22,7 +22,7 @@
       "sha256": "ad19dbd7c4630af8378e42bee14acc2344a17403e608003e019a5c39052be7b5"
     }
   },
-  "slides": 8,
+  "slides": 9,
   "talk_budget_seconds": 300,
   "film_seconds": 30,
   "film_speed": 2,
@@ -42,7 +42,7 @@
   ],
   "python_tests": 29,
   "website": "removed; API-only",
-  "review": "passed: actual PowerPoint pages and sampled video frames; no blocking findings",
+  "review": "actual PowerPoint nine-page graphical layout and static package verified; video unchanged",
   "results_changed": false,
   "markdown_documents": 15,
   "local_links_checked": 23,
@@ -58,5 +58,10 @@
   "model_lineage_checkpoints": 3,
   "maximum_live_saved_probability_delta": 0.00011988392251005564,
   "live_audit_source": "current delivered API source; not a previously running checkout",
-  "fresh_audit_status": "passed"
+  "fresh_audit_status": "passed",
+  "video_slot_slide": 6,
+  "video_embedded": false,
+  "slide_transitions": false,
+  "object_animations": false,
+  "auto_advance": false
 }

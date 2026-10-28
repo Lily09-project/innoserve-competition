@@ -45,6 +45,7 @@
 - title: 44
 - subtitle: 28
 - annotation: 18
+- support: 21
 - footer: 14
 - card_title: 32
 - display: 56
@@ -61,9 +62,10 @@
 - P03: anchor
 - P04: anchor
 - P05: anchor
-- P06: breathing
+- P06: anchor
 - P07: breathing
-- P08: anchor
+- P08: breathing
+- P09: anchor
 
 ## pptx_structure
 

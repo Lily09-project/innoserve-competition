@@ -49,7 +49,7 @@ class PublicResultsTests(unittest.TestCase):
                     )
                 )
             ]
-            self.assertGreaterEqual(len(xml), 16)
+            self.assertGreaterEqual(len(xml), 18)
             text = "".join(xml)
             for obsolete in ("96.76%", "94.25%", "95.83%", "鏡像流量，免改"):
                 self.assertNotIn(obsolete, text)
@@ -61,6 +61,12 @@ class PublicResultsTests(unittest.TestCase):
                 if name.endswith(".mp4")
             ]
             self.assertEqual(len(movies), 0)
+            slot = archive.read("ppt/slides/slide6.xml").decode("utf-8")
+            self.assertIn("產品方法動畫", slot)
+            self.assertEqual(len([n for n in archive.namelist() if n.startswith("ppt/slides/slide") and n.endswith(".xml")]), 9)
+            for name in archive.namelist():
+                if name.endswith(".rels"):
+                    self.assertNotIn("relationships/video", archive.read(name).decode("utf-8"))
             self.assertGreater(film.stat().st_size, 100_000)
 
     def test_method_animation_has_no_fabricated_outputs(self):
@@ -93,8 +99,10 @@ class PublicResultsTests(unittest.TestCase):
                     self.assertIn(value.split(":", 1)[0], namespaces)
             ns = {"p": "http://schemas.openxmlformats.org/presentationml/2006/main",
                   "a": "http://schemas.openxmlformats.org/drawingml/2006/main"}
-            for number in range(1, 9):
+            for number in range(1, 10):
                 slide = ET.fromstring(archive.read(f"ppt/slides/slide{number}.xml"))
+                self.assertIsNone(slide.find("p:transition", ns))
+                self.assertIsNone(slide.find("p:timing", ns))
                 fill = slide.find(".//p:bg/p:bgPr/a:solidFill", ns)
                 self.assertIsNotNone(fill)
                 color = list(fill)[0]
