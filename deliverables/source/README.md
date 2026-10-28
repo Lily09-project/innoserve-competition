@@ -5,6 +5,7 @@
 - security-icons-sheet.png：內建image_gen生成的原始圖示素材，並非實驗資料。
 - slides/：PPT Master逐頁SVG來源；native PowerPoint保留可編輯標籤、圖形及數值。
 - speaker-notes.md：正式講者備忘稿。
+- poster-a2-spec.md：A2直式海報尺寸、閱讀順序與印刷輸出規格；海報原生製作來源為scripts/presentation/build_a2_poster.py。
 
 AI圖示prompt：transparent background; four isolated evenly spaced icons: network flow switch, neural model chip, retrieval database with magnifier, shield with check and return arrow; no text/numerals/logos; white ceramic, satin pale gray, precise #0070D1 accents, publication-quality scientific illustration. Python僅裁出四個圖示與組合流程，未以AI產生數據、標籤或測試結論。
 

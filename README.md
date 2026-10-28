@@ -4,11 +4,15 @@
 
 **[下載決賽簡報](deliverables/決賽簡報_AI資安框架.pptx)** · **[觀看／下載30秒方法動畫](deliverables/AI資安框架_系統展示影片_30秒快版.mp4)**
 
+**[A2海報印刷PDF](deliverables/決賽海報_AI資安框架_A2.pdf)** · **[海報可編輯PPTX](deliverables/決賽海報_AI資安框架_A2.pptx)**
+
+[下載離線簡報、影片與海報備援包](deliverables/決賽離線展示包.zip)
+
 ![決賽投影片預覽](deliverables/figures/slides-preview.png)
 
 [![播放30秒方法動畫](deliverables/figures/film-preview.png)](deliverables/AI資安框架_系統展示影片_30秒快版.mp4)
 
-簡報採白底、淺灰章節與藍色重點，9頁正式報告說明方法與成果，結束頁後另附3頁、6題答詢備用；每頁附繁體中文講者備忘稿。中文使用標楷體，英文與數字使用Times New Roman。所有換頁特效及裝飾動畫已關閉，僅第二頁保留影片播放時序，第2頁內嵌16:9影片，自動播放一次。影片同時提供內嵌與獨立MP4交付，採網路拓樸與封包動畫說明方法，不需連線或網站即可播放。正式動畫為30秒、2倍速，計入五分鐘正式報告，另保留一分鐘緩衝，符合六分鐘上限。
+簡報採白底、淺灰章節及深藍、中藍與金黃重點，9頁正式報告說明方法與成果，結束頁後另附3頁、6題答詢備用；每頁附繁體中文講者備忘稿。中文使用標楷體，英文與數字使用Times New Roman。所有換頁特效及裝飾動畫已關閉，僅第二頁保留影片播放時序，第2頁內嵌16:9影片，自動播放一次。影片同時提供內嵌與獨立MP4交付，採網路拓樸與封包動畫說明方法，不需連線或網站即可播放。正式動畫為30秒、2倍速，計入五分鐘正式報告，另保留一分鐘緩衝，符合六分鐘上限。
 
 ## 架構與三項創新
 
@@ -69,6 +73,10 @@ python scripts/import_local_assets.py --source PATH_TO_LOCAL_DELIVERY
 
 ## 展示交付
 
+- [決賽內容與數據基準](docs/決賽內容基準.md)
+- [本機匿名展示操作單](docs/本機展示操作單.md)
+- [展前驗收與備援](docs/展前驗收與備援.md)
+- [A2海報規格與重製](deliverables/source/poster-a2-spec.md)
 - [方法與現場答詢](docs/決賽展示與答詢.md)
 - [簡報及影片視覺規格](design-system/DESIGN.md)
 - [架構圖可編輯SVG](deliverables/source/architecture.svg)
