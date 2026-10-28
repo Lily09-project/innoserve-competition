@@ -44,7 +44,7 @@
 - **Mode**: custom
 - **Mode Behavior**: 一頁一個主張，以方法流程引出實測結果。
 - **Visual style**: custom
-- **Visual Style Behavior**: 白底與淺灰章節，結語淺灰底#F0F2F3；輕量大標題、8px資訊面板、原創白藍AI圖示。
+- **Visual Style Behavior**: 白底與淺灰章節，結語淺灰底#F0F2F3；輕量大標題、8px資訊面板、共用平面向量圖示。
 - **Theme**: 相同事件的四階段延續。
 - **Tone**: 正式、簡潔、可核對。
 
@@ -65,8 +65,8 @@
 ### AI Image Strategy
 
 - **Image Rendering**: custom
-- **Image Rendering Behavior**: 白色陶瓷與精確藍色細節的原創圖示。
-- **Visual**: 四個透明圖示，Python排版，文字另層。
+- **Image Rendering Behavior**: 共用藍色線稿、白色與淺灰填色的平面圖示。
+- **Visual**: PPT採原生平面向量圖示，海報以相同向量來源輸出透明PNG，文字另層。
 - **Mood**: 專業技術產品。
 
 ## IV. Typography System
@@ -107,14 +107,12 @@
 | Icon Path | Suitable Scenarios |
 | --- | --- |
 
+原生圖示來源為design-system/icons.json，不依賴點陣圖；每個圖示以原生形狀編譯，沒有圖示內嵌文字。
+
 ## VIII. Image Resource List
 
 | Filename | Dimensions | Ratio | Purpose | Type | Image pattern | Crop Policy | Acquire Via | Status | Reference | text_policy | page_role |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| icon-1.png | 600×600 | 1:1 | 方法節點 | Illustrated icon | isolated diagram cue | no-crop | slice | Generated | security-icons-sheet.png | none | support |
-| icon-2.png | 600×600 | 1:1 | 方法節點 | Illustrated icon | isolated diagram cue | no-crop | slice | Generated | security-icons-sheet.png | none | support |
-| icon-3.png | 600×600 | 1:1 | 方法節點 | Illustrated icon | isolated diagram cue | no-crop | slice | Generated | security-icons-sheet.png | none | support |
-| icon-4.png | 600×600 | 1:1 | 方法節點 | Illustrated icon | isolated diagram cue | no-crop | slice | Generated | security-icons-sheet.png | none | support |
 
 ## IX. Content Outline
 
@@ -288,8 +286,12 @@
 
 ## XV. User supplied light navy, blue and gold palette
 
-依使用者配色圖標示色碼：深藍#092B42、中藍#105186、淺灰#F0F2F3、金黃#FDB338、深墨#171C1D。白色為主要底色，淺灰為次要底；金黃標示本方法長條、導覽當前步驟與關鍵連結。金黃上只放深色文字，不用金黃細字搭白底。原創立體PNG保留原始藍色高光，不重畫圖示形狀。平面色彩、PPT、影片及海報共用design-system/palette.json。
+依使用者配色圖標示色碼：深藍#092B42、中藍#105186、淺灰#F0F2F3、金黃#FDB338、深墨#171C1D。白色為主要底色，淺灰為次要底；金黃標示本方法長條、導覽當前步驟與關鍵連結。金黃上只放深色文字，不用金黃細字搭白底。目前版本使用共用平面向量圖示，原始立體PNG僅保留為歷史素材。平面色彩、PPT、影片及海報共用design-system/palette.json。
 
 ## XVI. Readability and completeness refinement
 
 封面與結語口語稿縮短，方法頁用正面敘述說明交接與證據。策略檢查明示允許動作，避免將動作白名單誤解成額外IP清單。影片右側說明放大到28px、設備25px及樣本範圍26px；成果段為26–28.5秒，控制23.5–26秒，結尾28.5–30秒。頁數、字型、五分鐘目標及同事件架構不變。
+
+## XVII. Unified visual and typography contract
+
+海報、PPT、影片共同讀取palette.json、typography.json與icons.json。中文與中文標點使用DFKai-SB，英文、數字、其他符號使用Times New Roman。原始立體素材不再進入正式成品；四個共用平面圖示、影片設備、原生線稿均用同一線條與填色。無陰影或漸層。

@@ -1,7 +1,6 @@
 """Build an editable A2 methods poster from validated recorded aggregates."""
 from pathlib import Path
 import json
-import re
 import sys
 
 from pptx import Presentation
@@ -15,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'scripts'))
 from validate_results import read_results, validate_results
 from finalize_delivery import normalize
+from style_contract import font_runs
 
 PALETTE = json.loads((ROOT/'design-system/palette.json').read_text(encoding='utf-8'))
 BLUE, NAVY, GOLD = (PALETTE[key].lstrip('#') for key in ('blue', 'navy', 'gold'))
@@ -66,10 +66,10 @@ def build():
             p.alignment = align
             p.space_before = p.space_after = Pt(0)
             p.line_spacing = 1.1
-            for token in re.findall(r'[\x00-\x7f]+|[^\x00-\x7f]+', paragraph):
+            for token, family in font_runs(paragraph):
                 r = p.add_run()
                 r.text = token
-                r.font.name = 'Times New Roman' if token.isascii() else 'DFKai-SB'
+                r.font.name = family
                 r.font.size, r.font.bold = Pt(size), bold
                 r.font.color.rgb = RGBColor.from_string(color)
         return box
@@ -84,7 +84,7 @@ def build():
         return shape(kind, x, y, w, h, BLUE)
 
     def icon(n, x, y, size=23):
-        slide.shapes.add_picture(str(ROOT / f'deliverables/source/icon-{n}.png'), Mm(x), Mm(y), width=Mm(size), height=Mm(size))
+        slide.shapes.add_picture(str(ROOT / f'deliverables/source/flat-icon-{n}.png'), Mm(x), Mm(y), width=Mm(size), height=Mm(size))
 
     def section(y, number, title):
         text(16, y, 12, 10, number, 20, BLUE, True)
@@ -94,7 +94,7 @@ def build():
         rect(x, y, 184, 91, 'F0F2F3', LINE)
         rect(x, y, 184, 1.3, BLUE)
         text(x+8, y+5, 12, 10, number, 18, BLUE, True)
-        text(x+23, y+5, 146, 10, title, 23)
+        text(x+23, y+5, 146, 10, title, 23, BLUE)
         if image:
             icon(image, x+8, y+22, 25)
         else:
@@ -118,14 +118,14 @@ def build():
     module(16, 145, '1', '互補模型判定', 2)
     text(56, 168, 137, 13, 'CTBM：內容、時間差、方向', 18)
     text(56, 182, 137, 13, 'PBCNN：短窗位元組模式', 18)
-    arrow(98, 200, 18, 7, MSO_SHAPE.DOWN_ARROW)
+    arrow(99, 200, 18, 7, MSO_SHAPE.DOWN_ARROW)
     text(24, 211, 168, 10, '校準＋OOF Gate 融合', 20, BLUE, True, PP_ALIGN.CENTER)
     text(24, 225, 168, 7, '輸出：17類判定、信心與512維表徵', 15, MUTED, align=PP_ALIGN.CENTER)
 
     module(220, 145, '2', '任務導向案例檢索', 3)
     text(260, 168, 137, 13, '512維表徵＋17維機率', 20)
     text(260, 182, 137, 13, '529維任務向量，L2正規化', 18)
-    arrow(302, 200, 18, 7, MSO_SHAPE.DOWN_ARROW)
+    arrow(303, 200, 18, 7, MSO_SHAPE.DOWN_ARROW)
     text(228, 211, 168, 10, 'Top-5 訓練案例證據', 20, BLUE, True, PP_ALIGN.CENTER)
     text(228, 225, 168, 7, '案例庫僅由訓練資料建立', 15, MUTED, align=PP_ALIGN.CENTER)
     arrow(202, 183, 16, 8)
@@ -135,7 +135,7 @@ def build():
     text(260, 275, 137, 12, '核對正式判定與相似案例', 19)
     text(260, 289, 137, 12, '保留分類，附加稽核結論', 19)
     for j, label in enumerate(('支持', '複核', '不確定')):
-        xx = 228+j*55
+        xx = 228+j*58.5
         rect(xx, 308, 51, 15, 'EAF0F4')
         text(xx, 308, 51, 15, label, 20, BLUE, align=PP_ALIGN.CENTER)
     text(228, 331, 168, 8, '複核與不確定事件保留監測或蒐證', 15, MUTED, align=PP_ALIGN.CENTER)
@@ -144,7 +144,7 @@ def build():
     text(56, 275, 137, 12, '檢查範圍、允許動作與期限', 19)
     text(56, 289, 137, 12, '允許的策略才進入執行', 19)
     for j, label in enumerate(('套用', '讀回', '回復')):
-        xx = 24+j*56
+        xx = 24+j*62
         text(xx, 308, 44, 15, label, 21, BLUE, align=PP_ALIGN.CENTER)
         if j < 2:
             arrow(xx+45, 312, 9, 5)
@@ -184,7 +184,7 @@ def build():
     text(220, 473, 184, 12, f'Top-5  {r["top5"]*100:.2f}%', 28, BLUE, True)
     text(220, 488, 184, 10, f'MRR@5  {r["mrr5"]*100:.2f}%　訓練／查詢重疊0', 16, MUTED)
     for i, (name, key) in enumerate((('支持', 'support'), ('複核', 'review'), ('不確定', 'uncertain'))):
-        x = 220+i*62
+        x = 220+i*63
         text(x, 505, 58, 12, str(j['assessment_counts'][key]), 27, BLUE, align=PP_ALIGN.CENTER)
         text(x, 520, 58, 9, name, 18, align=PP_ALIGN.CENTER)
     text(220, 537, 184, 14, '30筆偵測誤判中18筆分流\n其餘12筆獲支持，處置另經策略檢查', 14, MUTED)
