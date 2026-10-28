@@ -2,13 +2,13 @@
 
 融合新型內容相依時序方向模型入侵偵測與任務導向檢索增強稽核之 AI 資安框架
 
-**[下載決賽簡報](deliverables/決賽簡報_AI資安框架.pptx)** · **[觀看／下載40秒方法動畫](deliverables/AI資安框架_系統展示影片_40秒快版.mp4)** · **[60秒原速影片](deliverables/AI資安框架_系統展示影片_60秒.mp4)**
+**[下載決賽簡報](deliverables/決賽簡報_AI資安框架.pptx)** · **[觀看／下載30秒方法動畫](deliverables/AI資安框架_系統展示影片_30秒快版.mp4)**
 
 ![決賽投影片預覽](deliverables/figures/slides-preview.png)
 
-[![播放40秒方法動畫](deliverables/figures/film-preview.png)](deliverables/AI資安框架_系統展示影片_40秒快版.mp4)
+[![播放30秒方法動畫](deliverables/figures/film-preview.png)](deliverables/AI資安框架_系統展示影片_30秒快版.mp4)
 
-簡報採黑白章節與藍色重點，8頁說明方法創新與實測效果；每頁附繁體中文講者備忘稿。影片獨立交付，採網路拓樸與封包動畫說明方法，不需連線或網站即可播放。
+簡報採黑白章節與藍色重點，8頁說明方法創新與實測效果；每頁附繁體中文講者備忘稿。影片獨立交付，採網路拓樸與封包動畫說明方法，不需連線或網站即可播放。正式動畫為30秒、2倍速，計入現場簡報總長6分鐘。
 
 ## 架構與三項創新
 
@@ -31,7 +31,6 @@
 30筆偵測誤判中18筆分流至複核或不確定，12筆獲支持。AI稽核保留正式分類，處置另受策略閘門控制。隔離驗證量測TCP測試交易與規則回復，並非原始攻擊封包防禦率。簡報與影片使用 [`results/`](results/) 的四份實測彙整。
 
 ## 本機執行
-
 
 
 ```bash
@@ -68,7 +67,6 @@ python scripts/import_local_assets.py --source PATH_TO_LOCAL_DELIVERY
 
 匯入檔案位於 Git 忽略的 `evidence/`，只在本機使用。
 
-
 ## 展示交付
 
 - [方法與現場答詢](docs/決賽展示與答詢.md)
@@ -76,6 +74,8 @@ python scripts/import_local_assets.py --source PATH_TO_LOCAL_DELIVERY
 - [架構圖可編輯SVG](deliverables/source/architecture.svg)
 - [圖示與生成紀錄](deliverables/source/README.md)
 - [講者備忘稿](deliverables/source/speaker-notes.md)
+- [架構圖設計與驗收](docs/架構圖設計與驗收.md)
+- [文件同步紀錄](docs/版本與檢查紀錄.md)
 
 ## 驗證與協作
 
@@ -85,6 +85,7 @@ python -m unittest discover -s tests -v
 pnpm install --frozen-lockfile
 pnpm run test:media
 pnpm run check:media
+python scripts/check_delivery_docs.py
 ```
 
 `app/`保留模型服務、策略閘門與本機API；`media/film/`為純程式動畫；`scripts/`為重建、驗證與製作工具；`deliverables/`為正式簡報、影片與圖檔。

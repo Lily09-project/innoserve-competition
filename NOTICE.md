@@ -2,7 +2,7 @@
 
 本專案整合17類偵測事件、任務導向檢索、本機稽核與受控策略的展示流程。
 
-研究B的既有安全控制與Mininet元件，透過Git submodule引用原始程式庫：
+既有案例稽核的安全控制與Mininet元件，透過Git submodule引用原始程式庫：
 
 - https://github.com/Da-Xiong-Chen/paper_code
 - 固定版本：753345668a8e248562a97f7a659c067c93fd01e8

@@ -11,7 +11,7 @@
 5. 同次即時推論的策略送入Mininet，在自行建立的虛擬網路套用iptables規則、讀回規則、檢查測試交易及背景服務，並在30秒到期後撤銷規則、驗證恢復。
 6. 執行回條綁定事件ID、執行ID、來源結果摘要與情境摘要，接續偵測至策略的雜湊鏈。摘要用來檢查替換或毀損，不等同數位簽章。
 
-模型預載時核對checkpoint與案例庫摘要。匯出直接保留後端JSON格式，避免瀏覽器重新組合數字後影響事件鏈檢查；處置回條在切換事件或重設步驟後仍保留。
+模型預載時核對checkpoint與案例庫摘要。API匯出直接保留後端JSON的數值格式。即時匯出與網路執行要求同一事件的執行ID；再次推論後，舊執行ID無法用於部署。
 
 ## 17類與處置路徑
 
@@ -39,18 +39,20 @@
 
 ## 操作與重現
 
-1. 依README設定本機資產，執行「啟動作品.cmd」。
-2. 預載模型，選擇「可即時重跑的17類輸入」。
-3. 選擇事件，按「即時重跑完整事件」，查看正式判定、Top-5、本機AI及策略。
-4. 對有隔離流量設定的事件按「隔離交易與到期回復驗證」。查看規則數、測試交易、背景服務與恢復狀態，並匯出事件回條。
-5. 若重新執行保存事件的檢索，畫面會退出即時處置狀態；重新執行模型後才能再次部署，避免不同批次混用。
+1. 依[README](README.md)設定本機資產，執行「啟動作品.cmd」啟動API服務。
+2. 以 `GET /api/status` 取得模型狀態與可重跑事件ID；`POST /api/operate` 的 `action=warmup` 預載模型。
+3. 以 `action=live`、`event_id` 執行同事件完整推論，透過 `GET /api/jobs/{job_id}` 等待工作完成。回應包含正式類別、Top-5、本機AI稽核、策略與 `execution_id`。
+4. 在隔離測試床中，以 `action=network`、同一 `event_id` 與 `execution_id` 檢查規則、交易、背景服務與到期回復。服務拒絕不符或過期的執行ID。
+5. 以 `POST /api/export`、`mode=live_local_models`、同一事件與執行ID匯出結果；保存事件重播使用 `mode=saved_prediction_replay`，不取得即時部署資格。
 
-有本機資產及WSL/Mininet時，可重跑：
+網站介面已移除，以上均為本機API。完整17類與6種隔離情境驗證在展前執行；現場使用8頁簡報及30秒、2倍速影片，總報告6分鐘。
 
 ```bash
-python scripts/verify_delivery.py
-python scripts/audit_final_chain.py
+python scripts/preflight.py --warmup
 python scripts/audit_alignment_assets.py
+python scripts/audit_final_chain.py
 ```
+
+`audit_alignment_assets.py`核對模型與表徵來源；`audit_final_chain.py`重跑17類及6種隔離情境，並掃描正式簡報、架構圖與影片來源的匿名文字。`verify_delivery.py`另提供保存事件與可選隔離路徑的檢查，其回復測試模式與自動到期量測分開記錄。
 
 上述驗證保存於Git忽略的`validation/`與`evidence/`。模型推論、AI回覆及網路隔離測試各自保留執行模式，不把重播標示為即時執行。
