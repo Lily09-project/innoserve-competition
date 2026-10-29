@@ -11,7 +11,7 @@ import traceback
 import time
 import numpy as np
 
-from pipeline import TrainOnlyBank, run_event, B_NAMES
+from pipeline import TrainOnlyBank, run_event, B_NAMES, LABELS
 from network_contract import build_network_scenario, verify_network_receipt, validate_measurement
 from settings import execution_settings
 from provenance import code_revision
@@ -47,6 +47,7 @@ def create_server(port=8765, root=ROOT):
     lock = threading.Lock()
     job_lock = threading.Lock()
     jobs = {}
+    stopping = {'value':False}
     engine = {"value": None}
     live_results = {}
     with np.load(data / "live_inputs_private.npz",allow_pickle=False) as inputs:
@@ -55,7 +56,7 @@ def create_server(port=8765, root=ROOT):
     def create_job(action,event_id):
         with job_lock:
             prune_jobs(jobs,time.monotonic(),execution['job_retention_seconds'],execution['max_completed_jobs'])
-            if any(j["state"]=="running" for j in jobs.values()):
+            if stopping['value'] or any(j["state"]=="running" for j in jobs.values()):
                 return None
             job_id=uuid.uuid4().hex
             jobs[job_id]={"state":"running","phase":"啟動本機工作","action":action,"event_id":event_id}
@@ -73,6 +74,7 @@ def create_server(port=8765, root=ROOT):
                         live_results[event_id]=result
                 else:
                     event=live_results[event_id]
+                    event.pop('network_receipt',None)
                     progress("建立隔離Mininet並驗證策略，規則於30秒到期回復")
                     folder=root / "evidence/live_network" / job_id
                     folder.mkdir(parents=True)
@@ -83,19 +85,29 @@ def create_server(port=8765, root=ROOT):
                         value=str(p).replace("\\","/")
                         return "/mnt/"+value[0].lower()+value[2:] if len(value)>2 and value[1]==":" else value
                     process=subprocess.run(["wsl","-d",execution['wsl_distribution'],"-u",execution['wsl_user'],"--","python3",
-                         linux(root / "scripts/live_network_test.py"),"--scenario",linux(scenario_path),"--output",linux(output_path)],
-                         capture_output=True,timeout=execution['network_timeout_seconds'])
+                         linux(root / "scripts/live_network_test.py"),"--scenario",linux(scenario_path),"--output",linux(output_path),
+                         "--deadline-seconds",str(execution['network_timeout_seconds'])],
+                         capture_output=True,timeout=execution['network_timeout_seconds']+15)
                     (folder / "process.log").write_bytes(process.stdout+process.stderr)
-                    if process.returncode!=0 or not output_path.exists():raise RuntimeError("isolated_network_test_failed")
+                    if process.returncode!=0 or not output_path.exists():
+                        cleanup_path=output_path.with_suffix('.cleanup.json')
+                        cleanup=json.loads(cleanup_path.read_text(encoding='utf-8')) if cleanup_path.exists() else {}
+                        if cleanup.get('failure_type')=='TimeoutError':raise TimeoutError('isolated_network_deadline')
+                        raise RuntimeError("isolated_network_test_failed")
                     result=json.loads(output_path.read_text(encoding="utf-8"))
                     if not verify_network_receipt(scenario,result):raise RuntimeError("network_receipt_binding_failed")
                     validate_measurement(scenario,result)
                     event["network_receipt"]=result
                 with job_lock:jobs[job_id].update({"state":"done","phase":"執行完成","result":result,"finished_at":time.monotonic()})
-            except Exception:
-                folder=root / "validation";folder.mkdir(exist_ok=True)
-                (folder / ("job-"+job_id+".log")).write_text(traceback.format_exc(),encoding="utf-8")
-                with job_lock:jobs[job_id].update({"state":"error","phase":"執行中止，已保留本機診斷紀錄","finished_at":time.monotonic()})
+            except Exception as exc:
+                saved=False
+                try:
+                    folder=root / "validation";folder.mkdir(exist_ok=True)
+                    (folder / ("job-"+job_id+".log")).write_text(traceback.format_exc(),encoding="utf-8")
+                    saved=True
+                except OSError:pass
+                code='network_timeout' if isinstance(exc,(subprocess.TimeoutExpired,TimeoutError)) else 'model_load_failed' if engine['value'] is None else 'network_failed' if action=='network' else 'inference_failed'
+                with job_lock:jobs[job_id].update({"state":"error","error_code":code,"diagnostic_saved":saved,"phase":"執行中止，請在非投影畫面檢查本機診斷","finished_at":time.monotonic()})
         threading.Thread(target=work,daemon=True).start()
         return job_id
     class Handler(BaseHTTPRequestHandler):
@@ -109,9 +121,13 @@ def create_server(port=8765, root=ROOT):
             super().end_headers()
         def do_GET(self):
             if self.path=="/api/status":
+                with job_lock:
+                    active=next(({'job_id':key,'action':value['action'],'phase':value['phase']} for key,value in jobs.items() if value['state']=='running'),None)
                 self.json_response({"product":"ai-security-demo.v3","source_revision":loaded_revision,
                     "asset_revision":getattr(engine['value'],'asset_revision',None),
-                    "model_ready":engine["value"] is not None,"live_event_ids":live_ids});return
+                    "model_ready":engine["value"] is not None,"active_job":active,"live_event_ids":live_ids,
+                    "live_event_options":[{'index':i,'prediction_label':LABELS[events[key]['prediction']],
+                        'saved_assessment':cached.get(key,{}).get('assessment','review')} for i,key in enumerate(live_ids)]});return
             if self.path.startswith("/api/jobs/"):
                 key=self.path.split("/")[-1]
                 with job_lock:
@@ -139,7 +155,9 @@ def create_server(port=8765, root=ROOT):
                 request = json.loads(self.rfile.read(size))
                 if not isinstance(request,dict):raise ValueError("request_must_be_object")
                 if self.path=="/api/stop":
-                    with job_lock:active=any(j["state"]=="running" for j in jobs.values())
+                    with job_lock:
+                        active=any(j["state"]=="running" for j in jobs.values())
+                        if not active:stopping['value']=True
                     if active:self.json_response({"error":"busy"},409);return
                     self.json_response({"stopped":True})
                     threading.Thread(target=server.shutdown,daemon=True).start();return

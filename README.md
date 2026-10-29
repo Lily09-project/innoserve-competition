@@ -8,7 +8,7 @@
 
 **[A2海報印刷PDF](deliverables/決賽海報_AI資安框架_A2.pdf)** · **[海報可編輯PPTX](deliverables/決賽海報_AI資安框架_A2.pptx)**
 
-[下載離線簡報、影片與海報備援包](deliverables/決賽離線展示包.zip) · [簡報PDF備援](deliverables/決賽簡報_AI資安框架.pdf)
+[下載離線簡報、影片與海報備援包](deliverables/決賽離線展示包.zip) · [簡報PDF備援](deliverables/決賽簡報_AI資安框架.pdf) · [正式版本封存與SHA256](https://github.com/Lily09-project/innoserve-competition/releases)
 
 [成果與規格](#成果與規格) · [系統方法](#系統方法與創新) · [實測結果](#實測結果與適用範圍) · [公開測試](#公開程式測試) · [完整執行](#完整本機模型與隔離驗證) · [目錄](#專案目錄與來源) · [發布範圍](#公開內容與版本維護)
 
@@ -68,6 +68,12 @@
 
 展示目前使用真實流量的預先處理張量，重跑模型及後段流程。程式動畫中的拓樸、特徵方塊與案例順位用於說明方法；實測數值統一由上述JSON取得。詳細樣本延遲、各類別表現與限制見[實測與證據索引](docs/實測與證據索引.md)。
 
+### 策略風險與弱項分析
+
+[策略風險分析](results/policy_risk_analysis.json)將463筆保存事件重新通過檢索與策略閘門。12筆偵測錯誤但AI支持的事件中，6筆被策略擋下，6筆仍允許介入。這是策略授權統計，沒有部署網路規則，不能解讀為已發生6次誤封；AI支持與信心門檻也不保證判斷正確。
+
+同一彙整提供Web-XSS與Web-BruteForce的封存測試混淆及463筆查詢分析。本輪保持既有模型與測試切分，分析不作為以測試答案調參的依據。復原實測與操作範圍見[決賽穩定性與操作整合](docs/決賽穩定性與操作整合.md)。
+
 ## 公開程式測試
 
 公開版不需要私有模型即可執行合約測試與媒體編譯檢查。使用Python 3.11、Node.js 24、pnpm 11.25.0與專案鎖檔；CI配置見[工作流程](.github/workflows/tests.yml)。
@@ -89,7 +95,7 @@ python scripts/check_public_files.py
 
 已有clone時先執行`git submodule update --init --recursive`。子模組必須初始化，才能載入真正的共用策略元件。
 
-目前109項Python測試涵蓋事件合約、Judge上下文、策略、逐筆證據、資產匯入、預檢、API、字型、匿名與交付一致性。媒體檢查另編譯九個動畫章節。測試中的合成fixture只測程式邊界，不列入模型成效；CI通過也不代表重新執行真實模型。完整項目見[測試矩陣](docs/測試矩陣.md)。
+目前127項Python測試涵蓋事件合約、Judge上下文、策略、逐筆證據、資產匯入、預檢、API、字型、匿名與交付一致性。媒體檢查另編譯九個動畫章節。測試中的合成fixture只測程式邊界，不列入模型成效；CI通過也不代表重新執行真實模型。完整項目見[測試矩陣](docs/測試矩陣.md)。
 
 ## 完整本機模型與隔離驗證
 
@@ -155,18 +161,25 @@ python scripts/preflight.py --warmup
 python scripts/demo_walkthrough.py --mode live --event-index 0
 ```
 
-Windows也可使用[啟動作品.cmd](啟動作品.cmd)。本機狀態入口為`http://127.0.0.1:8765/api/status`，服務提供模型與事件API，不提供已捨棄的網站介面。`preflight`會核對權重、CUDA、隔離依賴及執行來源；檢查失敗不報READY。
+Windows可直接使用[決賽展示.cmd](決賽展示.cmd)進入匿名控制台，選正常、FTP、SSH、HTTP、Bot或複核情境，不需記憶事件索引。控制台可預檢與預載，明確選擇即時模型或保存結果備援。舊[啟動作品.cmd](啟動作品.cmd)仍供只啟動API使用。本機狀態入口為`http://127.0.0.1:8765/api/status`，服務提供模型與事件API，不提供已捨棄的網站介面。`preflight`會核對權重、CUDA、隔離依賴及執行來源；檢查失敗不報READY。
 
 需要隔離處置展示時，在支援測試流量設定的即時事件上加`--network`；此選項會真正建立隔離情境並等待期限回復。`--mode saved`則重新查詢保存事件的證據，使用已綁定回覆，不宣稱本次重新執行偵測模型或LLM。完整操作見[本機匿名展示操作單](docs/本機展示操作單.md)。
+
+一鍵展示亦可指定情境：
+
+```bash
+python scripts/showcase.py --prepare-only
+python scripts/showcase.py --scenario ssh --mode live --network
+python scripts/showcase.py --scenario review --mode saved
+```
+
+隔離工作在Linux端設定期限，併發工作由專案鎖拒絕；回條必須包含規則、服務與網路介面的清理證明。離開控制台不等於中斷服務，執行中的隔離工作會依服務端期限及清理流程結束。
 
 ### 4. 完整驗收與公開彙整
 
 ```bash
 python scripts/audit_final_chain.py
-python scripts/audit_alignment_assets.py --audit-dir PATH_TO_SUCCESSFUL_AUDIT
-python scripts/export_framework_validation.py --audit-dir PATH_TO_SUCCESSFUL_AUDIT
-python scripts/media_results.py
-python scripts/release_inventory.py --audit-dir PATH_TO_SUCCESSFUL_AUDIT
+python scripts/finals_pipeline.py --refresh-evidence --audit-dir PATH_TO_SUCCESSFUL_AUDIT
 ```
 
 第一步重跑17類推論、17次本機AI及預定六種隔離情境。後續檢查checkpoint、案例排序、逐筆紀錄、規則讀回、實際影響與期限回復，再匯出彙整與發布索引。舊來源、不同資產或失敗回條不會被當作新版成功證據。模型執行來源改動後，必須重新取得成功驗收紀錄，不能只修改舊證據的版本欄位。
@@ -186,6 +199,17 @@ python scripts/media_results.py --check
 
 媒體重製使用`scripts/render_product_film.mjs`，設定`FFMPEG_BINARY`並使用新的輸出目錄；製作工作站須安裝標楷體與Times New Roman。舊的`render_film_resvg.py`已停用，執行會回報錯誤且不產生影片，避免替換成不符規格的字型。完整製作及交付同步步驟見[來源說明](deliverables/source/README.md)。
 
+### 6. 交付驗證與封裝
+
+```bash
+python scripts/finals_pipeline.py
+python scripts/finals_pipeline.py --stage validation/NEW_DELIVERY_FOLDER
+```
+
+封裝SVG使用純向量產生器；Pillow僅供歷史點陣圖裁切工具使用，不是此封裝路徑的必要依賴。入口依序檢查媒體快照、完整測試、九章節編譯、資料更新、文件與公開檔案。封裝會重新產生12頁SVG並核對來源，複製通過驗證的正式成果及SHA256清單至新目錄，不覆寫既有目錄。原生PPT、影片與海報保留核對後的位元組；如果SVG內容改變，會停止封裝，要求先完成正式原生匯出與版面驗證，不把新SVG當成已更新的PPT。
+
+證據刷新步驟失敗時，會還原原有公開彙整、快照及交付索引；診斷和備份留在本機validation。
+
 ## 專案目錄與來源
 
 | 路徑 | 用途 |
@@ -197,7 +221,7 @@ python scripts/media_results.py --check
 | [design-system/](design-system/) | 共用色盤、兩種字型、平面圖示與視覺規格 |
 | [deliverables/](deliverables/) | 正式PPTX、PDF、MP4、離線ZIP及預覽 |
 | [deliverables/source/](deliverables/source/) | 最新12頁SVG、架構圖、設計規格、講者稿及交付索引 |
-| [results/](results/) | 四份可公開實測彙整 |
+| [results/](results/) | 四份核心實測彙整及策略風險分析 |
 | [tests/](tests/) | 程式合約、交付一致性與媒體檢查 |
 | [docs/](docs/) | 方法、答詢、重現、驗收及版本紀錄 |
 | [sources/paper_code/](sources/paper_code/) | 第三方研究程式子模組，固定版本與來源由Git記錄 |
@@ -210,7 +234,7 @@ python scripts/media_results.py --check
 | 納入GitHub | 保留本機 |
 | --- | --- |
 | 原創程式、共用視覺來源、12張SVG、說明與測試 | checkpoint、LLM權重、tokenizer快照及原始流量 |
-| 四份彙整結果、正式簡報／影片／海報／離線包 | 案例向量庫、逐筆事件、Judge原始回覆及私有回條 |
+| 核心彙整及風險分析、正式簡報／影片／海報／離線包 | 案例向量庫、逐筆事件、Judge原始回覆及私有回條 |
 | 設定範例、依賴清單、子模組版本、雜湊索引 | config.local.json、環境憑證、執行日誌、暫存／舊版製作目錄 |
 
 公開範圍以[.gitignore](.gitignore)、[公開檔案檢查](scripts/check_public_files.py)及[發布盤點](docs/公開發布盤點.md)為依據。正式資產、預覽與來源變更後需同步交付索引；十二張逐頁SVG也納入LF正規化雜湊檢查，避免只更新PPT而留下舊來源。
@@ -225,6 +249,7 @@ python scripts/media_results.py --check
 - [完整交付驗收](docs/完整交付驗收.md)
 - [實測與證據索引](docs/實測與證據索引.md)
 - [架構圖設計與驗收](docs/架構圖設計與驗收.md)
+- [決賽穩定性與操作整合](docs/決賽穩定性與操作整合.md)
 - [完整程式審查追補修正](docs/完整程式審查追補修正.md)
 - [版本與檢查紀錄](docs/版本與檢查紀錄.md)
 - [協作規則](CONTRIBUTING.md)

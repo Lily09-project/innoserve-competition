@@ -22,6 +22,9 @@ def expected_effect(scenario):
 
 def validate_measurement(scenario, receipt):
     """Verify isolation actions actually occurred; hashes alone do not prove success."""
+    cleanup=receipt.get('cleanup',{})
+    if any(cleanup.get(key) is not True for key in ('passed','commands_drained','policy_reset','server_stopped','network_stopped')) or cleanup.get('remaining_owned_links') != [] or cleanup.get('errors') != []:
+        raise ValueError('isolated_network_cleanup_not_verified')
     for key in ('baseline','background_baseline','subject_after','background_after','recovery','background_recovery'):
         rate = receipt[key]['success_rate']
         if isinstance(rate,bool) or not isinstance(rate,(int,float)) or not math.isfinite(rate) or not 0 <= rate <= 1:

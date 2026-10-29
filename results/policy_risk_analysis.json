@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "analysis_mode": "saved_detection_and_judge_retrieval_and_guard_recomputed",
+  "counts": {
+    "total": 463,
+    "wrong": 30,
+    "support": 415,
+    "wrong_support": 12,
+    "wrong_support_disruptive_allowed": 6,
+    "wrong_support_non_disruptive_or_blocked": 6
+  },
+  "network_actions_executed": 0,
+  "wrong_support_groups": [
+    {
+      "validation_label": "SQL-Injection",
+      "prediction_label": "Web-BruteForce",
+      "policy_action": "rate_limit",
+      "disruptive_allowed": true,
+      "count": 1
+    },
+    {
+      "validation_label": "Web-BruteForce",
+      "prediction_label": "Web-XSS",
+      "policy_action": "capture_evidence",
+      "disruptive_allowed": false,
+      "count": 2
+    },
+    {
+      "validation_label": "Web-BruteForce",
+      "prediction_label": "Web-XSS",
+      "policy_action": "waf_virtual_patch",
+      "disruptive_allowed": true,
+      "count": 1
+    },
+    {
+      "validation_label": "Web-XSS",
+      "prediction_label": "Web-BruteForce",
+      "policy_action": "capture_evidence",
+      "disruptive_allowed": false,
+      "count": 4
+    },
+    {
+      "validation_label": "Web-XSS",
+      "prediction_label": "Web-BruteForce",
+      "policy_action": "rate_limit",
+      "disruptive_allowed": true,
+      "count": 4
+    }
+  ],
+  "weak_class_analysis": [
+    {
+      "label": "Web-BruteForce",
+      "support": 243,
+      "precision": 0.7164179104477612,
+      "recall": 0.7901234567901234,
+      "f1": 0.75146771037182,
+      "largest_confusions": [
+        {
+          "predicted_label": "Web-XSS",
+          "count": 51
+        }
+      ],
+      "saved_query_analysis": {
+        "queries": 30,
+        "detector_errors": 7,
+        "support": 15,
+        "wrong_support": 3,
+        "wrong_disruptive_allowed": 1
+      }
+    },
+    {
+      "label": "Web-XSS",
+      "support": 120,
+      "precision": 0.47,
+      "recall": 0.39166666666666666,
+      "f1": 0.4272727272727273,
+      "largest_confusions": [
+        {
+          "predicted_label": "Web-BruteForce",
+          "count": 71
+        },
+        {
+          "predicted_label": "SQL-Injection",
+          "count": 2
+        }
+      ],
+      "saved_query_analysis": {
+        "queries": 30,
+        "detector_errors": 18,
+        "support": 13,
+        "wrong_support": 8,
+        "wrong_disruptive_allowed": 4
+      }
+    }
+  ],
+  "scope": "Policy authorization on recorded queries, not actual false blocks, new detector accuracy, native attack prevention or a new LLM experiment. Ground truth is used only for analysis.",
+  "source_revision": "ede0cb0775aa4e542c6763c4d41496970ff59eaedab29d89b2db2d2f7d02566e",
+  "source_hashes": {
+    "events.json": "fa4c9ea31496099830676a0b8d7bc7da916f3624b6f936ff30786b8312577cb3",
+    "train_bank.npz": "dc2964dd55288084dedc2c4c9fca5643daa63c80b892858cf0bb1fa0bbaedd5d",
+    "train_bank_manifest.json": "97376b599a05ce217e7fdb42cdf0a6323e4cf876b5667df06eb4014df257d44c",
+    "judge_records_private.jsonl": "a82296591b4cac1b11e82103012ac11d3cb5aa44ed5cb32a897931186c8e8968"
+  },
+  "created_utc": "2026-10-29T11:49:35.081067+00:00"
+}

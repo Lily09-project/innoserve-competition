@@ -19,6 +19,7 @@ VISUAL_SOURCES = [
     'scripts/presentation/build_a2_poster.py','scripts/presentation/finalize_delivery.py',
     'media/film/scene.mjs','scripts/render_product_film.mjs',
     'media/film/metrics.mjs','media/film/metrics.json','scripts/media_results.py',
+    'scripts/finals_pipeline.py',
     *['deliverables/source/slides/'+f'{i:02d}_slide.svg' for i in range(1,13)],
 ]
 ASSETS = [
@@ -30,7 +31,7 @@ ASSETS = [
 PREVIEWS = ['deliverables/figures/'+name for name in
             ('slides-preview.png','poster-a2-preview.png','film-preview.png','fig_architecture.png')]
 RESULTS = ['results/'+name for name in ('detection_17class.json','retrieval_17class.json',
-                                       'local_judge_17class.json','framework_validation.json')]
+                                       'local_judge_17class.json','framework_validation.json','policy_risk_analysis.json')]
 
 
 def sha(path):

@@ -1,20 +1,21 @@
 {
-  "created_utc": "2026-10-29T08:00:40.518115+00:00",
-  "source_revision": "eacad886f75819fe6a8ceea7eaa65d037339a2a73d590a98953df87dded69f57",
+  "created_utc": "2026-10-29T11:49:48.781979+00:00",
+  "source_revision": "ede0cb0775aa4e542c6763c4d41496970ff59eaedab29d89b2db2d2f7d02566e",
   "bindings": {
     "visual_sources": {
       "design-system/palette.json": "1d2563d56e2e33fb8798ec1f500b69180ccbee99c0e29261b490e9bf32e1e98b",
       "design-system/typography.json": "eef65fe31802c55d476d41351ed1fd7156eab2d07ee271fff95b84fca21a0c9c",
       "design-system/icons.json": "7997027b80b6b7990b8399383555d2775b4d8257902c3fa8c8f4f8a3b5e2aec7",
       "scripts/presentation/style_contract.py": "5de58b66b64c47f0191a482ed0089f5683750d7e88e3de516da80a29491bf512",
-      "scripts/presentation/editorial_assets.py": "5387e50975acebc4edc6561f62362b7e333608f3726bda7cd2d46478a508dbc8",
+      "scripts/presentation/editorial_assets.py": "e74d14f287a0fd0a56ef3b71a095e9505e602013339644acbe5052d39136446a",
       "scripts/presentation/build_a2_poster.py": "6297dcad537c170f19d710bbcb298a7ee97ef02a9e2816f18117b122964a90f7",
       "scripts/presentation/finalize_delivery.py": "18aa79f996f0b86158bbf57881d1cd38af3b7f232796da055205a6c2a7a1ce32",
       "media/film/scene.mjs": "0b66061740375b01dbab4e4a1b2489a1cd51ec593f032daed2e836d8d947bafd",
       "scripts/render_product_film.mjs": "bd1f54fab6410a10393cab66d0b88fcb18dd99b24edb500f43b003ac469e5630",
       "media/film/metrics.mjs": "39180d26ce80926435c92e3cdbef0bbaeb16c9a612c9ef9db97ff36716a79701",
-      "media/film/metrics.json": "6ec25adf9dffe06d6b2931e16185b1b0b30cc4befef0dd07ac8881c567cf1e0f",
+      "media/film/metrics.json": "816450d6ba5340d14b5bae6aeb133a462deb6be3f6eb3f4a37fb8274656222c1",
       "scripts/media_results.py": "9823f3ba4a60908ae3ba51dbd90ffb5a4a748297cb5663034a33fc7a6c5d2eae",
+      "scripts/finals_pipeline.py": "65eace2096e5dedceea21e48047bf23e841e954854168526537d4f1d3cc3beda",
       "deliverables/source/slides/01_slide.svg": "76d561f8eff0d7e39c439cceecdcd9cfeeebb3f1f64d27c0cd520d0da19f072b",
       "deliverables/source/slides/02_slide.svg": "fc88638793c2004f5b61fa15ec3c7749e9ec2339a110e9386f3be3ef2b5a6328",
       "deliverables/source/slides/03_slide.svg": "5f8a6a5a568bc4ad8691bc62bc6ba371f8fce2aa95244f2765f9a82a4936abb9",
@@ -47,18 +48,19 @@
       "results/detection_17class.json": "f095d2a74131bfbbad13f7d4a205d96836a08c716793c56e60a9160ed9ab84f0",
       "results/retrieval_17class.json": "44ba49c678aa34130abe1cd5fccf12ab5fde89caffc92891fce272feb7ce8b75",
       "results/local_judge_17class.json": "d21337eacb513357ba9ec56497e3cded60b52f2b1d0b80f1f38f3d0ec73c6666",
-      "results/framework_validation.json": "eebba83df8cc68947566bee080ebacf4c14e374157bae5523e41e31fa3937728"
+      "results/framework_validation.json": "2fe0ad0008b3026e9ad11bc48bbaa349b791d73e7263902291ca0ba54b3c68ea",
+      "results/policy_risk_analysis.json": "bfcedc00b7526ea4d924d2aa5f1acdb2380d1d743c4d7c559f4dbf0f37767948"
     }
   },
   "asset_revision": "977ab6014516622dff32d9b94481a1b013f407d0917a87cd0347945918d114ca",
   "evidence": {
-    "audit_started_utc": "20261029T075603Z",
+    "audit_started_utc": "20261029T114436Z",
     "status": "passed",
     "private_receipt_hashes": {
-      "summary.json": "314786434840eb0f94a589d9465723216845f95c83462e0373297d720a6ef659",
-      "live_events_private.json": "3a41fd9edcaecc88e33cd324cffee22426ead39e29677b544b9a532acc470d66",
-      "network_receipts_private.json": "20d1794661f18f99f50d8f17bfc679326955a552e14f89ce608b80d7de2992c9",
-      "asset_alignment.json": "acad65beb650e22ce4717cbda7636e0817419da786d3a037ddd7ded0e6dcc981",
+      "summary.json": "df10f6ecfa583ff4be8f27bc34b02e692dbb19c8ed096e944d8b4143968631ec",
+      "live_events_private.json": "38e6a6036dc44ef3e5b15d65cb311524a9a69521d70195025f1696f85fb04875",
+      "network_receipts_private.json": "b0e0b6f54e6d9895037fab70cf283b8a0cb2cdd59ec9767373433ab78be7ba1d",
+      "asset_alignment.json": "3a64e7aabe0d41b29c02203d4f3212451fdfc11213c35ff8cbdd3cd99ed1ecd5",
       "asset_manifest.json": "aa20154abe3c9417381234a4d5cee26d8ba0b6843fd4d98470350d02ce73d2f7"
     },
     "real_live_classes": 17,
@@ -71,23 +73,23 @@
   "measured_timings": {
     "detector_ms": {
       "samples": 17,
-      "minimum": 20.35590005107224,
-      "median": 34.155100118368864,
-      "maximum": 484.67200016602874,
+      "minimum": 32.77279995381832,
+      "median": 34.17159989476204,
+      "maximum": 439.2682001926005,
       "unit": "ms"
     },
     "retrieval_ms": {
       "samples": 17,
-      "minimum": 0.7564001716673374,
-      "median": 1.49639998562634,
-      "maximum": 4.278199980035424,
+      "minimum": 1.1559000704437494,
+      "median": 1.5189999248832464,
+      "maximum": 1.5972000546753407,
       "unit": "ms"
     },
     "fresh_llm_ms": {
       "samples": 17,
-      "minimum": 747.7041000965983,
-      "median": 905.4338000714779,
-      "maximum": 2204.1599999647588,
+      "minimum": 743.9071000553668,
+      "median": 914.4047999288887,
+      "maximum": 1975.640500197187,
       "unit": "ms"
     }
   },
