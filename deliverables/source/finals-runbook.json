@@ -1,0 +1,39 @@
+{
+  "schema": "innoserve.finals-runbook.v1",
+  "slides": 12,
+  "report_slides": [1, 2, 3, 4, 5, 6, 7, 8, 9],
+  "report_limit_seconds": 360,
+  "target_seconds": 300,
+  "buffer_seconds": 60,
+  "operation_seconds": 10,
+  "video": {"slide": 2, "seconds": 30, "speed_factor": 2, "audio_tracks": 0},
+  "segments": [
+    {"slide": 1, "seconds": 15, "mode": "spoken", "focus": "作品定位"},
+    {"slide": 2, "seconds": 30, "mode": "video", "focus": "完整事件流程"},
+    {"slide": 3, "seconds": 40, "mode": "spoken", "focus": "四階段與同事件交接"},
+    {"slide": 4, "seconds": 40, "mode": "spoken", "focus": "互補偵測與融合"},
+    {"slide": 5, "seconds": 45, "mode": "spoken", "focus": "任務檢索與證據稽核"},
+    {"slide": 6, "seconds": 35, "mode": "spoken", "focus": "策略、讀回與回復"},
+    {"slide": 7, "seconds": 30, "mode": "spoken", "focus": "同測試集偵測結果"},
+    {"slide": 8, "seconds": 40, "mode": "spoken", "focus": "檢索與稽核結果"},
+    {"slide": 9, "seconds": 15, "mode": "spoken", "focus": "結語"}
+  ],
+  "qa": [
+    {"question": 1, "slide": 10, "topic": "創新與AI角色"},
+    {"question": 2, "slide": 10, "topic": "前後段整合證據"},
+    {"question": 3, "slide": 11, "topic": "資料切分與案例庫"},
+    {"question": 4, "slide": 11, "topic": "錯誤支持與策略檢查"},
+    {"question": 5, "slide": 12, "topic": "隔離效果的量測範圍"},
+    {"question": 6, "slide": 12, "topic": "部署與資料保護"}
+  ],
+  "demo": {
+    "primary": ["ssh", "live", "network"],
+    "alternatives": ["normal", "ftp", "http", "bot", "review"],
+    "saved_fallback": ["review", "saved"],
+    "network_ttl_seconds": 30,
+    "scope": "Isolated TCP transactions selected from a genuine prepared event; not live PCAP ingestion or an original attack prevention rate."
+  },
+  "human_checks": ["講者完整朗讀彩排", "實際場地投影可讀性", "海報實尺寸打樣"],
+  "native_playback": "excluded_by_user",
+  "timing_scope": "Planned allocation only; no claim of measured human speech duration."
+}

@@ -22,20 +22,20 @@
       "sha256": "e99352554b800b2544969762ed91adaf067a81a6a3efe3efa39560a13a8aea2c"
     },
     "deliverables/決賽海報_AI資安框架_A2.pptx": {
-      "bytes": 137364,
-      "sha256": "75d6f26ccf4058fde5a0b347bea952602ad13f29020931bca4f4aee44642d51e"
+      "bytes": 137434,
+      "sha256": "b4216fefc69bcb9fa13de868d1cffa159a37eb297798201f0421b43b83a7c691"
     },
     "deliverables/決賽海報_AI資安框架_A2.pdf": {
-      "bytes": 220719,
-      "sha256": "b8a6cddfb8439b3af0515365c80a5e7752f431c7aee5b5107c8679bc4ea0c8b6"
+      "bytes": 220668,
+      "sha256": "44984ae35fd5a2cd22ad6485607b887bebad7648f84c4b8579e100f5bec051fe"
     },
     "deliverables/決賽離線展示包.zip": {
-      "bytes": 4437535,
-      "sha256": "4184aec4b630f40bedc1fc812959e87d92b15dda1489a7689e68ab776f4c1a9f"
+      "bytes": 4446081,
+      "sha256": "5ecc9cf264ad0f948c75bfc613ae0cd7bf8ecbded6a7539e47dbb2c35f692445"
     },
     "deliverables/source/release-validation.json": {
       "bytes": 10198,
-      "sha256": "a67a224eb5223a6948f5eeff2c0e6c600ec00542a2626b33d0b868a9cc874d81",
+      "sha256": "9bcd79dc10dc9f9482e8e55006e3cb0d783ba7498729538d7f09f50e16229d08",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/01_slide.svg": {
@@ -122,6 +122,31 @@
       "hash_normalization": "LF",
       "bytes": 522,
       "sha256": "8e4e75552d3b7ae3b9c401843a53eb012fadd8591f7d75b4439a636115bbc9f3"
+    },
+    "deliverables/source/finals-runbook.json": {
+      "hash_normalization": "LF",
+      "bytes": 2080,
+      "sha256": "d9d084456c9b287f1c09711b1a3427b1b518c045e20bd143f3ae3e7dd53aeda6"
+    },
+    "deliverables/source/finals-readiness.json": {
+      "hash_normalization": "LF",
+      "bytes": 2608,
+      "sha256": "c8551f3c124183674657f917d7e45efb39285cf49c8a5d7f2682b9faf2ef0f02"
+    },
+    "docs/決賽五分鐘口語稿.md": {
+      "hash_normalization": "LF",
+      "bytes": 4373,
+      "sha256": "39e88d21d17e9d8a2b8fa547013cc0ac88469ec6b5e1f0fd29b513799f325858"
+    },
+    "docs/決賽六題答詢口徑.md": {
+      "hash_normalization": "LF",
+      "bytes": 4511,
+      "sha256": "d2a41e50b7b6c8e9f0307715897e6adfeefb5bd904623ce0fd5942ee205e83a9"
+    },
+    "docs/現場控場與備援卡.md": {
+      "hash_normalization": "LF",
+      "bytes": 2807,
+      "sha256": "2407a165ffe4df3c51f1fa59be76098ca095b5c4f8893cececba6b2b1c666079"
     }
   },
   "slides": 12,
@@ -142,12 +167,12 @@
     2560,
     1072
   ],
-  "python_tests": 127,
+  "python_tests": 135,
   "website": "removed; API-only",
   "review": "89 Python tests and deterministic nine-chapter media compilation passed; current real 17-class/17-LLM and six-isolated-scenario validation passed. Existing visual acceptance retained; no visual content changed.",
   "results_changed": true,
-  "markdown_documents": 28,
-  "local_links_checked": 127,
+  "markdown_documents": 31,
+  "local_links_checked": 152,
   "presentation_limit_seconds": 360,
   "buffer_seconds": 60,
   "visual_theme": "white and light gray canvas; navy titles, medium blue diagrams, gold highlights, ink body",
@@ -340,5 +365,14 @@
     ],
     "newly_rendered_svgs_verified": 12,
     "clean_clone_pipeline_verified": true
+  },
+  "finals_readiness": {
+    "index": "deliverables/source/finals-readiness.json",
+    "runbook": "deliverables/source/finals-runbook.json",
+    "planned_seconds": 300,
+    "buffer_seconds": 60,
+    "qa_questions": 6,
+    "offline_assets": 10,
+    "native_playback": "excluded_by_user"
   }
 }

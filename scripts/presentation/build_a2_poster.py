@@ -188,7 +188,7 @@ def build():
     section(397, '02', '三項創新，對應具體事件與產物')
     innovations = [('互補判定','CTBM讀取內容、時序與方向\nPBCNN補充局部位元組模式\n校準融合後輸出固定17類'),
                    ('任務證據','512維表徵＋17維類別機率\n529維向量檢索Top-5案例\nAI附回支持／複核／不確定'),
-                   ('可追溯處置','FTP／SSH：登入防護\nHTTP型DDoS：上游清洗\nBot限制C2；讀回及到期回復')]
+                   ('可追溯處置','FTP／SSH：登入防護\nHTTP型DDoS：來源限速\nBot限制C2；讀回及到期回復')]
     for i,(heading,copy) in enumerate(innovations):
         x=16+i*133
         rect(x,411,14,1,GOLD)
