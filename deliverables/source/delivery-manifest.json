@@ -262,15 +262,17 @@
     "private_assets_present": false,
     "local_config_present": false,
     "submodules_initialized": true,
-    "python_tests": 109,
+    "python_tests": 127,
     "media_chapters_compiled": 9,
     "media_data_update_test": "passed",
     "delivery_binding_check": "passed",
-    "public_file_paths": 151,
+    "public_file_paths": 163,
     "public_audit_findings": 0,
     "dependencies": "pnpm 11.25.0 frozen lockfile; 45 packages from offline cache",
-    "tested_commit": "3c6a9a7",
-    "scope": "fresh clone of the corrected runtime, source and evidence; no config.local.json or evidence directory"
+    "tested_commit": "de7c180",
+    "tested_source_revision": "ede0cb0775aa4e542c6763c4d41496970ff59eaedab29d89b2db2d2f7d02566e",
+    "standalone_pipeline_and_staging": "passed",
+    "scope": "fresh public clone, no private assets/config; approved native assets preserved and 12 SVG sources regenerated identically"
   },
   "asset_revision": "977ab6014516622dff32d9b94481a1b013f407d0917a87cd0347945918d114ca",
   "code_review": {
@@ -336,6 +338,7 @@
       "live",
       "isolated_execution"
     ],
-    "newly_rendered_svgs_verified": 12
+    "newly_rendered_svgs_verified": 12,
+    "clean_clone_pipeline_verified": true
   }
 }

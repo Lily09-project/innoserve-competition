@@ -175,6 +175,14 @@ python scripts/showcase.py --scenario review --mode saved
 
 隔離工作在Linux端設定期限，併發工作由專案鎖拒絕；回條必須包含規則、服務與網路介面的清理證明。離開控制台不等於中斷服務，執行中的隔離工作會依服務端期限及清理流程結束。
 
+更新程式後若預檢指出舊服務，先在非投影終端停止閒置API，再重新啟動控制台：
+
+```powershell
+Invoke-RestMethod -Uri http://127.0.0.1:8765/api/stop -Method Post -ContentType application/json -Body '{}'
+```
+
+執行中工作會回覆busy，需等隔離回復與清理完成後再停止；不以強制終止取代回復。
+
 ### 4. 完整驗收與公開彙整
 
 ```bash
