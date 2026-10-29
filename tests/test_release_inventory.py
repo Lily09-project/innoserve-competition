@@ -8,9 +8,15 @@ import unittest
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'scripts'))
 from release_inventory import verify_bindings,distribution
+from check_delivery_docs import delivery_digest
 
 
 class ReleaseInventoryTests(unittest.TestCase):
+    def test_explicit_text_hash_normalization_preserves_content_checks(self):
+        self.assertEqual(delivery_digest(b'first\r\nsecond\r\n','LF'),delivery_digest(b'first\nsecond\n','LF'))
+        self.assertNotEqual(delivery_digest(b'first\r\nsecond\r\n'),delivery_digest(b'first\nsecond\n'))
+        self.assertNotEqual(delivery_digest(b'changed\n','LF'),delivery_digest(b'first\n','LF'))
+        with self.assertRaises(ValueError):delivery_digest(b'first','unknown')
     def test_release_bindings_match_current_files_and_application(self):
         value=json.loads((ROOT/'deliverables/source/release-validation.json').read_text(encoding='utf-8'))
         self.assertTrue(verify_bindings(value))

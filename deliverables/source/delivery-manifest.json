@@ -34,8 +34,9 @@
       "sha256": "f751934664f50aa2ca0848d811c5d8271ba7cfa3bd517a5739b65acd32aaea1b"
     },
     "deliverables/source/release-validation.json": {
-      "bytes": 8072,
-      "sha256": "5903f4268a8979a5ba89694317033ec096192714e65118e582b9d2c27b83d0fe"
+      "bytes": 7864,
+      "sha256": "300d18a62b08b69fb580c78561f71b258645dea0ce9565f8df8d4412d97b1d6f",
+      "hash_normalization": "LF"
     }
   },
   "slides": 12,
@@ -56,9 +57,9 @@
     2560,
     1072
   ],
-  "python_tests": 88,
+  "python_tests": 89,
   "website": "removed; API-only",
-  "review": "88 Python tests and deterministic nine-chapter media compilation passed; current real 17-class/17-LLM and six-isolated-scenario validation passed. Existing visual acceptance retained; no visual content changed.",
+  "review": "89 Python tests and deterministic nine-chapter media compilation passed; current real 17-class/17-LLM and six-isolated-scenario validation passed. Existing visual acceptance retained; no visual content changed.",
   "results_changed": true,
   "markdown_documents": 24,
   "local_links_checked": 58,
@@ -175,7 +176,7 @@
     "private_assets_present": false,
     "local_config_present": false,
     "submodules_initialized": true,
-    "python_tests": 88,
+    "python_tests": 89,
     "media_chapters_compiled": 9,
     "delivery_binding_check": "passed"
   }

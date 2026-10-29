@@ -10,6 +10,14 @@ from urllib.parse import unquote
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def delivery_digest(content, normalization=None):
+    if normalization not in (None,'LF'):
+        raise ValueError('Unsupported delivery hash normalization')
+    if normalization == 'LF':
+        content = content.replace(b'\r\n',b'\n')
+    return hashlib.sha256(content).hexdigest()
+
+
 def mp4_duration(path):
     data = Path(path).read_bytes()
 
@@ -64,7 +72,7 @@ def audit(root=ROOT):
     manifest = json.loads((root / 'deliverables/source/delivery-manifest.json').read_text(encoding='utf-8'))
     for name, entry in manifest['files'].items():
         path = root / name
-        if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != entry['sha256']:
+        if not path.is_file() or delivery_digest(path.read_bytes(),entry.get('hash_normalization')) != entry['sha256']:
             errors.append(f'{name}: delivery digest mismatch')
     from release_inventory import verify_bindings
     try:
