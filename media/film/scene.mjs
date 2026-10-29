@@ -9,7 +9,8 @@ export const duration=60;
 export const playbackSpeed=2;
 export const presentationDuration=duration/playbackSpeed;
 export const maxDuration=40;
-export const chapters=[{at:0,title:'作品名稱'},{at:5,title:'網路拓樸'},{at:13,title:'流量表徵'},{at:22,title:'17類判定'},{at:31,title:'證據檢索'},{at:40,title:'本機AI稽核'},{at:47,title:'受控處置'},{at:52,title:'實測成果'},{at:57,title:'展示結束'}];
+export const chapters=[{at:0,title:'作品名稱'},{at:5,title:'網路拓樸'},{at:12,title:'流量表徵'},{at:21,title:'17類判定'},{at:30,title:'證據檢索'},{at:38,title:'本機AI稽核'},{at:45,title:'受控處置'},{at:52,title:'實測成果'},{at:57,title:'展示結束'}];
+export const controlTimeline={start:45,apply:46,readback:48,expiry:50};
 export const chapterAt=t=>Math.max(0,chapters.findLastIndex(c=>t>=c.at));
 const B=palette.blue,G=palette.gold,N=palette.navy,FONT=typography.latin+', '+typography.cjk;
 const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
@@ -58,16 +59,16 @@ function evidencePanel(index,local,t){
  }else if(index===6){
   s+=tx(859,269,'先檢查策略，再執行',27,N);
   const labels=['套用','讀回','回復'];
-  const active=t>=50.8?2:t>=49?1:0;
+  const active=t>=controlTimeline.expiry?2:t>=controlTimeline.readback?1:t>=controlTimeline.apply?0:-1;
   labels.forEach((label,k)=>{
    const x=859+k*114;
    s+=chip(x,310,106,64,label,28,k===active?palette.gold_tint:'#FFFFFF');
    if(k<2)s+=arrow(x+106,342,x+112,342);
    if(k===active)s+=box(x,310,106,4,G,0);
   });
-  const u=Math.max(0,Math.min(1,(t-48)/2.8));
+  const u=Math.max(0,Math.min(1,(t-controlTimeline.apply)/(controlTimeline.expiry-controlTimeline.apply)));
   s+=`<circle cx="891" cy="430" r="23" fill="#FFFFFF" stroke="${B}" stroke-width="3"/><path d="M891 430L${891+17*Math.sin(u*2*Math.PI)} ${430-17*Math.cos(u*2*Math.PI)}" stroke="${B}" stroke-width="3"/>`;
-  s+=tx(929,440,t>=50.8?'到期撤銷規則':'期限隨策略管理',26,N);
+  s+=tx(929,440,t>=controlTimeline.expiry?'到期撤銷規則':'期限隨策略管理',26,N);
   s+=tx(859,504,'同次回條，確認服務恢復',25,palette.muted);
  }
  return s;
@@ -84,17 +85,17 @@ function topology(t,dark){
  // A separate branch makes the inference/evidence chain visible.
  s+=line(362,350,390,350)+line(390,350,390,530)+line(390,530,363,530)+line(310,530,715,530);
  [['IDS',310],['Top-5',515],['AI Judge',715]].forEach(([name,x],k)=>{
-  const active=t>=[13,31,40][k];
+  const active=t>=[12,30,38][k];
   s+=box(x-53,505,106,54,active?G:(dark?'#171C1D':'#F0F2F3'))+tx(x,539,name,22,active?N:(dark?'#D6DDE0':'#53666E'),400,'middle');
  });
- if(t>=13&&t<31){const d=260*((t*.24)%1),x=390-(d-180);if(d<180)s+=packet(390,350+d);else if(x>377)s+=packet(x,530);}
- if(t>=31){const x=310+(t>=40?405:205)*((t*.24)%1);if((x>376&&x<447)||(x>581&&x<649))s+=packet(x,530);}
- if(t>=47)s+=`<path d="M715 505V480H585V350H567" fill="none" stroke="${B}" stroke-width="3" stroke-dasharray="7 5"/>`+tx(620,465,'策略檢查',25,dark?'#D6DDE0':'#53666E');
+ if(t>=12&&t<30){const d=260*((t*.24)%1),x=390-(d-180);if(d<180)s+=packet(390,350+d);else if(x>377)s+=packet(x,530);}
+ if(t>=30){const x=310+(t>=38?405:205)*((t*.24)%1);if((x>376&&x<447)||(x>581&&x<649))s+=packet(x,530);}
+ if(t>=controlTimeline.start)s+=`<path d="M715 505V480H585V350H567" fill="none" stroke="${B}" stroke-width="3" stroke-dasharray="7 5"/>`+tx(620,465,'策略檢查',25,dark?'#D6DDE0':'#53666E');
  const p=(t*.38)%1;
  s+=packet(110+200*p,245+105*p)+packet(310+405*((t*.28)%1),350);
- if(t<48||t>=50.8)s+=packet(110+200*((t*.5)%1),455-105*((t*.5)%1),dark?'#D6DDE0':'#53666E');
- if(t>=48&&t<50.8)s+=box(450,260,136,42,G,21)+tx(518,289,'規則生效',26,N,400,'middle');
- if(t>=50.8)s+=box(450,260,136,42,G,21)+tx(518,289,'到期回復',26,N,400,'middle');
+ if(t<controlTimeline.apply||t>=controlTimeline.expiry)s+=packet(110+200*((t*.5)%1),455-105*((t*.5)%1),dark?'#D6DDE0':'#53666E');
+ if(t>=controlTimeline.apply&&t<controlTimeline.expiry)s+=box(450,260,136,42,G,21)+tx(518,289,'規則生效',26,N,400,'middle');
+ if(t>=controlTimeline.expiry)s+=box(450,260,136,42,G,21)+tx(518,289,'到期回復',26,N,400,'middle');
  return s;
 }
 const messages=[
