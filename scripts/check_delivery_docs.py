@@ -66,6 +66,11 @@ def audit(root=ROOT):
         path = root / name
         if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != entry['sha256']:
             errors.append(f'{name}: delivery digest mismatch')
+    from release_inventory import verify_bindings
+    try:
+        verify_bindings(json.loads((root/'deliverables/source/release-validation.json').read_text(encoding='utf-8')),root)
+    except (ValueError,OSError):
+        errors.append('Release source/artifact/preview evidence binding mismatch')
     films = list((root / 'deliverables').rglob('*.mp4'))
     if len(films) != 1:
         errors.append('Exactly one current presentation film must be delivered')

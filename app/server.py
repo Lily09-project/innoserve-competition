@@ -9,11 +9,22 @@ import threading
 import subprocess
 import uuid
 import traceback
+import time
 import numpy as np
 
 from pipeline import TrainOnlyBank, run_event, B_NAMES
 from network_contract import build_network_scenario, verify_network_receipt
+from settings import execution_settings
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def prune_jobs(jobs, now, retention, maximum):
+    """Bound completed jobs; never evict active work or the separate event receipts."""
+    completed = [(key,value) for key,value in jobs.items() if value['state'] != 'running']
+    completed.sort(key=lambda row:row[1]['finished_at'], reverse=True)
+    for index,(key,value) in enumerate(completed):
+        if index >= maximum or now-value['finished_at'] >= retention:
+            del jobs[key]
 
 
 def source_revision():
@@ -27,6 +38,7 @@ def source_revision():
 
 
 def create_server(port=8765, root=ROOT):
+    execution = execution_settings()
     loaded_revision = source_revision()
     root=Path(root)
     data = root / "evidence/fresh17"
@@ -47,6 +59,7 @@ def create_server(port=8765, root=ROOT):
 
     def create_job(action,event_id):
         with job_lock:
+            prune_jobs(jobs,time.monotonic(),execution['job_retention_seconds'],execution['max_completed_jobs'])
             if any(j["state"]=="running" for j in jobs.values()):
                 return None
             job_id=uuid.uuid4().hex
@@ -74,19 +87,19 @@ def create_server(port=8765, root=ROOT):
                     def linux(p):
                         value=str(p).replace("\\","/")
                         return "/mnt/"+value[0].lower()+value[2:] if len(value)>2 and value[1]==":" else value
-                    process=subprocess.run(["wsl","-d","Ubuntu-24.04","-u","root","--","python3",
+                    process=subprocess.run(["wsl","-d",execution['wsl_distribution'],"-u",execution['wsl_user'],"--","python3",
                          linux(root / "scripts/live_network_test.py"),"--scenario",linux(scenario_path),"--output",linux(output_path)],
-                         capture_output=True,timeout=100)
+                         capture_output=True,timeout=execution['network_timeout_seconds'])
                     (folder / "process.log").write_bytes(process.stdout+process.stderr)
                     if process.returncode!=0 or not output_path.exists():raise RuntimeError("isolated_network_test_failed")
                     result=json.loads(output_path.read_text(encoding="utf-8"))
                     if not verify_network_receipt(scenario,result):raise RuntimeError("network_receipt_binding_failed")
                     event["network_receipt"]=result
-                with job_lock:jobs[job_id].update({"state":"done","phase":"執行完成","result":result})
+                with job_lock:jobs[job_id].update({"state":"done","phase":"執行完成","result":result,"finished_at":time.monotonic()})
             except Exception:
                 folder=root / "validation";folder.mkdir(exist_ok=True)
                 (folder / ("job-"+job_id+".log")).write_text(traceback.format_exc(),encoding="utf-8")
-                with job_lock:jobs[job_id].update({"state":"error","phase":"執行中止，已保留本機診斷紀錄"})
+                with job_lock:jobs[job_id].update({"state":"error","phase":"執行中止，已保留本機診斷紀錄","finished_at":time.monotonic()})
         threading.Thread(target=work,daemon=True).start()
         return job_id
     class Handler(BaseHTTPRequestHandler):
@@ -103,7 +116,9 @@ def create_server(port=8765, root=ROOT):
                 self.json_response({"product":"ai-security-demo.v3","source_revision":loaded_revision,"model_ready":engine["value"] is not None,"live_event_ids":live_ids});return
             if self.path.startswith("/api/jobs/"):
                 key=self.path.split("/")[-1]
-                with job_lock:value=dict(jobs.get(key,{}))
+                with job_lock:
+                    prune_jobs(jobs,time.monotonic(),execution['job_retention_seconds'],execution['max_completed_jobs'])
+                    value=dict(jobs.get(key,{}))
                 self.json_response(value,200 if value else 404);return
             if self.path.startswith("/api/"):self.send_error(404);return
             self.send_error(404, "API-only service");return

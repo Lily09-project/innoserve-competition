@@ -90,12 +90,18 @@ python scripts/import_local_assets.py --source PATH_TO_LOCAL_DELIVERY
 
 ## 驗證與協作
 
+- [全項測試矩陣](docs/測試矩陣.md)
+- [驗收與重現方式](docs/驗收與重現方式.md)
+- [實測與證據索引](docs/實測與證據索引.md)
+
+
 ```bash
 python -m pip install -r requirements-test.txt
 python -m unittest discover -s tests -v
 pnpm install --frozen-lockfile
 pnpm run test:media
 pnpm run check:media
+node tests/media-render-smoke.cjs
 python scripts/check_delivery_docs.py
 ```
 

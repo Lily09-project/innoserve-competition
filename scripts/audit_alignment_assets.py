@@ -1,6 +1,7 @@
 """Read-only asset lineage and saved/fresh representation alignment audit."""
 from __future__ import annotations
 import hashlib
+import argparse
 import json
 import sys
 from pathlib import Path
@@ -9,6 +10,8 @@ ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT / "app"))
 from settings import asset_path, optional_asset_path
 from pipeline import digest, audit_payload, LABELS
+from server import source_revision
+from audit_selection import select_audit
 
 
 def sha(path):
@@ -19,6 +22,9 @@ def sha(path):
 
 
 def main():
+    parser=argparse.ArgumentParser()
+    parser.add_argument('--audit-dir',type=Path)
+    args=parser.parse_args()
     data=ROOT / "evidence/fresh17"
     manifest=json.loads((data / "train_bank_manifest.json").read_text(encoding="utf-8"))
     ref=asset_path("ids_reference_root")
@@ -31,7 +37,7 @@ def main():
         event=source[row["event_id"]]
         assert row["payload"]==audit_payload(event,event["evidence"])
         assert "validation_label" not in row["payload"] and "true_label" not in row["payload"]
-    folder=sorted((ROOT / "validation").glob("framework_audit_*"))[-1]
+    folder=select_audit(ROOT/'validation',source_revision(),args.audit_dir)
     fresh=json.loads((folder / "live_events_private.json").read_text(encoding="utf-8"))
     errors=[]
     for e in fresh:
@@ -48,7 +54,7 @@ def main():
     files=[optional_asset_path("gate_impl_path",ref.parent / "gate_soft_oof_search.py"),ref / "gate_results/augmented/seed_42/gate_summary.json",
         ref / "gate_exports/augmented/seed_42/ctbm_validation_predictions.csv",
         ref / "gate_exports/augmented/seed_42/pbcnn_validation_predictions.csv"]
-    result={"checkpoint_hashes_match_bank_manifest":True,"checkpoint_count":len(hashes),
+    result={"source_revision":source_revision(),"audit_source":folder.name,"checkpoint_hashes_match_bank_manifest":True,"checkpoint_count":len(hashes),
         "label_order_match":True,"judge_payloads_checked":len(records),"ground_truth_in_judge_payload":False,
         "live_vs_saved_probabilities_checked":len(fresh),"maximum_absolute_probability_difference":max(errors),
         "probabilities_bitwise_equal":max(errors)==0,

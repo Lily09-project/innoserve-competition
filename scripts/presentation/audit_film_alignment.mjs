@@ -5,7 +5,7 @@ import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
 import {chapters,frameSvg} from '../../media/film/scene.mjs';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../..');
-const require=createRequire(process.env.RENDER_NODE_MODULES+'/package.json');
+const require=createRequire(process.env.RENDER_NODE_MODULES ? process.env.RENDER_NODE_MODULES+'/package.json' : import.meta.url);
 const sharp=require('sharp');
 const folder=path.join(root,process.argv[2]||'validation/alignment-20261029');
 fs.mkdirSync(folder,{recursive:true});

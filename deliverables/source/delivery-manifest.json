@@ -1,5 +1,5 @@
 {
-  "base_revision": "62268d0",
+  "base_revision": "67ad983",
   "files": {
     "deliverables/決賽簡報_AI資安框架.pptx": {
       "bytes": 1862733,
@@ -32,6 +32,10 @@
     "deliverables/決賽離線展示包.zip": {
       "bytes": 3909292,
       "sha256": "f751934664f50aa2ca0848d811c5d8271ba7cfa3bd517a5739b65acd32aaea1b"
+    },
+    "deliverables/source/release-validation.json": {
+      "bytes": 8072,
+      "sha256": "5903f4268a8979a5ba89694317033ec096192714e65118e582b9d2c27b83d0fe"
     }
   },
   "slides": 12,
@@ -52,12 +56,12 @@
     2560,
     1072
   ],
-  "python_tests": 49,
+  "python_tests": 88,
   "website": "removed; API-only",
-  "review": "Independent review: poster, nine chapter stills and 27 encoded frames have no remaining required fixes; two documentation mismatches resolved. Additional 32 transition frames inspected by author.",
-  "results_changed": false,
-  "markdown_documents": 21,
-  "local_links_checked": 48,
+  "review": "88 Python tests and deterministic nine-chapter media compilation passed; current real 17-class/17-LLM and six-isolated-scenario validation passed. Existing visual acceptance retained; no visual content changed.",
+  "results_changed": true,
+  "markdown_documents": 24,
+  "local_links_checked": 58,
   "presentation_limit_seconds": 360,
   "buffer_seconds": 60,
   "visual_theme": "white and light gray canvas; navy titles, medium blue diagrams, gold highlights, ink body",
@@ -136,8 +140,8 @@
     "gold_tint": "#FFF4DD"
   },
   "recorded_detector_and_judge_metrics_changed": false,
-  "fresh_audit_started_utc": "20261028T133519Z",
-  "source_revision": "73581af75ca638a816429727adf96a8ccc0aa356393c84ba475716432442318f",
+  "fresh_audit_started_utc": "20261029T043638Z",
+  "source_revision": "9ec0566daf57d0b08ab6f0a34dc105e74a1914c9453dd93b42279075785db35b",
   "film_results_seconds": 2.5,
   "local_judge_parser_regression_cases": 463,
   "local_judge_parser_assessment_changes": 0,
@@ -165,5 +169,6 @@
   "validation_policy": "User requested no playback tests; use file integrity, full decode, frame timestamps, embedded byte equality, typography, alignment and visual frame review.",
   "full_decoded_video_frames": 720,
   "decoded_pts_continuous": true,
-  "transition_frames_inspected": 32
+  "transition_frames_inspected": 32,
+  "release_inventory": "deliverables/source/release-validation.json"
 }
