@@ -7,7 +7,7 @@ import {chapters,frameSvg} from '../../media/film/scene.mjs';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../..');
 const require=createRequire(process.env.RENDER_NODE_MODULES+'/package.json');
 const sharp=require('sharp');
-const folder=path.join(root,'validation/alignment-20261029');
+const folder=path.join(root,process.argv[2]||'validation/alignment-20261029');
 fs.mkdirSync(folder,{recursive:true});
 let textCount=0,centerChecks=0;
 for(let index=0;index<chapters.length;index++){

@@ -104,94 +104,105 @@ def build():
             line(x+25, y+42, x+29, y+46, BLUE, 2)
             line(x+29, y+46, x+35, y+37, BLUE, 2)
 
-    # Header: exact official title with print-safe margins.
+    # Editorial hierarchy: official name, one takeaway, four readable method lanes.
     text(16, 15, 388, 8, '資安技術組決賽作品', 14, BLUE)
-    text(16, 24, 388, 46, '融合新型內容相依時序方向模型\n入侵偵測與任務導向檢索增強稽核\n之 AI 資安框架', 32, NAVY)
-    icon(4, 344, 29, 50)
-    text(16, 73, 388, 10, '同一事件串起流量判定、案例證據與可回復的處置', 22, BLUE)
-    line(16, 87, 404, 87)
-    icon(1, 16, 94, 27)
-    text(50, 94, 354, 10, '從辨識告警，走到可查核的資安處理流程', 23)
-    text(50, 107, 354, 13, '面向校園與中小型組織的資安管理需求，協助管理者核對事件依據。', 17, MUTED)
+    text(16, 24, 388, 46, '融合新型內容相依時序方向模型\n入侵偵測與任務導向檢索增強稽核\n之 AI 資安框架', 30, NAVY)
+    icon(4, 348, 30, 46)
+    line(16, 85, 404, 85)
+    text(16, 92, 388, 13, '從流量告警，走到有證據、可回復的處置', 26, NAVY)
+    text(16, 108, 388, 10, '同一事件串起模型判定、相似案例、AI稽核與處置回條。', 19, MUTED)
+    section(128, '01', '四階段方法，串成同一條事件鏈')
 
-    section(129, '01', '四階段方法，以同一事件銜接')
-    module(16, 145, '1', '互補模型判定', 2)
-    text(56, 168, 137, 13, 'CTBM：內容、時間差、方向', 18)
-    text(56, 182, 137, 13, 'PBCNN：短窗位元組模式', 18)
-    arrow(99, 200, 18, 7, MSO_SHAPE.DOWN_ARROW)
-    text(24, 211, 168, 10, '校準＋OOF Gate 融合', 20, BLUE, True, PP_ALIGN.CENTER)
-    text(24, 225, 168, 7, '輸出：17類判定、信心與512維表徵', 15, MUTED, align=PP_ALIGN.CENTER)
+    stages = [('互補判定', '內容＋時序', 2), ('任務檢索', '表徵＋機率', 3),
+              ('證據稽核', '保留正式分類', None), ('受控回復', '策略＋期限', 4)]
+    for i, (name, detail, image) in enumerate(stages):
+        y = 145+i*56
+        rect(16, y, 388, 50, PALE, LINE)
+        rect(16, y, 1.5, 50, BLUE)
+        text(23, y+4, 10, 8, f'{i+1:02d}', 16, BLUE, True)
+        text(37, y+3, 73, 10, name, 23, BLUE)
+        text(37, y+14, 73, 8, detail, 15, MUTED)
+        if image:
+            icon(image, 25, y+25, 21)
+        else:
+            rect(29, y+25, 14, 20, 'FFFFFF', BLUE)
+            for dy in (29,34,39):line(32,y+dy,40,y+dy,BLUE)
+        if i < 3:
+            arrow(257, y+50.5, 8, 5, MSO_SHAPE.DOWN_ARROW)
 
-    module(220, 145, '2', '任務導向案例檢索', 3)
-    text(260, 168, 137, 13, '512維表徵＋17維機率', 20)
-    text(260, 182, 137, 13, '529維任務向量，L2正規化', 18)
-    arrow(303, 200, 18, 7, MSO_SHAPE.DOWN_ARROW)
-    text(228, 211, 168, 10, 'Top-5 訓練案例證據', 20, BLUE, True, PP_ALIGN.CENTER)
-    text(228, 225, 168, 7, '案例庫僅由訓練資料建立', 15, MUTED, align=PP_ALIGN.CENTER)
-    arrow(202, 183, 16, 8)
-    arrow(307, 238, 10, 13, MSO_SHAPE.DOWN_ARROW)
+    def node(x, y, w, h, label, sub=None):
+        rect(x, y, w, h, 'FFFFFF')
+        text(x, y+(1 if sub else 0), w, h*(.56 if sub else 1), label, 20, BLUE, True, PP_ALIGN.CENTER)
+        if sub:text(x, y+h*.54, w, h*.43, sub, 14, MUTED, align=PP_ALIGN.CENTER)
 
-    module(220, 253, '3', '本機AI證據稽核', None)
-    text(260, 275, 137, 12, '核對正式判定與相似案例', 19)
-    text(260, 289, 137, 12, '保留分類，附加稽核結論', 19)
-    for j, label in enumerate(('支持', '複核', '不確定')):
-        xx = 228+j*58.5
-        rect(xx, 308, 51, 15, 'EAF0F4')
-        text(xx, 308, 51, 15, label, 20, BLUE, align=PP_ALIGN.CENTER)
-    text(228, 331, 168, 8, '複核與不確定事件保留監測或蒐證', 15, MUTED, align=PP_ALIGN.CENTER)
+    # 01: parallel models enter one calibrated output.
+    node(120,150,78,17,'CTBM','內容·時間差·方向')
+    node(120,173,78,17,'PBCNN','短窗位元組模式')
+    line(198,158.5,207,158.5,BLUE);line(198,181.5,207,181.5,BLUE)
+    line(207,158.5,207,181.5,BLUE);arrow(208,167,8,6)
+    node(218,158,85,25,'校準＋融合','OOF Gate')
+    arrow(305,167,14,6)
+    node(322,158,76,25,'17類判定','信心與512維表徵')
+    # 02: task vector composition and train-only evidence retrieval.
+    node(120,206,78,17,'512維表徵')
+    node(120,229,78,17,'17維機率')
+    line(198,214.5,207,214.5,BLUE);line(198,237.5,207,237.5,BLUE)
+    line(207,214.5,207,237.5,BLUE);arrow(208,223,8,6)
+    node(218,214,85,25,'529維向量','L2正規化')
+    arrow(305,223,14,6)
+    node(322,214,76,25,'Top-5證據','僅檢索訓練案例')
+    # 03: attach an audit; never overwrite the original classifier.
+    node(120,262,78,17,'正式判定')
+    node(120,285,78,17,'案例證據')
+    line(198,270.5,207,270.5,BLUE);line(198,293.5,207,293.5,BLUE)
+    line(207,270.5,207,293.5,BLUE);arrow(208,279,8,6)
+    node(218,270,85,25,'本機AI稽核','核對同一事件')
+    arrow(305,279,14,6)
+    for j, label in enumerate(('支持','複核','不確定')):
+        node(322,261+j*14,76,12,label)
+    # 04: allowed action, readback and expiry, with the review branch explicit.
+    text(120,317,278,10,'策略檢查：範圍、允許動作與期限',18,INK)
+    for j,label in enumerate(('套用規則','讀回驗證','到期回復')):
+        x=120+j*98
+        node(x,330,78,16,label)
+        if j<2:arrow(x+81,335,14,6)
+    text(120,349,278,10,'複核／不確定 → 保留監測或蒐證',15,MUTED)
+    rect(16,375,388,14,'FFF4DD')
+    text(20,375,380,14,'同一事件識別碼：正式分類／案例證據／稽核結論／處置回條',18,NAVY,align=PP_ALIGN.CENTER)
 
-    module(16, 253, '4', '受控處置與回復', 4)
-    text(56, 275, 137, 12, '檢查範圍、允許動作與期限', 19)
-    text(56, 289, 137, 12, '允許的策略才進入執行', 19)
-    for j, label in enumerate(('套用', '讀回', '回復')):
-        xx = 24+j*62
-        text(xx, 308, 44, 15, label, 21, BLUE, align=PP_ALIGN.CENTER)
-        if j < 2:
-            arrow(xx+45, 312, 9, 5)
-    text(24, 331, 168, 8, '同次執行回條綁定，規則到期撤銷', 15, MUTED, align=PP_ALIGN.CENTER)
-    arrow(202, 291, 16, 8, MSO_SHAPE.LEFT_ARROW)
-    rect(16, 351, 388, 13, 'FFF4DD')
-    text(20, 351, 380, 13, '同一事件識別碼：正式分類／案例證據／稽核結論／處置回條', 18, NAVY, align=PP_ALIGN.CENTER)
+    section(399, '02', '三項創新，直接對應可展示成果')
+    innovations = [('互補判定','時序與局部內容共同判斷\n校準後形成固定17類分類'),
+                   ('任務證據','表徵與類別機率共同檢索\n為每個事件附上相關案例'),
+                   ('可追溯處置','稽核附回原事件、策略另檢查\n讀回與到期回復留下紀錄')]
+    for i,(heading,copy) in enumerate(innovations):
+        x=16+i*133
+        if i:line(x-6,417,x-6,455)
+        text(x,416,122,11,heading,22,BLUE)
+        text(x,431,124,23,copy,16,MUTED)
 
-    section(376, '02', '創新落在模型互補與證據銜接')
-    innovations = [
-        ('互補判定', '時序關係與局部內容共同判斷\n由校準與Gate形成正式分類'),
-        ('任務證據', '表徵與類別機率共同檢索\n為每個事件找可核對的案例'),
-        ('可追溯處置', '稽核附回原事件，策略另檢查\n讀回與到期回復留下紀錄'),
-    ]
-    for i, (heading, copy) in enumerate(innovations):
-        x = 16+i*133
-        if i:
-            line(x-6, 396, x-6, 430)
-        text(x, 394, 122, 11, heading, 23, BLUE)
-        text(x, 408, 124, 23, copy, 16, MUTED)
-
-    section(443, '03', '以分階段實測呈現效果')
-    text(16, 458, 184, 10, '相同18,998筆測試的 Macro-F1', 18)
-    for i, name in enumerate(('PBCNN', 'CTBM', 'OOF Gate')):
-        y = 476+i*17
-        value = data['detection'][name]['macro_f1']*100
-        text(16, y, 44, 10, name, 18, BLUE if i == 2 else INK, i == 2)
-        rect(64, y+2, 94, 6, 'F0F2F3')
-        rect(64, y+2, 94*value/100, 6, GOLD if i == 2 else '7294A9')
-        text(161, y, 39, 10, f'{value:.2f}%', 21, BLUE if i == 2 else INK, i == 2, PP_ALIGN.RIGHT)
-    text(16, 530, 184, 9, '融合判定 Accuracy 98.08%', 17, MUTED)
-    text(16, 542, 184, 9, '比較使用相同資料與17類標籤', 15, MUTED)
-
-    line(210, 458, 210, 550)
-    r, j = data['retrieval'], data['judge']
-    text(220, 458, 184, 10, '1,550筆訓練案例／463筆查詢', 18)
-    text(220, 473, 184, 12, f'Top-5  {r["top5"]*100:.2f}%', 28, BLUE, True)
-    text(220, 488, 184, 10, f'MRR@5  {r["mrr5"]*100:.2f}%　訓練／查詢重疊0', 16, MUTED)
-    for i, (name, key) in enumerate((('支持', 'support'), ('複核', 'review'), ('不確定', 'uncertain'))):
-        x = 220+i*63
-        text(x, 505, 58, 12, str(j['assessment_counts'][key]), 27, BLUE, align=PP_ALIGN.CENTER)
-        text(x, 520, 58, 9, name, 18, align=PP_ALIGN.CENTER)
-    text(220, 537, 184, 14, '30筆偵測誤判中18筆分流\n其餘12筆獲支持，處置另經策略檢查', 14, MUTED)
-
-    line(16, 558, 404, 558)
-    text(16, 563, 388, 10, '整合驗證：17類真實張量重跑；6種隔離TCP情境，背景保留與回復皆6/6。', 17, BLUE)
-    text(16, 573, 388, 6, '6種情境含4種套用規則、2種監測或蒐證；6/6為隔離交易與回復結果，非原生攻擊防禦率。', 11.5, MUTED)
+    section(465,'03','以分階段實測呈現效果')
+    text(16,480,184,10,'相同18,998筆測試的 Macro-F1',17)
+    for i,name in enumerate(('PBCNN','CTBM','OOF Gate')):
+        y=494+i*17
+        value=data['detection'][name]['macro_f1']*100
+        text(16,y,44,10,name,18,BLUE if i==2 else INK,i==2)
+        rect(64,y+2,94,6,PALE)
+        rect(64,y+2,94*value/100,6,GOLD if i==2 else '7294A9')
+        text(161,y,39,10,f'{value:.2f}%',21,BLUE if i==2 else INK,i==2,PP_ALIGN.RIGHT)
+    text(16,545,184,9,'整體準確率98.08%·固定17類分類',16,MUTED)
+    line(210,480,210,559)
+    r,j=data['retrieval'],data['judge']
+    text(220,480,184,10,'1,550筆訓練案例／463筆查詢',17)
+    text(220,492,184,12,f'Top-5  {r["top5"]*100:.2f}%',28,BLUE,True)
+    text(220,507,184,10,f'MRR@5  {r["mrr5"]*100:.2f}%·訓練／查詢重疊0',15,MUTED)
+    for i,(name,key) in enumerate((('支持','support'),('複核','review'),('不確定','uncertain'))):
+        x=220+i*63
+        text(x,520,58,12,str(j['assessment_counts'][key]),26,BLUE,align=PP_ALIGN.CENTER)
+        text(x,533,58,9,name,17,align=PP_ALIGN.CENTER)
+    text(220,546,184,14,'30筆偵測誤判中18筆分流\n其餘12筆獲支持，處置另經策略檢查',13.5,MUTED)
+    line(16,562,404,562)
+    text(16,565,388,9,'整合驗證：17類真實張量重跑；6種隔離TCP情境，背景保留與回復皆6/6。',16,BLUE)
+    text(16,574,388,5,'6種情境含4種套用規則、2種監測或蒐證；6/6為隔離交易與回復結果，非原生攻擊防禦率。',11,MUTED)
 
     target = ROOT / 'deliverables/決賽海報_AI資安框架_A2.pptx'
     intermediate = ROOT / 'validation/poster-a2/authoring.pptx'

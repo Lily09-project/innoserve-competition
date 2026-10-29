@@ -1,7 +1,8 @@
 param([string]$Root = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path,
-      [switch]$CorrectText)
+      [switch]$CorrectText,
+      [string]$OutputFolder = 'validation\alignment-20261029')
 $ErrorActionPreference = 'Stop'
-$folder = Join-Path $Root 'validation\alignment-20261029'
+$folder = Join-Path $Root $OutputFolder
 [void][System.IO.Directory]::CreateDirectory($folder)
 $app = New-Object -ComObject PowerPoint.Application
 function Read-Shapes($collection, $parentName) {

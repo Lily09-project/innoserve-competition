@@ -1,17 +1,17 @@
 {
-  "base_revision": "a6958fa",
+  "base_revision": "e90e241",
   "files": {
     "deliverables/決賽簡報_AI資安框架.pptx": {
-      "bytes": 1625083,
-      "sha256": "3ec3d39dac8e5e130275fff6f724d579f73320f69e5f247f010bd248f6368c6f"
+      "bytes": 1833646,
+      "sha256": "4873c363c43fab4367caa8d2dabcc9acd95bfd4f665981b7c07b9062a0aa9c06"
     },
     "deliverables/決賽簡報_AI資安框架.pdf": {
       "bytes": 480318,
       "sha256": "7bc9effc6fda6f7a67126d0d28a9df79be0bb8b9adcda6b9da3488f009f1b53e"
     },
     "deliverables/AI資安框架_系統展示影片_30秒快版.mp4": {
-      "bytes": 1352613,
-      "sha256": "79aeac1f03506cd177eb466cbe5ce678036d2f5e1b306b559a8bc1b95bd01984"
+      "bytes": 1561176,
+      "sha256": "9ab7f893bd4fbb7b09658c0d616c22537c46f5a603248df501fdde1946616383"
     },
     "deliverables/figures/fig_architecture.png": {
       "bytes": 307476,
@@ -22,16 +22,16 @@
       "sha256": "e99352554b800b2544969762ed91adaf067a81a6a3efe3efa39560a13a8aea2c"
     },
     "deliverables/決賽海報_AI資安框架_A2.pptx": {
-      "bytes": 138953,
-      "sha256": "ed2c8d8ceffef5040bf85b17482ef9f7955111fecfb9ec349ef8c01ded86f3ad"
+      "bytes": 127307,
+      "sha256": "6d627e27d0e7542b7f82fd7447e7bbe2b9c633a10e7417491a571f7925468ee6"
     },
     "deliverables/決賽海報_AI資安框架_A2.pdf": {
-      "bytes": 219982,
-      "sha256": "25ff186d9497d83acb268013b2f3620e8b5fd51c05b9ebd201e59229f4047385"
+      "bytes": 213345,
+      "sha256": "3c1494c02809c8416166b8e34c16c93eeea9d14d6bebcd80b3d4686ddf161ad3"
     },
     "deliverables/決賽離線展示包.zip": {
-      "bytes": 3456093,
-      "sha256": "7565b5b5fc1dd0f71eb07c8821872804229429b1a12a6077d9517418580e2059"
+      "bytes": 3850863,
+      "sha256": "323db03c1ccf70a9825b175cb964726776679f7488b726273a7f023f1715c0ce"
     }
   },
   "slides": 12,
@@ -54,10 +54,10 @@
   ],
   "python_tests": 49,
   "website": "removed; API-only",
-  "review": "Independent final review of 12 native slide outputs, A2 poster and 27 encoded film frames: no visual blocking findings; native playback remains unverified in the scheduled session",
+  "review": "Independent review of 1 A2 poster, 9 chapter stills and 27 encoded frames: no visual blocking findings. Current PowerPoint native playback remains unverified.",
   "results_changed": false,
-  "markdown_documents": 20,
-  "local_links_checked": 45,
+  "markdown_documents": 21,
+  "local_links_checked": 48,
   "presentation_limit_seconds": 360,
   "buffer_seconds": 60,
   "visual_theme": "white and light gray canvas; navy titles, medium blue diagrams, gold highlights, ink body",
@@ -93,7 +93,7 @@
   "qa_start_slide": 10,
   "qa_in_formal_talk": false,
   "qa_presentation": "six diagrams with evidence; prose answers in speaker notes",
-  "visual_revision": "Shared palette, flat vector icons and exact two-font declarations; 299 rendered text anchors corrected to left, center or right guides; symmetric poster groups and explicitly centered film labels",
+  "visual_revision": "Reference-led editorial hierarchy: four top-to-bottom method lanes on A2; dynamic feature structure, task-vector composition, Top-5 card reveal, audit branches and expiry progress in the film. Shared light palette and exact font rules retained.",
   "poster": {
     "format": "A2 portrait",
     "width_mm": 420,
@@ -103,7 +103,10 @@
     "pdf_fonts_embedded": true,
     "text_overflow": 0,
     "physical_print_proof": "requires actual print inspection",
-    "palette": "light-navy-blue-gold"
+    "palette": "light-navy-blue-gold",
+    "title_pt": 30,
+    "layout": "Four top-to-bottom horizontal method lanes; left-to-right inputs, processing and output within each lane",
+    "pdf_font_resources_embedded": 4
   },
   "walkthrough": {
     "anonymous_terminal": true,
@@ -144,13 +147,15 @@
     "design-system/icons.json"
   ],
   "alignment": {
-    "native_text_anchors": 299,
+    "native_text_anchors": 307,
     "tolerance_pt": 0.1,
     "native_grid_checks": 12,
     "film_chapters": 9,
-    "film_text_guides": 151,
+    "film_text_guides": 171,
     "film_center_checks": 52,
-    "errors": 0
+    "errors": 0,
+    "poster_print_safe_text_mm": 15
   },
-  "current_native_playback_verified": false
+  "current_native_playback_verified": false,
+  "design_reference_record": "docs/海報與影片參考轉譯.md"
 }
