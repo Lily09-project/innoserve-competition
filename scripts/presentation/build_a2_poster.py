@@ -112,11 +112,16 @@ def build():
     rect(190, 78, 40, 1.2, GOLD)
     line(16, 85, 404, 85)
     text(16, 92, 388, 13, '從流量告警，走到有證據、可回復的處置', 26, NAVY)
-    text(16, 108, 388, 10, '同一事件串起模型判定、相似案例、AI稽核與處置回條。', 19, MUTED)
+    text(16, 105, 388, 9, '同一事件串起模型判定、相似案例、AI稽核與處置回條。', 19, MUTED)
+    text(16, 116, 388, 8, '面向校園與中小型組織的告警判讀，以案例證據協助核對事件，再依策略執行與回復。', 16, INK)
     section(128, '01', '四階段方法，串成同一條事件鏈')
 
     stages = [('互補判定', '內容＋時序', 2), ('任務檢索', '表徵＋機率', 3),
               ('證據稽核', '保留正式分類', None), ('受控回復', '策略＋期限', 4)]
+    stage_outputs = ['產生正式類別、\n信心與流量表徵',
+                     '依事件任務找案例\n附上相似類別證據',
+                     '核對判定與案例\n附加三態稽核結論',
+                     '策略允許才介入\n讀回並確認回復']
     for i, (name, detail, image) in enumerate(stages):
         y = 145+i*56
         rect(16, y, 388, 50, 'EAF0F4' if i in (0,3) else PALE, LINE)
@@ -129,6 +134,7 @@ def build():
         else:
             rect(29, y+25, 14, 20, 'FFFFFF', BLUE)
             for dy in (29,34,39):line(32,y+dy,40,y+dy,BLUE)
+        text(52, y+25, 61, 21, stage_outputs[i], 16, INK)
         if i < 3:
             arrow(257, y+50.5, 8, 5, MSO_SHAPE.DOWN_ARROW)
 
@@ -152,7 +158,12 @@ def build():
     line(207,214.5,207,237.5,BLUE);arrow(208,223,8,6)
     node(218,214,85,25,'529維向量','L2正規化')
     arrow(305,223,14,6)
-    node(322,214,76,25,'Top-5證據','僅檢索訓練案例')
+    rect(322,214,76,25,'FFFFFF')
+    text(322,214,76,10,'Top-5訓練案例',20,BLUE,True,PP_ALIGN.CENTER)
+    for rank in range(5):
+        x=324+rank*14.5
+        rect(x,226,12,10,'EAF0F4',LINE)
+        text(x,226,12,10,str(rank+1),18,BLUE,align=PP_ALIGN.CENTER)
     # 03: attach an audit; never overwrite the original classifier.
     node(120,262,78,17,'正式判定')
     node(120,285,78,17,'案例證據')
@@ -172,16 +183,16 @@ def build():
     rect(16,375,388,14,'FFF4DD')
     text(20,375,380,14,'同一事件識別碼：正式分類／案例證據／稽核結論／處置回條',18,NAVY,align=PP_ALIGN.CENTER)
 
-    section(397, '02', '三項創新，直接對應可展示成果')
-    innovations = [('互補判定','時序與局部內容共同判斷\n校準後形成固定17類分類'),
-                   ('任務證據','表徵與類別機率共同檢索\n為每個事件附上相關案例'),
-                   ('可追溯處置','稽核附回原事件、策略另檢查\n讀回與到期回復留下紀錄')]
+    section(397, '02', '三項創新，對應具體事件與產物')
+    innovations = [('互補判定','CTBM讀取內容、時序與方向\nPBCNN補充局部位元組模式\n校準融合後輸出固定17類'),
+                   ('任務證據','512維表徵＋17維類別機率\n529維向量檢索Top-5案例\nAI附回支持／複核／不確定'),
+                   ('可追溯處置','FTP／SSH：登入防護\nHTTP型DDoS：上游清洗\nBot限制C2；讀回及到期回復')]
     for i,(heading,copy) in enumerate(innovations):
         x=16+i*133
         rect(x,411,14,1,GOLD)
         if i:line(x-6,414,x-6,448)
         text(x,413,122,11,heading,22,BLUE)
-        text(x,426,124,22,copy,16,MUTED)
+        text(x,425,124,25,copy,16,INK)
 
     section(455,'03','以分階段實測呈現效果')
     text(16,470,184,10,'相同18,998筆測試的 Macro-F1',17)
@@ -204,8 +215,19 @@ def build():
         text(x,523,58,9,name,17,align=PP_ALIGN.CENTER)
     text(220,536,184,14,'30筆偵測誤判中18筆分流\n其餘12筆獲支持，處置另經策略檢查',14.5,MUTED)
     line(16,552,404,552)
-    text(16,555,388,8,'整合驗證：17類真實張量重跑；6種隔離TCP情境，背景保留與回復皆6/6。',16,BLUE)
-    text(16,564.5,388,14,'6種隔離情境：4種套用規則、2種監測或蒐證。\n6/6為隔離交易與回復結果，非原生攻擊防禦率。',16,MUTED)
+    text(16,555,67,16,'17類本機重跑\n6種隔離TCP情境',16,BLUE)
+    case_labels = {'BENIGN':'正常','FTP-BruteForce':'FTP','SSH-Bruteforce':'SSH',
+                   'DDoS-LOIC-HTTP':'HTTP','Web-XSS':'XSS','Bot':'Bot'}
+    for i, case in enumerate(data['framework']['cases']):
+        x=90+i*35
+        active=case['rules_applied']>0
+        rect(x,555,31,9,'FFF4DD' if active else PALE,LINE)
+        text(x,555,31,9,case_labels[case['validation_label']],16,BLUE,align=PP_ALIGN.CENTER)
+        status='規則' if active else '監測' if case['action']=='monitor' else '蒐證'
+        text(x,564,31,6,status,14,INK,align=PP_ALIGN.CENTER)
+    framework=data['framework']
+    text(308,555,96,16,f'背景保留 {framework["background_preserved_cases"]}/6\n到期回復 {framework["rollback_passed_cases"]}/6',18,BLUE,True,PP_ALIGN.RIGHT)
+    text(16,572,388,7,'4種套用規則、2種監測或蒐證；6/6為隔離交易與回復結果，非原生攻擊防禦率。',16,MUTED)
 
     target = ROOT / 'deliverables/決賽海報_AI資安框架_A2.pptx'
     intermediate = ROOT / 'validation/poster-a2/authoring.pptx'

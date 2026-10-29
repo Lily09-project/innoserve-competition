@@ -1,5 +1,5 @@
 {
-  "created_utc": "2026-10-29T06:32:20.564088+00:00",
+  "created_utc": "2026-10-29T06:42:54.705564+00:00",
   "source_revision": "fd8a456582977be90a32585198977740190073d0e044fdb08c1a10077ab9b670",
   "bindings": {
     "visual_sources": {
@@ -8,7 +8,7 @@
       "design-system/icons.json": "7997027b80b6b7990b8399383555d2775b4d8257902c3fa8c8f4f8a3b5e2aec7",
       "scripts/presentation/style_contract.py": "5de58b66b64c47f0191a482ed0089f5683750d7e88e3de516da80a29491bf512",
       "scripts/presentation/editorial_assets.py": "f10d4f2e08acf07bdb07f4f696df50aae8564404590ffe6a3066a694c4574df7",
-      "scripts/presentation/build_a2_poster.py": "3582818571bcc61967ee338c7ef1a82e2f2a19f9dfd9d7a54717182c48218c47",
+      "scripts/presentation/build_a2_poster.py": "b9668f33335b8b4c0f34f055886650ea296965af9a56f418744f865e53ade03e",
       "scripts/presentation/finalize_delivery.py": "18aa79f996f0b86158bbf57881d1cd38af3b7f232796da055205a6c2a7a1ce32",
       "media/film/scene.mjs": "856bcfcf54b78dffd08821c7c3b544bcf9fa1568991c0f92ab6f3de7c1c04b91",
       "scripts/render_product_film.mjs": "bd1f54fab6410a10393cab66d0b88fcb18dd99b24edb500f43b003ac469e5630"
@@ -16,15 +16,15 @@
     "artifacts": {
       "deliverables/決賽簡報_AI資安框架.pptx": "8c20cce6f85eec12d0f8846ec3929af9aae626eae6cec64ecdaa462ec1364d73",
       "deliverables/決賽簡報_AI資安框架.pdf": "d088451eabef6a85766fb1e452448138b775e07d1468b6838152e7607a78f734",
-      "deliverables/決賽海報_AI資安框架_A2.pptx": "e4be853a6d7399c2e38cdf75f82af56053de2202a9e2f6b05d24161f754e12f2",
-      "deliverables/決賽海報_AI資安框架_A2.pdf": "61f240fc57943347b8f2d055801d016519db7b6b52475c3d162b60f087a711ab",
+      "deliverables/決賽海報_AI資安框架_A2.pptx": "75d6f26ccf4058fde5a0b347bea952602ad13f29020931bca4f4aee44642d51e",
+      "deliverables/決賽海報_AI資安框架_A2.pdf": "b8a6cddfb8439b3af0515365c80a5e7752f431c7aee5b5107c8679bc4ea0c8b6",
       "deliverables/AI資安框架_系統展示影片_30秒快版.mp4": "a5298f1439a38b3e6439b52507077803adecb55cf0c620d466e8708a7e719017",
       "deliverables/source/architecture.svg": "e99352554b800b2544969762ed91adaf067a81a6a3efe3efa39560a13a8aea2c",
       "deliverables/source/speaker-notes.md": "a0710803e4bf451b2cd7cb4cf3d695d937967b102b5e6cb8be5e4d839e44137b"
     },
     "previews": {
       "deliverables/figures/slides-preview.png": "2be393a130a59bbf8bc79158dfcf80a2b63b83b0c06ad805ecfcf4affbb7b793",
-      "deliverables/figures/poster-a2-preview.png": "28145d645201efe76ffd7bd8c2fcab92850586abc7a5a50b8b58e7a62d0c68e2",
+      "deliverables/figures/poster-a2-preview.png": "12052e45e549458bb86e34cbd771c048996930076e5127da7dfe93a39c914a46",
       "deliverables/figures/film-preview.png": "57c140a6900a743929abe3bc6fd091f92461aee94bc8b018d8e9b3797838b32e",
       "deliverables/figures/fig_architecture.png": "3c583b8bc89579e3caa9021312b1f77af47f33bdde6108695d728049700c5e75"
     },
