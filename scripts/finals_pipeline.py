@@ -86,6 +86,7 @@ def verify(folder,node='node',root=ROOT,runner=execute):
     commands=[[sys.executable,'scripts/media_results.py','--check'],
         [sys.executable,'-m','unittest','discover','-s','tests','-q'],
         [node,'tests/media-smoke.cjs'],[node,'tests/media-render-smoke.cjs'],[node,'tests/media-data.cjs'],
+        [node,'tests/offline-exhibit.cjs'],
         [sys.executable,'scripts/check_delivery_docs.py'],[sys.executable,'scripts/check_public_files.py']]
     for i,command in enumerate(commands,20):runner(command,folder,i,root)
 

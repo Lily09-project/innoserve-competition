@@ -1,0 +1,3582 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#f4f7fa" />
+    <title>
+      融合新型內容相依時序方向模型入侵偵測與任務導向檢索增強稽核之 AI 資安框架
+    </title>
+    <meta
+      name="description"
+      content="互動式光流展示：逐筆封包編碼、模型融合、529 維向量檢索、AI 稽核與網路處置。合成資料教學示例。"
+    />
+    <style>
+      :root {
+        --ink: #163047;
+        --muted: #63788a;
+        --line: #dbe5eb;
+        --cyan: #10bdda;
+        --teal: #168b78;
+        --coral: #df6653;
+        --gold: #b58724;
+        --paper: #fff;
+        --bg: #f3f6f8;
+        font-family: "Times New Roman", "Exhibit Kai", serif;
+        color: var(--ink);
+        background: var(--bg);
+        font-synthesis: none;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+      }
+      button,
+      select,
+      input {
+        font: inherit;
+      }
+      button {
+        cursor: pointer;
+        color: inherit;
+        background: white;
+        border: 1px solid var(--line);
+        border-radius: 9px;
+        padding: 9px 13px;
+        font-size: 13px;
+        transition:
+          background 0.15s,
+          border-color 0.15s,
+          box-shadow 0.15s;
+      }
+      button:hover {
+        background: #eaf5f9;
+        border-color: #9bc9d7;
+      }
+      button:focus-visible,
+      select:focus-visible,
+      input:focus-visible,
+      [tabindex]:focus-visible {
+        outline: 3px solid #008ab5;
+        outline-offset: 3px;
+      }
+      button:disabled {
+        opacity: 0.45;
+        cursor: default;
+      }
+      a {
+        color: #007a9e;
+      }
+      main {
+        max-width: 1920px;
+        margin: auto;
+        padding: 22px 28px 12px;
+      }
+      .masthead {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        margin-bottom: 20px;
+      }
+      .eyebrow {
+        font-size: 10px;
+        letter-spacing: 2px;
+        color: #718897;
+        margin: 0 0 7px;
+        font-weight: 700;
+      }
+      h1 {
+        font-size: clamp(20px, 1.95vw, 35px);
+        line-height: 1.38;
+        letter-spacing: 0.03em;
+        margin: 0;
+        font-weight: 750;
+      }
+      h1 span {
+        font-weight: 650;
+      }
+      h2 {
+        font-size: 21px;
+        margin: 4px 0 10px;
+      }
+      .head-tools {
+        display: flex;
+        align-items: flex-end;
+        flex-direction: column;
+        gap: 9px;
+        flex-shrink: 0;
+      }
+      .mode {
+        font-size: 11px;
+        border: 1px solid #c9dce1;
+        border-radius: 20px;
+        padding: 8px 13px;
+        white-space: nowrap;
+      }
+      .mode i {
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        background: var(--teal);
+        border-radius: 50%;
+        margin-right: 7px;
+      }
+      .text-button {
+        border: 0;
+        background: transparent;
+        color: #4b7284;
+        padding: 6px 8px;
+      }
+      .controls {
+        display: flex;
+        gap: 18px;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 14px;
+      }
+      .scenarios {
+        display: flex;
+        gap: 9px;
+        flex: 1;
+      }
+      .scenario {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-height: 54px;
+        flex: 1;
+        text-align: left;
+        padding: 9px 14px;
+        background: #fff;
+      }
+      .scenario-icon {
+        font-size: 24px;
+        color: var(--scenario-color);
+        width: 24px;
+        text-align: center;
+      }
+      .scenario strong {
+        display: block;
+        font-size: 13px;
+      }
+      .scenario small {
+        font-size: 9px;
+        color: var(--muted);
+        letter-spacing: 0.6px;
+      }
+      .scenario.selected {
+        border-color: var(--scenario-color);
+        box-shadow:
+          inset 0 0 0 1px var(--scenario-color),
+          0 3px 12px #203e4510;
+        background: color-mix(in srgb, var(--scenario-color) 7%, white);
+      }
+      .playback {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .playback .play {
+        background: #123d50;
+        color: white;
+        border-color: #123d50;
+        min-width: 105px;
+      }
+      .playback label {
+        font-size: 11px;
+        color: var(--muted);
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        margin: 0 4px;
+      }
+      .playback select {
+        padding: 6px;
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        background: white;
+        color: var(--ink);
+      }
+      .exhibit {
+        background: #fff;
+        border: 1px solid #d2e0e7;
+        border-radius: 16px;
+        box-shadow: 0 10px 28px #253c4810;
+        overflow: hidden;
+      }
+      .stage-heading {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 13px 19px;
+        border-bottom: 1px solid #e4ecf0;
+        font-size: 12px;
+        background: #fbfdfe;
+      }
+      .stage-heading > span:first-child {
+        font-weight: 750;
+        color: var(--coral);
+      }
+      #sceneCaption {
+        flex: 1;
+        color: #526d7e;
+      }
+      .light-legend {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 10px;
+        color: #788c9b;
+      }
+      .light-legend i,
+      .light-legend b {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--cyan);
+        box-shadow: 0 0 8px #16bddd80;
+      }
+      .light-legend b {
+        background: #b6c5cf;
+        box-shadow: none;
+        margin-left: 8px;
+      }
+      #board {
+        display: block;
+        width: 100%;
+        background: radial-gradient(ellipse at 42% 50%, #f5fafc, white 70%);
+        user-select: none;
+      }
+      #board text {
+        font-family: inherit;
+        fill: var(--ink);
+      }
+      #board .tiny {
+        font-size: 12px;
+        fill: #718595;
+      }
+      #board .small {
+        font-size: 14px;
+        fill: #637d90;
+      }
+      #board .heading {
+        font-size: 18px;
+        font-weight: 750;
+      }
+      #board .mono {
+        font-family: "Times New Roman", "Exhibit Kai", serif;
+        font-size: 13px;
+      }
+      #board .node-box {
+        fill: url(#nodefill);
+        stroke: #d5e1e8;
+        stroke-width: 1.5;
+        filter: url(#shadow);
+      }
+      #board .node.live .node-box {
+        stroke: #12bdda;
+        stroke-width: 2;
+        filter: url(#nodeGlow);
+      }
+      #board .node.waiting {
+        opacity: 0.5;
+      }
+      #board .node.complete .node-box {
+        stroke: #9ac4cf;
+      }
+      #board .clickable {
+        cursor: pointer;
+      }
+      #board .clickable:hover .node-box {
+        stroke: #008bb0;
+      }
+      #board .wire-track {
+        stroke: #e4ecf0;
+        stroke-width: 9;
+        fill: none;
+        stroke-linecap: round;
+      }
+      #board .wire {
+        stroke: #b6c8d2;
+        stroke-width: 2;
+        stroke-dasharray: 1 10;
+        stroke-linecap: round;
+        fill: none;
+      }
+      #board .wire.lit {
+        stroke: var(--cyan);
+        stroke-width: 3;
+        filter: url(#light);
+      }
+      #board .wire.done {
+        stroke: #7bc8d9;
+        stroke-width: 2.5;
+      }
+      #board .pulse {
+        fill: #faffff;
+        filter: url(#light);
+        stroke: #0bc9e9;
+        stroke-width: 2;
+      }
+      #board .slot {
+        fill: #e8eef1;
+        stroke: white;
+        stroke-width: 1;
+      }
+      #board .matrix-cell {
+        cursor: pointer;
+        stroke: #ffffff99;
+        stroke-width: 0.8;
+      }
+      #board .matrix-cell:hover {
+        stroke: #ffb321;
+        stroke-width: 2;
+      }
+      #board .rank-active {
+        fill: #e5f9fc;
+        stroke: #5cd0e2;
+      }
+      #board .net-text {
+        fill: white;
+      }
+      #board .net-muted {
+        fill: #a7c0cd;
+        font-size: 11px;
+      }
+      #board .bank-row.active {
+        fill: #d7f8fd;
+        stroke: #28c2dc;
+      }
+      #board .bank-row {
+        fill: #f2f6f8;
+        stroke: #e1e8ed;
+      }
+      #board .dim {
+        opacity: 0.3;
+      }
+      .stage-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 9px 18px;
+        border-top: 1px solid #e6edf1;
+        font-size: 12px;
+        color: #536c7c;
+        background: #fcfdfe;
+      }
+      .mobile-hint {
+        display: none;
+      }
+      .timeline {
+        margin-top: 17px;
+      }
+      .timeline-line {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+      }
+      .timeline-line strong {
+        font-size: 13px;
+        min-width: 125px;
+      }
+      .timeline-line input {
+        flex: 1;
+        accent-color: #0cabc4;
+        cursor: pointer;
+      }
+      .timeline-line output {
+        font-family: "Times New Roman", "Exhibit Kai", serif;
+        font-size: 12px;
+        white-space: nowrap;
+      }
+      .chapters {
+        display: flex;
+        justify-content: space-between;
+        margin: 10px 0 0 140px;
+        gap: 2px;
+      }
+      .chapters button {
+        background: transparent;
+        border: 0;
+        font-size: 11px;
+        color: #8b9ba6;
+        border-radius: 5px;
+        padding: 5px 7px;
+      }
+      .chapters button.active {
+        background: #dff4f8;
+        color: #087994;
+        font-weight: 700;
+      }
+      .chapters button.done {
+        color: #3d7887;
+      }
+      .timing-note {
+        font-size: 10px;
+        color: #7d8c97;
+        text-align: center;
+        margin: 10px 0 25px;
+      }
+      .inspector {
+        border: 1px solid var(--line);
+        background: white;
+        border-radius: 14px;
+        overflow: hidden;
+      }
+      .inspect-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 22px 10px;
+      }
+      .inspect-actions {
+        display: flex;
+        gap: 8px;
+      }
+      .inspect-actions button {
+        font-size: 12px;
+      }
+      .tabs {
+        display: flex;
+        padding: 0 20px;
+        gap: 12px;
+        border-bottom: 1px solid var(--line);
+        overflow: auto;
+      }
+      .tabs button {
+        border: 0;
+        border-radius: 0;
+        padding: 12px 10px;
+        color: var(--muted);
+        white-space: nowrap;
+      }
+      .tabs button.active {
+        color: #087f9c;
+        border-bottom: 3px solid #10bdda;
+        font-weight: 700;
+      }
+      #detail {
+        padding: 23px;
+        min-height: 255px;
+        font-size: 13px;
+        line-height: 1.8;
+      }
+      .detail-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 25px;
+      }
+      .detail-grid.three {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+      .detail-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+      .detail-heading h3,
+      h3 {
+        font-size: 16px;
+        margin: 0 0 7px;
+      }
+      .tag {
+        font-size: 10px;
+        border-radius: 5px;
+        background: #edf4f7;
+        color: #587385;
+        padding: 3px 7px;
+        white-space: nowrap;
+      }
+      .note {
+        color: #687f8d;
+        font-size: 12px;
+        line-height: 1.8;
+      }
+      .callout {
+        padding: 13px 16px;
+        border-left: 3px solid #13b5cb;
+        background: #f1fafb;
+        border-radius: 0 7px 7px 0;
+      }
+      .flow-options {
+        display: flex;
+        gap: 5px;
+        flex-wrap: wrap;
+        margin-bottom: 10px;
+      }
+      .flow-options button {
+        font-size: 11px;
+        padding: 6px 10px;
+      }
+      .flow-options button.active {
+        background: #dff5f9;
+        border-color: #6bc5d9;
+      }
+      pre {
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        background: #132d40;
+        color: #d1eaf4;
+        padding: 15px;
+        border-radius: 8px;
+        font:
+          12px/1.8 "Times New Roman",
+          serif;
+        margin: 8px 0;
+        max-height: 340px;
+        overflow: auto;
+      }
+      code {
+        font-family: "Times New Roman", "Exhibit Kai", serif;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 12px;
+      }
+      th {
+        text-align: left;
+        color: #6b8393;
+        font-size: 11px;
+        font-weight: 600;
+        background: #f6f9fb;
+      }
+      td,
+      th {
+        padding: 8px;
+        border-bottom: 1px solid #e8eef2;
+      }
+      tr.selected {
+        background: #e5f7fa;
+      }
+      tr[data-packet] {
+        cursor: pointer;
+      }
+      tr[data-packet]:hover {
+        background: #f1fafc;
+      }
+      .hex-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+      }
+      .hex-byte {
+        font:
+          12px "Times New Roman",
+          serif;
+        background: #f0f5f8;
+        border-radius: 4px;
+        padding: 6px;
+      }
+      .hex-byte.hit {
+        background: #c7eff5;
+        color: #035c6d;
+      }
+      .swatch {
+        height: 42px;
+        width: 80px;
+        display: inline-block;
+        border-radius: 7px;
+        vertical-align: middle;
+        margin: 5px 10px 5px 0;
+        border: 1px solid #d6dfe5;
+      }
+      .stat-row {
+        display: flex;
+        gap: 20px;
+        margin: 14px 0;
+      }
+      .stat-row strong {
+        display: block;
+        font-size: 24px;
+        font-variant-numeric: tabular-nums;
+      }
+      .stat-row small {
+        color: #738896;
+        font-size: 11px;
+      }
+      .comparison {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 10px;
+      }
+      .comparison > div {
+        padding: 13px;
+        background: #f3f8fa;
+        border-radius: 8px;
+      }
+      .check {
+        display: flex;
+        gap: 8px;
+        margin: 8px 0;
+      }
+      .check.pass {
+        color: #087b66;
+      }
+      .check.fail {
+        color: #ae7b17;
+      }
+      .vector-strip {
+        display: flex;
+        gap: 1px;
+        overflow: hidden;
+        height: 22px;
+        margin: 8px 0;
+        border-radius: 4px;
+      }
+      .vector-strip i {
+        flex: 1;
+        min-width: 2px;
+      }
+      .case-button {
+        border: 0;
+        padding: 0;
+        text-align: left;
+        color: #087f9c;
+      }
+      .nowrap {
+        white-space: nowrap;
+      }
+      footer {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 20px 0 5px;
+        color: #7a8f9a;
+        font-size: 10px;
+      }
+      footer span {
+        flex: 1;
+      }
+      footer button {
+        font-size: 11px;
+      }
+      dialog {
+        max-width: 800px;
+        width: calc(100% - 36px);
+        border: 1px solid #ccdce4;
+        border-radius: 16px;
+        box-shadow: 0 25px 90px #0e26373a;
+        padding: 28px;
+        color: var(--ink);
+        line-height: 1.8;
+        font-size: 14px;
+      }
+      dialog::backdrop {
+        background: #132e4260;
+        backdrop-filter: blur(3px);
+      }
+      dialog h2 {
+        padding-right: 24px;
+      }
+      .dialog-close {
+        position: absolute;
+        right: 12px;
+        top: 12px;
+        border: 0;
+        font-size: 24px;
+        padding: 0 9px;
+      }
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+      .help-list {
+        padding-left: 20px;
+      }
+      .help-list li {
+        margin: 7px 0;
+      }
+      .disabled-text {
+        color: #879ba7;
+      }
+      @media (min-width: 1700px) {
+        main {
+          padding: 26px 40px;
+        }
+        button {
+          font-size: 14px;
+        }
+        .scenario strong {
+          font-size: 15px;
+        }
+        .scenario small {
+          font-size: 10px;
+        }
+        .stage-heading {
+          font-size: 14px;
+        }
+        .stage-bottom {
+          font-size: 14px;
+        }
+      }
+      @media (max-width: 1150px) {
+        main {
+          padding: 15px;
+        }
+        .controls {
+          flex-wrap: wrap;
+          gap: 10px;
+        }
+        .scenarios {
+          flex-basis: 100%;
+        }
+        .playback {
+          margin-left: auto;
+        }
+        .head-tools .mode {
+          font-size: 10px;
+        }
+        .chapters {
+          margin-left: 0;
+        }
+        .light-legend {
+          display: none;
+        }
+        .stage-heading {
+          font-size: 11px;
+        }
+        .detail-grid.three {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      @media (max-width: 700px) {
+        main {
+          padding: 10px;
+        }
+        .masthead {
+          align-items: flex-start;
+          margin-bottom: 12px;
+          gap: 8px;
+        }
+        h1 {
+          font-size: 17px;
+          line-height: 1.55;
+        }
+        h1 br {
+          display: none;
+        }
+        .head-tools {
+          gap: 0;
+        }
+        .head-tools .mode {
+          font-size: 9px;
+          padding: 5px 7px;
+        }
+        .head-tools .text-button {
+          font-size: 10px;
+        }
+        .eyebrow {
+          font-size: 9px;
+        }
+        .scenarios {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 6px;
+        }
+        .scenario {
+          padding: 8px 10px;
+          min-height: 48px;
+        }
+        .scenario strong {
+          font-size: 12px;
+        }
+        .scenario small {
+          font-size: 9px;
+        }
+        .playback {
+          width: 100%;
+          justify-content: space-between;
+          gap: 4px;
+        }
+        .playback button {
+          padding: 8px 10px;
+          font-size: 12px;
+        }
+        .playback label {
+          margin: 0;
+          font-size: 10px;
+        }
+        .playback .play {
+          min-width: 105px;
+        }
+        .stage-heading {
+          gap: 6px;
+          padding: 10px;
+          flex-wrap: wrap;
+        }
+        #sceneCaption {
+          flex-basis: 75%;
+          font-size: 10px;
+        }
+        .board-scroll {
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+        }
+        #board {
+          min-width: 1050px;
+        }
+        .stage-bottom {
+          padding: 8px 10px;
+          flex-wrap: wrap;
+          gap: 5px;
+          font-size: 10px;
+        }
+        .stage-bottom > span:first-child {
+          width: 100%;
+        }
+        .mobile-hint {
+          display: inline;
+          color: #658894;
+        }
+        .stage-bottom button {
+          font-size: 11px;
+        }
+        .timeline-line {
+          gap: 8px;
+        }
+        .timeline-line strong {
+          min-width: 82px;
+          font-size: 11px;
+        }
+        .timeline-line output {
+          font-size: 10px;
+        }
+        .chapters {
+          overflow: auto;
+          justify-content: flex-start;
+        }
+        .chapters button {
+          white-space: nowrap;
+          font-size: 10px;
+        }
+        .timing-note {
+          font-size: 9px;
+          margin-bottom: 18px;
+        }
+        .inspect-head {
+          padding: 15px;
+          align-items: flex-start;
+          gap: 10px;
+        }
+        .inspect-actions {
+          flex-direction: column;
+          gap: 5px;
+        }
+        .inspect-actions button {
+          font-size: 10px;
+          padding: 6px 8px;
+        }
+        h2 {
+          font-size: 18px;
+        }
+        .tabs {
+          padding: 0 10px;
+          gap: 3px;
+        }
+        .tabs button {
+          font-size: 12px;
+        }
+        #detail {
+          padding: 15px;
+        }
+        .detail-grid,
+        .detail-grid.three {
+          grid-template-columns: 1fr;
+        }
+        .detail-grid {
+          gap: 18px;
+        }
+        footer {
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+        footer span {
+          flex-basis: 100%;
+        }
+        .comparison {
+          gap: 5px;
+        }
+        .comparison > div {
+          padding: 8px;
+        }
+        .stat-row {
+          gap: 15px;
+        }
+        td,
+        th {
+          padding: 6px;
+        }
+        pre {
+          font-size: 11px;
+        }
+      }
+      .start-hint {
+        font-size: 11px;
+        line-height: 1.8;
+        color: #6b8492;
+        margin: 0;
+        white-space: nowrap;
+      }
+      .progress-track {
+        flex: 1;
+        height: 6px;
+        background: #dfe9ef;
+        border-radius: 6px;
+        overflow: hidden;
+      }
+      .progress-track i {
+        display: block;
+        width: 0;
+        height: 100%;
+        background: #10b9d1;
+        border-radius: 6px;
+      }
+      .chapters span {
+        font-size: 11px;
+        color: #889ca8;
+        padding: 5px 7px;
+        white-space: nowrap;
+      }
+      .chapters span.active {
+        background: #dff4f8;
+        color: #087994;
+        border-radius: 5px;
+        font-weight: 700;
+      }
+      .chapters span.done {
+        color: #3d7887;
+      }
+      @media (max-width: 700px) {
+        .start-hint {
+          width: 100%;
+          text-align: center;
+          font-size: 10px;
+        }
+        .start-hint br {
+          display: none;
+        }
+        .chapters span {
+          font-size: 10px;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          scroll-behavior: auto !important;
+          transition: none !important;
+        }
+      }
+
+      @font-face {
+        font-family: "Exhibit Kai";
+        src: local("DFKai-SB"), local("標楷體");
+        unicode-range:
+          U+2E80-2FFF, U+3000-303F, U+3100-312F, U+31A0-31BF, U+3400-4DBF,
+          U+4E00-9FFF, U+F900-FAFF, U+FF01-FF0F, U+FF1A-FF20, U+FF3B-FF40,
+          U+FF5B-FF65;
+        font-display: swap;
+      }
+      :root {
+        --ink: #243447;
+        --muted: #526477;
+        --line: #d7e1ea;
+        --cyan: #245ea8;
+        --teal: #087f8c;
+        --coral: #245ea8;
+        --gold: #e3a338;
+        --paper: #fff;
+        --bg: #f4f7fa;
+        font-family: "Times New Roman", "Exhibit Kai", serif;
+      }
+      body {
+        background: #fff;
+      }
+      main {
+        padding-bottom: 28px;
+      }
+      button,
+      select {
+        min-height: 44px;
+      }
+      button:focus-visible,
+      select:focus-visible,
+      input:focus-visible,
+      [tabindex]:focus-visible {
+        outline-color: #245ea8;
+      }
+      .scenario strong {
+        font-size: 16px;
+      }
+      .scenario small,
+      .mode,
+      .tag {
+        font-size: 12px;
+      }
+      .note,
+      .timing-note,
+      footer,
+      .light-legend {
+        font-size: 13px;
+        color: var(--muted);
+      }
+      #board text,
+      #board .mono,
+      pre,
+      code,
+      .hex-byte,
+      .timeline-line output {
+        font-family: "Times New Roman", "Exhibit Kai", serif;
+      }
+      pre {
+        font-size: 14px;
+        background: #f4f7fa;
+        color: #243447;
+        border: 1px solid var(--line);
+      }
+      .playback-tools {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        margin: 12px 0;
+      }
+      .playback-tools label {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .primary-control {
+        background: #245ea8;
+        color: #fff;
+        border-color: #245ea8;
+      }
+      .primary-control:hover {
+        background: #16324f;
+        color: #fff;
+      }
+      #seek {
+        flex: 1;
+        min-width: 180px;
+        accent-color: #087f8c;
+        min-height: 44px;
+      }
+      .chapters {
+        margin-left: 0;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+      }
+      .chapters button {
+        min-height: 44px;
+        font-size: 14px;
+      }
+      .tabs button {
+        font-size: 15px;
+      }
+      .tabs button[aria-pressed="true"] {
+        color: #245ea8;
+        border-bottom: 3px solid #087f8c;
+      }
+      .exhibit {
+        box-shadow: none;
+        border-radius: 12px;
+      }
+      .inspector {
+        box-shadow: none;
+      }
+      h1 {
+        font-weight: 400;
+      }
+      h2 {
+        font-weight: 400;
+      }
+      .start-hint {
+        font-size: 14px;
+        color: #526477;
+      }
+      .mode {
+        background: #e9f5f3;
+        color: #16324f;
+        white-space: normal;
+      }
+      @media (max-width: 700px) {
+        .masthead {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+        .head-tools {
+          align-items: flex-start;
+          flex-direction: row;
+          flex-wrap: wrap;
+        }
+        .scenarios {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+        }
+        .scenario {
+          min-width: 0;
+          padding: 9px;
+        }
+        .scenario strong {
+          font-size: 15px;
+        }
+        .inspect-head {
+          align-items: flex-start;
+          gap: 8px;
+          flex-wrap: wrap;
+        }
+        .inspect-actions {
+          flex-wrap: wrap;
+        }
+        .detail-grid,
+        .detail-grid.three {
+          grid-template-columns: 1fr;
+        }
+        .playback-tools {
+          align-items: stretch;
+        }
+        .playback-tools #seek {
+          order: 5;
+          flex-basis: 100%;
+        }
+        .stage-bottom {
+          flex-wrap: wrap;
+        }
+        .timeline-line {
+          gap: 8px;
+          flex-wrap: wrap;
+        }
+        .timeline-line strong {
+          min-width: 0;
+        }
+        .light-legend {
+          display: none;
+        }
+        footer {
+          flex-wrap: wrap;
+        }
+        #detail {
+          padding: 15px;
+        }
+        table {
+          font-size: 13px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main id="app">
+      <header class="masthead">
+        <div>
+          <p class="eyebrow">互動展示 / INNOSERVE</p>
+          <h1>
+            融合新型內容相依時序方向模型入侵偵測<br /><span
+              >與任務導向檢索增強稽核之 AI 資安框架</span
+            >
+          </h1>
+        </div>
+        <div class="head-tools">
+          <span class="mode"><i></i>合成資料 · 教學模擬</span
+          ><button id="about" class="text-button">展示說明 ↗</button>
+        </div>
+      </header>
+      <section class="controls" aria-label="展示情境與播放控制">
+        <div class="scenarios" id="scenarios"></div>
+        <p class="start-hint">
+          選擇情境開始；可暫停、調速或跳至章節<br />本頁只做流程示意，不執行模型與網路規則
+        </p>
+      </section>
+      <section class="exhibit" aria-label="可互動的光流展示面板">
+        <div class="stage-heading">
+          <span id="sceneLabel">HTTP 洪流</span
+          ><span id="sceneCaption">選一個情境，讓資料帶著光往前走。</span
+          ><span class="light-legend"><i></i>目前處理 <b></b>等待抵達</span>
+        </div>
+        <div class="board-scroll">
+          <svg
+            id="board"
+            viewBox="0 0 1600 640"
+            aria-label="封包、雙模型、RAG、AI 稽核與網路處置流程"
+          ></svg>
+        </div>
+        <div class="stage-bottom">
+          <span id="stageMessage">同一筆資料，同步形成兩種模型輸入。</span
+          ><span class="mobile-hint">可左右滑動查看完整光流板</span
+          ><button id="openDetail" class="text-button">
+            打開這一站的資料 ↓
+          </button>
+        </div>
+      </section>
+      <section class="timeline" aria-label="播放進度">
+        <div class="timeline-line">
+          <strong id="currentChapter">準備就緒</strong>
+          <div
+            class="progress-track"
+            role="progressbar"
+            aria-label="展示進度"
+            aria-valuemin="0"
+            aria-valuemax="73"
+            aria-valuenow="0"
+            id="progress"
+          >
+            <i id="progressFill"></i>
+          </div>
+          <output id="clock">00:00 / 01:13</output>
+        </div>
+        <div class="playback-tools" aria-label="播放控制">
+          <button id="playPause" class="primary-control" aria-pressed="false">
+            播放
+          </button>
+          <button id="restart">從頭開始</button>
+          <label for="speed"
+            >速度
+            <select id="speed">
+              <option value="1">1× 詳解</option>
+              <option value="1.5">1.5×</option>
+              <option value="2" selected>2× 展示</option>
+            </select></label
+          >
+          <label for="seek" class="sr-only">跳至展示時間</label
+          ><input
+            id="seek"
+            type="range"
+            min="0"
+            max="73"
+            step="0.1"
+            value="0"
+            aria-valuetext="0秒"
+          />
+        </div>
+        <div id="chapters" class="chapters"></div>
+        <p class="timing-note">
+          時間軸是放慢的展示時間，不是模型推論耗時。逐列呈現的是輸入編碼；光點代表合成
+          TCP 交易。
+        </p>
+      </section>
+      <section class="inspector" id="inspector">
+        <div class="inspect-head">
+          <div>
+            <p class="eyebrow">沿著流程，看清楚每一步</p>
+            <h2>事件資料觀察窗</h2>
+          </div>
+          <div class="inspect-actions">
+            <button id="follow" aria-pressed="true">跟隨流程 ✓</button
+            ><button id="export">匯出本次紀錄 ↓</button>
+          </div>
+        </div>
+        <nav id="tabs" class="tabs" aria-label="資料檢視"></nav>
+        <div id="detail"></div>
+      </section>
+      <footer>
+        <span
+          >合成封包、示意模型與稽核回覆；色碼轉換和 cosine similarity
+          由瀏覽器實際計算。</span
+        ><button id="offline">下載離線單檔 ↓</button
+        ><button id="embedding">離線操作說明 ↗</button>
+      </footer>
+    </main>
+    <dialog id="dialog">
+      <button id="closeDialog" class="dialog-close" aria-label="關閉說明">
+        ×
+      </button>
+      <div id="dialogBody"></div>
+    </dialog>
+    <div id="announcement" class="sr-only" aria-live="polite"></div>
+    <script data-bundled>
+      window.__CLEAN_DOCUMENT__ =
+        "<!doctype html>\n" + document.documentElement.outerHTML;
+      (() => {
+        // Educational simulation. No model inference, socket traffic, or command execution.
+        const LABELS = [
+          "BENIGN",
+          "FTP-BruteForce",
+          "SSH-Bruteforce",
+          "DoS-GoldenEye",
+          "DoS-Hulk",
+          "DoS-Slowloris",
+          "DoS-SlowHTTPTest",
+          "DDoS-LOIC-HTTP",
+          "DDoS-LOIC-UDP",
+          "DDOS-HOIC",
+          "Web-BruteForce",
+          "Web-XSS",
+          "SQL-Injection",
+          "Bot",
+          "Infiltration",
+          "PortScan",
+          "Heartbleed",
+        ];
+        const SCENARIOS = {
+          benign: {
+            title: "正常連線",
+            short: "BENIGN",
+            icon: "↔",
+            color: "#16876f",
+            desc: "請求與回應交錯，讓正常流量一路通行。",
+            label: "BENIGN",
+            confidence: 0.96,
+            assessment: "support",
+            action: "monitor",
+            port: 8080,
+            rate: 2,
+            gap: 120,
+            replyEvery: 1,
+            prototype: [1, 0, 0, 0, 0, 0],
+            reason:
+              "Balanced requests and replies; retrieved neighbours support benign traffic.",
+          },
+          ddos: {
+            title: "DDoS 洪流",
+            short: "HTTP FLOOD",
+            icon: "≋",
+            color: "#dd644d",
+            desc: "密集且重複的 HTTP 請求，超額連線在路由器被擋下。",
+            label: "DDoS-LOIC-HTTP",
+            confidence: 0.97,
+            assessment: "support",
+            action: "upstream_scrubbing",
+            port: 80,
+            rate: 20,
+            gap: 4,
+            replyEvery: 6,
+            prototype: [0, 1, 0.1, 0, 0, 0],
+            reason:
+              "Repeated HTTP bursts and four matching neighbours support the detector.",
+          },
+          ssh: {
+            title: "SSH 暴力破解",
+            short: "AUTH ATTEMPT",
+            icon: "⌁",
+            color: "#627ad2",
+            desc: "重複的驗證嘗試，限縮同一來源的服務連線。",
+            label: "SSH-Bruteforce",
+            confidence: 0.94,
+            assessment: "support",
+            action: "auth_hardening",
+            port: 22,
+            rate: 8,
+            gap: 35,
+            replyEvery: 3,
+            prototype: [0, 0, 0, 1, 0, 0],
+            reason:
+              "Repeated authentication attempts and four matching neighbours support the detector.",
+          },
+          review: {
+            title: "可疑 Web 流量",
+            short: "HUMAN REVIEW",
+            icon: "?",
+            color: "#b58a27",
+            desc: "相近案例出現分歧；保留證據，交由人員複核。",
+            label: "Web-XSS",
+            confidence: 0.68,
+            assessment: "review",
+            action: "capture_evidence",
+            port: 80,
+            rate: 4,
+            gap: 80,
+            replyEvery: 2,
+            prototype: [0, 0, 0, 0, 0.7, 0.7],
+            reason:
+              "Web evidence is mixed and branch predictions disagree; manual review required.",
+          },
+        };
+        const SYSTEM_PROMPT = `You are a network intrusion evidence auditor. The detector's formal class is immutable.
+Use only the provided detector prediction, confidence, branch predictions and five train-only neighbours.
+Never assume ground truth. Neighbour labels are evidence, not authoritative labels for the query.
+Return one JSON object with exactly assessment and reason. assessment must be support, review or uncertain.
+Use support when confidence is at least 0.8 and at least four neighbours agree with the detector.
+Use review when neighbours conflict with the detector or branches disagree and evidence is mixed.
+Use uncertain when confidence is below 0.5 or evidence is too weak to assess.
+Do not output commands, do not change the detector label. Keep reason under 25 English words.
+Example format: {"assessment":"review","reason":"Evidence conflicts with the detector prediction."}`;
+        const GROUPS = [
+          {
+            id: "benign",
+            label: "BENIGN",
+            title: "正常連線",
+            p: [1, 0, 0, 0, 0, 0],
+            port: 8080,
+            note: "一般 HTTP 存取，請求與回應交錯。",
+          },
+          {
+            id: "ddos",
+            label: "DDoS-LOIC-HTTP",
+            title: "DDoS / HTTP",
+            p: [0, 1, 0.1, 0, 0, 0],
+            port: 80,
+            note: "重複 HTTP 請求、短間隔、高單向比例。",
+          },
+          {
+            id: "dos",
+            label: "DoS-Hulk",
+            title: "DoS / Hulk",
+            p: [0, 0.82, 0.35, 0, 0, 0],
+            port: 80,
+            note: "高頻率 HTTP 存取，內容與洪流案例相近。",
+          },
+          {
+            id: "ssh",
+            label: "SSH-Bruteforce",
+            title: "SSH 暴力破解",
+            p: [0, 0, 0, 1, 0, 0],
+            port: 22,
+            note: "短時間內重複的服務驗證嘗試。",
+          },
+          {
+            id: "xss",
+            label: "Web-XSS",
+            title: "Web / XSS",
+            p: [0, 0, 0, 0, 1, 0.3],
+            port: 80,
+            note: "Web 請求含程式標記，需檢查上下文。",
+          },
+          {
+            id: "web",
+            label: "Web-BruteForce",
+            title: "Web / 登入",
+            p: [0, 0, 0, 0, 0.3, 1],
+            port: 80,
+            note: "重複登入請求，部分特徵與 Web 異常重疊。",
+          },
+        ];
+        function seeded(seed = 42) {
+          return () => {
+            seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+            return seed / 4294967296;
+          };
+        }
+        function normalize(v) {
+          const n = Math.hypot(...v);
+          return v.map((x) => x / n);
+        }
+        // 529 slots illustrate the original contract (512 + 17). These are NOT learned embeddings.
+        function demoVector(p, label, jitter = 0, seed = 1, confidence = 0.98) {
+          const rand = seeded(seed),
+            v = Array.from(
+              { length: 512 },
+              (_, i) => p[i % 6] * 0.35 + (rand() - 0.5) * jitter,
+            );
+          const probs = Array(17).fill((1 - confidence) / 16);
+          probs[LABELS.indexOf(label)] = confidence;
+          return normalize([...v, ...probs]);
+        }
+        const BANK = GROUPS.flatMap((g, gi) =>
+          Array.from({ length: 4 }, (_, i) => ({
+            id: `DEMO-${String(gi + 1).padStart(2, "0")}-${i + 1}`,
+            group: g.id,
+            label: g.label,
+            title: g.title,
+            port: g.port,
+            note: g.note,
+            provenance: "手工合成教學案例，非原始資料集紀錄",
+            vector: demoVector(g.p, g.label, 0.05 * (i + 1), gi * 17 + i + 4),
+          })),
+        );
+        function scoreBank(scenario) {
+          const s = SCENARIOS[scenario],
+            q = demoVector(s.prototype, s.label, 0, 1, s.confidence);
+          return BANK.map((r) => ({
+            ...r,
+            similarity: r.vector.reduce((sum, x, i) => sum + x * q[i], 0),
+          }));
+        }
+        function retrieve(scenario) {
+          return scoreBank(scenario)
+            .sort(
+              (a, b) => b.similarity - a.similarity || a.id.localeCompare(b.id),
+            )
+            .slice(0, 5);
+        }
+        function policyFor(scenario) {
+          const s = SCENARIOS[scenario],
+            e = retrieve(scenario),
+            support = e.filter((x) => x.label === s.label).length;
+          const disruptive = !["monitor", "capture_evidence"].includes(
+            s.action,
+          );
+          return {
+            allowed:
+              (s.action === "monitor" && s.assessment === "support") ||
+              (disruptive &&
+                s.assessment === "support" &&
+                s.confidence >= 0.8 &&
+                support >= 4),
+            support,
+            confidence: s.confidence,
+            assessment: s.assessment,
+            action: s.action,
+            ttl: 30,
+          };
+        }
+        function payloadFor(key) {
+          const s = SCENARIOS[key];
+          return {
+            detector_class: s.label,
+            confidence: s.confidence,
+            branch_predictions: [
+              s.label,
+              key === "review" ? "Web-BruteForce" : s.label,
+            ],
+            train_only_neighbours: retrieve(key).map((e, i) => ({
+              rank: i + 1,
+              class: e.label,
+              similarity: +e.similarity.toFixed(6),
+            })),
+          };
+        }
+        function commandsFor(key) {
+          const s = SCENARIOS[key];
+          if (
+            !policyFor(key).allowed ||
+            ["monitor", "capture_evidence"].includes(s.action)
+          )
+            return [
+              key === "benign"
+                ? "# monitor：正常流量維持通行，不建立阻擋規則。"
+                : "# capture_evidence：證據不足，保留事件供人工複核。",
+            ];
+          const base = `iptables -A ACTIVE_DEFENSE -s 10.10.1.10 -d 10.10.3.10 -p tcp --dport ${s.port} --syn`;
+          return [
+            "iptables -N ACTIVE_DEFENSE",
+            "iptables -I FORWARD 1 -j ACTIVE_DEFENSE",
+            `${base} -m limit --limit 1/second --limit-burst 1 -j ACCEPT`,
+            `${base} -j DROP`,
+          ];
+        }
+        const ROLLBACK = [
+          "iptables -D FORWARD -j ACTIVE_DEFENSE",
+          "iptables -F ACTIVE_DEFENSE",
+          "iptables -X ACTIVE_DEFENSE",
+        ];
+        function hex(n) {
+          return n.toString(16).padStart(2, "0").toUpperCase();
+        }
+        function rgbFor(bytes, offset) {
+          const c = [0, 1, 2].map((i) => bytes[offset + i] ?? 0);
+          return {
+            channels: c,
+            hex: "#" + c.map(hex).join(""),
+            valid: offset < bytes.length,
+          };
+        }
+        // Project-specific encoding supplied by the project owner. The demo uses a
+        // fixed 200 ms baseline encoding. Exhibition colours are scaled separately below.
+        const PBCNN_TIME_SCALE_MS = 200;
+        function pbcnnPixel(packet, previous, column) {
+          const deltaMs = previous
+            ? Math.max(0, packet.time - previous.time)
+            : null;
+          const value =
+            column === 0
+              ? Math.round(
+                  255 * Math.min(1, (deltaMs ?? 0) / PBCNN_TIME_SCALE_MS),
+                )
+              : (packet.payload[column - 1] ?? 0);
+          const channels =
+            column === 0
+              ? [0, 0, value]
+              : packet.direction === "in"
+                ? [value, 0, 0]
+                : [0, value, 0];
+          return {
+            channels,
+            hex: "#" + channels.map(hex).join(""),
+            valid: true,
+            deltaMs,
+            value,
+            kind: column === 0 ? "time" : "byte",
+            byteIndex: column - 1,
+          };
+        }
+        function packetBytes(payload, source, dest, sp, dp, seq) {
+          const p = new TextEncoder().encode(payload),
+            len = 40 + p.length;
+          // Illustrative IPv4 + TCP header. Checksums are placeholders; not a sendable PCAP.
+          const h = [
+            0x45,
+            0,
+            len >> 8,
+            len & 255,
+            0,
+            seq,
+            0x40,
+            0,
+            64,
+            6,
+            0,
+            0,
+            ...source.split(".").map(Number),
+            ...dest.split(".").map(Number),
+            sp >> 8,
+            sp & 255,
+            dp >> 8,
+            dp & 255,
+            0,
+            0,
+            0,
+            seq,
+            0,
+            0,
+            0,
+            0,
+            0x50,
+            0x18,
+            0x20,
+            0,
+            0,
+            0,
+            0,
+            0,
+          ];
+          return { bytes: [...h, ...p], payload: [...p] };
+        }
+        function makeFlows(key) {
+          const s = SCENARIOS[key];
+          return Array.from({ length: 6 }, (_, fi) => {
+            let t = fi * 170,
+              seq = 0;
+            const packets = [];
+            for (let i = 0; i < 12; i++) {
+              const request =
+                key === "ddos"
+                  ? "GET / HTTP/1.1 LOIC\r\nHost: demo.local\r\n"
+                  : key === "ssh"
+                    ? `SSH AUTH ATTEMPT ${String(i % 3).padStart(2, "0")}\r\n`
+                    : key === "review"
+                      ? i % 2
+                        ? "POST /login password=guess\r\n"
+                        : "GET /?q=<script>demo<\/script> HTTP/1.1\r\n"
+                      : `GET /${["index.html", "style.css", "logo.png", "about"][i % 4]} HTTP/1.1\r\n`;
+              const add = (direction, text) => {
+                const from = direction === "in" ? "10.10.1.10" : "10.10.3.10",
+                  to = direction === "in" ? "10.10.3.10" : "10.10.1.10";
+                const sport = direction === "in" ? 41000 + fi : s.port,
+                  dport = direction === "in" ? s.port : 41000 + fi;
+                packets.push({
+                  id: `F${fi + 1}-P${++seq}`,
+                  time: t,
+                  direction,
+                  source: from,
+                  destination: to,
+                  sport,
+                  dport,
+                  protocol: "TCP",
+                  text,
+                  ...packetBytes(text, from, to, sport, dport, seq),
+                });
+              };
+              add("in", request);
+              t += s.gap;
+              if ((i + 1) % s.replyEvery === 0) {
+                add(
+                  "out",
+                  key === "ssh" ? "AUTH FAILURE\r\n" : "HTTP/1.1 200 OK\r\n",
+                );
+                t += s.gap;
+              }
+            }
+            return {
+              id: `FLOW-${String(fi + 1).padStart(3, "0")}`,
+              source: "10.10.1.10",
+              destination: "10.10.3.10",
+              sport: 41000 + fi,
+              dport: s.port,
+              packets,
+            };
+          });
+        }
+        // Exhibition-only colour scaling. Zero is included because it represents
+        // padding, unused direction channels and the first packet's absent interval.
+        // Fit once across all four examples; never refit as a row/flow is revealed.
+        const DISPLAY_RANGES = (() => {
+          let byteMax = 0,
+            timeMax = 0;
+          for (const key of Object.keys(SCENARIOS))
+            for (const flow of makeFlows(key)) {
+              const rows = flow.packets.slice(0, 8);
+              rows.forEach((p, i) => {
+                for (const value of p.payload.slice(0, 36))
+                  byteMax = Math.max(byteMax, value);
+                if (i) timeMax = Math.max(timeMax, p.time - rows[i - 1].time);
+              });
+            }
+          return Object.freeze({ byteMax, timeMax, min: 0 });
+        })();
+        function displayPixel(pixel, kind) {
+          const scale = (value, max) =>
+            Math.round(255 * Math.max(0, Math.min(1, value / (max || 1))));
+          const channels =
+            kind === "pb" && pixel.kind === "time"
+              ? [0, 0, scale(pixel.deltaMs ?? 0, DISPLAY_RANGES.timeMax)]
+              : pixel.channels.map((value) =>
+                  scale(value, DISPLAY_RANGES.byteMax),
+                );
+          return { ...pixel, channels, hex: "#" + channels.map(hex).join("") };
+        }
+
+        const DURATION = 73;
+        const CHAPTERS = [
+          {
+            at: 0,
+            end: 2,
+            key: "traffic",
+            title: "封包進入",
+            text: "先看處置前：來源請求與正常流量都能到達 Server。",
+          },
+          {
+            at: 2,
+            end: 14,
+            key: "encoding",
+            title: "逐筆編碼",
+            text: "同一筆封包分成兩路。光點抵達後，兩個輸入圖同步新增一列。",
+          },
+          {
+            at: 14,
+            end: 17,
+            key: "fusion",
+            title: "模型與融合判定",
+            text: "輸入累積完成，才顯示示意模型表徵與正式分類。",
+          },
+          {
+            at: 17,
+            end: 20,
+            key: "vector",
+            title: "組合查詢向量",
+            text: "CTBM 的 512 維表徵與融合後 17 維機率串接，再做 L2 正規化。",
+          },
+          {
+            at: 20,
+            end: 26,
+            key: "compare",
+            title: "逐筆計算相似度",
+            text: "查詢向量逐筆比對案例庫。案例與分數依序亮起；不將本次事件寫入庫中。",
+          },
+          {
+            at: 26,
+            end: 28,
+            key: "ranking",
+            title: "排序取出 Top-5",
+            text: "以實際 cosine similarity 排序；排名前五的案例移出，準備組成 prompt。",
+          },
+          {
+            at: 28,
+            end: 32,
+            key: "audit",
+            title: "AI 稽核",
+            text: "正式分類、信心、分支與五筆證據組成 prompt；顯示預設示範回覆。",
+          },
+          {
+            at: 32,
+            end: 36,
+            key: "policy",
+            title: "策略檢查",
+            text: "逐項檢查信心、案例支持、動作範圍與 30 秒期限。",
+          },
+          {
+            at: 36,
+            end: 38,
+            key: "command",
+            title: "傳送處置決定",
+            text: "通過策略才將指令送向 r1；證據不足則走人工複核路徑。",
+          },
+          {
+            at: 38,
+            end: 68,
+            key: "network",
+            title: "觀察網路效果",
+            text: "超額新連線在路由器停止；背景正常流量維持通行。",
+          },
+          {
+            at: 68,
+            end: 73,
+            key: "recovery",
+            title: "撤銷與回復",
+            text: "撤銷暫時限制，來源請求重新通行。回復不表示攻擊來源消失。",
+          },
+        ];
+        const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+        function stateAt(time) {
+          const t = clamp(time, 0, DURATION),
+            chapter = CHAPTERS.find((x) => t < x.end) || CHAPTERS.at(-1);
+          const rowT = clamp((t - 2) / 1.5, 0, 8),
+            row = Math.min(7, Math.floor(rowT)),
+            within = rowT - Math.floor(rowT);
+          return {
+            t,
+            chapter,
+            row,
+            travel: t >= 2 && t < 14 ? clamp(within / 0.38) : 0,
+            rows: t >= 14 ? 8 : t < 2 ? 0 : row + clamp((within - 0.38) / 0.48),
+            scanned: t < 20 ? 0 : t >= 26 ? 24 : Math.floor((t - 20) * 4),
+            topCount: t < 26 ? 0 : Math.min(5, Math.floor((t - 26) * 3) + 1),
+            ttl: clamp(68 - t, 0, 30),
+            done: t >= DURATION,
+          };
+        }
+        function isDisruptive(key) {
+          const p = policyFor(key);
+          return (
+            p.allowed && !["monitor", "capture_evidence"].includes(p.action)
+          );
+        }
+        function makeTransactions(key) {
+          const s = SCENARIOS[key],
+            all = [],
+            limited = isDisruptive(key);
+          let tokens = 1,
+            last = 38;
+          for (let i = 0; i < s.rate * (DURATION - 1); i++) {
+            const start = i / s.rate,
+              arrival = start + 1;
+            let pass = true,
+              phase =
+                arrival < 38 ? "before" : arrival < 68 ? "after" : "recovered";
+            if (limited && phase === "after") {
+              tokens = Math.min(1, tokens + Math.max(0, arrival - last));
+              last = arrival;
+              pass = tokens >= 1 - 1e-9;
+              if (pass) tokens -= 1;
+            }
+            all.push({
+              id: "s" + i,
+              start,
+              arrival,
+              end: arrival + (pass ? 0.65 : 0.35),
+              pass,
+              phase,
+              background: false,
+              visible: i % Math.max(1, Math.ceil(s.rate / 8)) === 0,
+            });
+          }
+          for (let i = 0; i < 2 * (DURATION - 1); i++)
+            all.push({
+              id: "b" + i,
+              start: i / 2,
+              arrival: i / 2 + 1,
+              end: i / 2 + 1.65,
+              pass: true,
+              background: true,
+              visible: true,
+            });
+          return all;
+        }
+        function networkAt(transactions, t) {
+          const counts = {
+              before: { passed: 0, dropped: 0 },
+              after: { passed: 0, dropped: 0 },
+              recovered: { passed: 0, dropped: 0 },
+              background: 0,
+            },
+            dots = [];
+          for (const x of transactions) {
+            if (x.background) {
+              if (t >= x.end) counts.background++;
+            } else if (t >= (x.pass ? x.end : x.arrival))
+              counts[x.phase][x.pass ? "passed" : "dropped"]++;
+            if (x.visible && t >= x.start && t < x.end)
+              dots.push({ ...x, age: t - x.start });
+          }
+          return { counts, dots };
+        }
+
+        const $ = (id) => document.getElementById(id);
+        const esc = (s) =>
+          String(s).replace(
+            /[&<>"']/g,
+            (c) =>
+              ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;",
+              })[c],
+          );
+        const fmt = (t) =>
+          String(Math.floor(t / 60)).padStart(2, "0") +
+          ":" +
+          String(Math.floor(t % 60)).padStart(2, "0");
+        const names = {
+          benign: "正常連線",
+          ddos: "HTTP 洪流",
+          ssh: "SSH 驗證嘗試",
+          review: "可疑 Web 流量",
+        };
+        const tabNames = {
+          traffic: "流量與封包",
+          encoding: "位元組與色碼",
+          rag: "RAG 向量檢索",
+          audit: "Prompt 與回覆",
+          policy: "策略與網路",
+          about: "展示依據",
+        };
+        const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+        const state = {
+          speed: 2,
+          key: "ddos",
+          time: 0,
+          playing: false,
+          flow: 0,
+          packet: 0,
+          cell: 0,
+          pixelKind: "pb",
+          tab: "traffic",
+          follow: true,
+          lastStamp: 0,
+          chapter: "",
+          detailTick: -1,
+        };
+        let flows = [],
+          packets = [],
+          scores = [],
+          top = [],
+          transactions = [],
+          paths = {},
+          cells = [],
+          previousDetail = "";
+        const T = (x, y, text, cls = "", extra = "") =>
+          '<text x="' +
+          x +
+          '" y="' +
+          y +
+          '" class="' +
+          cls +
+          '" ' +
+          extra +
+          ">" +
+          esc(text) +
+          "</text>";
+        const R = (x, y, w, h, cls = "node-box", extra = "") =>
+          '<rect x="' +
+          x +
+          '" y="' +
+          y +
+          '" width="' +
+          w +
+          '" height="' +
+          h +
+          '" rx="12" class="' +
+          cls +
+          '" ' +
+          extra +
+          "/>";
+        const node = (id, x, y, w, h, inside, tab) =>
+          '<g id="' +
+          id +
+          '" class="node clickable" role="button" tabindex="0" data-inspect="' +
+          tab +
+          '" aria-label="' +
+          esc(tabNames[tab] || tab) +
+          '">' +
+          R(x, y, w, h) +
+          inside +
+          "</g>";
+        const lineDefs = [
+          ["in", "M195 325 H216", 2, 14],
+          ["ct", "M216 325 C232 325 225 170 245 170", 2, 14],
+          ["pb", "M216 325 C232 325 225 455 245 455", 2, 14],
+          ["cf", "M480 200 H502 Q515 200 515 290 H525", 14, 17],
+          ["pf", "M480 455 H502 Q515 455 515 340 H525", 14, 17],
+          ["feat", "M480 112 H634 Q650 112 650 128 V305 H675", 17, 18.5],
+          ["prob", "M625 320 H650 V350 H675", 17, 18.5],
+          ["norm", "M750 377 V410", 18, 19],
+          ["query", "M745 452 V480", 19, 20],
+          ["search", "M830 512 H850 Q865 512 865 495 V400 H875", 20, 26],
+          ["bank", "M945 230 V320", 20, 26],
+          ["rank", "M1055 370 H1085", 26, 28],
+          ["prompt", "M1240 320 H1257 Q1272 320 1272 305 V142 H1290", 28, 30],
+          ["judge", "M1420 205 V240", 32, 36],
+          ["deploy", "M1420 328 V355", 36, 38],
+        ];
+        function stripe(x, y, values, count = 24, w = 140, h = 12) {
+          return values
+            .slice(0, count)
+            .map(
+              (v, i) =>
+                '<rect x="' +
+                (x + (i * w) / count) +
+                '" y="' +
+                y +
+                '" width="' +
+                (w / count - 0.8) +
+                '" height="' +
+                h +
+                '" rx="1" fill="hsl(' +
+                (185 + ((v * 500) % 150)) +
+                ",55%," +
+                (40 + ((Math.abs(v) * 220) % 32)) +
+                '%)"/>',
+            )
+            .join("");
+        }
+        function matrixMarkup(kind, y) {
+          let s = "";
+          for (let r = 0; r < 8; r++)
+            for (let c = 0; c < 12; c++)
+              s +=
+                '<rect id="' +
+                kind +
+                "-" +
+                r +
+                "-" +
+                c +
+                '" data-pixel="' +
+                kind +
+                "," +
+                r +
+                "," +
+                c +
+                '" x="' +
+                (263 + c * 17) +
+                '" y="' +
+                (y + r * 15) +
+                '" width="15.5" height="13.5" rx="2" class="matrix-cell" role="button" tabindex="-1"><title></title></rect>';
+          return (
+            s +
+            '<rect id="' +
+            kind +
+            'Scan" x="260" y="' +
+            y +
+            '" width="208" height="15" rx="3" fill="none" stroke="#00d5f7" stroke-width="2" filter="url(#light)"/>'
+          );
+        }
+        function buildBoard() {
+          let svg =
+            '<defs><linearGradient id="nodefill" x2="0" y2="1"><stop stop-color="#fff"/><stop offset="1" stop-color="#f6f9fb"/></linearGradient><linearGradient id="netfill" x2="0" y2="1"><stop stop-color="#17394e"/><stop offset="1" stop-color="#102b3d"/></linearGradient><filter id="shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#244859" flood-opacity=".08"/></filter><filter id="light" x="-200%" y="-200%" width="500%" height="500%"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter><filter id="nodeGlow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#16d2ea" flood-opacity=".25"/></filter></defs>';
+          svg +=
+            T(25, 32, "01 / 封包與模型輸入", "small") +
+            T(680, 32, "02 / 向量檢索", "small") +
+            T(1290, 32, "03 / 稽核與受控處置", "small");
+          svg += lineDefs
+            .map(
+              ([id, d]) =>
+                '<path d="' +
+                d +
+                '" class="wire-track"/><path id="wire-' +
+                id +
+                '" d="' +
+                d +
+                '" class="wire"/>',
+            )
+            .join("");
+          svg +=
+            T(510, 100, "CTBM：512 維表徵", "tiny") +
+            T(625, 390, "融合後：17 維機率", "tiny");
+          svg += node(
+            "packetNode",
+            20,
+            175,
+            175,
+            305,
+            T(36, 203, "流量輸入", "heading") +
+              T(36, 225, "FLOW-001 / TCP", "tiny", 'id="flowLabel"') +
+              Array.from(
+                { length: 8 },
+                (_, i) =>
+                  '<g id="ticket' +
+                  i +
+                  '">' +
+                  R(31, 242 + i * 26, 151, 22, "", 'fill="#f0f4f7" rx="4"') +
+                  T(
+                    38,
+                    258 + i * 26,
+                    "#" + (i + 1) + " 等待封包",
+                    "mono",
+                    'id="ticketText' + i + '"',
+                  ) +
+                  "</g>",
+              ).join(""),
+            "traffic",
+          );
+          svg +=
+            T(26, 510, "短間隔 · 重複請求", "small", 'id="trafficPattern"') +
+            T(26, 532, "來源 10.10.1.10", "tiny") +
+            T(26, 551, "目標 10.10.3.10", "tiny") +
+            T(26, 575, "點封包／色塊，查看原始資料", "tiny");
+          svg += node(
+            "ctNode",
+            245,
+            65,
+            235,
+            220,
+            T(263, 93, "CTBM", "heading") +
+              T(263, 113, "RGB 示意 · 0–255 展示色階", "tiny") +
+              matrixMarkup("ct", 126) +
+              T(263, 267, "等待第 1 列", "tiny", 'id="ctStatus"'),
+            "encoding",
+          );
+          svg += node(
+            "pbNode",
+            245,
+            345,
+            235,
+            220,
+            T(263, 373, "PBCNN", "heading") +
+              T(263, 393, "首格 Δt 藍 · 流入紅 / 流出綠", "tiny") +
+              matrixMarkup("pb", 406) +
+              T(263, 547, "等待第 1 列", "tiny", 'id="pbStatus"') +
+              T(
+                263,
+                584,
+                "藍：0–" + DISPLAY_RANGES.timeMax + " ms → 0–255",
+                "tiny",
+              ),
+            "encoding",
+          );
+          svg += node(
+            "fusionNode",
+            525,
+            270,
+            100,
+            100,
+            T(575, 297, "融合判定", "small", 'text-anchor="middle"') +
+              T(575, 330, "⋈", "heading", 'text-anchor="middle"') +
+              T(
+                575,
+                351,
+                "等待輸入",
+                "tiny",
+                'text-anchor="middle" id="fusionStatus"',
+              ),
+            "encoding",
+          );
+          svg +=
+            T(560, 421, "正式分類", "tiny", 'text-anchor="middle"') +
+            T(560, 443, "—", "tiny", 'text-anchor="middle" id="predLabel"') +
+            T(
+              560,
+              468,
+              "—",
+              "small",
+              'text-anchor="middle" id="confidenceLabel"',
+            );
+          svg += node(
+            "vectorNode",
+            675,
+            285,
+            150,
+            92,
+            T(750, 308, "向量組合", "small", 'text-anchor="middle"') +
+              '<g id="vectorContent"><rect x="688" y="320" width="95" height="24" rx="4" fill="#2cb9cb"/><rect x="784" y="320" width="28" height="24" rx="4" fill="#f0c55c"/>' +
+              T(735, 338, "512", "mono", 'text-anchor="middle" fill="white"') +
+              T(798, 338, "17", "mono", 'text-anchor="middle"') +
+              T(750, 365, "512 + 17 = 529", "tiny", 'text-anchor="middle"') +
+              "</g>",
+            "rag",
+          );
+          svg += node(
+            "normNode",
+            685,
+            410,
+            120,
+            42,
+            T(745, 437, "L2 正規化", "small", 'text-anchor="middle"'),
+            "rag",
+          );
+          svg += node(
+            "queryNode",
+            670,
+            480,
+            160,
+            65,
+            T(686, 502, "查詢向量 q", "small") +
+              '<g id="queryStripe"></g>' +
+              T(
+                750,
+                567,
+                "本次查詢，不寫入案例庫",
+                "tiny",
+                'text-anchor="middle"',
+              ),
+            "rag",
+          );
+          svg +=
+            '<g id="bankNode" class="clickable" data-inspect="rag" role="button" tabindex="0" aria-label="查看案例向量庫">' +
+            R(720, 50, 350, 180) +
+            T(737, 76, "訓練案例向量庫", "heading") +
+            T(1048, 76, "已建立 · 24 筆示例", "tiny", 'text-anchor="end"') +
+            GROUPS.map(
+              (g, i) =>
+                '<rect id="bankRow' +
+                i +
+                '" class="bank-row" x="735" y="' +
+                (87 + i * 21) +
+                '" width="320" height="18" rx="4"/>' +
+                T(742, 100 + i * 21, g.title, "tiny") +
+                stripe(860, 91 + i * 21, BANK[i * 4].vector, 24, 112, 9) +
+                T(
+                  1045,
+                  100 + i * 21,
+                  "—",
+                  "mono",
+                  'text-anchor="end" id="bankScore' + i + '"',
+                ),
+            ).join("") +
+            "</g>";
+          svg += node(
+            "compareNode",
+            875,
+            320,
+            180,
+            100,
+            T(
+              965,
+              347,
+              "cosine similarity",
+              "heading",
+              'text-anchor="middle"',
+            ) +
+              T(
+                965,
+                371,
+                "q · vᵢ（已正規化）",
+                "small",
+                'text-anchor="middle"',
+              ) +
+              T(
+                965,
+                398,
+                "等待查詢向量",
+                "tiny",
+                'text-anchor="middle" id="compareStatus"',
+              ),
+            "rag",
+          );
+          svg +=
+            T(875, 462, "向量逐筆比對", "tiny") +
+            T(875, 483, "分數越高，方向越接近", "tiny") +
+            T(875, 528, "合成向量 · 實際計算", "tiny");
+          svg +=
+            '<g id="rankNode" class="node clickable" data-inspect="rag" role="button" tabindex="0" aria-label="查看 Top-5 案例">' +
+            R(1085, 240, 155, 245) +
+            T(1100, 266, "排序取 Top-5", "heading") +
+            Array.from(
+              { length: 5 },
+              (_, i) =>
+                '<g id="rank' +
+                i +
+                '"><rect x="1095" y="' +
+                (280 + i * 38) +
+                '" width="135" height="33" rx="6" fill="#f0f5f8" stroke="#dae5ed"/>' +
+                T(1103, 300 + i * 38, "#" + (i + 1), "mono") +
+                T(
+                  1130,
+                  294 + i * 38,
+                  "等待比對",
+                  "tiny",
+                  'id="rankLabel' + i + '"',
+                ) +
+                T(1130, 307 + i * 38, "—", "tiny", 'id="rankScore' + i + '"') +
+                "</g>",
+            ).join("") +
+            "</g>";
+          svg += T(1120, 520, "案例 → prompt", "tiny");
+          svg += node(
+            "auditNode",
+            1290,
+            65,
+            260,
+            140,
+            T(1306, 92, "AI 稽核", "heading") +
+              T(1532, 91, "Llama 3 8B", "tiny", 'text-anchor="end"') +
+              '<rect x="1304" y="106" width="232" height="79" rx="6" fill="#142f43"/>' +
+              T(
+                1315,
+                126,
+                "分類＋信心＋分支結果",
+                "mono",
+                'style="fill:#90b6c8" id="promptLine1"',
+              ) +
+              T(
+                1315,
+                148,
+                "＋ Top-5 案例證據",
+                "mono",
+                'style="fill:#90b6c8" id="promptLine2"',
+              ) +
+              T(
+                1315,
+                173,
+                "等待 prompt",
+                "mono",
+                'style="fill:#9ad4c7" id="auditResult"',
+              ),
+            "audit",
+          );
+          svg += node(
+            "policyNode",
+            1290,
+            240,
+            260,
+            88,
+            T(1306, 266, "策略檢查", "heading") +
+              T(
+                1306,
+                290,
+                "○ 信心  ○ 證據  ○ 範圍",
+                "small",
+                'id="guardChecks"',
+              ) +
+              T(1306, 312, "等待稽核結果", "tiny", 'id="commandLabel"'),
+            "policy",
+          );
+          svg +=
+            '<g id="netNode" class="clickable" data-inspect="policy" role="button" tabindex="0" aria-label="查看網路處置"><rect x="1250" y="355" width="330" height="245" rx="14" fill="url(#netfill)"/>' +
+            T(
+              1266,
+              381,
+              "Mininet 拓樸示意",
+              "heading",
+              'style="fill:#edf7fa"',
+            ) +
+            T(
+              1564,
+              380,
+              "處置前",
+              "tiny",
+              'style="fill:#abc4d0" text-anchor="end" id="netMode"',
+            ) +
+            '<path d="M1282 426 H1331 L1410 473 H1471 H1530" fill="none" stroke="#a96e64" stroke-width="2"/><path d="M1282 526 H1331 L1410 473" fill="none" stroke="#4d978a" stroke-width="2"/>';
+          svg +=
+            '<rect x="1262" y="408" width="49" height="35" rx="7" fill="#804750"/>' +
+            T(
+              1286,
+              430,
+              "來源",
+              "small",
+              'style="fill:white" text-anchor="middle"',
+            ) +
+            '<rect x="1262" y="508" width="49" height="35" rx="7" fill="#276d64"/>' +
+            T(
+              1286,
+              530,
+              "正常",
+              "small",
+              'style="fill:white" text-anchor="middle"',
+            );
+          for (const [x, y, label] of [
+            [1331, 426, "s1"],
+            [1331, 526, "s2"],
+            [1471, 473, "s3"],
+          ])
+            svg +=
+              '<rect x="' +
+              (x - 12) +
+              '" y="' +
+              (y - 10) +
+              '" width="24" height="20" rx="4" fill="#325268" stroke="#8098a8"/>' +
+              T(
+                x,
+                y + 4,
+                label,
+                "tiny",
+                'style="fill:#d8e9f3" text-anchor="middle"',
+              );
+          svg +=
+            '<circle id="router" cx="1410" cy="473" r="24" fill="#366b83" stroke="#8cdce7" stroke-width="2"/>' +
+            T(
+              1410,
+              479,
+              "r1",
+              "heading",
+              'style="fill:white" text-anchor="middle"',
+            ) +
+            '<rect x="1511" y="448" width="46" height="47" rx="7" fill="#3d6276" stroke="#8ca6b4"/>' +
+            T(
+              1534,
+              476,
+              "▤",
+              "heading",
+              'style="fill:white" text-anchor="middle"',
+            ) +
+            T(1534, 513, "Server", "net-muted", 'text-anchor="middle"') +
+            T(
+              1410,
+              517,
+              "正常通行",
+              "tiny",
+              'style="fill:#a2d4dc" text-anchor="middle" id="routerState"',
+            ) +
+            '<g id="networkDots"></g>' +
+            T(1266, 564, "通過 0", "net-muted", 'id="netPassed"') +
+            T(1375, 564, "攔下 0", "net-muted", 'id="netDropped"') +
+            T(1475, 564, "正常 0", "net-muted", 'id="netBackground"') +
+            T(
+              1266,
+              586,
+              "來源與背景流量都可通行",
+              "net-muted",
+              'id="ttlLabel"',
+            ) +
+            "</g>";
+          svg += '<g id="pulses"></g><g id="commandPacket"></g>';
+          $("board").innerHTML = svg;
+          document.querySelectorAll("[data-pixel]").forEach((cell, index) => {
+            cell.setAttribute(
+              "aria-label",
+              "檢查" +
+                (cell.dataset.pixel.startsWith("ct") ? "CTBM" : "PBCNN") +
+                "輸入格 " +
+                cell.dataset.pixel,
+            );
+            cell.setAttribute("tabindex", index === 0 ? "0" : "-1");
+          });
+          paths = {};
+          for (const [id] of lineDefs) {
+            const path = $("wire-" + id);
+            paths[id] = {
+              path,
+              length:
+                typeof path.getTotalLength === "function"
+                  ? path.getTotalLength()
+                  : 1,
+            };
+          }
+          cells = [];
+          for (const kind of ["ct", "pb"])
+            for (let r = 0; r < 8; r++)
+              for (let c = 0; c < 12; c++)
+                cells.push({ kind, r, c, el: $(kind + "-" + r + "-" + c) });
+          updateMatrixData();
+        }
+        function updateMatrixData() {
+          packets = flows[state.flow].packets.slice(0, 8);
+          for (const cell of cells) {
+            const p = packets[cell.r],
+              pixel =
+                cell.kind === "ct"
+                  ? rgbFor(p.payload, cell.c * 3)
+                  : pbcnnPixel(p, packets[cell.r - 1], cell.c);
+            const shown = displayPixel(pixel, cell.kind);
+            cell.color = shown.hex;
+            cell.valid = pixel.valid;
+            const desc =
+              cell.kind === "ct"
+                ? "CTBM 示意 RGB " + pixel.channels.join(",")
+                : cell.c === 0
+                  ? (pixel.deltaMs === null
+                      ? "首筆：無前一筆，Δt 以 0 顯示"
+                      : "Δt " + pixel.deltaMs + " ms") +
+                    " / B=" +
+                    pixel.value
+                  : (p.direction === "in" ? "流入 R=" : "流出 G=") +
+                    pixel.value +
+                    " / payload byte " +
+                    cell.c;
+            cell.el.querySelector("title").textContent =
+              p.id +
+              " / " +
+              desc +
+              " / 原始 RGB(" +
+              pixel.channels.join(",") +
+              ") → 展示 RGB(" +
+              shown.channels.join(",") +
+              ")";
+          }
+          $("flowLabel").textContent = flows[state.flow].id + " / TCP";
+          $("queryStripe").innerHTML = stripe(
+            685,
+            518,
+            demoVector(
+              SCENARIOS[state.key].prototype,
+              SCENARIOS[state.key].label,
+              0,
+              1,
+              SCENARIOS[state.key].confidence,
+            ),
+            28,
+            130,
+            13,
+          );
+        }
+        function setNode(id, phase) {
+          $(id).classList.toggle("live", phase === 1);
+          $(id).classList.toggle("complete", phase === 2);
+          $(id).classList.toggle("waiting", phase === 0);
+        }
+        function point(id, p) {
+          const a = paths[id];
+          if (!a || typeof a.path.getPointAtLength !== "function")
+            return { x: 0, y: 0 };
+          return a.path.getPointAtLength(a.length * clamp(p));
+        }
+        function pulse(id, progress, color = "#efffff") {
+          return [0, 0.065, 0.13]
+            .map((tail, i) => {
+              const p = progress - tail;
+              if (p < 0 || p > 1) return "";
+              const v = point(id, p);
+              return (
+                '<circle cx="' +
+                v.x +
+                '" cy="' +
+                v.y +
+                '" r="' +
+                (4 - i * 0.7) +
+                '" class="pulse" style="fill:' +
+                color +
+                ";opacity:" +
+                (1 - i * 0.23) +
+                '"/>'
+              );
+            })
+            .join("");
+        }
+        function setData(key, flow = 0) {
+          state.key = key;
+          state.flow = flow;
+          flows = makeFlows(key);
+          scores = scoreBank(key);
+          top = retrieve(key);
+          transactions = makeTransactions(key);
+          state.packet = 0;
+          state.cell = 0;
+          previousDetail = "";
+          if ($("board").children.length) updateMatrixData();
+          document.querySelectorAll("[data-scenario]").forEach((el) => {
+            const selected = el.dataset.scenario === key;
+            el.classList.toggle("selected", selected);
+            el.setAttribute("aria-pressed", String(selected));
+          });
+          $("sceneLabel").textContent = names[key];
+          $("trafficPattern") &&
+            ($("trafficPattern").textContent =
+              key === "benign"
+                ? "請求與回應交錯"
+                : key === "review"
+                  ? "Web 特徵混合"
+                  : key === "ssh"
+                    ? "重複驗證嘗試"
+                    : "短間隔 · 重複請求");
+        }
+        function render(force = false) {
+          const s = stateAt(state.time),
+            t = s.t,
+            scenario = SCENARIOS[state.key],
+            disruptive = isDisruptive(state.key),
+            p = policyFor(state.key);
+          $("progress").setAttribute("aria-valuenow", t.toFixed(2));
+          $("progressFill").style.width = (t / DURATION) * 100 + "%";
+          $("clock").textContent = fmt(t) + " / " + fmt(DURATION);
+          $("seek").value = String(t);
+          $("seek").setAttribute(
+            "aria-valuetext",
+            t.toFixed(1) + "秒，共73秒示意時間",
+          );
+          $("playPause").textContent = state.playing ? "暫停" : "播放";
+          $("playPause").setAttribute("aria-pressed", String(state.playing));
+          document
+            .querySelectorAll("[data-tab]")
+            .forEach((el) =>
+              el.setAttribute(
+                "aria-pressed",
+                String(el.dataset.tab === state.tab),
+              ),
+            );
+          $("currentChapter").textContent = s.done
+            ? "展示完成"
+            : s.chapter.title;
+          if (state.chapter !== s.chapter.key || force) {
+            state.chapter = s.chapter.key;
+            $("sceneCaption").textContent =
+              t === 0 ? "選一個情境，讓資料帶著光往前走。" : s.chapter.text;
+            $("stageMessage").textContent = s.chapter.text;
+            if (s.chapter.key === "network" && !disruptive)
+              $("stageMessage").textContent =
+                state.key === "benign"
+                  ? "正常事件採監測，所有流量持續通行。"
+                  : "證據不足，保留蒐證與人工複核；不部署阻擋規則。";
+            if (state.follow)
+              state.tab = ["traffic"].includes(s.chapter.key)
+                ? "traffic"
+                : ["encoding", "fusion"].includes(s.chapter.key)
+                  ? "encoding"
+                  : ["vector", "compare", "ranking"].includes(s.chapter.key)
+                    ? "rag"
+                    : s.chapter.key === "audit"
+                      ? "audit"
+                      : "policy";
+            document.querySelectorAll("[data-chapter]").forEach((el) => {
+              el.setAttribute(
+                "aria-current",
+                String(+el.dataset.chapter === s.chapter.at),
+              );
+              const at = +el.dataset.chapter;
+              el.classList.toggle("active", at === s.chapter.at);
+              el.classList.toggle("done", at < s.chapter.at);
+            });
+            $("announcement").textContent =
+              s.chapter.title + "。" + $("stageMessage").textContent;
+          }
+          if (t >= 2 && t < 14)
+            $("sceneCaption").textContent =
+              "第 " +
+              (s.row + 1) +
+              " / 8 筆封包" +
+              (s.travel < 1 ? "沿線傳遞" : "抵達：兩個輸入圖同步新增一列") +
+              " · 原始間隔 " +
+              scenario.gap +
+              " ms（展示放慢）";
+          for (const { kind, r, c, el, color, valid } of cells) {
+            const reveal = clamp((s.rows - r) * 12 - c);
+            el.setAttribute("fill", reveal > 0 && valid ? color : "#e6edf1");
+            el.style.opacity = reveal > 0 ? String(0.5 + 0.5 * reveal) : "1";
+          }
+          for (const kind of ["ct", "pb"]) {
+            const scan = $(kind + "Scan"),
+              base = kind === "ct" ? 126 : 406;
+            scan.setAttribute("y", base + s.row * 15 - 1);
+            scan.style.opacity = t >= 2 && t < 14 && s.travel >= 1 ? "1" : "0";
+            $(kind + "Status").textContent =
+              t < 2
+                ? "等待第 1 列"
+                : t >= 14
+                  ? "8 / 8 列完成 · 點色塊查看編碼"
+                  : "第 " +
+                    (s.row + 1) +
+                    " / 8 列 · " +
+                    (s.travel < 1 ? "接收中" : "逐列形成");
+          }
+          const ticketVisible = t < 2 ? 0 : t >= 14 ? 8 : s.row + 1;
+          for (let i = 0; i < 8; i++) {
+            const active = i === s.row && t >= 2 && t < 14;
+            $("ticket" + i).style.opacity = i < ticketVisible ? "1" : ".23";
+            $("ticket" + i)
+              .querySelector("rect")
+              .setAttribute("fill", active ? "#ffe4de" : "#f0f4f7");
+            $("ticketText" + i).textContent =
+              i < ticketVisible
+                ? "#" +
+                  (i + 1) +
+                  " " +
+                  (packets[i].direction === "out" ? "← " : "→ ") +
+                  packets[i].text.slice(0, 11)
+                : "#" + (i + 1) + " 等待封包";
+          }
+          const nodeRanges = [
+            ["packetNode", 0, 14],
+            ["ctNode", 2, 14],
+            ["pbNode", 2, 14],
+            ["fusionNode", 14, 17],
+            ["vectorNode", 17, 18.5],
+            ["normNode", 18.5, 19],
+            ["queryNode", 19, 20],
+            ["compareNode", 20, 26],
+            ["rankNode", 26, 28],
+            ["auditNode", 28, 32],
+            ["policyNode", 32, 38],
+          ];
+          nodeRanges.forEach(([id, a, b]) =>
+            setNode(id, t < a ? 0 : t < b ? 1 : 2),
+          );
+          $("vectorContent").style.opacity = t >= 17 ? "1" : ".2";
+          $("queryStripe").style.opacity = t >= 19 ? "1" : ".15";
+          $("fusionStatus").textContent =
+            t < 14 ? "等待輸入" : t < 16 ? "示意推論…" : "分類完成";
+          $("predLabel").textContent = t >= 16 ? scenario.label : "—";
+          $("predLabel").setAttribute(
+            "font-size",
+            state.key === "ddos" ? "10" : "11",
+          );
+          $("confidenceLabel").textContent =
+            t >= 16
+              ? "信心 " + (scenario.confidence * 100).toFixed(0) + "%"
+              : "—";
+          for (let i = 0; i < 6; i++) {
+            const active = t >= 20 && t < 26 && Math.floor(s.scanned / 4) === i;
+            $("bankRow" + i).classList.toggle("active", active);
+            const scanned = Math.min(4, Math.max(0, s.scanned - i * 4));
+            $("bankScore" + i).textContent = scanned
+              ? scores[i * 4 + scanned - 1].similarity.toFixed(3)
+              : "—";
+          }
+          const compareIndex = Math.min(23, s.scanned);
+          $("compareStatus").textContent =
+            t < 20
+              ? "等待查詢向量"
+              : t < 26
+                ? scores[compareIndex].id +
+                  " → " +
+                  scores[compareIndex].similarity.toFixed(4)
+                : "24 / 24 筆比較完成";
+          for (let i = 0; i < 5; i++) {
+            const show = i < s.topCount;
+            $("rank" + i).style.opacity = show ? "1" : ".25";
+            $("rank" + i).setAttribute(
+              "transform",
+              show ? "translate(0 0)" : "translate(6 0)",
+            );
+            $("rankLabel" + i).textContent = show ? top[i].title : "等待比對";
+            $("rankScore" + i).textContent = show
+              ? top[i].similarity.toFixed(4)
+              : "—";
+            $("rank" + i)
+              .querySelector("rect")
+              .setAttribute(
+                "fill",
+                show
+                  ? top[i].label === scenario.label
+                    ? "#e2f8fc"
+                    : "#fff3d8"
+                  : "#f0f5f8",
+              );
+          }
+          $("promptLine1").style.opacity = t >= 28 ? "1" : ".3";
+          $("promptLine2").style.opacity = t >= 29 ? "1" : ".3";
+          $("auditResult").textContent =
+            t < 28
+              ? "等待 prompt"
+              : t < 31
+                ? "整理證據…"
+                : scenario.assessment === "support"
+                  ? "支持 · 示範回覆"
+                  : "複核 · 示範回覆";
+          $("guardChecks").textContent =
+            (t >= 33 ? (scenario.confidence >= 0.8 ? "✓" : "!") : "○") +
+            " 信心  " +
+            (t >= 34 ? (p.support >= 4 ? "✓" : "!") : "○") +
+            " 證據  " +
+            (t >= 35 ? "✓" : "○") +
+            " 範圍";
+          $("commandLabel").textContent =
+            t < 35
+              ? "等待策略結果"
+              : disruptive
+                ? "允許限速 · 30 秒期限"
+                : state.key === "benign"
+                  ? "monitor · 保持通行"
+                  : "capture_evidence · 人工複核";
+          let pulses = "";
+          for (const [id, d, a, b] of lineDefs) {
+            let active = t >= a && t < b;
+            const wire = $("wire-" + id);
+            wire.classList.toggle("lit", active);
+            wire.classList.toggle("done", t >= b);
+            if (active) {
+              let progress;
+              if (["in", "ct", "pb"].includes(id)) {
+                progress = s.travel;
+                if (progress >= 1) continue;
+              } else
+                progress =
+                  ((t - a) / (["bank", "search"].includes(id) ? 0.5 : b - a)) %
+                  1;
+              pulses += pulse(
+                id,
+                progress,
+                ["in", "deploy"].includes(id) ? "#ffd8cc" : "#eaffff",
+              );
+            }
+          }
+          $("pulses").innerHTML = pulses;
+          if (t >= 36 && t < 38) {
+            const pt = point("deploy", (t - 36) / 2);
+            $("commandPacket").innerHTML =
+              '<rect x="' +
+              (pt.x - 40) +
+              '" y="' +
+              (pt.y - 11) +
+              '" width="80" height="22" rx="5" fill="' +
+              (disruptive ? "#ef967c" : "#eac76e") +
+              '"/>' +
+              T(
+                pt.x,
+                pt.y + 4,
+                disruptive ? "套用規則" : "監測／蒐證",
+                "tiny",
+                'text-anchor="middle"',
+              );
+          } else $("commandPacket").innerHTML = "";
+          const net = networkAt(transactions, t),
+            limited = t >= 38 && t < 68 && disruptive;
+          $("router").setAttribute("fill", limited ? "#8c4a4b" : "#366b83");
+          $("router").setAttribute("stroke", limited ? "#ffab8d" : "#8cdce7");
+          $("netMode").textContent =
+            t < 38
+              ? "處置前"
+              : t >= 68
+                ? "回復後"
+                : disruptive
+                  ? "限制中"
+                  : state.key === "benign"
+                    ? "監測中"
+                    : "人工複核";
+          $("routerState").textContent = limited
+            ? "新連線 ≤ 1 / 秒"
+            : "正常通行";
+          $("ttlLabel").textContent = limited
+            ? "規則撤銷倒數 " + Math.ceil(s.ttl) + " 秒"
+            : t >= 68
+              ? disruptive
+                ? "規則已撤銷 · 通行已恢復"
+                : "未建立阻擋規則 · 維持通行"
+              : t >= 38
+                ? "保留監測／蒐證，不部署阻擋規則"
+                : "來源與背景流量都可通行";
+          const phase = t < 38 ? "before" : t < 68 ? "after" : "recovered",
+            cnt = net.counts[phase];
+          $("netPassed").textContent = "通過 " + cnt.passed;
+          $("netDropped").textContent = "攔下 " + cnt.dropped;
+          $("netBackground").textContent = "正常 " + net.counts.background;
+          $("networkDots").innerHTML = net.dots
+            .map((d) => {
+              let x,
+                y,
+                alpha = 1;
+              const sy = d.background ? 526 : 426,
+                color = d.background ? "#65e0ba" : "#ff9d87";
+              if (d.age < 1) {
+                const u = d.age;
+                if (u < 0.35) {
+                  x = 1282 + ((1331 - 1282) * u) / 0.35;
+                  y = sy;
+                } else {
+                  x = 1331 + ((1410 - 1331) * (u - 0.35)) / 0.65;
+                  y = sy + ((473 - sy) * (u - 0.35)) / 0.65;
+                }
+              } else if (d.pass) {
+                x = 1410 + ((1530 - 1410) * (d.age - 1)) / 0.65;
+                y = 473;
+              } else {
+                x = 1410 + (d.age - 1) * 30;
+                y = 473 - (d.age - 1) * 35;
+                alpha = 1 - (d.age - 1) / 0.35;
+                return (
+                  '<path d="M' +
+                  (x - 4) +
+                  " " +
+                  (y - 4) +
+                  ' l8 8 m-8 0 l8 -8" stroke="' +
+                  color +
+                  '" stroke-width="2.5" opacity="' +
+                  alpha +
+                  '" filter="url(#light)"/>'
+                );
+              }
+              return (
+                '<circle cx="' +
+                x +
+                '" cy="' +
+                y +
+                '" r="3.3" fill="' +
+                color +
+                '" filter="url(#light)"/>'
+              );
+            })
+            .join("");
+          $("follow").textContent = state.follow
+            ? "跟隨流程 ✓"
+            : "已固定此資料頁";
+          $("follow").setAttribute("aria-pressed", String(state.follow));
+          document
+            .querySelectorAll("[data-tab]")
+            .forEach((el) =>
+              el.setAttribute(
+                "aria-pressed",
+                String(el.dataset.tab === state.tab),
+              ),
+            );
+          const detailTick = Math.floor(t * 2);
+          if (force || detailTick !== state.detailTick) {
+            state.detailTick = detailTick;
+            renderDetail(s, net);
+          }
+        }
+        function detailTraffic(s) {
+          const visible = s.t >= 14 ? 8 : s.t < 2 ? 0 : s.row + 1,
+            selected = packets[state.packet],
+            f = flows[state.flow];
+          return (
+            '<div class="detail-grid"><div><div class="detail-heading"><h3>本次 flow 的封包序列</h3><span class="tag">合成 TCP 範例</span></div><div class="flow-options">' +
+            flows
+              .map(
+                (f, i) =>
+                  '<button data-flow="' +
+                  i +
+                  '" class="' +
+                  (i === state.flow ? "active" : "") +
+                  '">' +
+                  f.id +
+                  "</button>",
+              )
+              .join("") +
+            '</div><p class="note">' +
+            esc(
+              f.source + ":" + f.sport + " ⇄ " + f.destination + ":" + f.dport,
+            ) +
+            " · 顯示前 8 筆</p><table><thead><tr><th>封包</th><th>原始時間</th><th>方向</th><th>內容</th></tr></thead><tbody>" +
+            packets
+              .map(
+                (p, i) =>
+                  '<tr data-packet="' +
+                  i +
+                  '" class="' +
+                  (i === state.packet ? "selected" : "") +
+                  '"><td>#' +
+                  (i + 1) +
+                  "</td><td>" +
+                  p.time +
+                  " ms</td><td>" +
+                  (p.direction === "in" ? "來源 → Server" : "Server → 來源") +
+                  "</td><td>" +
+                  (i < visible ? esc(p.text.slice(0, 28)) : "尚未抵達") +
+                  "</td></tr>",
+              )
+              .join("") +
+            "</tbody></table></div><div><h3>選定封包 #" +
+            (state.packet + 1) +
+            '</h3><p class="note">點選左側封包查看位元組。這裡的資料與模型輸入圖使用同一筆 payload。</p>' +
+            (state.packet < visible
+              ? "<pre>" +
+                esc(selected.text) +
+                '</pre><div class="hex-grid">' +
+                selected.payload
+                  .map((x) => '<span class="hex-byte">' + hex(x) + "</span>")
+                  .join("") +
+                "</div>"
+              : '<div class="callout">這筆封包尚未抵達。等待它隨流程抵達。</div>') +
+            '<p class="note">封包標頭與 payload 為教學合成資料；未提供可傳送的封包。SSH 情境沿用測試床的文字驗證嘗試，不是解密後的真實 SSH 通訊。</p></div></div>'
+          );
+        }
+        function detailEncoding(s) {
+          const p = packets[state.packet],
+            previous = packets[state.packet - 1],
+            column = state.pixelKind === "pb" ? state.cell : 0,
+            pixel = pbcnnPixel(p, previous, column),
+            rgb = rgbFor(
+              p.payload,
+              (state.pixelKind === "ct" ? state.cell : 0) * 3,
+            ),
+            available = s.rows > state.packet;
+          const shown = displayPixel(pixel, "pb"),
+            shownRgb = displayPixel(rgb, "ct");
+          const delta =
+            pixel.deltaMs === null
+              ? "無前一筆（以 0 顯示）"
+              : pixel.deltaMs + " ms";
+          const selection =
+            column === 0
+              ? "首格：封包間隔 Δt"
+              : "第 " + (column + 1) + " 格：payload byte " + column;
+          return (
+            '<div class="detail-grid"><div><h3>PBCNN：方向 × 位元組 × 時間</h3><p>每筆封包形成一列：第一格是藍色時間格，後面 11 格依方向著色。</p><div class="flow-options">' +
+            packets
+              .map(
+                (p, i) =>
+                  '<button data-packet="' +
+                  i +
+                  '" class="' +
+                  (i === state.packet ? "active" : "") +
+                  '">第 ' +
+                  (i + 1) +
+                  " 列</button>",
+              )
+              .join("") +
+            '</div><p class="note">' +
+            flows[state.flow].id +
+            " / 第 " +
+            (state.packet + 1) +
+            " 筆 / " +
+            (p.direction === "in"
+              ? "流入：來源 → Server（紅）"
+              : "流出：Server → 來源（綠）") +
+            "</p>" +
+            (available
+              ? '<div class="hex-grid">' +
+                Array.from({ length: 12 }, (_, c) => {
+                  const px = displayPixel(pbcnnPixel(p, previous, c), "pb");
+                  return (
+                    '<button data-byte="' +
+                    c +
+                    '" class="hex-byte ' +
+                    (c === column ? "hit" : "") +
+                    '" aria-label="' +
+                    (c === 0 ? "時間間隔" : "payload byte " + c) +
+                    '"><span class="swatch" style="background:' +
+                    px.hex +
+                    '"></span>' +
+                    (c === 0 ? "Δt" : hex(p.payload[c - 1] ?? 0)) +
+                    "</button>"
+                  );
+                }).join("") +
+                "</div><h4>" +
+                selection +
+                '</h4><p><span class="swatch" style="background:' +
+                shown.hex +
+                '"></span><code>原始 RGB(' +
+                pixel.channels.join(", ") +
+                ") → 展示 RGB(" +
+                shown.channels.join(", ") +
+                ") / " +
+                shown.hex +
+                "</code></p><p>" +
+                (column === 0
+                  ? "Δt = " +
+                    delta +
+                    "；原始 B = " +
+                    pixel.value +
+                    "，展示 B = " +
+                    shown.channels[2] +
+                    "。"
+                  : "0x" +
+                    hex(pixel.value) +
+                    " = " +
+                    pixel.value +
+                    "；" +
+                    (p.direction === "in"
+                      ? "放入 R 通道，G = B = 0。"
+                      : "放入 G 通道，R = B = 0。")) +
+                "</p>"
+              : '<div class="callout">這一列尚未開始編碼，等待封包抵達。</div>') +
+            '<div class="callout">紅／綠代表流入／流出；亮度代表 byte 數值。首格藍色只表示與同一 flow 上一筆封包的時間差，與動畫播放速度無關。</div></div><div><h3>首格藍色：間隔越久越亮</h3><p>本筆 Δt：<strong>' +
+            delta +
+            "</strong></p><pre>展示 B = round(255 × min(Δt / " +
+            DISPLAY_RANGES.timeMax +
+            ', 1))</pre><p class="note">四個範例共用時間範圍 0–' +
+            DISPLAY_RANGES.timeMax +
+            ' ms，拉伸至 0–255；不會逐情境重新縮放。首筆沒有前一筆，顯示黑色；不足的 bytes 補 0。</p><div class="hex-grid">' +
+            [0, 4, 35, 80, DISPLAY_RANGES.timeMax]
+              .map((ms) => {
+                const b = Math.round(
+                  255 * Math.min(ms / DISPLAY_RANGES.timeMax, 1),
+                );
+                return (
+                  '<span class="hex-byte"><span class="swatch" style="background:rgb(0,0,' +
+                  b +
+                  ')"></span>' +
+                  ms +
+                  " ms · B=" +
+                  b +
+                  "</span>"
+                );
+              })
+              .join("") +
+            "</div><p>洪流示例間隔短，首格接近黑色；較長間隔會顯示更亮的藍色。色彩呈現封包特徵，分類仍由後續模型判定。</p><h3>CTBM 的內容示意</h3>" +
+            (available
+              ? '<p><span class="swatch" style="background:' +
+                shownRgb.hex +
+                '"></span><code>原始 RGB(' +
+                rgb.channels.join(", ") +
+                ") → 展示 RGB(" +
+                shownRgb.channels.join(", ") +
+                ")</code></p>"
+              : "") +
+            '<p class="note">CTBM 採用每 3 個 payload bytes 組成 RGB 的教學映射。PBCNN 在本頁以「首格藍色時間差＋紅綠方向位元組」，不再採灰階；兩個模型的內容格共用四個範例的 byte 範圍 0–' +
+            DISPLAY_RANGES.byteMax +
+            "，拉伸至 0–255；零值保留黑色。這是教學展示對比調整，不代表正式模型的輸入編碼或輸出。</p><p>目前已形成 <strong>" +
+            Math.floor(s.rows) +
+            " / 8 列</strong>。</p></div></div>"
+          );
+        }
+        function detailRag(s) {
+          const q = demoVector(
+              SCENARIOS[state.key].prototype,
+              SCENARIOS[state.key].label,
+              0,
+              1,
+              SCENARIOS[state.key].confidence,
+            ),
+            n = Math.min(23, Math.max(0, s.scanned - 1)),
+            v = scores[n];
+          return (
+            '<div class="detail-grid"><div><h3>529 維查詢向量</h3><p><strong>512 維 CTBM 表徵 + 17 維融合機率 → L2 正規化。</strong></p><p class="note">展示中的表徵為人工合成，機率採本情境的示意信心。向量串接、正規化、內積與排序在瀏覽器真正計算。</p><div class="vector-strip">' +
+            q
+              .slice(0, 48)
+              .map(
+                (x) =>
+                  '<i style="background:hsl(' +
+                  (185 + ((x * 500) % 150)) +
+                  ',55%,55%)"></i>',
+              )
+              .join("") +
+            "</div><pre>cos(q, v) = (q · v) / (‖q‖ × ‖v‖)\n正規化後：cos(q, v) = q · v\n\n‖q‖ = " +
+            Math.hypot(...q).toFixed(6) +
+            "\n" +
+            (s.scanned
+              ? v.id + "：" + v.similarity.toFixed(6)
+              : "等待查詢向量進入案例庫") +
+            '</pre><p class="note">案例庫預先建立，僅用示意訓練案例；本次事件不加入案例庫。案例類別只作結果說明，不作搜尋資料夾。</p></div><div><div class="detail-heading"><h3>' +
+            (s.t >= 26 ? "Top-5 相似案例" : "案例庫比對進度") +
+            '</h3><span class="tag">' +
+            s.scanned +
+            " / 24</span></div><table><thead><tr><th>案例 ID</th><th>類型</th><th>cosine</th></tr></thead><tbody>" +
+            (s.t >= 26 ? top : scores)
+              .map(
+                (r, i) =>
+                  '<tr><td><button class="case-button" data-case="' +
+                  r.id +
+                  '">' +
+                  r.id +
+                  "</button></td><td>" +
+                  esc(r.title) +
+                  "</td><td>" +
+                  (s.t >= 26 || i < s.scanned
+                    ? r.similarity.toFixed(4)
+                    : "等待") +
+                  "</td></tr>",
+              )
+              .join("") +
+            '</tbody></table><p class="note">每筆分數計算後才顯示；Top-5 依分數降冪排序，同分依案例 ID 排序。</p></div></div>'
+          );
+        }
+        function detailAudit(s) {
+          const result = {
+            assessment: SCENARIOS[state.key].assessment,
+            reason: SCENARIOS[state.key].reason,
+          };
+          return (
+            '<div class="detail-grid"><div><div class="detail-heading"><h3>Prompt 組合</h3><span class="tag">Meta-Llama-3-8B-Instruct</span></div><p class="note">以下 System prompt 來自原專案；User payload 使用這一筆示意事件的實際檢索結果。</p><details><summary>展開 System prompt</summary><pre>' +
+            esc(SYSTEM_PROMPT) +
+            "</pre></details><h4>User payload</h4>" +
+            (s.t >= 28
+              ? "<pre>" +
+                esc(JSON.stringify(payloadFor(state.key), null, 2)) +
+                "</pre>"
+              : '<div class="callout">等待 Top-5 檢索完成。</div>') +
+            '</div><div><h3>稽核回覆</h3><span class="tag">預設示例 · 沒有呼叫 LLM</span>' +
+            (s.t >= 31
+              ? "<pre>" +
+                esc(JSON.stringify(result, null, 2)) +
+                "</pre><p>" +
+                esc(
+                  state.key === "review"
+                    ? "證據混合且模型分支不一致，轉人工複核。"
+                    : "信心與案例證據支持原分類，交由策略繼續檢查。",
+                ) +
+                "</p>"
+              : '<div class="callout">prompt 準備完成後才顯示回覆。</div>') +
+            "<p>稽核只附加意見，不更改正式分類，也不直接執行指令。</p></div></div>"
+          );
+        }
+        function detailPolicy(s, net) {
+          const p = policyFor(state.key),
+            disruptive = isDisruptive(state.key);
+          return (
+            '<div class="detail-grid"><div><h3>策略逐項檢查</h3>' +
+            [
+              [
+                s.t >= 33,
+                p.confidence >= 0.8,
+                "分類信心 ≥ 0.8：" + p.confidence,
+              ],
+              [
+                s.t >= 34,
+                p.support >= 4,
+                "Top-5 同類支持 ≥ 4：" + p.support + " / 5",
+              ],
+              [s.t >= 35, true, "限制指定來源、目標服務與 30 秒期限"],
+            ]
+              .map(
+                ([ready, pass, text]) =>
+                  '<div class="check ' +
+                  (ready ? (pass ? "pass" : "fail") : "") +
+                  '">' +
+                  (ready ? (pass ? "✓" : "!") : "○") +
+                  " " +
+                  text +
+                  "</div>",
+              )
+              .join("") +
+            '<p class="note">動作：' +
+            p.action +
+            "。正常監測與保留蒐證不需要部署阻擋規則。</p><h3>r1 指令" +
+            (s.t >= 68 && disruptive ? "：撤銷" : "：預覽") +
+            "</h3>" +
+            (s.t >= 35
+              ? "<pre>" +
+                esc(
+                  (s.t >= 68 && disruptive
+                    ? ROLLBACK
+                    : commandsFor(state.key)
+                  ).join("\n"),
+                ) +
+                "</pre>"
+              : '<div class="callout">策略完成前，尚未產生處置指令。</div>') +
+            '<p class="note">與原測試床相同的 iptables 形式；頁面不執行命令。限速允許每秒一個新連線，超額才 DROP。</p></div><div><h3>處置前後對照</h3><div class="comparison">' +
+            [
+              ["before", "處置前"],
+              ["after", "處置期間"],
+              ["recovered", "回復後"],
+            ]
+              .map(
+                ([key, label]) =>
+                  "<div><strong>" +
+                  label +
+                  "</strong><p>通過 " +
+                  net.counts[key].passed +
+                  "<br>攔下 " +
+                  net.counts[key].dropped +
+                  "</p></div>",
+              )
+              .join("") +
+            "</div><p>正常背景流量通過：<strong>" +
+            net.counts.background +
+            '</strong> 筆。</p><div class="callout">' +
+            (disruptive
+              ? "規則在展示第 38 秒套用，第 68 秒撤銷。紅色光點在 r1 消散表示超額連線被丟棄；其他來源的背景流量在本示意中維持通行；相同受限來源的合法連線也可能受限。"
+              : state.key === "benign"
+                ? "正常情境只監測，所有流量維持通行。"
+                : "複核情境不部署阻擋規則，保留事件與證據供人工處理。") +
+            '</div><p class="note">數字由本頁合成交易計算，非原專案實驗成果；每秒最多顯示 8 個來源光點，計數仍包含全部交易。此圖保留 s1／s2／s3 與三個隔離網段，HTTP 洪流以單一測試來源示意，不宣稱重現分散式攻擊。</p></div></div>'
+          );
+        }
+        const aboutHTML =
+          '<h2>展示依據與範圍</h2><p>這是一個可離線操作的教學展示。目的是讓觀眾看見封包編碼、檢索、稽核與處置的關係。</p><ul class="help-list"><li><strong>實際計算：</strong>payload 位元組轉色碼、529 維向量串接與正規化、cosine similarity、Top-5 排序，以及簡化連線限速的通過／攔下計數。</li><li><strong>人工合成：</strong>封包、模型表徵、分類與信心、案例內容，以及 LLM 稽核回覆。沒有執行 CTBM、PBCNN、Llama 或 Mininet。</li><li><strong>模型輸入：</strong>公開專案透過外部來源載入完整前處理；CTBM 以每三個 payload bytes 映射一個 RGB 像素作教學簡化，未重現訓練時的完整編碼。PBCNN 依本頁教學設計：首格藍色表示同 flow 相鄰封包時間差，後續每 byte 依流入／流出放入紅／綠通道。內容與時間分別以四個範例共用範圍拉伸至 0–255；點格子可對照原始與展示 RGB，不更改原始資料。</li><li><strong>資料範圍：</strong>依原專案的 17 類合約與隔離 TCP 拓樸設計。第三方子模組另有 CICIDS2017／CSE-CIC-IDS2018 研究，但本頁不冒稱使用其原始資料，也不混用歷史 Fine-11 實驗。</li><li><strong>操作：</strong>按下任一情境就從頭播放；播放中再次按下，也會立即重新開始。點節點或色塊會暫停並開啟資料；可按播放繼續。</li><li><strong>時序：</strong>8 筆封包在展示中放慢輸入；模型輸入完成後才顯示結果。38–68 秒是 30 秒處置區間。可拖曳時間軸或按章節跳轉；2倍速時完整流程約36.5秒，30秒處置區間會壓縮為15秒的示意播放。</li></ul><p>本頁為獨立示意，正式方法與實測請依隨附說明文件查核。</p>';
+        function renderDetail(s, net) {
+          document
+            .querySelectorAll("[data-tab]")
+            .forEach((el) =>
+              el.classList.toggle("active", el.dataset.tab === state.tab),
+            );
+          let html =
+            state.tab === "traffic"
+              ? detailTraffic(s)
+              : state.tab === "encoding"
+                ? detailEncoding(s)
+                : state.tab === "rag"
+                  ? detailRag(s)
+                  : state.tab === "audit"
+                    ? detailAudit(s)
+                    : state.tab === "policy"
+                      ? detailPolicy(s, net)
+                      : aboutHTML;
+          if (html !== previousDetail) {
+            const hadFocus = $("detail").contains(document.activeElement);
+            if (hadFocus && state.playing) return;
+            $("detail").innerHTML = html;
+            previousDetail = html;
+          }
+        }
+        function jump(time, play = false) {
+          state.time = clamp(time, 0, DURATION);
+          state.playing = play;
+          state.lastStamp = 0;
+          render(true);
+        }
+        function inspect(tab, scroll = true) {
+          state.tab = tab;
+          state.playing = false;
+          state.follow = false;
+          render(true);
+          if (scroll)
+            $("inspector").scrollIntoView({
+              behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
+                ? "auto"
+                : "smooth",
+              block: "start",
+            });
+        }
+        function modal(html) {
+          state.playing = false;
+          render(true);
+          $("dialogBody").innerHTML = html;
+          $("dialog").showModal();
+        }
+        function download(name, text, type = "application/json") {
+          const url = URL.createObjectURL(new Blob([text], { type }));
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = name;
+          a.click();
+          setTimeout(() => URL.revokeObjectURL(url), 1000);
+        }
+        function exportRecord() {
+          const p = policyFor(state.key);
+          download(
+            "AI資安示意紀錄_" + state.key + ".json",
+            JSON.stringify(
+              {
+                mode: "synthetic_educational_demo",
+                contract_source_revision:
+                  "ede0cb0775aa4e542c6763c4d41496970ff59eaedab29d89b2db2d2f7d02566e",
+                current_playback_speed: state.speed,
+                scenario: state.key,
+                display_time: state.time,
+                flow: flows[state.flow],
+                encoding: {
+                  mode: "illustrative_not_training_preprocessor",
+                  ctbm: "payload triples to RGB",
+                  pbcnn:
+                    "first blue time-delta cell; following bytes use red inbound or green outbound",
+                  baseline_time_scale_ms: PBCNN_TIME_SCALE_MS,
+                  display_ranges: DISPLAY_RANGES,
+                },
+                learned_models_executed: false,
+                llm_called: false,
+                network_rules_executed: false,
+                vector_provenance:
+                  "synthetic_512_features_plus_17_probabilities_L2",
+                query_vector: demoVector(
+                  SCENARIOS[state.key].prototype,
+                  SCENARIOS[state.key].label,
+                  0,
+                  1,
+                  SCENARIOS[state.key].confidence,
+                ),
+                top5: top.map(({ vector, ...r }) => r),
+                prompt: { system: SYSTEM_PROMPT, user: payloadFor(state.key) },
+                illustrative_reply: {
+                  assessment: p.assessment,
+                  reason: SCENARIOS[state.key].reason,
+                },
+                policy: p,
+                commands_preview: commandsFor(state.key),
+                simulation_counts: networkAt(transactions, state.time).counts,
+              },
+              null,
+              2,
+            ),
+          );
+        }
+        function embedHelp() {
+          modal(
+            '<h2>離線操作</h2><p>直接以瀏覽器開啟本HTML即可使用，不需登入、安裝或連接網路。</p><ol class="help-list"><li>選擇四種情境之一，按播放／暫停；預設2倍速，完整流程約36.5秒。</li><li>拖曳時間軸或點章節跳轉；點模型節點或輸入色格會暫停並展開資料。</li><li>Space播放／暫停，左右方向鍵前後5秒；輸入欄位、按鈕或對話框有焦點時不攔截原操作。</li><li>匯出JSON含示意資料來源與未執行模型／規則標記，不作實測證據。</li></ol><p>開啟減少動態效果時，選情境不會自動播放；可用章節靜態閱讀。本頁不提供真實模型或防火牆控制。</p>',
+          );
+        }
+        function bind() {
+          $("scenarios").innerHTML = Object.entries(SCENARIOS)
+            .map(
+              ([key, s]) =>
+                '<button class="scenario" data-scenario="' +
+                key +
+                '" style="--scenario-color:' +
+                s.color +
+                '" aria-pressed="false"><span class="scenario-icon">' +
+                s.icon +
+                "</span><span><strong>" +
+                names[key] +
+                "</strong><small>" +
+                s.short +
+                "</small></span></button>",
+            )
+            .join("");
+          $("tabs").innerHTML = Object.entries(tabNames)
+            .map(
+              ([key, title]) =>
+                '<button data-tab="' + key + '">' + title + "</button>",
+            )
+            .join("");
+          $("chapters").innerHTML = CHAPTERS.filter(
+            (x) => !["ranking", "command"].includes(x.key),
+          )
+            .map(
+              (x) =>
+                '<button type="button" data-chapter="' +
+                x.at +
+                '">' +
+                x.title +
+                "</button>",
+            )
+            .join("");
+          $("playPause").onclick = () => {
+            if (state.time >= DURATION) state.time = 0;
+            state.playing = !state.playing;
+            state.lastStamp = 0;
+            render(true);
+          };
+          $("restart").onclick = () => jump(0, false);
+          $("speed").onchange = () => {
+            const value = Number($("speed").value);
+            if ([1, 1.5, 2].includes(value)) state.speed = value;
+            state.lastStamp = 0;
+          };
+          $("seek").oninput = () => jump(Number($("seek").value), false);
+          $("follow").onclick = () => {
+            state.follow = !state.follow;
+            state.chapter = "";
+            render(true);
+          };
+          $("openDetail").onclick = () => inspect(state.tab);
+          $("about").onclick = () => modal(aboutHTML);
+          $("embedding").onclick = embedHelp;
+          $("closeDialog").onclick = () => $("dialog").close();
+          $("dialog").addEventListener("close", () => {
+            state.lastStamp = 0;
+          });
+          $("dialog").onclick = (e) => {
+            if (e.target === $("dialog")) {
+              const r = $("dialog").getBoundingClientRect();
+              if (
+                e.clientX < r.left ||
+                e.clientX > r.right ||
+                e.clientY < r.top ||
+                e.clientY > r.bottom
+              )
+                $("dialog").close();
+            }
+          };
+          $("export").onclick = exportRecord;
+          $("offline").onclick = () => {
+            const doc =
+              "<!doctype html>\n" + document.documentElement.outerHTML;
+            if (document.querySelector("script[data-bundled]"))
+              download(
+                "AI資安框架_離線互動展示.html",
+                window.__CLEAN_DOCUMENT__ || doc,
+                "text/html",
+              );
+            else {
+              const a = document.createElement("a");
+              a.href = "./offline.html";
+              a.download = "AI資安框架_離線互動展示.html";
+              a.click();
+            }
+          };
+          document.addEventListener("click", (e) => {
+            const target = e.target.closest(
+              "[data-scenario],[data-chapter],[data-tab],[data-inspect],[data-pixel],[data-flow],[data-packet],[data-byte],[data-case]",
+            );
+            if (!target) return;
+            const d = target.dataset;
+            if (d.scenario) {
+              setData(d.scenario);
+              state.follow = true;
+              state.chapter = "";
+              jump(0, !reducedMotion.matches);
+            } else if (d.chapter !== undefined) {
+              jump(Number(d.chapter), false);
+            } else if (d.pixel) {
+              const [kind, r, c] = d.pixel.split(",");
+              state.packet = +r;
+              state.cell = +c;
+              state.pixelKind = kind;
+              inspect("encoding");
+            } else if (d.tab) {
+              state.playing = false;
+              state.tab = d.tab;
+              state.follow = false;
+              render(true);
+            } else if (d.inspect) inspect(d.inspect);
+            else if (d.flow !== undefined) {
+              setData(state.key, +d.flow);
+              render(true);
+            } else if (d.packet !== undefined) {
+              state.packet = +d.packet;
+              render(true);
+            } else if (d.byte !== undefined) {
+              state.cell = +d.byte;
+              state.pixelKind = "pb";
+              render(true);
+            } else if (d.case) {
+              const r = scores.find((x) => x.id === d.case);
+              modal(
+                "<h2>" +
+                  r.id +
+                  " · " +
+                  r.title +
+                  '</h2><span class="tag">合成教學案例</span><p>' +
+                  r.note +
+                  "</p><p>正式類別：" +
+                  r.label +
+                  "<br>目的服務：TCP / " +
+                  r.port +
+                  "<br>與本次查詢的 cosine similarity：<strong>" +
+                  r.similarity.toFixed(6) +
+                  '</strong></p><p class="note">' +
+                  r.provenance +
+                  "</p><pre>向量維度：" +
+                  r.vector.length +
+                  "\nL2 norm：" +
+                  Math.hypot(...r.vector).toFixed(6) +
+                  "\n前 12 維：\n" +
+                  r.vector
+                    .slice(0, 12)
+                    .map((x) => x.toFixed(5))
+                    .join(", ") +
+                  "</pre>",
+              );
+            }
+          });
+          document.addEventListener("keydown", (e) => {
+            const pixel = e.target.closest?.("[data-pixel]");
+            if (pixel) {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                pixel.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+                return;
+              }
+              const offset = {
+                ArrowLeft: -1,
+                ArrowRight: 1,
+                ArrowUp: -12,
+                ArrowDown: 12,
+              }[e.key];
+              if (offset) {
+                e.preventDefault();
+                const cells = [...document.querySelectorAll("[data-pixel]")],
+                  next =
+                    cells[
+                      Math.max(
+                        0,
+                        Math.min(
+                          cells.length - 1,
+                          cells.indexOf(pixel) + offset,
+                        ),
+                      )
+                    ];
+                cells.forEach((c) => c.setAttribute("tabindex", "-1"));
+                next.setAttribute("tabindex", "0");
+                next.focus();
+                return;
+              }
+            }
+            const inspectNode = e.target.closest?.("[data-inspect]");
+            if (inspectNode && (e.key === "Enter" || e.key === " ")) {
+              e.preventDefault();
+              inspect(inspectNode.dataset.inspect);
+              return;
+            }
+            if (
+              e.target.closest?.(
+                "button,input,select,textarea,a,summary,[contenteditable=true]",
+              ) ||
+              $("dialog").open
+            )
+              return;
+            if (e.code === "Space") {
+              e.preventDefault();
+              $("playPause").click();
+            } else if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+              e.preventDefault();
+              jump(state.time + (e.key === "ArrowRight" ? 5 : -5), false);
+            }
+          });
+          document.addEventListener("visibilitychange", () => {
+            state.lastStamp = 0;
+          });
+        }
+        function frame(stamp) {
+          if (state.playing && !document.hidden) {
+            if (state.lastStamp)
+              state.time = Math.min(
+                DURATION,
+                state.time +
+                  Math.min(0.1, (stamp - state.lastStamp) / 1000) * state.speed,
+              );
+            if (state.time >= DURATION) state.playing = false;
+            render();
+          }
+          state.lastStamp = stamp;
+          requestAnimationFrame(frame);
+        }
+        bind();
+        setData("ddos");
+        buildBoard();
+        setData("ddos");
+        render(true);
+        requestAnimationFrame(frame);
+      })();
+    </script>
+  </body>
+</html>

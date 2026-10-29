@@ -1,5 +1,5 @@
 {
-  "created_utc": "2026-10-29T15:00:19.899891+00:00",
+  "created_utc": "2026-10-29T15:08:58.594887+00:00",
   "source_revision": "ede0cb0775aa4e542c6763c4d41496970ff59eaedab29d89b2db2d2f7d02566e",
   "bindings": {
     "visual_sources": {
@@ -15,7 +15,7 @@
       "media/film/metrics.mjs": "39180d26ce80926435c92e3cdbef0bbaeb16c9a612c9ef9db97ff36716a79701",
       "media/film/metrics.json": "816450d6ba5340d14b5bae6aeb133a462deb6be3f6eb3f4a37fb8274656222c1",
       "scripts/media_results.py": "9823f3ba4a60908ae3ba51dbd90ffb5a4a748297cb5663034a33fc7a6c5d2eae",
-      "scripts/finals_pipeline.py": "65eace2096e5dedceea21e48047bf23e841e954854168526537d4f1d3cc3beda",
+      "scripts/finals_pipeline.py": "5d235c9ec1f4678241939d1ad2eae7420cb71cf77a20c73844b66a5c3344abc3",
       "deliverables/source/slides/01_slide.svg": "5f21523cf598e38955566315ce636532820e39e95f9cdc02bd061eff3cbe8d77",
       "deliverables/source/slides/02_slide.svg": "b81ea46629cb5a64884cb89b35c81c93a0d47506e20ce957e95ece2565e58aa4",
       "deliverables/source/slides/03_slide.svg": "5720fee616f6ed01c1c619a2dbf65a3e0c52305ac62bf0d92c9458d2c6acc90a",
