@@ -18,6 +18,8 @@ VISUAL_SOURCES = [
     'scripts/presentation/style_contract.py','scripts/presentation/editorial_assets.py',
     'scripts/presentation/build_a2_poster.py','scripts/presentation/finalize_delivery.py',
     'media/film/scene.mjs','scripts/render_product_film.mjs',
+    'media/film/metrics.mjs','media/film/metrics.json','scripts/media_results.py',
+    *['deliverables/source/slides/'+f'{i:02d}_slide.svg' for i in range(1,13)],
 ]
 ASSETS = [
     'deliverables/決賽簡報_AI資安框架.pptx','deliverables/決賽簡報_AI資安框架.pdf',

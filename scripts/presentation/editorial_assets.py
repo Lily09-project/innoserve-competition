@@ -2,10 +2,13 @@
 from pathlib import Path
 from html import escape
 import json
+import sys
 from PIL import Image
 from style_contract import TYPOGRAPHY, font_runs, icon_fragment
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT/'scripts'))
+from media_results import load_metrics
 DEST = ROOT / 'deliverables/source'
 PROJECT = ROOT / 'projects/finals_editorial_ppt169_20261028'
 PALETTE = json.loads((ROOT/'design-system/palette.json').read_text(encoding='utf-8'))
@@ -170,6 +173,7 @@ def build_pages(limit=12):
     import json
     out=PROJECT/'svg_output';out.mkdir(parents=True,exist_ok=True)
     detector=json.loads((ROOT/'results/detection_17class.json').read_text(encoding='utf-8'))
+    m=load_metrics(ROOT)
     pages=[]
     # P01: formal name plus a compact, connected product chain.
     s=''
@@ -207,7 +211,7 @@ def build_pages(limit=12):
     s+=rect(64,478,260,98,'#EAF0F4')+text(194,521,'529 維任務向量',26,BLUE,600,'middle')+text(194,556,'L2 正規化',21,'#53666E',400,'middle')
     s+=arrow([(324,527),(390,527),(390,323),(430,323)])
     s+=text(430,192,'02  找出相似案例',23,BLUE,600)+image(444,213,135,135,'icon-3.png')
-    s+=text(606,249,'訓練案例庫',25)+text(606,286,'1,550 筆案例',22,'#53666E')
+    s+=text(606,249,'訓練案例庫',25)+text(606,286,f'{m["bank_rows"]:,} 筆案例',22,'#53666E')
     for i in range(5):
         x=430+i*66
         s+=rect(x,390,56,90,'#EAF0F4',4,BLUE)+text(x+28,444,str(i+1),24,BLUE,600,'middle')
@@ -233,7 +237,7 @@ def build_pages(limit=12):
         if i<3:s+=arrow([(x+270,323),(x+294,323)])
     s+=arrow([(199,452),(199,513),(424,513)],'#53666E',True)
     s+=rect(424,478,792,69)+glyph('document',442,490,42)+text(500,521,'複核／不確定 → 監測或蒐證',26)
-    s+=rect(64,576,1152,64)+text(88,616,'6 種隔離 TCP 情境：4 種套用規則、2 種監測或蒐證；背景保留與回復皆 6/6。',22)
+    s+=rect(64,576,1152,64)+text(88,616,f'{m["network_cases"]} 種隔離 TCP 情境：{m["rules_cases"]} 種套用規則、{m["passive_cases"]} 種監測或蒐證；背景保留與回復皆 {m["rollback"]}/{m["network_cases"]}。',22)
     pages.append(graphic_page(5,'受控執行，留下可回復的處置紀錄',s,'CONTROL'))
     # P06: native 16:9 movie frame; embedded in the packaging pass.
     s=rect(192,151,896,504,'#F0F2F3',8,'#D6DDE0')
@@ -241,7 +245,7 @@ def build_pages(limit=12):
     s+=text(640,360,'播放',25,BLUE,400,'middle')+text(640,430,'產品方法動畫',32,'#171C1D',300,'middle')+text(640,476,'30 秒 · 2 倍速',23,'#53666E',400,'middle')
     pages.append(graphic_page(6,'一個事件，走完完整流程',group('video-slot',s),'METHOD FILM'))
     # P07: genuine zero-baseline comparison. Plot domain 0..100, x=200..850.
-    s=text(64,180,'相同 18,998 筆封存測試 · Macro-F1',24,'#53666E')
+    s=text(64,180,f'相同 {m["detection_n"]:,} 筆封存測試 · Macro-F1',24,'#53666E')
     chart=''
     for tick in [0,50,100]:
         x=200+650*tick/100
@@ -256,17 +260,17 @@ def build_pages(limit=12):
     chart+= '<!-- chart-plot-area: object=detector-comparison | 200,220,850,550 -->'+marks
     s+=group('detector-comparison',group('detector-comparison-chartArea',chart))
     s+=rect(953,221,263,329,'#EAF0F4')+text(978,276,'整體準確率',26)+text(978,366,f"{detector['OOF Gate']['accuracy']*100:.2f}%",48,BLUE,300)+text(978,425,'17 類分類',25)+text(978,479,'同一封存測試集',21,'#53666E')
-    s+=text(64,632,'融合相較 PBCNN 提升 13.30 個百分點；相較 CTBM 提升 0.95 個百分點。',23)
+    s+=text(64,632,f'融合相較 PBCNN 提升 {m["gain_pbcnn"]:.2f} 個百分點；相較 CTBM 提升 {m["gain_ctbm"]:.2f} 個百分點。',23)
     pages.append(graphic_page(7,'互補融合，提升整體辨識效果',s,'MEASURED RESULTS'))
     # P08: outcomes form a qualitative branch; card area does not encode counts.
-    s=rect(64,190,362,369)+text(88,232,'檢索效果',25,BLUE,600)+text(88,309,'97.62%',48,BLUE,300)+text(88,347,'Top-5 命中率',24)+text(88,426,'93.89%',44,BLUE,300)+text(88,463,'MRR@5 排序品質',24)+text(88,527,'1,550 案例／463 查詢',21,'#53666E')
-    s+=rect(515,190,616,70,'#EAF0F4')+text(823,234,'463 筆事件 → 本機 AI 稽核',27,BLUE,600,'middle')
+    s=rect(64,190,362,369)+text(88,232,'檢索效果',25,BLUE,600)+text(88,309,f'{m["top5"]*100:.2f}%',48,BLUE,300)+text(88,347,'Top-5 命中率',24)+text(88,426,f'{m["mrr5"]*100:.2f}%',44,BLUE,300)+text(88,463,'MRR@5 排序品質',24)+text(88,527,f'{m["bank_rows"]:,} 案例／{m["queries"]} 查詢',21,'#53666E')
+    s+=rect(515,190,616,70,'#EAF0F4')+text(823,234,f'{m["queries"]} 筆事件 → 本機 AI 稽核',27,BLUE,600,'middle')
     s+=arrow([(823,260),(823,298),(576,298),(576,336)])+arrow([(823,298),(823,336)])+arrow([(823,298),(1070,298),(1070,336)])
-    for i,(value,label) in enumerate([('415','支持'),('13','複核'),('35','不確定')]):
+    for i,(value,label) in enumerate([(str(m['support']),'支持'),(str(m['review']),'複核'),(str(m['uncertain']),'不確定')]):
         x=470+i*247
         s+=rect(x,336,212,151)+glyph(['check','review','question'][i],x+86,348,40)+text(x+106,429,value,39,BLUE,300,'middle')+text(x+106,468,label,24,anchor='middle')
-    s+=text(470,538,'支持精確率 97.11% · 正式分類保持可追溯',23)
-    s+=rect(64,584,1152,61,'#EAF0F4')+text(88,624,'18 / 30 偵測誤判分流至複核或不確定；其餘 12 筆仍獲支持。',25)
+    s+=text(470,538,f'支持精確率 {m["support_precision"]*100:.2f}% · 正式分類保持可追溯',23)
+    s+=rect(64,584,1152,61,'#EAF0F4')+text(88,624,f'{m["intercepted"]} / {m["errors"]} 偵測誤判分流至複核或不確定；其餘 {m["false_support"]} 筆仍獲支持。',25)
     pages.append(graphic_page(8,'案例提供證據，AI完成分流',s,'MEASURED RESULTS'))
     # P09: explain the actual linked artifacts, rather than slogans alone.
     s=text(64,195,'偵測有依據，稽核有證據，處置可回復。',36,'#171C1D',300)
@@ -275,10 +279,10 @@ def build_pages(limit=12):
         s+=rect(x,292,270,174,'#FFFFFF',8)+glyph(['document','search','check','clock'][i],x+104,305,62)+text(x+135,401,a,27,BLUE,600,'middle')+text(x+135,443,b,20,'#53666E',400,'middle')
         if i<3:s+=arrow([(x+270,381),(x+294,381)])
     s+=rect(64,502,1152,56,'#FFF4DD')+text(640,540,'同一事件 ID，串起分類、證據、判斷與回復紀錄。',26,NAVY,anchor='middle')
-    s+=text(64,604,'17 類真實張量重跑 · 6 種隔離 TCP 情境驗證',26)+text(64,645,'感謝聆聽，敬請指教。',24,BLUE)
+    s+=text(64,604,f'{m["live_classes"]} 類真實張量重跑 · {m["network_cases"]} 種隔離 TCP 情境驗證',26)+text(64,645,'感謝聆聽，敬請指教。',24,BLUE)
     pages.append(graphic_page(9,'一套可展示、可查核的資安框架',s,'AI SECURITY FRAMEWORK','ending','#F0F2F3'))
     pages=[pages[i] for i in [0,5,1,2,3,4,6,7,8]]
-    qa=[('創新在哪裡？與一般 IDS 加上 RAG 有何不同？', ['把流量表徵與類別機率組成任務向量，檢索相關證據。', 'AI 保留正式分類，同一事件一路連到策略與回復回條。'], '529 維', '任務導向證據向量', '正式分類保留 · 稽核證據可追溯 · 策略可回復'), ('如何證明前段判斷與後段處置已經串起來？', ['17 類本機推論與 AI 稽核已逐類執行，產物使用同一事件 ID。', '6 種隔離情境的回條綁定同次執行，過期執行 ID 會被拒絕。'], '同一 ID', '事件與執行可追溯', '分類、Top-5、Judge、策略與回條綁定同一事件'), ('評估資料如何切分？案例庫是否洩漏測試答案？', ['偵測比較使用相同 18,998 筆測試；案例庫只由訓練資料建立。', '檢索使用 1,550 筆案例、463 筆查詢，訓練與查詢沒有重疊。'], '0', '訓練／查詢重疊', '訓練庫只讀 · 查詢不重疊 · AI 不看真實標籤'), ('AI 若支持錯誤判斷，如何避免直接誤封？', ['30 筆偵測誤判有 18 筆分流；其餘 12 筆仍獲 AI 支持。', '處置另經信心、政策、動作白名單與期限檢查，並可到期撤銷。'], '18 / 30', '偵測誤判分流', '12 筆為支持統計；處置與回復另以隔離情境驗證'), ('6/6 是否代表各種真實攻擊都能完全防住？', ['6/6 指隔離 TCP 情境中的背景服務保留及回復完整性。', '4 種情境套用規則、2 種監測或蒐證；不等同真實攻擊防禦率。'], '6 / 6', '背景保留與回復', '6/6 驗證服務保留與回復；不等同真實攻擊防禦率'), ('如何部署、保護資料，並接到既有環境？', ['本機 GPU 模型與本機案例庫處理事件，敏感欄位先遮罩。', '17 類已以前處理張量驗證；場域接入依資料介面配置。'], '0', '外部 API 呼叫', '本機 AI 稽核；私有權重、輸入及逐筆回覆不公開')]
+    qa=[('創新在哪裡？與一般 IDS 加上 RAG 有何不同？', ['把流量表徵與類別機率組成任務向量，檢索相關證據。', 'AI 保留正式分類，同一事件一路連到策略與回復回條。'], '529 維', '任務導向證據向量', '正式分類保留 · 稽核證據可追溯 · 策略可回復'), ('如何證明前段判斷與後段處置已經串起來？', ['17 類本機推論與 AI 稽核已逐類執行，產物使用同一事件 ID。', '6 種隔離情境的回條綁定同次執行，過期執行 ID 會被拒絕。'], '同一 ID', '事件與執行可追溯', '分類、Top-5、Judge、策略與回條綁定同一事件'), ('評估資料如何切分？案例庫是否洩漏測試答案？', [f'偵測比較使用相同 {m["detection_n"]:,} 筆測試；案例庫只由訓練資料建立。', f'檢索使用 {m["bank_rows"]:,} 筆案例、{m["queries"]} 筆查詢，訓練與查詢沒有重疊。'], '0', '訓練／查詢重疊', '訓練庫只讀 · 查詢不重疊 · AI 不看真實標籤'), ('AI 若支持錯誤判斷，如何避免直接誤封？', [f'{m["errors"]} 筆偵測誤判有 {m["intercepted"]} 筆分流；其餘 {m["false_support"]} 筆仍獲 AI 支持。', '處置另經信心、政策、動作白名單與期限檢查，並可到期撤銷。'], f'{m["intercepted"]} / {m["errors"]}', '偵測誤判分流', f'{m["false_support"]} 筆為支持統計；處置與回復另以隔離情境驗證'), (f'{m["rollback"]}/{m["network_cases"]} 是否代表各種真實攻擊都能完全防住？', [f'{m["rollback"]}/{m["network_cases"]} 指隔離 TCP 情境中的背景服務保留及回復完整性。', f'{m["rules_cases"]} 種情境套用規則、{m["passive_cases"]} 種監測或蒐證；不等同真實攻擊防禦率。'], f'{m["rollback"]} / {m["network_cases"]}', '背景保留與回復', f'{m["rollback"]}/{m["network_cases"]} 驗證服務保留與回復；不等同真實攻擊防禦率'), ('如何部署、保護資料，並接到既有環境？', ['本機 GPU 模型與本機案例庫處理事件，敏感欄位先遮罩。', '17 類已以前處理張量驗證；場域接入依資料介面配置。'], '0', '外部 API 呼叫', '本機 AI 稽核；私有權重、輸入及逐筆回覆不公開')]
     def qa_node(x,y,w,label,fill='#FFFFFF',size=22):
         return rect(x,y,w,48,fill,6)+text(x+w/2,y+32,label,size,'#171C1D',400,'middle')
 
@@ -303,18 +307,18 @@ def build_pages(limit=12):
                     if j<3:content+=arrow([(x+127,y+96),(x+272,y+96)])
                 content+=rect(88,y+151,818,31,'#EAF0F4',6)+text(497,y+174,'同一 event_id  ＋  同次 execution_id',22,BLUE,400,'middle')
             elif qi==2:
-                content+=image(172,y+72,74,74,'icon-3.png')+text(209,y+161,'訓練案例 1,550',23,'#171C1D',400,'middle')+glyph('search',475,y+71,68)+text(506,y+161,'Top-5 檢索',23,BLUE,400,'middle')+glyph('document',780,y+75,62)+text(811,y+161,'測試查詢 463',23,'#171C1D',400,'middle')
+                content+=image(172,y+72,74,74,'icon-3.png')+text(209,y+161,f'訓練案例 {m["bank_rows"]:,}',23,'#171C1D',400,'middle')+glyph('search',475,y+71,68)+text(506,y+161,'Top-5 檢索',23,BLUE,400,'middle')+glyph('document',780,y+75,62)+text(811,y+161,f'測試查詢 {m["queries"]}',23,'#171C1D',400,'middle')
                 content+=arrow([(280,y+110),(465,y+110)])+arrow([(764,y+110),(553,y+110)])
             elif qi==3:
-                content+=qa_node(88,y+107,150,'30 筆誤判')
+                content+=qa_node(88,y+107,150,f'{m["errors"]} 筆誤判')
                 content+=arrow([(238,y+131),(274,y+131),(274,y+91),(312,y+91)])+arrow([(274,y+131),(274,y+153),(312,y+153)])
-                content+=qa_node(312,y+67,240,'18 複核／不確定')+qa_node(312,y+129,240,'12 仍支持')
+                content+=qa_node(312,y+67,240,f'{m["intercepted"]} 複核／不確定')+qa_node(312,y+129,240,f'{m["false_support"]} 仍支持')
                 content+=arrow([(552,y+91),(612,y+91)])+arrow([(552,y+153),(612,y+153)])
                 content+=qa_node(612,y+67,296,'監測／蒐證','#EAF0F4')+qa_node(612,y+129,296,'若觸發 → 策略檢查','#EAF0F4',21)
             elif qi==4:
-                content+=rect(88,y+70,330,109,'#FFFFFF',6)+text(253,y+96,'隔離 TCP 測試床',22,'#171C1D',400,'middle')+glyph('server',124,y+107,40)+glyph('firewall',233,y+107,40)+glyph('server',342,y+107,40)+arrow([(166,y+128),(233,y+128)])+arrow([(275,y+128),(342,y+128)])+text(253,y+170,'4 規則＋2 監測',20,BLUE,400,'middle')
+                content+=rect(88,y+70,330,109,'#FFFFFF',6)+text(253,y+96,'隔離 TCP 測試床',22,'#171C1D',400,'middle')+glyph('server',124,y+107,40)+glyph('firewall',233,y+107,40)+glyph('server',342,y+107,40)+arrow([(166,y+128),(233,y+128)])+arrow([(275,y+128),(342,y+128)])+text(253,y+170,f'{m["rules_cases"]} 規則＋{m["passive_cases"]} 監測',20,BLUE,400,'middle')
                 content+=arrow([(418,y+126),(450,y+126),(450,y+96),(480,y+96)])+arrow([(450,y+126),(450,y+152),(480,y+152)])
-                content+=qa_node(480,y+72,428,'背景服務保留 6 / 6','#EAF0F4')+qa_node(480,y+128,428,'回復完整性 6 / 6','#EAF0F4')
+                content+=qa_node(480,y+72,428,f'背景服務保留 {m["background"]} / {m["network_cases"]}','#EAF0F4')+qa_node(480,y+128,428,f'回復完整性 {m["rollback"]} / {m["network_cases"]}','#EAF0F4')
             else:
                 content+=rect(88,y+74,820,103,'#EAF0F4',7)+text(110,y+99,'本機工作站  ·  GPU 模型與案例庫',22,BLUE)
                 for j,label in enumerate(['欄位遮罩','17 類推論','檢索＋AI','策略回條']):

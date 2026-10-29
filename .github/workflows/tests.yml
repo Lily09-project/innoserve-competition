@@ -17,6 +17,8 @@ jobs:
           python-version: '3.11'
       - run: python -m pip install -r requirements-test.txt
       - run: python -m unittest discover -s tests -v
+      - run: python scripts/media_results.py --check
+      - run: python scripts/check_delivery_docs.py
   quality:
     name: Lint and public audit
     runs-on: ubuntu-latest
@@ -28,6 +30,7 @@ jobs:
       - run: python -m pip install ruff==0.14.2
       - run: python -m ruff check app/server.py app/judge_response.py app/live_engine.py scripts/run_local_judge.py scripts/validate_results.py scripts/check_public_files.py scripts/check_delivery_docs.py scripts/audit_final_chain.py scripts/preflight.py scripts/demo_walkthrough.py scripts/package_finals.py scripts/presentation/editorial_assets.py scripts/presentation/finalize_delivery.py scripts/presentation/plan_editorial.py scripts/presentation/build_a2_poster.py tests/test_public_results.py tests/test_finals_poster_and_walkthrough.py tests/test_judge_response.py --select E9,F63,F7,F82
       - run: python scripts/check_public_files.py
+      - run: python -m ruff check scripts/media_results.py scripts/render_film_resvg.py tests/test_review_followup.py --select E9,F63,F7,F82
       - run: python -m ruff check scripts/presentation/style_contract.py tests/test_visual_contract.py --select E9,F63,F7,F82
       - run: python -m ruff check app/provenance.py app/asset_validation.py app/network_contract.py app/pipeline.py scripts/demo_walkthrough.py tests/contract_fixtures.py tests/test_review_regressions.py tests/test_network_contract.py tests/test_pipeline.py --select E9,F63,F7,F82
       - run: python -m ruff check app/settings.py scripts/import_local_assets.py scripts/audit_selection.py scripts/audit_alignment_assets.py scripts/export_framework_validation.py scripts/release_inventory.py tests/test_settings.py tests/test_preflight.py tests/test_import_local_assets.py tests/test_audit_selection.py tests/test_job_retention.py tests/test_release_inventory.py --select E9,F63,F7,F82
@@ -51,6 +54,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm run test:media
       - run: node tests/media-render-smoke.cjs
+      - run: node tests/media-data.cjs
       - run: pnpm run check:media
       - run: node --check scripts/presentation/render_previews.mjs
       - run: node --check scripts/presentation/build_style_assets.mjs

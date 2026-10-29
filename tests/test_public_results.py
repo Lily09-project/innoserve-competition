@@ -10,6 +10,7 @@ import zipfile
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 from validate_results import read_results, validate_results
+from media_results import load_metrics
 
 
 class PublicResultsTests(unittest.TestCase):
@@ -60,7 +61,8 @@ class PublicResultsTests(unittest.TestCase):
             text = "".join(xml)
             for obsolete in ("96.76%", "94.25%", "95.83%", "鏡像流量，免改"):
                 self.assertNotIn(obsolete, text)
-            for expected in ("97.62%", "93.89%", "隔離TCP"):
+            metrics=load_metrics()
+            for expected in (f'{metrics["top5"]*100:.2f}%', f'{metrics["mrr5"]*100:.2f}%', f'{metrics["accuracy"]*100:.2f}%', "隔離TCP"):
                 self.assertIn(expected, text)
             movies = [
                 archive.read(name)

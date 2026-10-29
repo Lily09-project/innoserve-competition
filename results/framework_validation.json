@@ -1,7 +1,7 @@
 {
-  "started_utc": "20261029T054500Z",
+  "started_utc": "20261029T075603Z",
   "api_version": "ai-security-demo.v3",
-  "source_revision": "fd8a456582977be90a32585198977740190073d0e044fdb08c1a10077ab9b670",
+  "source_revision": "eacad886f75819fe6a8ceea7eaa65d037339a2a73d590a98953df87dded69f57",
   "asset_revision": "977ab6014516622dff32d9b94481a1b013f407d0917a87cd0347945918d114ca",
   "real_live_classes": 17,
   "real_local_llm_calls": 17,
@@ -48,7 +48,7 @@
       "background_success_rate": 1.0,
       "recovery_success_rate": 1.0,
       "rollback_integrity": true,
-      "ttl_rollback_elapsed_seconds": 30.111781388999997
+      "ttl_rollback_elapsed_seconds": 30.126287652
     },
     {
       "validation_label": "SSH-Bruteforce",
@@ -62,7 +62,7 @@
       "background_success_rate": 1.0,
       "recovery_success_rate": 1.0,
       "rollback_integrity": true,
-      "ttl_rollback_elapsed_seconds": 30.112609642000002
+      "ttl_rollback_elapsed_seconds": 30.13369013100001
     },
     {
       "validation_label": "DDoS-LOIC-HTTP",
@@ -76,7 +76,7 @@
       "background_success_rate": 1.0,
       "recovery_success_rate": 1.0,
       "rollback_integrity": true,
-      "ttl_rollback_elapsed_seconds": 30.14535162899999
+      "ttl_rollback_elapsed_seconds": 30.12167685899999
     },
     {
       "validation_label": "Web-XSS",
@@ -104,7 +104,7 @@
       "background_success_rate": 1.0,
       "recovery_success_rate": 1.0,
       "rollback_integrity": true,
-      "ttl_rollback_elapsed_seconds": 30.12160971599998
+      "ttl_rollback_elapsed_seconds": 30.111608172000004
     }
   ]
 }

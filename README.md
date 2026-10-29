@@ -81,13 +81,15 @@ pnpm install --frozen-lockfile
 pnpm run test:media
 pnpm run check:media
 node tests/media-render-smoke.cjs
+node tests/media-data.cjs
+python scripts/media_results.py --check
 python scripts/check_delivery_docs.py
 python scripts/check_public_files.py
 ```
 
 已有clone時先執行`git submodule update --init --recursive`。子模組必須初始化，才能載入真正的共用策略元件。
 
-目前104項Python測試涵蓋事件合約、Judge上下文、策略、逐筆證據、資產匯入、預檢、API、字型、匿名與交付一致性。媒體檢查另編譯九個動畫章節。測試中的合成fixture只測程式邊界，不列入模型成效；CI通過也不代表重新執行真實模型。完整項目見[測試矩陣](docs/測試矩陣.md)。
+目前109項Python測試涵蓋事件合約、Judge上下文、策略、逐筆證據、資產匯入、預檢、API、字型、匿名與交付一致性。媒體檢查另編譯九個動畫章節。測試中的合成fixture只測程式邊界，不列入模型成效；CI通過也不代表重新執行真實模型。完整項目見[測試矩陣](docs/測試矩陣.md)。
 
 ## 完整本機模型與隔離驗證
 
@@ -112,7 +114,7 @@ PyTorch的CUDA安裝須符合本機設備。`requirements-test.txt`供公開測�
 | --- | --- |
 | `ids_reference_root` | 凍結IDS結果目錄，包含runtime_sources、三個checkpoint、Gate設定與validation預測 |
 | `gate_impl_path` | 對應的Gate實作檔；未設定時使用IDS結果目錄上一層的預設檔 |
-| `ids_data_root` | 重建案例庫所需的原始train／validation／test資料目錄 |
+| `ids_data_root` | 僅重建案例庫時需要的原始train／validation／test資料目錄；已匯入展示資產的推論與預載不需要此設定 |
 | `llama_model_dir` | 合法取得的本機Llama 3 8B Instruct模型快照及tokenizer |
 | `python_executable` | 安裝模型依賴的Python執行檔 |
 | WSL及逾時設定 | 使用實際的distribution、user及工作期限；預設值見範例 |
@@ -121,7 +123,7 @@ PyTorch的CUDA安裝須符合本機設備。`requirements-test.txt`供公開測�
 
 ### 2. 匯入既有資產，或在新工作目錄重建
 
-已有完整私有交付資料時：
+已有完整私有交付資料時，匯入後的推論與模型預載只使用權重、Gate、案例庫及展示張量，不要求原始train／test資料目錄：
 
 ```bash
 python scripts/import_local_assets.py --source PATH_TO_LOCAL_DELIVERY
@@ -163,12 +165,26 @@ Windows也可使用[啟動作品.cmd](啟動作品.cmd)。本機狀態入口為`
 python scripts/audit_final_chain.py
 python scripts/audit_alignment_assets.py --audit-dir PATH_TO_SUCCESSFUL_AUDIT
 python scripts/export_framework_validation.py --audit-dir PATH_TO_SUCCESSFUL_AUDIT
+python scripts/media_results.py
 python scripts/release_inventory.py --audit-dir PATH_TO_SUCCESSFUL_AUDIT
 ```
 
-第一步重跑17類推論、17次本機AI及預定六種隔離情境。後續檢查checkpoint、案例排序、逐筆紀錄、規則讀回、實際影響與期限回復，再匯出彙整與發布索引。舊來源、不同資產或失敗回條不會被當作新版成功證據。
+第一步重跑17類推論、17次本機AI及預定六種隔離情境。後續檢查checkpoint、案例排序、逐筆紀錄、規則讀回、實際影響與期限回復，再匯出彙整與發布索引。舊來源、不同資產或失敗回條不會被當作新版成功證據。模型執行來源改動後，必須重新取得成功驗收紀錄，不能只修改舊證據的版本欄位。
 
 完整規則、前置條件與驗收範圍見[驗收與重現方式](docs/驗收與重現方式.md)。依使用者要求，原生播放測試不列本次驗收；影片採離線解碼、影格、時長、內外嵌位元組及字型／座標檢查。
+
+### 5. 更新媒體數據與重製成果
+
+影片、簡報與海報共用經驗證的[媒體數據快照](media/film/metrics.json)。更新四份results後，先執行：
+
+```bash
+python scripts/media_results.py
+python scripts/media_results.py --check
+```
+
+此步驟只驗證既有彙整並重建媒體數據，不執行或替代模型實驗。若指標改變，須重製媒體、預覽及離線包後，再執行release_inventory與交付檢查。快照包含四份來源的雜湊與共同指標；來源變更而快照未更新時，產生器會停止，避免輸出舊數據。CI會檢查快照、文件連結及交付manifest，包含12張公開SVG。
+
+媒體重製使用`scripts/render_product_film.mjs`，設定`FFMPEG_BINARY`並使用新的輸出目錄；製作工作站須安裝標楷體與Times New Roman。舊的`render_film_resvg.py`已停用，執行會回報錯誤且不產生影片，避免替換成不符規格的字型。完整製作及交付同步步驟見[來源說明](deliverables/source/README.md)。
 
 ## 專案目錄與來源
 
@@ -209,6 +225,7 @@ python scripts/release_inventory.py --audit-dir PATH_TO_SUCCESSFUL_AUDIT
 - [完整交付驗收](docs/完整交付驗收.md)
 - [實測與證據索引](docs/實測與證據索引.md)
 - [架構圖設計與驗收](docs/架構圖設計與驗收.md)
+- [完整程式審查追補修正](docs/完整程式審查追補修正.md)
 - [版本與檢查紀錄](docs/版本與檢查紀錄.md)
 - [協作規則](CONTRIBUTING.md)
 

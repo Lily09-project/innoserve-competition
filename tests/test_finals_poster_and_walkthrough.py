@@ -14,6 +14,7 @@ sys.path.insert(0, str(ROOT / 'scripts'))
 from demo_walkthrough import summarize, summarize_receipt
 from network_contract import digest
 from package_finals import ASSETS, asset_bytes
+from media_results import load_metrics
 
 
 class FinalsDeliveryTests(unittest.TestCase):
@@ -77,7 +78,11 @@ class FinalsDeliveryTests(unittest.TestCase):
             self.assertEqual(len(presentation.findall('p:sldIdLst/p:sldId', ns)), 1)
             slide = ET.fromstring(archive.read('ppt/slides/slide1.xml'))
             text = ''.join(x.text or '' for x in slide.findall('.//a:t', ns))
-            for value in ('79.75%', '92.10%', '93.05%', '97.62%', '93.89%', '415', '13', '35', '非原生攻擊防禦率'):
+            metrics=load_metrics()
+            expected=[f'{metrics["macro_f1"][name]*100:.2f}%' for name in ('PBCNN','CTBM','OOF Gate')]
+            expected += [f'{metrics[key]*100:.2f}%' for key in ('accuracy','top5','mrr5')]
+            expected += [str(metrics[key]) for key in ('support','review','uncertain')]+['非原生攻擊防禦率']
+            for value in expected:
                 self.assertIn(value, text)
             self.assertGreater(len(slide.findall('.//a:r', ns)), 50)
             for run in slide.findall('.//a:rPr', ns):

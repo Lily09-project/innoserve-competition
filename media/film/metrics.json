@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "sources": {
+    "results/detection_17class.json": "f095d2a74131bfbbad13f7d4a205d96836a08c716793c56e60a9160ed9ab84f0",
+    "results/retrieval_17class.json": "44ba49c678aa34130abe1cd5fccf12ab5fde89caffc92891fce272feb7ce8b75",
+    "results/local_judge_17class.json": "d21337eacb513357ba9ec56497e3cded60b52f2b1d0b80f1f38f3d0ec73c6666",
+    "results/framework_validation.json": "eebba83df8cc68947566bee080ebacf4c14e374157bae5523e41e31fa3937728"
+  },
+  "values": {
+    "detection_n": 18998,
+    "accuracy": 0.9808400884303611,
+    "macro_f1": {
+      "PBCNN": 0.7974796824158856,
+      "CTBM": 0.9210277504964959,
+      "OOF Gate": 0.9305036353744736
+    },
+    "gain_pbcnn": 13.302395295858794,
+    "gain_ctbm": 0.947588487797768,
+    "bank_rows": 1550,
+    "queries": 463,
+    "top5": 0.9762419006479481,
+    "mrr5": 0.9389488840892728,
+    "overlap": 0,
+    "support": 415,
+    "review": 13,
+    "uncertain": 35,
+    "support_precision": 0.9710843373493976,
+    "errors": 30,
+    "intercepted": 18,
+    "false_support": 12,
+    "external_api_calls": 0,
+    "live_classes": 17,
+    "network_cases": 6,
+    "rules_cases": 4,
+    "passive_cases": 2,
+    "background": 6,
+    "rollback": 6
+  }
+}
