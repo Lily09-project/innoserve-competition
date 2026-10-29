@@ -13,7 +13,8 @@ export const maxDuration=40;
 export const chapters=[{at:0,title:'作品名稱'},{at:5,title:'網路拓樸'},{at:12,title:'流量表徵'},{at:21,title:'17類判定'},{at:30,title:'證據檢索'},{at:38,title:'本機AI稽核'},{at:45,title:'受控處置'},{at:52,title:'實測成果'},{at:57,title:'展示結束'}];
 export const controlTimeline={start:45,apply:46,readback:48,expiry:50};
 export const chapterAt=t=>Math.max(0,chapters.findLastIndex(c=>t>=c.at));
-const B=palette.blue,G=palette.gold,N=palette.navy,FONT=typography.latin+', '+typography.cjk;
+const B=palette.blue,G=palette.gold,T=palette.teal,N=palette.navy,FONT=typography.latin+', '+typography.cjk;
+const resolveColors=source=>source.replace(/#[0-9a-fA-F]{6}\b/g,hex=>palette[palette.legacy_roles[hex.slice(1).toUpperCase()]]||hex);
 const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
 const ease=v=>1-Math.pow(1-Math.max(0,Math.min(1,v)),3);
 const tx=(x,y,s,z=24,c='#171C1D',w=400,anchor='start')=>{
@@ -64,9 +65,9 @@ function evidencePanel(index,local,t){
   const active=t>=controlTimeline.expiry?2:t>=controlTimeline.readback?1:t>=controlTimeline.apply?0:-1;
   labels.forEach((label,k)=>{
    const x=859+k*114;
-   s+=chip(x,310,106,64,label,28,k===active?palette.gold_tint:'#FFFFFF');
+   s+=chip(x,310,106,64,label,28,k===active?palette.teal_tint:'#FFFFFF');
    if(k<2)s+=arrow(x+106,342,x+112,342);
-   if(k===active)s+=box(x,310,106,4,G,0);
+   if(k===active)s+=box(x,310,106,4,T,0);
   });
   const u=Math.max(0,Math.min(1,(t-controlTimeline.apply)/(controlTimeline.expiry-controlTimeline.apply)));
   s+=`<circle cx="891" cy="430" r="23" fill="#FFFFFF" stroke="${B}" stroke-width="3"/><path d="M891 430L${891+17*Math.sin(u*2*Math.PI)} ${430-17*Math.cos(u*2*Math.PI)}" stroke="${B}" stroke-width="3"/>`;
@@ -92,7 +93,7 @@ function topology(t,dark){
  s+=line(362,350,390,350)+line(390,350,390,530)+line(390,530,363,530)+line(310,530,715,530);
  [['IDS',310],['Top-5',515],['AI Judge',715]].forEach(([name,x],k)=>{
   const active=t>=[12,30,38][k];
-  s+=box(x-73,505,146,64,active?G:(dark?'#171C1D':'#F0F2F3'))+tx(x,548,name,36,active?N:(dark?'#D6DDE0':'#53666E'),400,'middle');
+  s+=box(x-73,505,146,64,active?T:(dark?'#171C1D':'#F0F2F3'))+tx(x,548,name,36,active?'#FFFFFF':(dark?'#D6DDE0':'#53666E'),400,'middle');
  });
  if(t>=12&&t<30){const d=260*((t*.24)%1),x=390-(d-180);if(d<180)s+=packet(390,350+d);else if(x>377)s+=packet(x,530);}
  if(t>=30){const x=310+(t>=38?405:205)*((t*.24)%1);if((x>395&&x<430)||(x>600&&x<630))s+=packet(x,530);}
@@ -101,7 +102,7 @@ function topology(t,dark){
  s+=packet(110+200*p,245+105*p)+packet(310+405*((t*.28)%1),350);
  if(t<controlTimeline.apply||t>=controlTimeline.expiry)s+=packet(110+200*((t*.5)%1),455-105*((t*.5)%1),dark?'#D6DDE0':'#53666E');
  if(t>=controlTimeline.apply&&t<controlTimeline.expiry)s+=box(450,260,136,42,G,21)+tx(518,289,'規則生效',26,N,400,'middle');
- if(t>=controlTimeline.expiry)s+=box(450,260,136,42,G,21)+tx(518,289,'到期回復',26,N,400,'middle');
+ if(t>=controlTimeline.expiry)s+=box(450,260,136,42,T,21)+tx(518,289,'到期回復',26,'#FFFFFF',400,'middle');
  return s;
 }
 const messages=[
@@ -125,7 +126,7 @@ export function frameSvg(t){
   s+=tx(64,88,'AI SECURITY FRAMEWORK',22,B,600);
   s+=tx(64,232,'偵測有依據',48,N,400)+tx(64,312,'稽核有證據',48,N,400)+tx(64,392,'處置可回復',48,N,400);
   s+=flatIcon('framework',938,170,272);
-  s+=box(64,467,1152,80,palette.gold_tint)+tx(88,518,'判定 → 證據 → 稽核 → 處置與回復回條',30,N,600);
+  s+=box(64,467,1152,80,palette.teal_tint)+tx(88,518,'判定 → 證據 → 稽核 → 處置與回復回條',30,N,600);
   s+=tx(64,625,'展示結束 · 接續架構與實測成果說明',26,'#53666E');
  }else if(i===7){
   s+=tx(64,94,'實測成果',44,N,300);
@@ -152,5 +153,5 @@ export function frameSvg(t){
  }
  s+=tx(64,688,'方法流程示意 · 隔離TCP交易實測',26,muted);
  s+=box(0,714,1280*t/duration,6,B,0);
- return `<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" font-family="${FONT}">${s}</svg>`;
+ return resolveColors(`<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" font-family="${FONT}">${s}</svg>`);
 }

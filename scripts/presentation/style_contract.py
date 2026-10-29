@@ -9,7 +9,18 @@ PALETTE = json.loads((ROOT/'design-system/palette.json').read_text(encoding='utf
 ICONS = json.loads((ROOT/'design-system/icons.json').read_text(encoding='utf-8'))
 PATTERN = TYPOGRAPHY['cjk_pattern']
 THEME = {'dk1':'ink','lt1':'white','dk2':'navy','lt2':'gray','accent1':'blue','accent2':'gold',
-         'accent3':'gray','accent4':'blue','accent5':'navy','accent6':'muted','hlink':'blue','folHlink':'navy'}
+         'accent3':'teal','accent4':'blue','accent5':'navy','accent6':'muted','hlink':'blue','folHlink':'navy'}
+
+
+def resolve_color(value):
+    """Resolve previous authoring literals through the shared semantic palette."""
+    role = PALETTE['legacy_roles'].get(value.lstrip('#').upper())
+    result = PALETTE[role] if role else value
+    return result if value.startswith('#') else result.lstrip('#')
+
+
+def resolve_colors(svg):
+    return re.sub(r'#[0-9a-fA-F]{6}\b', lambda match: resolve_color(match[0]), svg)
 
 
 def font_runs(value):

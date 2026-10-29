@@ -1,4 +1,5 @@
 const assert = require('node:assert/strict');
+const palette = require('../design-system/palette.json');
 (async () => {
   const {frameSvg, duration, chapters,controlTimeline,playbackSpeed,presentationDuration,maxDuration} = await import('../media/film/scene.mjs');
   const {JSDOM} = require('jsdom');
@@ -9,8 +10,8 @@ const assert = require('node:assert/strict');
   assert.ok(frameSvg(59.9).includes('Times New Roman'));
   assert.ok(playbackSpeed>=1.5);
   assert.ok(presentationDuration<=maxDuration && maxDuration<=40);
-  assert.ok(frameSvg(24).includes('#FDB338'), 'active states use the supplied gold');
-  assert.ok(frameSvg(24).includes('#092B42'), 'gold highlights use dark navy labels');
+  assert.ok(frameSvg(24).includes(palette.teal), 'completed stages use the shared teal');
+  assert.ok(frameSvg(24).includes(palette.navy), 'headings retain the shared navy');
   assert.equal(chapters.find(c=>c.title==='實測成果').at,52, 'results receive 2.5 seconds at 2x');
   assert.ok(frameSvg(51.5).includes('到期回復'), 'recovery remains visible before the results cut');
   const resultsAt=chapters.find(c=>c.title==='實測成果').at;
@@ -31,7 +32,7 @@ const assert = require('node:assert/strict');
     const document = new JSDOM(source, {contentType: 'image/svg+xml'}).window.document;
     assert.equal(document.querySelector('parsererror'), null);
     assert.ok(document.querySelector('svg'));
-    assert.ok(['#FFFFFF','#F0F2F3'].includes(document.querySelector('svg > rect').getAttribute('fill')), 'film chapters must use light canvas');
+    assert.ok([palette.white,palette.gray].includes(document.querySelector('svg > rect').getAttribute('fill')), 'film chapters must use light canvas');
     assert.ok(!source.includes('NaN'));
   }
   console.log('Media smoke: deterministic, valid SVG across all chapters');

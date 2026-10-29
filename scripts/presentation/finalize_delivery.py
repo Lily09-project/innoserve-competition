@@ -3,7 +3,7 @@ import argparse
 import json
 from pathlib import Path
 import zipfile
-from style_contract import TYPOGRAPHY, THEME
+from style_contract import TYPOGRAPHY, THEME, resolve_color
 from lxml import etree as ET
 
 A="http://schemas.openxmlformats.org/drawingml/2006/main"
@@ -19,6 +19,9 @@ def normalize(source,target,slide_size_emu=None):
             content=original.read(info.filename)
             if info.filename.endswith(".xml") and info.filename.startswith("ppt/"):
                 root=ET.fromstring(content)
+                for color in root.xpath('//a:srgbClr', namespaces=NS):
+                    if color.get('val'):
+                        color.set('val', resolve_color(color.get('val')))
                 if info.filename == 'ppt/presentation.xml' and slide_size_emu:
                     size = root.find('{http://schemas.openxmlformats.org/presentationml/2006/main}sldSz')
                     size.set('cx',str(slide_size_emu[0]))
@@ -34,7 +37,7 @@ def normalize(source,target,slide_size_emu=None):
                     cjk = kind == 'ea' or (kind == 'font' and node.get('script') in {'Hans', 'Hant', 'Hani', 'Bopo'})
                     node.set('typeface', TYPOGRAPHY['cjk'] if cjk else TYPOGRAPHY['latin'])
                 for scheme in root.xpath('//a:clrScheme', namespaces=NS):
-                    scheme.set('name', 'AI Security Navy Blue Gold')
+                    scheme.set('name', 'AI Security White Navy Teal')
                     for node in scheme:
                         role = THEME.get(ET.QName(node).localname)
                         if role:

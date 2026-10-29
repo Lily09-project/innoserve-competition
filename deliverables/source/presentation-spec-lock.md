@@ -23,19 +23,19 @@
 ## visual_style
 
 - visual_style: custom
-- visual_style_behavior: 白底與淺灰章節，結語淺灰底，深藍、中藍與金黃重點，輕量標題，8px平面面板與原創圖示。
+- visual_style_behavior: 白底與淺灰章節，結語淺灰底，深藍、藍與青綠重點，暖金少量提示，輕量標題，8px平面面板與原創圖示。
 
 ## colors
 
 - background: #FFFFFF
-- secondary_bg: #F0F2F3
-- primary: #105186
-- accent: #FDB338
-- secondary_accent: #F0F2F3
-- title_text: #092B42
-- body_text: #171C1D
-- secondary_text: #53666E
-- divider: #D6DDE0
+- secondary_bg: #F4F7FA
+- primary: #245EA8
+- accent: #E3A338
+- secondary_accent: #F4F7FA
+- title_text: #16324F
+- body_text: #243447
+- secondary_text: #526477
+- divider: #D7E1EA
 
 ## typography
 

@@ -8,10 +8,25 @@ import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts/presentation'))
-from style_contract import TYPOGRAPHY, THEME, font_runs, icon_fragment
+from style_contract import TYPOGRAPHY, THEME, font_runs, icon_fragment, resolve_colors
 
 
 class VisualContractTests(unittest.TestCase):
+    def test_white_canvas_foreground_contrast(self):
+        palette = json.loads((ROOT / 'design-system/palette.json').read_text(encoding='utf-8'))
+        def luminance(color):
+            values = [int(color[i:i+2], 16) / 255 for i in (1, 3, 5)]
+            return sum(w * (v / 12.92 if v <= .04045 else ((v + .055) / 1.055) ** 2.4)
+                       for v, w in zip(values, (.2126, .7152, .0722)))
+        self.assertEqual(palette['white'], '#FFFFFF')
+        for role in ('navy', 'blue', 'teal', 'ink', 'muted'):
+            self.assertGreaterEqual(1.05 / (luminance(palette[role]) + .05), 4.5, role)
+
+    def test_legacy_paint_resolves_to_shared_palette(self):
+        palette = json.loads((ROOT / 'design-system/palette.json').read_text(encoding='utf-8'))
+        for old, role in palette['legacy_roles'].items():
+            self.assertEqual(resolve_colors('<path fill="#' + old + '"/>'), '<path fill="' + palette[role] + '"/>')
+
     def test_mixed_text_font_roles(self):
         runs = font_runs('中文，測試：AI 17類（Top-5）97.62% ·')
         self.assertEqual(''.join(text for text, _ in runs), '中文，測試：AI 17類（Top-5）97.62% ·')

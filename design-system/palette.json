@@ -1,14 +1,21 @@
 {
-  "name": "light-navy-blue-gold",
-  "navy": "#092B42",
-  "blue": "#105186",
-  "gray": "#F0F2F3",
-  "gold": "#FDB338",
-  "ink": "#171C1D",
+  "name": "white-navy-teal",
+  "navy": "#16324F",
+  "blue": "#245EA8",
+  "teal": "#087F8C",
+  "gray": "#F4F7FA",
+  "gold": "#E3A338",
+  "ink": "#243447",
   "white": "#FFFFFF",
-  "muted": "#53666E",
-  "line": "#D6DDE0",
-  "blue_tint": "#EAF0F4",
-  "blue_muted": "#7294A9",
-  "gold_tint": "#FFF4DD"
+  "muted": "#526477",
+  "line": "#D7E1EA",
+  "blue_tint": "#EDF3FA",
+  "blue_muted": "#8198AE",
+  "gold_tint": "#FFF5E5",
+  "teal_tint": "#E9F5F3",
+  "legacy_roles": {
+    "092B42": "navy", "105186": "blue", "F0F2F3": "gray", "FDB338": "gold",
+    "171C1D": "ink", "53666E": "muted", "D6DDE0": "line", "EAF0F4": "blue_tint",
+    "7294A9": "blue_muted", "FFF4DD": "gold_tint"
+  }
 }

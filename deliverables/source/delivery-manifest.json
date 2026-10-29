@@ -2,100 +2,100 @@
   "base_revision": "7d95faf",
   "files": {
     "deliverables/決賽簡報_AI資安框架.pptx": {
-      "bytes": 2158393,
-      "sha256": "8c20cce6f85eec12d0f8846ec3929af9aae626eae6cec64ecdaa462ec1364d73"
+      "bytes": 1946752,
+      "sha256": "60d573716cbf354b0bf5f38c7fab55e97b94791983a506b5c1a88c2acfe89952"
     },
     "deliverables/決賽簡報_AI資安框架.pdf": {
-      "bytes": 532675,
-      "sha256": "d088451eabef6a85766fb1e452448138b775e07d1468b6838152e7607a78f734"
+      "bytes": 253861,
+      "sha256": "f5393b0da07cc767578391719c738641c46ca5a9f7f925c658a8809dc42b73a3"
     },
     "deliverables/AI資安框架_系統展示影片_30秒快版.mp4": {
-      "bytes": 1748726,
-      "sha256": "a5298f1439a38b3e6439b52507077803adecb55cf0c620d466e8708a7e719017"
+      "bytes": 1724948,
+      "sha256": "dc4123dd2b57c95e3c3658912fbb43bdd9bcfe7d5826851c72c345dacb6c132e"
     },
     "deliverables/figures/fig_architecture.png": {
-      "bytes": 307476,
-      "sha256": "3c583b8bc89579e3caa9021312b1f77af47f33bdde6108695d728049700c5e75"
+      "bytes": 306120,
+      "sha256": "7b5b329882908b7329466e036df53e7483bf9f25bb8c3f3d2885c460f56b507a"
     },
     "deliverables/source/architecture.svg": {
       "bytes": 10851,
-      "sha256": "e99352554b800b2544969762ed91adaf067a81a6a3efe3efa39560a13a8aea2c"
+      "sha256": "86653758099d489c828767f59eec0ee811a4a047600348d7499d02e5bb4a7943"
     },
     "deliverables/決賽海報_AI資安框架_A2.pptx": {
-      "bytes": 137434,
-      "sha256": "b4216fefc69bcb9fa13de868d1cffa159a37eb297798201f0421b43b83a7c691"
+      "bytes": 137562,
+      "sha256": "a9d57d8bde37f20e9635c6aeecfbdd3973b896bd845bcc6632a6d2bc1dae6de1"
     },
     "deliverables/決賽海報_AI資安框架_A2.pdf": {
-      "bytes": 220668,
-      "sha256": "44984ae35fd5a2cd22ad6485607b887bebad7648f84c4b8579e100f5bec051fe"
+      "bytes": 220645,
+      "sha256": "77aab279a169a29de361c7efd797c38bf5992158656690cd51d3bcd4b133fb80"
     },
     "deliverables/決賽離線展示包.zip": {
-      "bytes": 4446081,
-      "sha256": "5ecc9cf264ad0f948c75bfc613ae0cd7bf8ecbded6a7539e47dbb2c35f692445"
+      "bytes": 4080262,
+      "sha256": "ffb92ac16ec67eb935d8823c39064039de509e3cbb8ffe0a3f127037038af282"
     },
     "deliverables/source/release-validation.json": {
       "bytes": 10198,
-      "sha256": "9bcd79dc10dc9f9482e8e55006e3cb0d783ba7498729538d7f09f50e16229d08",
+      "sha256": "0e426b4151780b7013c44abe96456efaef2d35ce893ecdad0a461dc294ff29d2",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/01_slide.svg": {
       "bytes": 8759,
-      "sha256": "76d561f8eff0d7e39c439cceecdcd9cfeeebb3f1f64d27c0cd520d0da19f072b",
+      "sha256": "5f21523cf598e38955566315ce636532820e39e95f9cdc02bd061eff3cbe8d77",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/02_slide.svg": {
       "bytes": 2921,
-      "sha256": "fc88638793c2004f5b61fa15ec3c7749e9ec2339a110e9386f3be3ef2b5a6328",
+      "sha256": "b81ea46629cb5a64884cb89b35c81c93a0d47506e20ce957e95ece2565e58aa4",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/03_slide.svg": {
       "bytes": 12839,
-      "sha256": "5f8a6a5a568bc4ad8691bc62bc6ba371f8fce2aa95244f2765f9a82a4936abb9",
+      "sha256": "5720fee616f6ed01c1c619a2dbf65a3e0c52305ac62bf0d92c9458d2c6acc90a",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/04_slide.svg": {
       "bytes": 8452,
-      "sha256": "0267f0feae6ced617fa3b4b584718ed961d0448e7e601701bc6864fee1dbdc81",
+      "sha256": "cc53168f39b5d83a8c794a02a2b9db51918dad8d0baa01cbb96d251a2c178bad",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/05_slide.svg": {
       "bytes": 11072,
-      "sha256": "cc120feea9ea31973e7c94a0b29984a5667d8afd78bb9efe4943b7e9b283b5e8",
+      "sha256": "eb117c921259c7737c8ac846d516252a2b22805dace1850bee01d45ba7cc72fc",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/06_slide.svg": {
       "bytes": 9015,
-      "sha256": "be1653f56c35ea460537788188f1c2ee2190aa6921663e42b2fe5264a1a63d46",
+      "sha256": "1a84b06bf85f419ce305ae49c38c4b1f1c59aba3bfe7f400f95c700c11df7fb0",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/07_slide.svg": {
       "bytes": 5828,
-      "sha256": "50b9dba13d523795bda95ff840e8c434ae65b59f591fa8dea4fb2b8064194184",
+      "sha256": "16d53f85dda705403574be0efa140ac3a0598727ef1565dc51d134f90273700b",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/08_slide.svg": {
       "bytes": 7123,
-      "sha256": "999f3abb05b39e9b4af33dc5b6dcff5c88fe38f001369d3e7c88308245f4c70f",
+      "sha256": "b649ea49d3d43965bdde70ee885c3445a751bf0c4516f1c401a000d276ecafd8",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/09_slide.svg": {
       "bytes": 7056,
-      "sha256": "518f34b7f726b94a78935d5ba86b4eea651084e49ee0a920a5ae63b0eb3c1ac0",
+      "sha256": "8dd743c8be553d9e65f3ebc6492bcc3b109b091f1b1ca0bc4b30d49e8a18c396",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/10_slide.svg": {
       "bytes": 11326,
-      "sha256": "ff3dadec8e89bcec91f106de2c5daf2dd7a1eb5ee3e025a274478af0be310b6a",
+      "sha256": "70ab2a2f564be46688dd7d4623aef09d77c409488df91bf8dd0855715795f7bc",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/11_slide.svg": {
       "bytes": 8290,
-      "sha256": "61329799e6a0b89eb39ce549568596aa28b30869fbc06edfacf31ef2bb90b066",
+      "sha256": "9d0f6456bf12c5d67c9e135b65d257060b341ccc218de611ff7449ab47b3c4a4",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/12_slide.svg": {
       "bytes": 12052,
-      "sha256": "ee4a3bb8277a072a0889bd9599def6813864462e5efa25044c809d9ce6e41136",
+      "sha256": "1694d5261d9d8cb4323db5d2be40e665ec2cf5df219b9dca4f674ecd275e357c",
       "hash_normalization": "LF"
     },
     "media/film/metrics.json": {
@@ -125,27 +125,27 @@
     },
     "deliverables/source/finals-runbook.json": {
       "hash_normalization": "LF",
-      "bytes": 2080,
+      "bytes": 2119,
       "sha256": "d9d084456c9b287f1c09711b1a3427b1b518c045e20bd143f3ae3e7dd53aeda6"
     },
     "deliverables/source/finals-readiness.json": {
       "hash_normalization": "LF",
-      "bytes": 2608,
-      "sha256": "c8551f3c124183674657f917d7e45efb39285cf49c8a5d7f2682b9faf2ef0f02"
+      "bytes": 2947,
+      "sha256": "9931ba43f502269b3d70c40e152a445bb5cc1c6536231b316f4cb2ced0ccbb5c"
     },
     "docs/決賽五分鐘口語稿.md": {
       "hash_normalization": "LF",
-      "bytes": 4373,
+      "bytes": 4418,
       "sha256": "39e88d21d17e9d8a2b8fa547013cc0ac88469ec6b5e1f0fd29b513799f325858"
     },
     "docs/決賽六題答詢口徑.md": {
       "hash_normalization": "LF",
-      "bytes": 4511,
+      "bytes": 4566,
       "sha256": "d2a41e50b7b6c8e9f0307715897e6adfeefb5bd904623ce0fd5942ee205e83a9"
     },
     "docs/現場控場與備援卡.md": {
       "hash_normalization": "LF",
-      "bytes": 2807,
+      "bytes": 2855,
       "sha256": "2407a165ffe4df3c51f1fa59be76098ca095b5c4f8893cececba6b2b1c666079"
     }
   },
@@ -167,7 +167,7 @@
     2560,
     1072
   ],
-  "python_tests": 135,
+  "python_tests": 137,
   "website": "removed; API-only",
   "review": "89 Python tests and deterministic nine-chapter media compilation passed; current real 17-class/17-LLM and six-isolated-scenario validation passed. Existing visual acceptance retained; no visual content changed.",
   "results_changed": true,
@@ -218,7 +218,7 @@
     "pdf_fonts_embedded": true,
     "text_overflow": 0,
     "physical_print_proof": "requires actual print inspection",
-    "palette": "light-navy-blue-gold",
+    "palette": "white-navy-teal",
     "title_pt": 30,
     "layout": "Four top-to-bottom horizontal method lanes; left-to-right inputs, processing and output within each lane",
     "pdf_font_resources_embedded": 4,
@@ -237,18 +237,32 @@
     "binding_checks": "displayed prediction, probabilities, confidence, Top-5 hash/order, judge, policy, stage sequence and execution mode"
   },
   "palette": {
-    "name": "light-navy-blue-gold",
-    "navy": "#092B42",
-    "blue": "#105186",
-    "gray": "#F0F2F3",
-    "gold": "#FDB338",
-    "ink": "#171C1D",
+    "name": "white-navy-teal",
+    "navy": "#16324F",
+    "blue": "#245EA8",
+    "teal": "#087F8C",
+    "gray": "#F4F7FA",
+    "gold": "#E3A338",
+    "ink": "#243447",
     "white": "#FFFFFF",
-    "muted": "#53666E",
-    "line": "#D6DDE0",
-    "blue_tint": "#EAF0F4",
-    "blue_muted": "#7294A9",
-    "gold_tint": "#FFF4DD"
+    "muted": "#526477",
+    "line": "#D7E1EA",
+    "blue_tint": "#EDF3FA",
+    "blue_muted": "#8198AE",
+    "gold_tint": "#FFF5E5",
+    "teal_tint": "#E9F5F3",
+    "legacy_roles": {
+      "092B42": "navy",
+      "105186": "blue",
+      "F0F2F3": "gray",
+      "FDB338": "gold",
+      "171C1D": "ink",
+      "53666E": "muted",
+      "D6DDE0": "line",
+      "EAF0F4": "blue_tint",
+      "7294A9": "blue_muted",
+      "FFF4DD": "gold_tint"
+    }
   },
   "recorded_detector_and_judge_metrics_changed": false,
   "fresh_audit_started_utc": "20261029T114436Z",
