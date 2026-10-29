@@ -1,5 +1,5 @@
 {
-  "base_revision": "d49dde9",
+  "base_revision": "7d95faf",
   "files": {
     "deliverables/決賽簡報_AI資安框架.pptx": {
       "bytes": 2158393,
@@ -22,20 +22,20 @@
       "sha256": "e99352554b800b2544969762ed91adaf067a81a6a3efe3efa39560a13a8aea2c"
     },
     "deliverables/決賽海報_AI資安框架_A2.pptx": {
-      "bytes": 127547,
-      "sha256": "e4be853a6d7399c2e38cdf75f82af56053de2202a9e2f6b05d24161f754e12f2"
+      "bytes": 137364,
+      "sha256": "75d6f26ccf4058fde5a0b347bea952602ad13f29020931bca4f4aee44642d51e"
     },
     "deliverables/決賽海報_AI資安框架_A2.pdf": {
-      "bytes": 201622,
-      "sha256": "61f240fc57943347b8f2d055801d016519db7b6b52475c3d162b60f087a711ab"
+      "bytes": 220719,
+      "sha256": "b8a6cddfb8439b3af0515365c80a5e7752f431c7aee5b5107c8679bc4ea0c8b6"
     },
     "deliverables/決賽離線展示包.zip": {
-      "bytes": 4423992,
-      "sha256": "a13ba6da164825dedf3162d48e4e88477ab2af3d5e12d3c4dd6f1bd1c7edb429"
+      "bytes": 4437535,
+      "sha256": "4184aec4b630f40bedc1fc812959e87d92b15dda1489a7689e68ab776f4c1a9f"
     },
     "deliverables/source/release-validation.json": {
       "bytes": 8261,
-      "sha256": "9370cf87fc90d707dce90647650f9f226ff7ba8712d6600200ce1853d14589d1",
+      "sha256": "57a961b73b0c6beae550841e8d850811c48c5063c0ffceb26d380cece6c3a69a",
       "hash_normalization": "LF"
     }
   },
@@ -153,7 +153,7 @@
     "design-system/icons.json"
   ],
   "alignment": {
-    "native_text_anchors": 307,
+    "native_text_anchors": 329,
     "tolerance_pt": 0.1,
     "native_grid_checks": 12,
     "film_chapters": 9,
@@ -199,5 +199,15 @@
     "english_stage_label_minimum_effective_height_px": 37,
     "independent_frame_review": "passed within offline sample scope",
     "reference_record": "docs/海報與影片參考轉譯.md"
+  },
+  "poster_content": {
+    "date": "2026-10-29",
+    "previous_text_characters": 700,
+    "current_text_characters": 869,
+    "top5_rank_cards": 5,
+    "isolated_scenario_cards": 6,
+    "actual_measurement_values_changed": false,
+    "title_centered": true,
+    "overflow_findings": 0
   }
 }
