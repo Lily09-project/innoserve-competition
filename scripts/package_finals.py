@@ -11,6 +11,10 @@ ASSETS = [
     'deliverables/決賽海報_AI資安框架_A2.pptx',
     'deliverables/決賽海報_AI資安框架_A2.pdf',
     'deliverables/source/speaker-notes.md',
+    'deliverables/source/finals-runbook.json',
+    'docs/決賽五分鐘口語稿.md',
+    'docs/決賽六題答詢口徑.md',
+    'docs/現場控場與備援卡.md',
 ]
 INSTRUCTIONS = '''決賽離線展示包
 
@@ -25,13 +29,15 @@ INSTRUCTIONS = '''決賽離線展示包
 本包為離線簡報、影片與海報備援，不包含模型部署、私有權重、案例庫或逐筆事件。
 模型展示使用已配置的本機工作站及本機展示操作單。
 正式投影前關閉通知，隱藏個人路徑、帳號與可識別資訊。
+docs內另附五分鐘口語稿、六題答詢與現場備援卡，source內含頁序與時間設定。
+這些時間是配置目標；講者朗讀、場地可讀性及印刷打樣由現場人員確認。
 SHA256SUMS.txt列出本包資產雜湊，可比對檔案是否變動。
 '''
 
 
 def asset_bytes(name):
     content = (ROOT / name).read_bytes()
-    return content.replace(b'\r\n', b'\n') if name.endswith('.md') else content
+    return content.replace(b'\r\n', b'\n') if name.endswith(('.md', '.json')) else content
 
 
 def build():

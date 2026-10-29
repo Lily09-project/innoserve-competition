@@ -80,6 +80,15 @@ def audit(root=ROOT):
     except (ValueError,OSError):
         errors.append('Release source/artifact/preview evidence binding mismatch')
     recovery_path=root/'deliverables/source/recovery-validation.json'
+    readiness_path=root/'deliverables/source/finals-readiness.json'
+    if readiness_path.exists():
+        try:
+            from check_finals_readiness import audit as readiness_audit
+            saved=json.loads(readiness_path.read_text(encoding='utf-8'))
+            if any(saved.get(key)!=value for key,value in readiness_audit(root).items()):
+                raise ValueError('readiness_report_stale')
+        except (ValueError,OSError,KeyError,TypeError):
+            errors.append('Finals readiness plan, claims or offline package differs from verified files')
     if recovery_path.exists():
         try:
             recovery=json.loads(recovery_path.read_text(encoding='utf-8'))

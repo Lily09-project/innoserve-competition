@@ -30,7 +30,7 @@
 | 決賽簡報 | 12頁：9頁正式報告、結束頁後3頁六題圖解備詢；第2頁內嵌30秒影片，各頁附繁體中文講者備忘稿 | [逐頁SVG](deliverables/source/slides/)、[製作程式](scripts/presentation/editorial_assets.py)、[講者稿](deliverables/source/speaker-notes.md) |
 | 方法動畫 | 1920×1080、24fps、30秒、2倍速、無音軌；以網路拓樸與封包傳遞說明完整流程 | [動畫來源](media/film/scene.mjs)、[渲染程式](scripts/render_product_film.mjs) |
 | A2海報 | 420×594mm直向；34pt置中作品名稱、四階段產物、Top-5圖卡、策略例子、實測比較與六情境圖解 | [原生製作程式](scripts/presentation/build_a2_poster.py)、[印刷規格](deliverables/source/poster-a2-spec.md) |
-| 離線包 | 簡報、影片、海報、講者稿與SHA256清單，供正式報告及備援 | [包裝程式](scripts/package_finals.py) |
+| 離線包 | 簡報、影片、海報、五分鐘口語稿、六題答詢、控場備援卡及SHA256清單 | [包裝程式](scripts/package_finals.py) |
 | 驗收索引 | 正式檔案、來源、預覽與實測彙整的雜湊及驗收範圍 | [交付清單](deliverables/source/delivery-manifest.json)、[實測索引](deliverables/source/release-validation.json) |
 
 三種成果共用白底／淺灰底、深藍、中藍與金黃，中文及中文標點使用標楷體DFKai-SB，其他文字使用Times New Roman。簡報關閉換頁特效與裝飾動畫，保留第2頁的內嵌媒體時序。報告規劃為五分鐘含影片，另留一分鐘緩衝；現場上限六分鐘，答詢七分鐘。
@@ -38,6 +38,15 @@
 海報加豐版補入適用對象、各階段產物、FTP／SSH、HTTP型DDoS與Bot策略例子，以及六種隔離情境的規則／監測／蒐證路徑。所有正式交付物保持匿名；公開儲存庫的帳號資訊不放進競賽投影或海報。
 
 設計參考與原創轉譯見[海報與影片參考紀錄](docs/海報與影片參考轉譯.md)。正式成果可直接下載使用；完整模型展示另依下方工作站設定執行。
+
+### 決賽直接使用
+
+1. 正式報告依[五分鐘口語稿](docs/決賽五分鐘口語稿.md)，第2頁播放30秒影片，第9頁結語；預留一分鐘緩衝。
+2. 第10至12頁搭配[六題答詢口徑](docs/決賽六題答詢口徑.md)，先回答、再指圖與證據。
+3. 操作者使用[現場控場與備援卡](docs/現場控場與備援卡.md)，以情境名稱選事件，區分即時模型與保存結果。
+4. 下載上方離線包，依內附SHA256核對檔案；它是簡報備援包，完整模型仍使用已配置的工作站。
+
+[流程設定](deliverables/source/finals-runbook.json)固定12頁、五分鐘配置、影片位置及六題對應；[決賽驗收索引](deliverables/source/finals-readiness.json)綁定正式檔案與操作材料。執行`python scripts/check_finals_readiness.py`可核對數據口徑、內外嵌影片、頁序、時間配置及離線包，檔案變動而未同步時會停止。時間配置不是講者實際朗讀紀錄；朗讀、場地可讀性與海報打樣另由現場確認。
 
 ## 系統方法與創新
 
@@ -95,7 +104,7 @@ python scripts/check_public_files.py
 
 已有clone時先執行`git submodule update --init --recursive`。子模組必須初始化，才能載入真正的共用策略元件。
 
-目前127項Python測試涵蓋事件合約、Judge上下文、策略、逐筆證據、資產匯入、預檢、API、字型、匿名與交付一致性。媒體檢查另編譯九個動畫章節。測試中的合成fixture只測程式邊界，不列入模型成效；CI通過也不代表重新執行真實模型。完整項目見[測試矩陣](docs/測試矩陣.md)。
+目前135項Python測試涵蓋事件合約、Judge上下文、策略、逐筆證據、資產匯入、預檢、API、字型、匿名與交付一致性。媒體檢查另編譯九個動畫章節。測試中的合成fixture只測程式邊界，不列入模型成效；CI通過也不代表重新執行真實模型。完整項目見[測試矩陣](docs/測試矩陣.md)。
 
 ## 完整本機模型與隔離驗證
 

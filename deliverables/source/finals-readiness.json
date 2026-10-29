@@ -1,0 +1,52 @@
+{
+  "status": "passed",
+  "source_revision": "ede0cb0775aa4e542c6763c4d41496970ff59eaedab29d89b2db2d2f7d02566e",
+  "plan": {
+    "planned_spoken_seconds": 260,
+    "planned_total_seconds": 300,
+    "buffer_seconds": 60,
+    "timing_is_human_measured": false,
+    "qa_questions": 6
+  },
+  "claims": {
+    "native_deck_pages": 12,
+    "poster_pages": 1,
+    "embedded_movie_matches": true,
+    "metric_surfaces": [
+      "README",
+      "PPT7",
+      "PPT8",
+      "A2"
+    ],
+    "anonymity": "passed",
+    "native_playback_executed": false
+  },
+  "offline": {
+    "offline_assets": 10,
+    "private_assets_included": false
+  },
+  "human_checks": [
+    "講者完整朗讀彩排",
+    "實際場地投影可讀性",
+    "海報實尺寸打樣"
+  ],
+  "human_checks_verified_by_this_script": false,
+  "bindings": {
+    "deliverables/決賽簡報_AI資安框架.pptx": "8c20cce6f85eec12d0f8846ec3929af9aae626eae6cec64ecdaa462ec1364d73",
+    "deliverables/決賽簡報_AI資安框架.pdf": "d088451eabef6a85766fb1e452448138b775e07d1468b6838152e7607a78f734",
+    "deliverables/AI資安框架_系統展示影片_30秒快版.mp4": "a5298f1439a38b3e6439b52507077803adecb55cf0c620d466e8708a7e719017",
+    "deliverables/決賽海報_AI資安框架_A2.pptx": "b4216fefc69bcb9fa13de868d1cffa159a37eb297798201f0421b43b83a7c691",
+    "deliverables/決賽海報_AI資安框架_A2.pdf": "44984ae35fd5a2cd22ad6485607b887bebad7648f84c4b8579e100f5bec051fe",
+    "deliverables/source/speaker-notes.md": "a0710803e4bf451b2cd7cb4cf3d695d937967b102b5e6cb8be5e4d839e44137b",
+    "deliverables/source/finals-runbook.json": "d9d084456c9b287f1c09711b1a3427b1b518c045e20bd143f3ae3e7dd53aeda6",
+    "docs/決賽五分鐘口語稿.md": "39e88d21d17e9d8a2b8fa547013cc0ac88469ec6b5e1f0fd29b513799f325858",
+    "docs/決賽六題答詢口徑.md": "d2a41e50b7b6c8e9f0307715897e6adfeefb5bd904623ce0fd5942ee205e83a9",
+    "docs/現場控場與備援卡.md": "2407a165ffe4df3c51f1fa59be76098ca095b5c4f8893cececba6b2b1c666079",
+    "scripts/check_finals_readiness.py": "1f68ab74c43a9f7499f4cc06beaa154abb7be261b8a94c8e72d23c9e8a662e5f",
+    "scripts/package_finals.py": "1c6df8d04e67da6c7f39891dd49125546030d753068534b639069f7b91df1133",
+    "deliverables/決賽離線展示包.zip": "5ecc9cf264ad0f948c75bfc613ae0cd7bf8ecbded6a7539e47dbb2c35f692445",
+    "README.md": "7eeaa49c92bf4f576d56c1a3344373cafa64a38914bdeb9d8c44699b5143779a",
+    "media/film/metrics.json": "816450d6ba5340d14b5bae6aeb133a462deb6be3f6eb3f4a37fb8274656222c1"
+  },
+  "created_utc": "2026-10-29T14:34:03.577322+00:00"
+}
