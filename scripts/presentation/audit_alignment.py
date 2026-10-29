@@ -1,11 +1,13 @@
 """Audit measured text anchors and panel grids; draw explicit alignment guides."""
 import json
 from pathlib import Path
+import sys
 
 from PIL import Image, ImageDraw
 
 ROOT = Path(__file__).resolve().parents[2]
-FOLDER = ROOT / 'validation/alignment-20261029'
+FOLDER = ROOT / (sys.argv[1] if len(sys.argv)>1 else 'validation/alignment-20261029')
+SLIDES = ROOT / (sys.argv[2] if len(sys.argv)>2 else 'validation/aligned-powerpoint-20261029')
 COLORS = {1: '#008050', 2: '#004FFF', 3: '#D62D20'}
 
 
@@ -15,7 +17,7 @@ def audit():
         pages = json.loads((FOLDER / f'{kind}.json').read_text(encoding='utf-8-sig'))
         for page in pages:
             number = page['page']
-            image = (ROOT / f'validation/aligned-powerpoint-20261029/slide-{number:02d}.png'
+            image = (SLIDES / f'slide-{number:02d}.png'
                      if kind == 'slides' else ROOT / 'deliverables/figures/poster-a2-preview.png')
             canvas = Image.open(image).convert('RGB')
             draw = ImageDraw.Draw(canvas)
@@ -33,6 +35,10 @@ def audit():
                     report['errors'].append({'media': kind, 'page': number, 'text': shape['text'], 'delta_pt': delta})
                 if x < -.1 or y < -.1 or x+w > page['width']+.1 or y+h > page['height']+.1:
                     report['errors'].append({'media': kind, 'page': number, 'text': shape['text'], 'error': 'outside canvas'})
+                if kind == 'poster':
+                    margin = 15*72/25.4
+                    if x < margin-.1 or y < margin-.1 or x+w > page['width']-margin+.1 or y+h > page['height']-margin+.1:
+                        report['errors'].append({'media':kind,'page':number,'text':shape['text'],'error':'outside 15 mm print-safe text area'})
                 color = COLORS[align]
                 draw.rectangle((x*sx,y*sy,(x+w)*sx,(y+h)*sy),outline=color,width=1)
                 anchor = shape['target_x']*sx
@@ -44,7 +50,7 @@ def audit():
                 expected = [(64+i*294,y,270,h) for i in range(4)]
             elif kind == 'poster':
                 unit = 72/25.4
-                expected = [(x,y,184,91) for y in (145,253) for x in (16,220)]
+                expected = [(16,y,388,50) for y in (145,201,257,313)]
             else:
                 expected = []
             for box in expected:

@@ -20,6 +20,58 @@ const tx=(x,y,s,z=24,c='#171C1D',w=400,anchor='start')=>{
 };
 const box=(x,y,w,h,c,r=8)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="${c}"/>`;
 const line=(x,y,a,b,c='#D6DDE0')=>`<path d="M${x} ${y}L${a} ${b}" fill="none" stroke="${c}" stroke-width="3"/>`;
+const arrow=(x,y,a,b,c=B)=>line(x,y,a,b,c)+`<path d="M${a-6} ${b-5}L${a} ${b}L${a-6} ${b+5}" fill="none" stroke="${c}" stroke-width="2"/>`;
+const chip=(x,y,w,h,label,z=25,fill='#FFFFFF')=>box(x,y,w,h,fill,6)+tx(x+w/2,y+h*.68,label,z,N,400,'middle');
+function evidencePanel(index,local,t){
+ let s='';
+ if(index===1){
+  s+=tx(859,271,'流量進入同一條事件鏈',27,N);
+  s+=chip(859,299,144,62,'正常流量',26)+chip(1048,299,144,62,'異常流量',26);
+  s+=`<path d="M931 361V382H1120V361M1027 382V397" fill="none" stroke="${B}" stroke-width="2"/>`;
+  s+=chip(901,399,252,64,'同一事件識別碼',27,palette.blue_tint);
+  s+=tx(859,505,'判定與證據持續綁定',26,palette.muted);
+ }else if(index===2){
+  s+=tx(859,269,'三種線索，共同表徵',27,N);
+  ['內容','時間差','方向'].forEach((label,k)=>{
+   const y=293+k*64;
+   s+=chip(859,y,104,44,label,26);
+   const amount=ease((local-k*.18)/.6);
+   for(let j=0;j<5;j++)s+=box(984+j*39,y+9,27*amount,26,j===k?G:B,3);
+  });
+  s+=tx(859,510,'欄位遮罩 → 流量切窗',25,palette.muted);
+ }else if(index===4){
+  s+=chip(859,254,158,49,'512 維表徵',24)+chip(1035,254,157,49,'17 維機率',24);
+  s+=tx(1026,288,'＋',23,B,400,'middle');
+  s+=chip(901,325,252,53,'529 維任務向量',27,palette.blue_tint);
+  s+=`<path d="M1027 305V322M1027 378V402" stroke="${B}" stroke-width="3"/>`;
+  for(let k=0;k<5;k++){
+   const u=ease((local-.4-k*.12)/.55),x=859+k*68;
+   s+=`<g opacity="${u}" transform="translate(0 ${(1-u)*24})">${chip(x,410,60,63,String(k+1),29)}${box(x,410,60,4,k===0?G:B,0)}</g>`;
+  }
+  s+=tx(859,509,'Top-5：只檢索訓練案例',25,palette.muted);
+ }else if(index===5){
+  s+=chip(859,254,158,49,'正式判定',25)+chip(1035,254,157,49,'案例證據',25);
+  s+=chip(901,330,252,56,'本機 AI 稽核',28,palette.blue_tint);
+  s+=`<path d="M938 303V315H1114V303M1026 315V329M1026 386V403H912V417M1026 403V417M1026 403H1140V417" fill="none" stroke="${B}" stroke-width="2"/>`;
+  ['支持','複核','不確定'].forEach((label,k)=>s+=chip(859+k*114,417,106,49,label,25));
+  s+=tx(859,510,'附加稽核，保留正式分類',25,palette.muted);
+ }else if(index===6){
+  s+=tx(859,269,'先檢查策略，再執行',27,N);
+  const labels=['套用','讀回','回復'];
+  const active=t>=50.8?2:t>=49?1:0;
+  labels.forEach((label,k)=>{
+   const x=859+k*114;
+   s+=chip(x,310,106,64,label,28,k===active?palette.gold_tint:'#FFFFFF');
+   if(k<2)s+=arrow(x+106,342,x+112,342);
+   if(k===active)s+=box(x,310,106,4,G,0);
+  });
+  const u=Math.max(0,Math.min(1,(t-48)/2.8));
+  s+=`<circle cx="891" cy="430" r="23" fill="#FFFFFF" stroke="${B}" stroke-width="3"/><path d="M891 430L${891+17*Math.sin(u*2*Math.PI)} ${430-17*Math.cos(u*2*Math.PI)}" stroke="${B}" stroke-width="3"/>`;
+  s+=tx(929,440,t>=50.8?'到期撤銷規則':'期限隨策略管理',26,N);
+  s+=tx(859,504,'同次回條，確認服務恢復',25,palette.muted);
+ }
+ return s;
+}
 function node(x,y,label,kind='pc',dark=false){
  const body=icons[kind].replace(/\{\{(\w+)\}\}/g,(_,key)=>palette[key]);
  return box(x-54,y-38,108,76,palette.gray,8)+`<g transform="translate(${x-36} ${y-36}) scale(1.125)">${body}</g>`+tx(x,y+72,label,25,palette.ink,400,'middle');
@@ -83,11 +135,10 @@ export function frameSvg(t){
    s+=box(1050,292,140,50,B)+tx(1120,325,'PBCNN',28,'#FFFFFF',600,'middle');
    s+=box(899,410,252,58,B)+tx(1025,447,'校準＋OOF Gate',28,'#FFFFFF',400,'middle');
    s+=tx(859,505,'17類＋信心＋模型表徵',27,ink);
-  }else messages[i].slice(1).forEach((v,k)=>{
-   // Keep Chinese strings readable by explicit semantic line breaks.
-   const split=v.split('|');
-   split.forEach((l,j)=>s+=tx(859,294+k*105+j*38,l,28,k===0?ink:muted));
-  });
+  }else{
+   const u=ease(local/.42);
+   s+=`<g opacity="${u}" transform="translate(${(1-u)*24} 0)">${evidencePanel(i,local,t)}</g>`;
+  }
   s+=box(64,593,1152,60,'#F0F2F3')+tx(88,632,'同一事件 ID：判定 → 案例 → 稽核 → 處置回條',25,ink);
  }
  s+=tx(64,688,'方法流程示意 · 隔離TCP交易實測',26,muted);
