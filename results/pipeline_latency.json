@@ -1,0 +1,80 @@
+{
+  "status": "completed",
+  "processes": [
+    {
+      "trial": 1,
+      "process_total_seconds": 72.15484690014273,
+      "initialization_seconds_from_worker_entry": 21.176316399825737,
+      "first_inference_ms": 1709.1834000311792,
+      "first_prediction_matches_saved": true,
+      "warm_calls": 102,
+      "unique_inputs": 17,
+      "warm_p50_ms": 457.1951499674469,
+      "warm_p95_ms": 675.3360998467526,
+      "warm_min_ms": 440.421300008893,
+      "warm_max_ms": 700.7772999349982,
+      "serial_calls_per_second": 2.100448457469871,
+      "torch_peak_allocated_bytes": 16173670912,
+      "source_revision": "ede0cb0775aa4e542c6763c4d41496970ff59eaedab29d89b2db2d2f7d02566e",
+      "asset_revision": "977ab6014516622dff32d9b94481a1b013f407d0917a87cd0347945918d114ca"
+    },
+    {
+      "trial": 2,
+      "process_total_seconds": 71.53134989994578,
+      "initialization_seconds_from_worker_entry": 20.92997090006247,
+      "first_inference_ms": 1611.4791999571025,
+      "first_prediction_matches_saved": true,
+      "warm_calls": 102,
+      "unique_inputs": 17,
+      "warm_p50_ms": 453.6041500978172,
+      "warm_p95_ms": 672.3957550246253,
+      "warm_min_ms": 441.2340000271797,
+      "warm_max_ms": 709.1271001845598,
+      "serial_calls_per_second": 2.1126161302927335,
+      "torch_peak_allocated_bytes": 16173670912,
+      "source_revision": "ede0cb0775aa4e542c6763c4d41496970ff59eaedab29d89b2db2d2f7d02566e",
+      "asset_revision": "977ab6014516622dff32d9b94481a1b013f407d0917a87cd0347945918d114ca"
+    },
+    {
+      "trial": 3,
+      "process_total_seconds": 72.28936170018278,
+      "initialization_seconds_from_worker_entry": 20.907605099957436,
+      "first_inference_ms": 1652.88049983792,
+      "first_prediction_matches_saved": true,
+      "warm_calls": 102,
+      "unique_inputs": 17,
+      "warm_p50_ms": 461.7878500139341,
+      "warm_p95_ms": 686.0476899426415,
+      "warm_min_ms": 443.000600207597,
+      "warm_max_ms": 739.4087999127805,
+      "serial_calls_per_second": 2.0815551256571823,
+      "torch_peak_allocated_bytes": 16173670912,
+      "source_revision": "ede0cb0775aa4e542c6763c4d41496970ff59eaedab29d89b2db2d2f7d02566e",
+      "asset_revision": "977ab6014516622dff32d9b94481a1b013f407d0917a87cd0347945918d114ca"
+    }
+  ],
+  "warm_calls": 306,
+  "unique_inputs": 17,
+  "warm_p50_ms": 457.78219995554537,
+  "warm_p95_ms": 687.5729750026949,
+  "warm_min_ms": 440.421300008893,
+  "warm_max_ms": 739.4087999127805,
+  "serial_calls_per_second": 2.0981286140398683,
+  "classification_mismatches": 0,
+  "scope": "3 fresh Python processes, each loads models then 1 first inference and 102 serial full-pipeline calls over 17 repeated genuine prepared inputs. OS filesystem cache not cleared. Direct LiveEngine includes output persistence, excludes HTTP/job polling and network enforcement. Repeats are latency samples, not additional accuracy cases. No concurrent-load capacity claim.",
+  "quantile_method": "numpy.percentile linear; pooled 306 serial measured calls",
+  "stage_timings": {
+    "detector_ms": {
+      "p50_ms": 7.27459997870028,
+      "p95_ms": 12.487575120758265
+    },
+    "retrieval_ms": {
+      "p50_ms": 0.7319499272853136,
+      "p95_ms": 0.8692750125192106
+    },
+    "fresh_llm_ms": {
+      "p50_ms": 445.16714999917895,
+      "p95_ms": 676.7236500163563
+    }
+  }
+}

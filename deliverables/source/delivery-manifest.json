@@ -122,6 +122,31 @@
       "hash_normalization": "LF",
       "bytes": 522,
       "sha256": "8e4e75552d3b7ae3b9c401843a53eb012fadd8591f7d75b4439a636115bbc9f3"
+    },
+    "results/auditor_ablation.json": {
+      "hash_normalization": "LF",
+      "bytes": 6006,
+      "sha256": "2360019c5e5a19f22199f414c503c68d9d6a2a0b019917018a09fcf7b2fd6d4e"
+    },
+    "results/retrieval_sensitivity.json": {
+      "hash_normalization": "LF",
+      "bytes": 8571,
+      "sha256": "71ee9460f53ef789ea9893323fcdd660b3c117398c604ba107db506b6de7d13a"
+    },
+    "results/ssh_service_poc.json": {
+      "hash_normalization": "LF",
+      "bytes": 4857,
+      "sha256": "f4ee1d21c0a9b1314c3dc8edd0941912ae8f7b8235e9aab869f2dd4886f478cf"
+    },
+    "results/pipeline_latency.json": {
+      "hash_normalization": "LF",
+      "bytes": 3410,
+      "sha256": "4485d3ae9b67ee8d27f86d2c7522b0f08414d8b93b17e46dac0b8dd238d61470"
+    },
+    "results/supplementary_validation.json": {
+      "hash_normalization": "LF",
+      "bytes": 2274,
+      "sha256": "57d81306dc6c671ab5afec1351e9b39bc25b38795ec92d0133ed364cd5a618bc"
     }
   },
   "slides": 12,
@@ -142,12 +167,12 @@
     2560,
     1072
   ],
-  "python_tests": 127,
+  "python_tests": 135,
   "website": "removed; API-only",
   "review": "89 Python tests and deterministic nine-chapter media compilation passed; current real 17-class/17-LLM and six-isolated-scenario validation passed. Existing visual acceptance retained; no visual content changed.",
   "results_changed": true,
-  "markdown_documents": 28,
-  "local_links_checked": 127,
+  "markdown_documents": 30,
+  "local_links_checked": 145,
   "presentation_limit_seconds": 360,
   "buffer_seconds": 60,
   "visual_theme": "white and light gray canvas; navy titles, medium blue diagrams, gold highlights, ink body",
@@ -340,5 +365,14 @@
     ],
     "newly_rendered_svgs_verified": 12,
     "clean_clone_pipeline_verified": true
+  },
+  "supplementary_experiments": {
+    "index": "results/supplementary_validation.json",
+    "report": "docs/補充實驗與適用範圍.md",
+    "fresh_llm_calls": 1389,
+    "retrieval_configurations": 30,
+    "ssh_trials": 3,
+    "warm_pipeline_calls": 306,
+    "original_native_assets_unchanged": true
   }
 }
