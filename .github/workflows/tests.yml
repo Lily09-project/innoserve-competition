@@ -34,6 +34,7 @@ jobs:
       - run: python -m ruff check scripts/check_finals_readiness.py tests/test_finals_readiness.py --select E9,F63,F7,F82
       - run: python -m ruff check scripts/presentation/recolor_roundtrip.py scripts/presentation/restore_alignment.py --select E9,F63,F7,F82
       - run: python -m ruff check tests/test_offline_exhibit.py --select E9,F63,F7,F82
+      - run: python -m ruff check scripts/presentation/merge_static_poster.py tests/test_delivery_reproducibility.py --select E9,F63,F7,F82
       - run: python -m ruff check scripts/media_results.py scripts/render_film_resvg.py tests/test_review_followup.py --select E9,F63,F7,F82
       - run: python -m ruff check app/network_safety.py scripts/analyze_policy_risk.py scripts/showcase.py scripts/network_fault_probe.py scripts/finals_pipeline.py tests/test_stability_console.py tests/test_risk_pipeline.py --select E9,F63,F7,F82
       - run: python -m ruff check scripts/presentation/style_contract.py tests/test_visual_contract.py --select E9,F63,F7,F82

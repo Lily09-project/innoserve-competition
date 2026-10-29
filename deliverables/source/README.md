@@ -26,3 +26,8 @@ presentation-design-spec.md與presentation-spec-lock.md描述PPT Master製作專
 export_static_delivery.ps1只輸出靜態PNG及PDF，不啟動播放。原生播放測試依使用者要求排除；本輪不執行verify_native_delivery.ps1內的舊播放檢查。
 
 數據來源修正（2026-10-29）：先執行python scripts/media_results.py，驗證四份results並生成media/film/metrics.json；影片、海報及逐頁SVG從同一份快照取得指標與樣本數。快照來源hash不符即中止。重製後依序核對原生文字與版面、更新預覽及離線包、重新產生release-validation與delivery-manifest，再執行check_delivery_docs。舊render_film_resvg.py已停用，不再提供不符標楷體／Times New Roman規格的替代字型輸出。
+
+
+## 靜態影片頁備援
+
+`scripts/presentation/export_static_delivery.ps1`保留PowerPoint原生匯出路徑，並擷取PPT中的`opening-poster.png`建立同尺寸靜態頁，再由`merge_static_poster.py`替換PDF第2頁；同一封面也用於第2頁PNG。需要requirements-media.txt的pypdf依賴，可透過`-PythonExecutable`選擇環境。這是靜態匯出，不啟動影片或投影片播放。

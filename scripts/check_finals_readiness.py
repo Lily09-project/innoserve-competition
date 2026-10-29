@@ -24,12 +24,13 @@ BOUND_FILES = list(dict.fromkeys(ASSETS + [PLAN, 'scripts/check_finals_readiness
     'scripts/package_finals.py', 'deliverables/決賽離線展示包.zip', 'README.md',
     'media/film/metrics.json', 'design-system/palette.json',
     'scripts/presentation/recolor_roundtrip.py', 'scripts/presentation/restore_alignment.py',
+    'scripts/presentation/export_static_delivery.ps1', 'scripts/presentation/merge_static_poster.py',
     'tests/offline-exhibit.cjs', 'deliverables/interactive/README.md']))
 
 
 def sha(path):
     data = Path(path).read_bytes()
-    if Path(path).suffix in {'.py', '.md', '.json', '.html', '.cjs'}:
+    if Path(path).suffix in {'.py', '.md', '.json', '.html', '.cjs', '.ps1'}:
         data = data.replace(b'\r\n', b'\n')
     return hashlib.sha256(data).hexdigest()
 

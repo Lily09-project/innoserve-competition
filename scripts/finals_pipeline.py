@@ -17,6 +17,9 @@ from check_delivery_docs import audit,delivery_digest
 REFRESH_OUTPUTS=('results/framework_validation.json','results/policy_risk_analysis.json',
                  'media/film/metrics.json','deliverables/source/release-validation.json',
                  'deliverables/source/delivery-manifest.json')
+STAGE_METADATA=('deliverables/source/delivery-manifest.json','deliverables/source/release-validation.json',
+                'deliverables/source/finals-readiness.json','deliverables/source/recovery-validation.json',
+                'deliverables/interactive/README.md')
 
 
 def refresh_commands(audit_dir):
@@ -108,7 +111,7 @@ def stage_delivery(target,root=ROOT):
         if (target/'authoring/svg_output'/name).read_text(encoding='utf-8')!=(root/'deliverables/source/slides'/name).read_text(encoding='utf-8'):
             raise ValueError('Native deck rebuild required before packaging changed slide sources')
     from package_finals import ASSETS
-    names=[*ASSETS,'deliverables/決賽離線展示包.zip','deliverables/source/delivery-manifest.json','deliverables/source/release-validation.json']
+    names=[*ASSETS,'deliverables/決賽離線展示包.zip',*STAGE_METADATA]
     sums=[]
     for name in names:
         dst=target/name;dst.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(root/name,dst)
