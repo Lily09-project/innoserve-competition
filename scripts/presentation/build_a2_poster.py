@@ -19,6 +19,7 @@ from style_contract import font_runs
 
 PALETTE = json.loads((ROOT/'design-system/palette.json').read_text(encoding='utf-8'))
 BLUE, NAVY, GOLD = (PALETTE[key].lstrip('#') for key in ('blue', 'navy', 'gold'))
+TEAL = PALETTE['teal'].lstrip('#')
 INK = '171C1D'
 MUTED = '53666E'
 PALE = 'F0F2F3'
@@ -182,7 +183,7 @@ def build():
         node(x,330,78,16,label)
         if j<2:arrow(x+81,335,14,6)
     text(120,349,278,10,'複核／不確定 → 保留監測或蒐證',15,MUTED)
-    rect(16,375,388,14,'FFF4DD')
+    rect(16,375,388,14,PALETTE['teal_tint'].lstrip('#'))
     text(20,375,380,14,'同一事件識別碼：正式分類／案例證據／稽核結論／處置回條',18,NAVY,align=PP_ALIGN.CENTER)
 
     section(397, '02', '三項創新，對應具體事件與產物')
@@ -203,7 +204,7 @@ def build():
         value=data['detection'][name]['macro_f1']*100
         text(16,y,44,10,name,18,BLUE if i==2 else INK,i==2)
         rect(64,y+2,94,6,PALE)
-        rect(64,y+2,94*value/100,6,GOLD if i==2 else '7294A9')
+        rect(64,y+2,94*value/100,6,TEAL if i==2 else '7294A9')
         text(161,y,39,10,f'{value:.2f}%',21,BLUE if i==2 else INK,i==2,PP_ALIGN.RIGHT)
     text(16,535,184,9,f'整體準確率{m["accuracy"]*100:.2f}%·固定17類分類',16,MUTED)
     line(210,470,210,549)

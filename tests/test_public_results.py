@@ -140,7 +140,8 @@ class PublicResultsTests(unittest.TestCase):
                     resolved = theme_color.get("val")
                 else:
                     resolved = color.get("val")
-                self.assertIn(resolved, ("FFFFFF", "F0F2F3"))
+                palette = json.loads((ROOT / 'design-system/palette.json').read_text(encoding='utf-8'))
+                self.assertIn(resolved, (palette['white'].lstrip('#'), palette['gray'].lstrip('#')))
 
     def test_current_documentation_and_movie_contract(self):
         from check_delivery_docs import audit

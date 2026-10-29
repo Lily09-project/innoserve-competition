@@ -38,7 +38,7 @@ class FinalsDeliveryTests(unittest.TestCase):
 
     def test_user_palette_is_present_in_native_poster_and_slides(self):
         colors = json.loads((ROOT / 'design-system/palette.json').read_text(encoding='utf-8'))
-        expected = {'navy': '#092B42', 'blue': '#105186', 'gray': '#F0F2F3', 'gold': '#FDB338', 'ink': '#171C1D'}
+        expected = {'navy': '#16324F', 'blue': '#245EA8', 'teal': '#087F8C', 'gray': '#F4F7FA', 'gold': '#E3A338', 'ink': '#243447'}
         for key, value in expected.items():
             self.assertEqual(colors[key], value)
         for name in ('deliverables/決賽海報_AI資安框架_A2.pptx', 'deliverables/決賽簡報_AI資安框架.pptx'):

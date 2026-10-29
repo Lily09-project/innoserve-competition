@@ -18,7 +18,7 @@
 | Artifact Afterlife | GitHub審查及離線展演 |
 | Reading Mode | presentation |
 | Content Strategy | 保留正式實測範圍，精簡文字，重畫方法圖 |
-| Design Style | 白底與淺灰章節，深藍、中藍與金黃重點；原創產品視覺 |
+| Design Style | 白底與淺灰章節，深藍、藍與青綠重點，暖金少量提示；原創產品視覺 |
 | AI Image Acquisition Path | built-in image_gen |
 | Generation Mode | continuous |
 | Spec Refinement | disabled |
@@ -44,7 +44,7 @@
 - **Mode**: custom
 - **Mode Behavior**: 一頁一個主張，以方法流程引出實測結果。
 - **Visual style**: custom
-- **Visual Style Behavior**: 白底與淺灰章節，結語淺灰底#F0F2F3；輕量大標題、8px資訊面板、共用平面向量圖示。
+- **Visual Style Behavior**: 白底與淺灰章節，結語淺灰底#F4F7FA；輕量大標題、8px資訊面板、共用平面向量圖示。
 - **Theme**: 相同事件的四階段延續。
 - **Tone**: 正式、簡潔、可核對。
 
@@ -53,14 +53,14 @@
 | Role | HEX | Purpose |
 | --- | --- | --- |
 | Background | #FFFFFF | light canvas |
-| Secondary background | #F0F2F3 | pale gray canvas |
-| Primary | #105186 | main emphasis |
-| Accent | #FDB338 | key evidence and active state |
-| Title | #092B42 | headline |
-| Secondary accent | #F0F2F3 | light panels |
-| Body text | #171C1D | light ink |
-| Secondary text | #53666E | captions |
-| Divider | #D6DDE0 | hairline |
+| Secondary background | #F4F7FA | pale gray canvas |
+| Primary | #245EA8 | main emphasis |
+| Accent | #E3A338 | key evidence and active state |
+| Title | #16324F | headline |
+| Secondary accent | #F4F7FA | light panels |
+| Body text | #243447 | light ink |
+| Secondary text | #526477 | captions |
+| Divider | #D7E1EA | hairline |
 
 ### AI Image Strategy
 
@@ -286,7 +286,7 @@
 
 ## XV. User supplied light navy, blue and gold palette
 
-依使用者配色圖標示色碼：深藍#092B42、中藍#105186、淺灰#F0F2F3、金黃#FDB338、深墨#171C1D。白色為主要底色，淺灰為次要底；金黃標示本方法長條、導覽當前步驟與關鍵連結。金黃上只放深色文字，不用金黃細字搭白底。目前版本使用共用平面向量圖示，原始立體PNG僅保留為歷史素材。平面色彩、PPT、影片及海報共用design-system/palette.json。
+依本輪白底配色精修：深藍#16324F、中藍#245EA8、淺灰#F4F7FA、金黃#E3A338、深墨#243447。白色為主要底色，淺灰為次要底；青綠#087F8C標示本方法長條與完成狀態，暖金只標示導覽步驟與注意訊號。金黃上只放深色文字，不用金黃細字搭白底。目前版本使用共用平面向量圖示，原始立體PNG僅保留為歷史素材。平面色彩、PPT、影片及海報共用design-system/palette.json。
 
 ## XVI. Readability and completeness refinement
 

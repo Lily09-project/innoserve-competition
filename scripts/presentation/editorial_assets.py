@@ -3,7 +3,7 @@ from pathlib import Path
 from html import escape
 import json
 import sys
-from style_contract import TYPOGRAPHY, font_runs, icon_fragment
+from style_contract import TYPOGRAPHY, font_runs, icon_fragment, resolve_colors
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT/'scripts'))
@@ -12,6 +12,7 @@ DEST = ROOT / 'deliverables/source'
 PROJECT = ROOT / 'projects/finals_editorial_ppt169_20261028'
 PALETTE = json.loads((ROOT/'design-system/palette.json').read_text(encoding='utf-8'))
 BLUE, NAVY, GOLD = (PALETTE[key] for key in ('blue', 'navy', 'gold'))
+TEAL = PALETTE['teal']
 FONT = TYPOGRAPHY['latin']
 CJK_FONT = TYPOGRAPHY['cjk']
 PAGE_NUMBERS = {1:1, 6:2, 2:3, 3:4, 4:5, 5:6, 7:7, 8:8, 9:9}
@@ -30,7 +31,7 @@ def rect(x, y, w, h, fill='#F0F2F3', radius=8, stroke='none'):
 
 
 def svg(body, height=720, bg='#FFFFFF'):
-    return f'<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="{height}" viewBox="0 0 1280 {height}" font-family="{FONT}">{rect(0,0,1280,height,bg,0)}{body}</svg>'
+    return resolve_colors(f'<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="{height}" viewBox="0 0 1280 {height}" font-family="{FONT}">{rect(0,0,1280,height,bg,0)}{body}</svg>')
 
 
 def image(x, y, w, h, file):
@@ -255,7 +256,7 @@ def build_pages(limit=12):
         value=detector[name]['macro_f1']*100
         y=254+i*110
         marks+=text(64,y+29,label,23,BLUE if i==2 else '#171C1D',600 if i==2 else 400)
-        marks+=rect(200,y,650*value/100,42,GOLD if i==2 else '#7294A9',0)
+        marks+=rect(200,y,650*value/100,42,TEAL if i==2 else '#7294A9',0)
         marks+=text(200+650*value/100+12,y+29,f'{value:.2f}%',23,BLUE if i==2 else '#171C1D',600)
     chart+= '<!-- chart-plot-area: object=detector-comparison | 200,220,850,550 -->'+marks
     s+=group('detector-comparison',group('detector-comparison-chartArea',chart))
@@ -278,7 +279,7 @@ def build_pages(limit=12):
         x=64+i*294
         s+=rect(x,292,270,174,'#FFFFFF',8)+glyph(['document','search','check','clock'][i],x+104,305,62)+text(x+135,401,a,27,BLUE,600,'middle')+text(x+135,443,b,20,'#53666E',400,'middle')
         if i<3:s+=arrow([(x+270,381),(x+294,381)])
-    s+=rect(64,502,1152,56,'#FFF4DD')+text(640,540,'同一事件 ID，串起分類、證據、判斷與回復紀錄。',26,NAVY,anchor='middle')
+    s+=rect(64,502,1152,56,PALETTE['teal_tint'])+text(640,540,'同一事件 ID，串起分類、證據、判斷與回復紀錄。',26,NAVY,anchor='middle')
     s+=text(64,604,f'{m["live_classes"]} 類真實張量重跑 · {m["network_cases"]} 種隔離 TCP 情境驗證',26)+text(64,645,'感謝聆聽，敬請指教。',24,BLUE)
     pages.append(graphic_page(9,'一套可展示、可查核的資安框架',s,'AI SECURITY FRAMEWORK','ending','#F0F2F3'))
     pages=[pages[i] for i in [0,5,1,2,3,4,6,7,8]]
