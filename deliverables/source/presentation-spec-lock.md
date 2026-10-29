@@ -82,3 +82,6 @@
 
 - `mask`, `<style>`, `class`, external CSS, `<foreignObject>`, `textPath`, `@font-face`, `<animate*>`, `<set>`, `<script>` / event attributes, `<iframe>`
 - HTML named entities in text; write typography as raw Unicode and escape XML reserved characters
+
+
+<!-- visual refinement 2026-10-29: original shared framework emblem on cover, blue title rule, discreet progress marks, outlined model branches and QA rails; existing page content, charts, notes and order retained. -->

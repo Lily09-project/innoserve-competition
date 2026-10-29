@@ -31,6 +31,11 @@ def audit():
                 align = shape['align']
                 actual = x+(w/2 if align == 2 else w if align == 3 else 0)
                 delta = actual-shape['target_x']
+                if kind == 'poster' and 'PosterTitle_Centered_210mm' in shape['name']:
+                    title_delta=actual-page['width']/2
+                    report['poster_title_center_delta_pt']=title_delta
+                    if align!=2 or abs(title_delta)>.1:
+                        report['errors'].append({'media':kind,'page':number,'error':'poster title not centered on A2 page','delta_pt':title_delta})
                 if abs(delta) > .1:
                     report['errors'].append({'media': kind, 'page': number, 'text': shape['text'], 'delta_pt': delta})
                 if x < -.1 or y < -.1 or x+w > page['width']+.1 or y+h > page['height']+.1:

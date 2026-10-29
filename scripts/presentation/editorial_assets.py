@@ -158,8 +158,9 @@ def capability_icon(index,x,y,size):
 
 
 def graphic_page(n,title,body,kicker='METHOD',role='content',bg='#FFFFFF'):
-    heading=group('headline',rect(64,27,4,30,GOLD,1)+text(80,49,kicker,17,BLUE,600)+text(64,116,title,42,NAVY,300))
-    footer=group('footer',f'<line x1="64" y1="667" x2="1216" y2="667" stroke="#D6DDE0" stroke-width="1"/>'+text(64,692,'AI 資安框架 · 資安技術組',15,'#53666E')+text(1216,692,(f'{PAGE_NUMBERS[n]:02d} / 09' if n<=9 else f'答詢備用 {n-9} / 3'),15,'#53666E',400,'end'))
+    heading=group('headline',rect(64,27,4,30,GOLD,1)+text(80,49,kicker,17,BLUE,600)+text(64,116,title,42,NAVY,300)+(rect(64,138,80,3,BLUE,0) if title else ''))
+    progress=''.join(rect(930+k*20,684,12,3,GOLD if k==(PAGE_NUMBERS[n]-1 if n<=9 else n-10) else '#D6DDE0',1) for k in range(9 if n<=9 else 3))
+    footer=group('footer',f'<line x1="64" y1="667" x2="1216" y2="667" stroke="#D6DDE0" stroke-width="1"/>'+text(64,692,'AI 資安框架 · 資安技術組',15,'#53666E')+text(1216,692,(f'{PAGE_NUMBERS[n]:02d} / 09' if n<=9 else f'答詢備用 {n-9} / 3'),15,'#53666E',400,'end')+progress)
     background=rect(0,0,1280,720,bg,0).replace('<rect ','<rect id="page-background" data-pptx-role="background" ',1)
     return f'<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" font-family="{FONT}" data-pptx-page-role="{role}">{background}{heading}{group("page-content",body)}{footer}</svg>'
 
@@ -178,7 +179,7 @@ def build_pages(limit=12):
         x=64+i*222
         s+=rect(x,500,188,72)+capability_icon(i,x+8,509,50)+text(x+115,546,label,26,BLUE,600,'middle')
         if i<3:s+=arrow([(x+188,536),(x+222,536)])
-    s+=image(976,414,222,222,'icon-4.png')
+    s+=f'<g transform="translate(938 170) scale(4.25)">{icon_fragment("framework")}</g>'
     pages.append(graphic_page(1,'',s,'2026 資安技術組 · 決賽','cover'))
     # P02: native architecture carries the full topological contract.
     SY,OY=1,142
@@ -192,8 +193,8 @@ def build_pages(limit=12):
         s+=text(86,y,label,24)+rect(196,y-24,66,30,'#EAF0F4',4)
         for z in range(4):s+=rect(202+z*13,y-18,7,18 if j!=1 else 8+z*3,BLUE,1)
     s+=arrow([(284,365),(328,365),(328,270),(370,270)])+arrow([(328,365),(328,455),(370,455)])
-    s+=rect(370,196,340,148)+image(390,211,82,82,'icon-2.png')+text(492,240,'CTBM',32,BLUE,600)+text(492,278,'內容·時序·方向',21)+text(394,323,'讀取流量的時序關係',21,'#53666E')
-    s+=rect(370,381,340,148)+glyph('packet',394,398,70)+text(492,425,'PBCNN',32,BLUE,600)+text(492,465,'短窗位元組模式',21)+text(394,508,'補充局部內容特徵',21,'#53666E')
+    s+=rect(370,196,340,148,'#FFFFFF',8,'#D6DDE0')+rect(370,196,4,148,BLUE,0)+image(390,211,82,82,'icon-2.png')+text(492,240,'CTBM',32,BLUE,600)+text(492,278,'內容·時序·方向',21)+text(394,323,'讀取流量的時序關係',21,'#53666E')
+    s+=rect(370,381,340,148,'#FFFFFF',8,'#D6DDE0')+rect(370,381,4,148,BLUE,0)+glyph('packet',394,398,70)+text(492,425,'PBCNN',32,BLUE,600)+text(492,465,'短窗位元組模式',21)+text(394,508,'補充局部內容特徵',21,'#53666E')
     s+=arrow([(710,270),(760,270),(760,365),(810,365)])+arrow([(710,455),(760,455),(760,365)])
     s+=rect(810,273,406,180,'#EAF0F4')+text(835,320,'校準＋OOF Gate',30,BLUE,600)+text(835,365,'依事件證據融合',25)+text(835,412,'形成同一次正式判定',23,'#53666E')
     s+=arrow([(1013,453),(1013,565)])+rect(64,565,1152,64)+text(88,605,'17 類判定  ＋  校準信心  ＋  模型表徵  →  後段檢索與稽核',25)
@@ -288,6 +289,7 @@ def build_pages(limit=12):
             question,answers,metric,metric_label,proof=qa[qi]
             y=165+slot*244
             content+=rect(64,y,1152,220,'#F0F2F3')+rect(974,y,242,220,'#EAF0F4')
+            content+=rect(64,y,4,220,BLUE,0)
             content+=text(88,y+40,f'Q{qi+1}',24,BLUE,600)+text(144,y+40,question,26,'#171C1D',600)
             if qi==0:
                 for j,label in enumerate(['互補判定','529 維檢索','AI 稽核','策略與回復']):

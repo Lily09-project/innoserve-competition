@@ -1,17 +1,17 @@
 {
-  "base_revision": "04a5d3e",
+  "base_revision": "d49dde9",
   "files": {
     "deliverables/決賽簡報_AI資安框架.pptx": {
-      "bytes": 1862733,
-      "sha256": "7c666f284498cb63cd803cca307fb5826bf53ac682e11a0dc161c11f2acb9647"
+      "bytes": 2158393,
+      "sha256": "8c20cce6f85eec12d0f8846ec3929af9aae626eae6cec64ecdaa462ec1364d73"
     },
     "deliverables/決賽簡報_AI資安框架.pdf": {
-      "bytes": 480318,
-      "sha256": "7bc9effc6fda6f7a67126d0d28a9df79be0bb8b9adcda6b9da3488f009f1b53e"
+      "bytes": 532675,
+      "sha256": "d088451eabef6a85766fb1e452448138b775e07d1468b6838152e7607a78f734"
     },
     "deliverables/AI資安框架_系統展示影片_30秒快版.mp4": {
-      "bytes": 1590263,
-      "sha256": "0c30ade75ffa3c7ab86a0aa56983764d35813311ebf4921f73a48baabd161caf"
+      "bytes": 1748726,
+      "sha256": "a5298f1439a38b3e6439b52507077803adecb55cf0c620d466e8708a7e719017"
     },
     "deliverables/figures/fig_architecture.png": {
       "bytes": 307476,
@@ -22,20 +22,20 @@
       "sha256": "e99352554b800b2544969762ed91adaf067a81a6a3efe3efa39560a13a8aea2c"
     },
     "deliverables/決賽海報_AI資安框架_A2.pptx": {
-      "bytes": 127159,
-      "sha256": "7e2bcb2e552fd80c85a2b09d3270adb3ca53a6a7488431ba1e55a6138b4ac37f"
+      "bytes": 127547,
+      "sha256": "e4be853a6d7399c2e38cdf75f82af56053de2202a9e2f6b05d24161f754e12f2"
     },
     "deliverables/決賽海報_AI資安框架_A2.pdf": {
-      "bytes": 213361,
-      "sha256": "63b2fb7e0fb2caf8942d32731ab540584f93d5ccc0ce58c6f68b69ad8f90f3ed"
+      "bytes": 201622,
+      "sha256": "61f240fc57943347b8f2d055801d016519db7b6b52475c3d162b60f087a711ab"
     },
     "deliverables/決賽離線展示包.zip": {
-      "bytes": 3909292,
-      "sha256": "f751934664f50aa2ca0848d811c5d8271ba7cfa3bd517a5739b65acd32aaea1b"
+      "bytes": 4423992,
+      "sha256": "a13ba6da164825dedf3162d48e4e88477ab2af3d5e12d3c4dd6f1bd1c7edb429"
     },
     "deliverables/source/release-validation.json": {
       "bytes": 8261,
-      "sha256": "ab33c5bb4d6e48ba0ff3740de8cb855c4217c51498d71b50a1bc9438dacb24fd",
+      "sha256": "9370cf87fc90d707dce90647650f9f226ff7ba8712d6600200ce1853d14589d1",
       "hash_normalization": "LF"
     }
   },
@@ -160,7 +160,8 @@
     "film_text_guides": 171,
     "film_center_checks": 52,
     "errors": 0,
-    "poster_print_safe_text_mm": 15
+    "poster_print_safe_text_mm": 15,
+    "poster_title_center_delta_pt": 0.025604248046875
   },
   "current_native_playback_verified": false,
   "design_reference_record": "docs/海報與影片參考轉譯.md",
@@ -170,7 +171,7 @@
   "validation_policy": "User requested no playback tests; use file integrity, full decode, frame timestamps, embedded byte equality, typography, alignment and visual frame review.",
   "full_decoded_video_frames": 720,
   "decoded_pts_continuous": true,
-  "transition_frames_inspected": 32,
+  "transition_frames_inspected": 18,
   "release_inventory": "deliverables/source/release-validation.json",
   "clean_clone_validation": {
     "private_assets_present": false,
@@ -187,5 +188,16 @@
     "execution_source_files": 23,
     "runtime_asset_files": 23,
     "report": "docs/程式審查修正.md"
+  },
+  "sampled_decode_frames_inspected": 60,
+  "visual_refinement": {
+    "date": "2026-10-29",
+    "poster_title_pt": 34,
+    "poster_title_align": "center on A2 210 mm axis",
+    "shared_framework_emblem": true,
+    "english_stage_label_font_px": 36,
+    "english_stage_label_minimum_effective_height_px": 37,
+    "independent_frame_review": "passed within offline sample scope",
+    "reference_record": "docs/海報與影片參考轉譯.md"
   }
 }

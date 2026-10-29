@@ -105,9 +105,11 @@ def build():
             line(x+29, y+46, x+35, y+37, BLUE, 2)
 
     # Editorial hierarchy: official name, one takeaway, four readable method lanes.
-    text(16, 15, 388, 8, '資安技術組決賽作品', 14, BLUE)
-    text(16, 24, 388, 46, '融合新型內容相依時序方向模型\n入侵偵測與任務導向檢索增強稽核\n之 AI 資安框架', 30, NAVY)
-    icon(4, 348, 30, 46)
+    rect(16, 10, 388, 69, 'F0F2F3')
+    text(16, 15, 388, 8, '資安技術組決賽作品', 14, BLUE, align=PP_ALIGN.CENTER)
+    title=text(16, 24, 388, 50, '融合新型內容相依時序方向模型\n入侵偵測與任務導向檢索增強稽核\n之 AI 資安框架', 34, NAVY, align=PP_ALIGN.CENTER)
+    title.name='PosterTitle_Centered_210mm'
+    rect(190, 78, 40, 1.2, GOLD)
     line(16, 85, 404, 85)
     text(16, 92, 388, 13, '從流量告警，走到有證據、可回復的處置', 26, NAVY)
     text(16, 108, 388, 10, '同一事件串起模型判定、相似案例、AI稽核與處置回條。', 19, MUTED)
@@ -117,7 +119,7 @@ def build():
               ('證據稽核', '保留正式分類', None), ('受控回復', '策略＋期限', 4)]
     for i, (name, detail, image) in enumerate(stages):
         y = 145+i*56
-        rect(16, y, 388, 50, PALE, LINE)
+        rect(16, y, 388, 50, 'EAF0F4' if i in (0,3) else PALE, LINE)
         rect(16, y, 1.5, 50, BLUE)
         text(23, y+4, 10, 8, f'{i+1:02d}', 16, BLUE, True)
         text(37, y+3, 73, 10, name, 23, BLUE)
@@ -176,6 +178,7 @@ def build():
                    ('可追溯處置','稽核附回原事件、策略另檢查\n讀回與到期回復留下紀錄')]
     for i,(heading,copy) in enumerate(innovations):
         x=16+i*133
+        rect(x,411,14,1,GOLD)
         if i:line(x-6,414,x-6,448)
         text(x,413,122,11,heading,22,BLUE)
         text(x,426,124,22,copy,16,MUTED)
