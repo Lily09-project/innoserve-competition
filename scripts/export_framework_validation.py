@@ -1,11 +1,19 @@
 """Export aggregate validation only; exclude event IDs, paths and raw responses."""
 import json
+import argparse
+import sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(ROOT/'app'))
+from server import source_revision
+from audit_selection import select_audit
 
 
 def main():
-    folder=sorted((ROOT / "validation").glob("framework_audit_*"))[-1]
+    parser=argparse.ArgumentParser()
+    parser.add_argument('--audit-dir',type=Path)
+    args=parser.parse_args()
+    folder=select_audit(ROOT/'validation',source_revision(),args.audit_dir)
     read=lambda name:json.loads((folder / name).read_text(encoding="utf-8"))
     summary=read("summary.json")
     assert summary["status"]=="passed"

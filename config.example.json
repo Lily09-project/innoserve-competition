@@ -3,5 +3,11 @@
   "gate_impl_path": "PATH_TO_GATE_SOFT_OOF_SEARCH_PY",
   "ids_data_root": "PATH_TO_TRAIN_VALIDATION_TEST_JSONL",
   "llama_model_dir": "PATH_TO_LOCAL_LLAMA_3_8B_INSTRUCT_SNAPSHOT",
-  "python_executable": "PATH_TO_PYTHON_WITH_REQUIREMENTS_INSTALLED"
+  "python_executable": "PATH_TO_PYTHON_WITH_REQUIREMENTS_INSTALLED",
+  "wsl_distribution": "Ubuntu-24.04",
+  "wsl_user": "root",
+  "network_timeout_seconds": 100,
+  "warmup_timeout_seconds": 180,
+  "job_retention_seconds": 3600,
+  "max_completed_jobs": 128
 }

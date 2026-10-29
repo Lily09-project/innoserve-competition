@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
-const require=createRequire(process.env.RENDER_NODE_MODULES+'/package.json');
+const require=createRequire(process.env.RENDER_NODE_MODULES ? process.env.RENDER_NODE_MODULES+'/package.json' : import.meta.url);
 const sharp=require('sharp');
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../..');
 const palette=JSON.parse(fs.readFileSync(path.join(root,'design-system/palette.json'),'utf8'));

@@ -49,10 +49,12 @@
 
 ```bash
 python scripts/preflight.py --warmup
-python scripts/audit_alignment_assets.py
 python scripts/audit_final_chain.py
+python scripts/audit_alignment_assets.py
 ```
 
 `audit_alignment_assets.py`核對模型與表徵來源；`audit_final_chain.py`重跑17類及6種隔離情境，並掃描正式簡報、架構圖與影片來源的匿名文字。`verify_delivery.py`另提供保存事件與可選隔離路徑的檢查，其回復測試模式與自動到期量測分開記錄。
 
 上述驗證保存於Git忽略的`validation/`與`evidence/`。模型推論、AI回覆及網路隔離測試各自保留執行模式，不把重播標示為即時執行。
+
+稽核與彙整匯出支援`--audit-dir`明確指定成功紀錄；未指定時只選來源指紋相符的完整成功紀錄。驗收與依賴說明見[重現方式](docs/驗收與重現方式.md)。

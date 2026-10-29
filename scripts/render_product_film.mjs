@@ -6,7 +6,7 @@ import {spawn,execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import {frameSvg,duration,chapters,controlTimeline,playbackSpeed,presentationDuration,maxDuration} from '../media/film/scene.mjs';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
-const require=createRequire(process.env.RENDER_NODE_MODULES+'/package.json');
+const require=createRequire(process.env.RENDER_NODE_MODULES ? process.env.RENDER_NODE_MODULES+'/package.json' : import.meta.url);
 const sharp=require('sharp');
 const output=path.resolve(process.argv[2]||path.join(root,'validation/product_film'));
 fs.mkdirSync(output,{recursive:true});
