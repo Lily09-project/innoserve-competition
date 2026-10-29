@@ -23,12 +23,13 @@ NS = {'a': 'http://schemas.openxmlformats.org/drawingml/2006/main',
 BOUND_FILES = list(dict.fromkeys(ASSETS + [PLAN, 'scripts/check_finals_readiness.py',
     'scripts/package_finals.py', 'deliverables/決賽離線展示包.zip', 'README.md',
     'media/film/metrics.json', 'design-system/palette.json',
-    'scripts/presentation/recolor_roundtrip.py', 'scripts/presentation/restore_alignment.py']))
+    'scripts/presentation/recolor_roundtrip.py', 'scripts/presentation/restore_alignment.py',
+    'tests/offline-exhibit.cjs', 'deliverables/interactive/README.md']))
 
 
 def sha(path):
     data = Path(path).read_bytes()
-    if Path(path).suffix in {'.py', '.md', '.json'}:
+    if Path(path).suffix in {'.py', '.md', '.json', '.html', '.cjs'}:
         data = data.replace(b'\r\n', b'\n')
     return hashlib.sha256(data).hexdigest()
 
@@ -108,7 +109,7 @@ def check_bundle(root=ROOT):
         expected = []
         for name in ASSETS:
             content = (root / name).read_bytes()
-            if name.endswith(('.md', '.json')):
+            if name.endswith(('.md', '.json', '.html')):
                 content = content.replace(b'\r\n', b'\n')
             if archive.read(name) != content:
                 raise ValueError('offline_bundle_stale:' + name)

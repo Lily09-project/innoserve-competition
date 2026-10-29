@@ -30,12 +30,12 @@
       "sha256": "77aab279a169a29de361c7efd797c38bf5992158656690cd51d3bcd4b133fb80"
     },
     "deliverables/決賽離線展示包.zip": {
-      "bytes": 4080262,
-      "sha256": "ffb92ac16ec67eb935d8823c39064039de509e3cbb8ffe0a3f127037038af282"
+      "bytes": 4111917,
+      "sha256": "f6124f0c07db22bfd4443e9eb6f993f70a511e16110ab800aca7c664f8c07d2c"
     },
     "deliverables/source/release-validation.json": {
       "bytes": 10198,
-      "sha256": "0e426b4151780b7013c44abe96456efaef2d35ce893ecdad0a461dc294ff29d2",
+      "sha256": "fffc782cb96463b48f1b7fbf44f2f3d6f1a3f0f5492bca67d6c8b711249a0214",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/01_slide.svg": {
@@ -130,8 +130,8 @@
     },
     "deliverables/source/finals-readiness.json": {
       "hash_normalization": "LF",
-      "bytes": 2947,
-      "sha256": "9931ba43f502269b3d70c40e152a445bb5cc1c6536231b316f4cb2ced0ccbb5c"
+      "bytes": 3300,
+      "sha256": "cfc6522c69ba5fd364524e9fb787f9a55f4c7ceb916dde02d330317a25446ba5"
     },
     "docs/決賽五分鐘口語稿.md": {
       "hash_normalization": "LF",
@@ -147,6 +147,21 @@
       "hash_normalization": "LF",
       "bytes": 2855,
       "sha256": "2407a165ffe4df3c51f1fa59be76098ca095b5c4f8893cececba6b2b1c666079"
+    },
+    "deliverables/interactive/AI資安框架_離線互動展示.html": {
+      "hash_normalization": "LF",
+      "bytes": 119888,
+      "sha256": "051ed398fafe28a22c8371e13cdb9863379fe574706e0df92538a93ecb09fa12"
+    },
+    "deliverables/interactive/README.md": {
+      "hash_normalization": "LF",
+      "bytes": 2833,
+      "sha256": "da10cfd5068f0f80a3b45ae91abcc87bac6aec752223df83d4aa4f4a7d2c1852"
+    },
+    "tests/offline-exhibit.cjs": {
+      "hash_normalization": "LF",
+      "bytes": 7962,
+      "sha256": "454f8295d05a76c41e15e236d8fbd2fd72401f3501fd30eb227c2d183bf2a989"
     }
   },
   "slides": 12,
@@ -167,12 +182,12 @@
     2560,
     1072
   ],
-  "python_tests": 137,
+  "python_tests": 141,
   "website": "removed; API-only",
   "review": "89 Python tests and deterministic nine-chapter media compilation passed; current real 17-class/17-LLM and six-isolated-scenario validation passed. Existing visual acceptance retained; no visual content changed.",
   "results_changed": true,
-  "markdown_documents": 31,
-  "local_links_checked": 152,
+  "markdown_documents": 32,
+  "local_links_checked": 157,
   "presentation_limit_seconds": 360,
   "buffer_seconds": 60,
   "visual_theme": "white and light gray canvas; navy titles, medium blue diagrams, gold highlights, ink body",
@@ -386,7 +401,21 @@
     "planned_seconds": 300,
     "buffer_seconds": 60,
     "qa_questions": 6,
-    "offline_assets": 10,
+    "offline_assets": 11,
     "native_playback": "excluded_by_user"
+  },
+  "offline_interactive": {
+    "file": "deliverables/interactive/AI資安框架_離線互動展示.html",
+    "documentation": "deliverables/interactive/README.md",
+    "mode": "synthetic_educational_demo",
+    "learned_models_executed": false,
+    "network_rules_executed": false,
+    "default_speed": 2,
+    "source_timeline_seconds": 73,
+    "default_playback_seconds": 36.5,
+    "remote_runtime_dependencies": 0,
+    "dom_scenarios": 4,
+    "dom_time_states": 48,
+    "real_browser_layout_verified": false
   }
 }
