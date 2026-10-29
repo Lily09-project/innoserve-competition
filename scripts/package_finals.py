@@ -1,6 +1,8 @@
 """Package offline presentation assets only; exclude private models and raw events."""
 import hashlib
+import os
 from pathlib import Path
+import tempfile
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -43,17 +45,43 @@ def asset_bytes(name):
     return content.replace(b'\r\n', b'\n') if name.endswith(('.md', '.json', '.html')) else content
 
 
-def build():
-    output = ROOT / 'deliverables/決賽離線展示包.zip'
+def build(root=ROOT):
+    root = Path(root)
+    output = root / 'deliverables/決賽離線展示包.zip'
+    if output.is_symlink() or not output.resolve().is_relative_to(root.resolve()):
+        raise ValueError('unsafe_package_target')
     hashes = []
-    with zipfile.ZipFile(output, 'w', zipfile.ZIP_DEFLATED) as archive:
-        for name in ASSETS:
-            content = asset_bytes(name)
-            archive.writestr(name, content)
-            hashes.append(hashlib.sha256(content).hexdigest()+'  '+name)
-        archive.writestr('使用說明.txt', INSTRUCTIONS.encode('utf-8'))
-        archive.writestr('SHA256SUMS.txt', ('\n'.join(hashes)+'\n').encode('utf-8'))
+    descriptor, temporary = tempfile.mkstemp(prefix='.offline-', suffix='.tmp', dir=output.parent)
+    os.close(descriptor)
+    temporary = Path(temporary)
+    def put(archive, name, content):
+        entry = zipfile.ZipInfo(name, date_time=(1980, 1, 1, 0, 0, 0))
+        entry.compress_type = zipfile.ZIP_DEFLATED
+        entry.create_system = 3
+        entry.external_attr = 0o100644 << 16
+        archive.writestr(entry, content)
+    try:
+        with zipfile.ZipFile(temporary, 'w', zipfile.ZIP_DEFLATED) as archive:
+            for name in ASSETS:
+                path = root / name
+                if path.is_symlink() or not path.resolve().is_relative_to(root.resolve()):
+                    raise ValueError('unsafe_package_asset')
+                content = path.read_bytes()
+                if name.endswith(('.md', '.json', '.html')):
+                    content = content.replace(b'\r\n', b'\n')
+                put(archive, name, content)
+                hashes.append(hashlib.sha256(content).hexdigest()+'  '+name)
+            put(archive, '使用說明.txt', INSTRUCTIONS.encode('utf-8'))
+            put(archive, 'SHA256SUMS.txt', ('\n'.join(hashes)+'\n').encode('utf-8'))
+        with zipfile.ZipFile(temporary) as archive:
+            if archive.testzip() is not None:
+                raise ValueError('package_crc_failed')
+        os.replace(temporary, output)
+    finally:
+        if temporary.exists():
+            temporary.unlink()
     print('Offline package:', len(ASSETS), 'assets; no private model assets')
+    return output
 
 
 if __name__ == '__main__':

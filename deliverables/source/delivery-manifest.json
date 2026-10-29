@@ -6,8 +6,8 @@
       "sha256": "60d573716cbf354b0bf5f38c7fab55e97b94791983a506b5c1a88c2acfe89952"
     },
     "deliverables/決賽簡報_AI資安框架.pdf": {
-      "bytes": 253861,
-      "sha256": "f5393b0da07cc767578391719c738641c46ca5a9f7f925c658a8809dc42b73a3"
+      "bytes": 248530,
+      "sha256": "9cb5882b5ad57423964b5a8e98d9ebdb4614386a4faadf5b6dd5bf9c3c2b06f0"
     },
     "deliverables/AI資安框架_系統展示影片_30秒快版.mp4": {
       "bytes": 1724948,
@@ -27,15 +27,15 @@
     },
     "deliverables/決賽海報_AI資安框架_A2.pdf": {
       "bytes": 220645,
-      "sha256": "77aab279a169a29de361c7efd797c38bf5992158656690cd51d3bcd4b133fb80"
+      "sha256": "8ddb82d551ab7e95a51fe11abc6651f672947a8520e978778ff4f15ce5e318ab"
     },
     "deliverables/決賽離線展示包.zip": {
-      "bytes": 4111917,
-      "sha256": "f6124f0c07db22bfd4443e9eb6f993f70a511e16110ab800aca7c664f8c07d2c"
+      "bytes": 4109718,
+      "sha256": "927f72ae692b8005fbf198c2fc612643132efa4e981bfd7c804f2cab340e13c1"
     },
     "deliverables/source/release-validation.json": {
       "bytes": 10198,
-      "sha256": "fffc782cb96463b48f1b7fbf44f2f3d6f1a3f0f5492bca67d6c8b711249a0214",
+      "sha256": "43138f162633b97a07ab6fcd196ffc2fbd6b841150c3814ae3253acb7ed6f115",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/01_slide.svg": {
@@ -130,8 +130,8 @@
     },
     "deliverables/source/finals-readiness.json": {
       "hash_normalization": "LF",
-      "bytes": 3300,
-      "sha256": "cfc6522c69ba5fd364524e9fb787f9a55f4c7ceb916dde02d330317a25446ba5"
+      "bytes": 3544,
+      "sha256": "a1943dda0e3f0b0b923168396f5d75c3d99eaa799765ba828e0d1270dd6a6718"
     },
     "docs/決賽五分鐘口語稿.md": {
       "hash_normalization": "LF",
@@ -150,18 +150,18 @@
     },
     "deliverables/interactive/AI資安框架_離線互動展示.html": {
       "hash_normalization": "LF",
-      "bytes": 119888,
+      "bytes": 123470,
       "sha256": "051ed398fafe28a22c8371e13cdb9863379fe574706e0df92538a93ecb09fa12"
     },
     "deliverables/interactive/README.md": {
       "hash_normalization": "LF",
-      "bytes": 2833,
+      "bytes": 2867,
       "sha256": "da10cfd5068f0f80a3b45ae91abcc87bac6aec752223df83d4aa4f4a7d2c1852"
     },
     "tests/offline-exhibit.cjs": {
       "hash_normalization": "LF",
-      "bytes": 7962,
-      "sha256": "454f8295d05a76c41e15e236d8fbd2fd72401f3501fd30eb227c2d183bf2a989"
+      "bytes": 8353,
+      "sha256": "b2703c83bf3edd7a751c0a10b3ce83de73c962cfb9e4a5e9b272fd50f91d5574"
     }
   },
   "slides": 12,
@@ -182,7 +182,7 @@
     2560,
     1072
   ],
-  "python_tests": 141,
+  "python_tests": 149,
   "website": "removed; API-only",
   "review": "89 Python tests and deterministic nine-chapter media compilation passed; current real 17-class/17-LLM and six-isolated-scenario validation passed. Existing visual acceptance retained; no visual content changed.",
   "results_changed": true,
@@ -417,5 +417,15 @@
     "dom_scenarios": 4,
     "dom_time_states": 48,
     "real_browser_layout_verified": false
+  },
+  "delivery_reproducibility": {
+    "atomic_zip_publication": true,
+    "stable_zip_metadata": true,
+    "lf_text_members": true,
+    "failed_build_preserves_previous_package": true,
+    "staged_metadata_complete": true,
+    "static_pdf_movie_poster_automated": true,
+    "regression_tests": 8,
+    "native_playback_executed": false
   }
 }

@@ -1,5 +1,5 @@
 {
-  "created_utc": "2026-10-29T15:08:58.594887+00:00",
+  "created_utc": "2026-10-29T15:16:59.941973+00:00",
   "source_revision": "ede0cb0775aa4e542c6763c4d41496970ff59eaedab29d89b2db2d2f7d02566e",
   "bindings": {
     "visual_sources": {
@@ -15,7 +15,7 @@
       "media/film/metrics.mjs": "39180d26ce80926435c92e3cdbef0bbaeb16c9a612c9ef9db97ff36716a79701",
       "media/film/metrics.json": "816450d6ba5340d14b5bae6aeb133a462deb6be3f6eb3f4a37fb8274656222c1",
       "scripts/media_results.py": "9823f3ba4a60908ae3ba51dbd90ffb5a4a748297cb5663034a33fc7a6c5d2eae",
-      "scripts/finals_pipeline.py": "5d235c9ec1f4678241939d1ad2eae7420cb71cf77a20c73844b66a5c3344abc3",
+      "scripts/finals_pipeline.py": "d6e31277cc56e1b70fa7f39d03ddf4806c88230735ef175338650ddf3856b30c",
       "deliverables/source/slides/01_slide.svg": "5f21523cf598e38955566315ce636532820e39e95f9cdc02bd061eff3cbe8d77",
       "deliverables/source/slides/02_slide.svg": "b81ea46629cb5a64884cb89b35c81c93a0d47506e20ce957e95ece2565e58aa4",
       "deliverables/source/slides/03_slide.svg": "5720fee616f6ed01c1c619a2dbf65a3e0c52305ac62bf0d92c9458d2c6acc90a",
@@ -31,9 +31,9 @@
     },
     "artifacts": {
       "deliverables/決賽簡報_AI資安框架.pptx": "60d573716cbf354b0bf5f38c7fab55e97b94791983a506b5c1a88c2acfe89952",
-      "deliverables/決賽簡報_AI資安框架.pdf": "f5393b0da07cc767578391719c738641c46ca5a9f7f925c658a8809dc42b73a3",
+      "deliverables/決賽簡報_AI資安框架.pdf": "9cb5882b5ad57423964b5a8e98d9ebdb4614386a4faadf5b6dd5bf9c3c2b06f0",
       "deliverables/決賽海報_AI資安框架_A2.pptx": "a9d57d8bde37f20e9635c6aeecfbdd3973b896bd845bcc6632a6d2bc1dae6de1",
-      "deliverables/決賽海報_AI資安框架_A2.pdf": "77aab279a169a29de361c7efd797c38bf5992158656690cd51d3bcd4b133fb80",
+      "deliverables/決賽海報_AI資安框架_A2.pdf": "8ddb82d551ab7e95a51fe11abc6651f672947a8520e978778ff4f15ce5e318ab",
       "deliverables/AI資安框架_系統展示影片_30秒快版.mp4": "dc4123dd2b57c95e3c3658912fbb43bdd9bcfe7d5826851c72c345dacb6c132e",
       "deliverables/source/architecture.svg": "86653758099d489c828767f59eec0ee811a4a047600348d7499d02e5bb4a7943",
       "deliverables/source/speaker-notes.md": "a0710803e4bf451b2cd7cb4cf3d695d937967b102b5e6cb8be5e4d839e44137b"

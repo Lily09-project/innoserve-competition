@@ -78,7 +78,7 @@ function boot(reduced = false) {
 }
 
 async function main() {
-  const { w, api, downloads, tick } = boot();
+  const { w, api, downloads, tick, errors } = boot();
   assert.equal(api.LABELS.length, 17);
   assert.equal(w.document.querySelectorAll("[data-scenario]").length, 4);
   assert.equal(api.state.speed, 2);
@@ -206,6 +206,8 @@ async function main() {
   assert.ok(offline.includes('id="playPause"'));
   assert.ok(offline.includes("script data-bundled"));
   assert.ok(!offline.includes("window.__test="));
+  assert.deepEqual(errors, [], 'No runtime errors after all interaction states');
+  assert.deepEqual(reduced.errors, [], 'No runtime errors with reduced motion');
   w.close();
   reduced.w.close();
   console.log(
