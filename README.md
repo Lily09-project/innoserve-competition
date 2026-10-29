@@ -96,6 +96,7 @@ python scripts/import_local_assets.py --source PATH_TO_LOCAL_DELIVERY
 
 
 ```bash
+git submodule update --init --recursive
 python -m pip install -r requirements-test.txt
 python -m unittest discover -s tests -v
 pnpm install --frozen-lockfile

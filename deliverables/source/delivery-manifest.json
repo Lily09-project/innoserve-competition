@@ -170,5 +170,13 @@
   "full_decoded_video_frames": 720,
   "decoded_pts_continuous": true,
   "transition_frames_inspected": 32,
-  "release_inventory": "deliverables/source/release-validation.json"
+  "release_inventory": "deliverables/source/release-validation.json",
+  "clean_clone_validation": {
+    "private_assets_present": false,
+    "local_config_present": false,
+    "submodules_initialized": true,
+    "python_tests": 88,
+    "media_chapters_compiled": 9,
+    "delivery_binding_check": "passed"
+  }
 }
