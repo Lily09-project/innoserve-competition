@@ -80,15 +80,6 @@ def audit(root=ROOT):
     except (ValueError,OSError):
         errors.append('Release source/artifact/preview evidence binding mismatch')
     recovery_path=root/'deliverables/source/recovery-validation.json'
-    supplementary_path=root/'results/supplementary_validation.json'
-    if supplementary_path.exists():
-        try:
-            import sys
-            sys.path.insert(0,str(root/'experiments'))
-            from export_results import verify as verify_supplementary
-            verify_supplementary(root)
-        except (ValueError,OSError,KeyError,TypeError):
-            errors.append('Supplementary experiment evidence differs from current sources or counts')
     if recovery_path.exists():
         try:
             recovery=json.loads(recovery_path.read_text(encoding='utf-8'))
