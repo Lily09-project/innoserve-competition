@@ -13,6 +13,7 @@ from pptx.oxml.xmlchemy import OxmlElement
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'scripts'))
 from validate_results import read_results, validate_results
+from media_results import load_metrics
 from finalize_delivery import normalize
 from style_contract import font_runs
 
@@ -26,6 +27,7 @@ LINE = 'D6DDE0'
 
 def build():
     data = validate_results(read_results())
+    m = load_metrics(ROOT)
     prs = Presentation()
     prs.slide_width, prs.slide_height = Mm(420), Mm(594)
     slide = prs.slides.add_slide(prs.slide_layouts[6])
@@ -195,7 +197,7 @@ def build():
         text(x,425,124,25,copy,16,INK)
 
     section(455,'03','以分階段實測呈現效果')
-    text(16,470,184,10,'相同18,998筆測試的 Macro-F1',17)
+    text(16,470,184,10,f'相同{m["detection_n"]:,}筆測試的 Macro-F1',17)
     for i,name in enumerate(('PBCNN','CTBM','OOF Gate')):
         y=484+i*17
         value=data['detection'][name]['macro_f1']*100
@@ -203,19 +205,19 @@ def build():
         rect(64,y+2,94,6,PALE)
         rect(64,y+2,94*value/100,6,GOLD if i==2 else '7294A9')
         text(161,y,39,10,f'{value:.2f}%',21,BLUE if i==2 else INK,i==2,PP_ALIGN.RIGHT)
-    text(16,535,184,9,'整體準確率98.08%·固定17類分類',16,MUTED)
+    text(16,535,184,9,f'整體準確率{m["accuracy"]*100:.2f}%·固定17類分類',16,MUTED)
     line(210,470,210,549)
     r,j=data['retrieval'],data['judge']
-    text(220,470,184,10,'1,550筆訓練案例／463筆查詢',17)
+    text(220,470,184,10,f'{m["bank_rows"]:,}筆訓練案例／{m["queries"]}筆查詢',17)
     text(220,482,184,12,f'Top-5  {r["top5"]*100:.2f}%',28,BLUE,True)
-    text(220,497,184,10,f'MRR@5  {r["mrr5"]*100:.2f}%·訓練／查詢重疊0',15,MUTED)
+    text(220,497,184,10,f'MRR@5  {r["mrr5"]*100:.2f}%·訓練／查詢重疊{m["overlap"]}',15,MUTED)
     for i,(name,key) in enumerate((('支持','support'),('複核','review'),('不確定','uncertain'))):
         x=220+i*63
         text(x,510,58,12,str(j['assessment_counts'][key]),26,BLUE,align=PP_ALIGN.CENTER)
         text(x,523,58,9,name,17,align=PP_ALIGN.CENTER)
-    text(220,536,184,14,'30筆偵測誤判中18筆分流\n其餘12筆獲支持，處置另經策略檢查',14.5,MUTED)
+    text(220,536,184,14,f'{m["errors"]}筆偵測誤判中{m["intercepted"]}筆分流\n其餘{m["false_support"]}筆獲支持，處置另經策略檢查',14.5,MUTED)
     line(16,552,404,552)
-    text(16,555,67,16,'17類本機重跑\n6種隔離TCP情境',16,BLUE)
+    text(16,555,67,16,f'{m["live_classes"]}類本機重跑\n{m["network_cases"]}種隔離TCP情境',16,BLUE)
     case_labels = {'BENIGN':'正常','FTP-BruteForce':'FTP','SSH-Bruteforce':'SSH',
                    'DDoS-LOIC-HTTP':'HTTP','Web-XSS':'XSS','Bot':'Bot'}
     for i, case in enumerate(data['framework']['cases']):
@@ -226,8 +228,8 @@ def build():
         status='規則' if active else '監測' if case['action']=='monitor' else '蒐證'
         text(x,564,31,6,status,14,INK,align=PP_ALIGN.CENTER)
     framework=data['framework']
-    text(308,555,96,16,f'背景保留 {framework["background_preserved_cases"]}/6\n到期回復 {framework["rollback_passed_cases"]}/6',18,BLUE,True,PP_ALIGN.RIGHT)
-    text(16,572,388,7,'4種套用規則、2種監測或蒐證；6/6為隔離交易與回復結果，非原生攻擊防禦率。',16,MUTED)
+    text(308,555,96,16,f'背景保留 {framework["background_preserved_cases"]}/{m["network_cases"]}\n到期回復 {framework["rollback_passed_cases"]}/{m["network_cases"]}',18,BLUE,True,PP_ALIGN.RIGHT)
+    text(16,572,388,7,f'{m["rules_cases"]}種套用規則、{m["passive_cases"]}種監測或蒐證；{m["rollback"]}/{m["network_cases"]}為隔離交易與回復結果，非原生攻擊防禦率。',16,MUTED)
 
     target = ROOT / 'deliverables/決賽海報_AI資安框架_A2.pptx'
     intermediate = ROOT / 'validation/poster-a2/authoring.pptx'

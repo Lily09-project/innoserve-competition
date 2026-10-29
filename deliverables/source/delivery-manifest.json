@@ -34,8 +34,8 @@
       "sha256": "4184aec4b630f40bedc1fc812959e87d92b15dda1489a7689e68ab776f4c1a9f"
     },
     "deliverables/source/release-validation.json": {
-      "bytes": 8261,
-      "sha256": "57a961b73b0c6beae550841e8d850811c48c5063c0ffceb26d380cece6c3a69a",
+      "bytes": 9981,
+      "sha256": "7898aa38c9ef164dd607081ea92cce0221ad7b2f5ebc71cb78c591c1261589c2",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/01_slide.svg": {
@@ -97,6 +97,21 @@
       "bytes": 12052,
       "sha256": "ee4a3bb8277a072a0889bd9599def6813864462e5efa25044c809d9ce6e41136",
       "hash_normalization": "LF"
+    },
+    "media/film/metrics.json": {
+      "bytes": 1256,
+      "sha256": "6ec25adf9dffe06d6b2931e16185b1b0b30cc4befef0dd07ac8881c567cf1e0f",
+      "hash_normalization": "LF"
+    },
+    "media/film/metrics.mjs": {
+      "bytes": 1019,
+      "sha256": "39180d26ce80926435c92e3cdbef0bbaeb16c9a612c9ef9db97ff36716a79701",
+      "hash_normalization": "LF"
+    },
+    "scripts/media_results.py": {
+      "bytes": 2777,
+      "sha256": "9823f3ba4a60908ae3ba51dbd90ffb5a4a748297cb5663034a33fc7a6c5d2eae",
+      "hash_normalization": "LF"
     }
   },
   "slides": 12,
@@ -117,12 +132,12 @@
     2560,
     1072
   ],
-  "python_tests": 89,
+  "python_tests": 109,
   "website": "removed; API-only",
   "review": "89 Python tests and deterministic nine-chapter media compilation passed; current real 17-class/17-LLM and six-isolated-scenario validation passed. Existing visual acceptance retained; no visual content changed.",
   "results_changed": true,
-  "markdown_documents": 24,
-  "local_links_checked": 58,
+  "markdown_documents": 27,
+  "local_links_checked": 118,
   "presentation_limit_seconds": 360,
   "buffer_seconds": 60,
   "visual_theme": "white and light gray canvas; navy titles, medium blue diagrams, gold highlights, ink body",
@@ -134,7 +149,7 @@
   "fresh_rollback_passed_cases": 6,
   "model_lineage_checkpoints": 3,
   "maximum_live_saved_probability_delta": 0.00011988392251005564,
-  "live_audit_source": "current delivered API source; not a previously running checkout",
+  "live_audit_source": "framework_audit_20261029T075603Z",
   "fresh_audit_status": "passed",
   "video_slot_slide": 2,
   "video_embedded": true,
@@ -201,8 +216,8 @@
     "gold_tint": "#FFF4DD"
   },
   "recorded_detector_and_judge_metrics_changed": false,
-  "fresh_audit_started_utc": "20261029T054500Z",
-  "source_revision": "fd8a456582977be90a32585198977740190073d0e044fdb08c1a10077ab9b670",
+  "fresh_audit_started_utc": "20261029T075603Z",
+  "source_revision": "eacad886f75819fe6a8ceea7eaa65d037339a2a73d590a98953df87dded69f57",
   "film_results_seconds": 2.5,
   "local_judge_parser_regression_cases": 463,
   "local_judge_parser_assessment_changes": 0,
@@ -274,5 +289,19 @@
     "slides": 12,
     "scope": "current approved presentation authoring SVG; slide 2 is the media placement source, film embedded separately",
     "all_slide_sources_match_authoring": true
+  },
+  "review_followup": {
+    "addressed_findings": 4,
+    "new_python_tests": 5,
+    "total_python_tests": 109,
+    "report": "docs/完整程式審查追補修正.md",
+    "without_raw_dataset_warmup": "passed on real workstation",
+    "media_snapshot_sources": 4,
+    "public_slide_bindings": 12,
+    "equivalent_film_svg_frames": 720,
+    "equivalent_slide_sources": 12,
+    "equivalent_poster_paragraphs": 172,
+    "formal_media_bytes_changed": false,
+    "retired_renderer_no_output": true
   }
 }

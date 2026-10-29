@@ -1,17 +1,32 @@
 {
-  "created_utc": "2026-10-29T06:42:54.705564+00:00",
-  "source_revision": "fd8a456582977be90a32585198977740190073d0e044fdb08c1a10077ab9b670",
+  "created_utc": "2026-10-29T08:00:40.518115+00:00",
+  "source_revision": "eacad886f75819fe6a8ceea7eaa65d037339a2a73d590a98953df87dded69f57",
   "bindings": {
     "visual_sources": {
       "design-system/palette.json": "1d2563d56e2e33fb8798ec1f500b69180ccbee99c0e29261b490e9bf32e1e98b",
       "design-system/typography.json": "eef65fe31802c55d476d41351ed1fd7156eab2d07ee271fff95b84fca21a0c9c",
       "design-system/icons.json": "7997027b80b6b7990b8399383555d2775b4d8257902c3fa8c8f4f8a3b5e2aec7",
       "scripts/presentation/style_contract.py": "5de58b66b64c47f0191a482ed0089f5683750d7e88e3de516da80a29491bf512",
-      "scripts/presentation/editorial_assets.py": "f10d4f2e08acf07bdb07f4f696df50aae8564404590ffe6a3066a694c4574df7",
-      "scripts/presentation/build_a2_poster.py": "b9668f33335b8b4c0f34f055886650ea296965af9a56f418744f865e53ade03e",
+      "scripts/presentation/editorial_assets.py": "5387e50975acebc4edc6561f62362b7e333608f3726bda7cd2d46478a508dbc8",
+      "scripts/presentation/build_a2_poster.py": "6297dcad537c170f19d710bbcb298a7ee97ef02a9e2816f18117b122964a90f7",
       "scripts/presentation/finalize_delivery.py": "18aa79f996f0b86158bbf57881d1cd38af3b7f232796da055205a6c2a7a1ce32",
-      "media/film/scene.mjs": "856bcfcf54b78dffd08821c7c3b544bcf9fa1568991c0f92ab6f3de7c1c04b91",
-      "scripts/render_product_film.mjs": "bd1f54fab6410a10393cab66d0b88fcb18dd99b24edb500f43b003ac469e5630"
+      "media/film/scene.mjs": "0b66061740375b01dbab4e4a1b2489a1cd51ec593f032daed2e836d8d947bafd",
+      "scripts/render_product_film.mjs": "bd1f54fab6410a10393cab66d0b88fcb18dd99b24edb500f43b003ac469e5630",
+      "media/film/metrics.mjs": "39180d26ce80926435c92e3cdbef0bbaeb16c9a612c9ef9db97ff36716a79701",
+      "media/film/metrics.json": "6ec25adf9dffe06d6b2931e16185b1b0b30cc4befef0dd07ac8881c567cf1e0f",
+      "scripts/media_results.py": "9823f3ba4a60908ae3ba51dbd90ffb5a4a748297cb5663034a33fc7a6c5d2eae",
+      "deliverables/source/slides/01_slide.svg": "76d561f8eff0d7e39c439cceecdcd9cfeeebb3f1f64d27c0cd520d0da19f072b",
+      "deliverables/source/slides/02_slide.svg": "fc88638793c2004f5b61fa15ec3c7749e9ec2339a110e9386f3be3ef2b5a6328",
+      "deliverables/source/slides/03_slide.svg": "5f8a6a5a568bc4ad8691bc62bc6ba371f8fce2aa95244f2765f9a82a4936abb9",
+      "deliverables/source/slides/04_slide.svg": "0267f0feae6ced617fa3b4b584718ed961d0448e7e601701bc6864fee1dbdc81",
+      "deliverables/source/slides/05_slide.svg": "cc120feea9ea31973e7c94a0b29984a5667d8afd78bb9efe4943b7e9b283b5e8",
+      "deliverables/source/slides/06_slide.svg": "be1653f56c35ea460537788188f1c2ee2190aa6921663e42b2fe5264a1a63d46",
+      "deliverables/source/slides/07_slide.svg": "50b9dba13d523795bda95ff840e8c434ae65b59f591fa8dea4fb2b8064194184",
+      "deliverables/source/slides/08_slide.svg": "999f3abb05b39e9b4af33dc5b6dcff5c88fe38f001369d3e7c88308245f4c70f",
+      "deliverables/source/slides/09_slide.svg": "518f34b7f726b94a78935d5ba86b4eea651084e49ee0a920a5ae63b0eb3c1ac0",
+      "deliverables/source/slides/10_slide.svg": "ff3dadec8e89bcec91f106de2c5daf2dd7a1eb5ee3e025a274478af0be310b6a",
+      "deliverables/source/slides/11_slide.svg": "61329799e6a0b89eb39ce549568596aa28b30869fbc06edfacf31ef2bb90b066",
+      "deliverables/source/slides/12_slide.svg": "ee4a3bb8277a072a0889bd9599def6813864462e5efa25044c809d9ce6e41136"
     },
     "artifacts": {
       "deliverables/決賽簡報_AI資安框架.pptx": "8c20cce6f85eec12d0f8846ec3929af9aae626eae6cec64ecdaa462ec1364d73",
@@ -32,18 +47,18 @@
       "results/detection_17class.json": "f095d2a74131bfbbad13f7d4a205d96836a08c716793c56e60a9160ed9ab84f0",
       "results/retrieval_17class.json": "44ba49c678aa34130abe1cd5fccf12ab5fde89caffc92891fce272feb7ce8b75",
       "results/local_judge_17class.json": "d21337eacb513357ba9ec56497e3cded60b52f2b1d0b80f1f38f3d0ec73c6666",
-      "results/framework_validation.json": "35284f14ce37d893ad7aeac330c97a939ea129045722a2d5e39da5c11bd54af3"
+      "results/framework_validation.json": "eebba83df8cc68947566bee080ebacf4c14e374157bae5523e41e31fa3937728"
     }
   },
   "asset_revision": "977ab6014516622dff32d9b94481a1b013f407d0917a87cd0347945918d114ca",
   "evidence": {
-    "audit_started_utc": "20261029T054500Z",
+    "audit_started_utc": "20261029T075603Z",
     "status": "passed",
     "private_receipt_hashes": {
-      "summary.json": "93e31a848e27e22ae42a7c838ee3ac09c8f14f74742c498e4f2a35cabb86920b",
-      "live_events_private.json": "a0642eb559fa543d6c7c5e902dd7f679c6f9048d2a773954b50140b31a59eed6",
-      "network_receipts_private.json": "a3ffd97259902579939c4d677f1729d656dbcd0cbcf68976133ca5ec34b767af",
-      "asset_alignment.json": "d0013967fada014a90c838b45ed30d3d43a38fd34f31e55eef1b3d8f31dcf3ab",
+      "summary.json": "314786434840eb0f94a589d9465723216845f95c83462e0373297d720a6ef659",
+      "live_events_private.json": "3a41fd9edcaecc88e33cd324cffee22426ead39e29677b544b9a532acc470d66",
+      "network_receipts_private.json": "20d1794661f18f99f50d8f17bfc679326955a552e14f89ce608b80d7de2992c9",
+      "asset_alignment.json": "acad65beb650e22ce4717cbda7636e0817419da786d3a037ddd7ded0e6dcc981",
       "asset_manifest.json": "aa20154abe3c9417381234a4d5cee26d8ba0b6843fd4d98470350d02ce73d2f7"
     },
     "real_live_classes": 17,
@@ -56,23 +71,23 @@
   "measured_timings": {
     "detector_ms": {
       "samples": 17,
-      "minimum": 24.63139989413321,
-      "median": 34.20910006389022,
-      "maximum": 434.78430015966296,
+      "minimum": 20.35590005107224,
+      "median": 34.155100118368864,
+      "maximum": 484.67200016602874,
       "unit": "ms"
     },
     "retrieval_ms": {
       "samples": 17,
-      "minimum": 1.2911998201161623,
-      "median": 1.5216998290270567,
-      "maximum": 2.3144001606851816,
+      "minimum": 0.7564001716673374,
+      "median": 1.49639998562634,
+      "maximum": 4.278199980035424,
       "unit": "ms"
     },
     "fresh_llm_ms": {
       "samples": 17,
-      "minimum": 714.8385997861624,
-      "median": 886.8128000758588,
-      "maximum": 2038.3047999348491,
+      "minimum": 747.7041000965983,
+      "median": 905.4338000714779,
+      "maximum": 2204.1599999647588,
       "unit": "ms"
     }
   },

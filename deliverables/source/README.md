@@ -24,3 +24,5 @@ presentation-design-spec.md與presentation-spec-lock.md描述PPT Master製作專
 2026-10-29公開同步：slides/的12張SVG已逐張比對最新製作來源，包含共用框架圖、標題細線、頁碼進度及模型／備詢區塊精修。每張來源均加入delivery-manifest.json，以LF正規化雜湊檢查。SVG對應靜態設計，正式PPTX另保留原生字形對齊校正及內嵌影片；兩者角色不同。
 
 export_static_delivery.ps1只輸出靜態PNG及PDF，不啟動播放。原生播放測試依使用者要求排除；本輪不執行verify_native_delivery.ps1內的舊播放檢查。
+
+數據來源修正（2026-10-29）：先執行python scripts/media_results.py，驗證四份results並生成media/film/metrics.json；影片、海報及逐頁SVG從同一份快照取得指標與樣本數。快照來源hash不符即中止。重製後依序核對原生文字與版面、更新預覽及離線包、重新產生release-validation與delivery-manifest，再執行check_delivery_docs。舊render_film_resvg.py已停用，不再提供不符標楷體／Times New Roman規格的替代字型輸出。

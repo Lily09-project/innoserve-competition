@@ -1,5 +1,6 @@
 // Deterministic method animation. Recorded aggregate data; topology illustrates the method.
 import fs from 'node:fs';
+import {metrics as m,percent,count} from './metrics.mjs';
 const palette=JSON.parse(fs.readFileSync(new URL('../../design-system/palette.json',import.meta.url),'utf8'));
 const typography=JSON.parse(fs.readFileSync(new URL('../../design-system/typography.json',import.meta.url),'utf8'));
 const icons=JSON.parse(fs.readFileSync(new URL('../../design-system/icons.json',import.meta.url),'utf8'));
@@ -128,8 +129,8 @@ export function frameSvg(t){
   s+=tx(64,625,'展示結束 · 接續架構與實測成果說明',26,'#53666E');
  }else if(i===7){
   s+=tx(64,94,'實測成果',44,N,300);
-  [['98.08%','17類偵測 Accuracy'],['97.62%','Top-5 命中率'],['6 / 6','隔離情境完整回復']].forEach(([v,l],k)=>{const x=64+k*400,u=ease((local-k*.12)/.6);s+=`<g opacity="${u}" transform="translate(0 ${(1-u)*16})">${box(x-16,206,368,244,'#FFFFFF')}${flatIcon(['model','retrieval','shield'][k],x+274,229,48)}${tx(x,310,v,56,N,300)}${box(x,328,210,6,G,0)}${tx(x,375,l,24,'#171C1D')}</g>`;});
-  s+=tx(64,525,'偵測有依據，稽核有證據，處置可回復。',34,'#171C1D',300)+tx(64,610,'18,998筆偵測測試／463筆檢索稽核／6種隔離情境',26,'#53666E');
+  [[percent(m.accuracy),'17類偵測 Accuracy'],[percent(m.top5),'Top-5 命中率'],[`${m.rollback} / ${m.network_cases}`,'隔離情境完整回復']].forEach(([v,l],k)=>{const x=64+k*400,u=ease((local-k*.12)/.6);s+=`<g opacity="${u}" transform="translate(0 ${(1-u)*16})">${box(x-16,206,368,244,'#FFFFFF')}${flatIcon(['model','retrieval','shield'][k],x+274,229,48)}${tx(x,310,v,56,N,300)}${box(x,328,210,6,G,0)}${tx(x,375,l,24,'#171C1D')}</g>`;});
+  s+=tx(64,525,'偵測有依據，稽核有證據，處置可回復。',34,'#171C1D',300)+tx(64,610,`${count(m.detection_n)}筆偵測測試／${m.queries}筆檢索稽核／${m.network_cases}種隔離情境`,26,'#53666E');
  }else{
   s+=tx(64,65,`0${i} / 06`,32,dark?'#53B1FF':B,600)+tx(64,128,messages[i][0],44,N,300);
   const scale=.96+.04*ease(local/.9);

@@ -16,8 +16,12 @@ python -m unittest discover -s tests -v
 pnpm install --frozen-lockfile
 pnpm run test:media
 pnpm run check:media
+node tests/media-data.cjs
+python scripts/media_results.py --check
 python scripts/check_public_files.py
 python scripts/check_delivery_docs.py
 ```
 
 本專案原創部分採Apache-2.0；第三方子模組、模型及資料維持原授權。正式發布從通過CI的提交建立tag，Release需記錄來源版本、實測範圍及交付檔案。
+
+四份results更新後先以media_results.py重建並檢查快照，再重製簡報、海報及影片；任何交付或來源變更皆須通過check_delivery_docs及CI。即時模型推論不要求ids_data_root，原始資料只供rebuild_retrieval重建。

@@ -27,7 +27,6 @@ from pipeline import LABELS, TrainOnlyBank, task_vector, digest, run_event
 
 from settings import asset_path, optional_asset_path
 REF = asset_path("ids_reference_root")
-DATA = asset_path("ids_data_root")
 OUT = ROOT / "evidence" / "fresh17"
 MODEL_ROOT = REF / "models" / "augmented" / "seed_42"
 REPRESENTATION = "ctbm512_plus_frozen_gate17_concat_l2.v1"
@@ -104,6 +103,8 @@ def select_rows(path, limit, ctbm):
 
 
 def main():
+    # Raw JSONL is required only for rebuilding, never for importing model helpers.
+    data = asset_path("ids_data_root")
     OUT.mkdir(parents=True, exist_ok=True)
     torch.set_num_threads(4)
     torch.manual_seed(42)
@@ -126,8 +127,8 @@ def main():
     model_hashes = {name: sha(MODEL_ROOT / name / "best_model.pt") for name in models}
     combined_hash = digest(model_hashes)
     gate_infer = load_gate()
-    train, train_hash = select_rows(DATA / "SMOTE_train.jsonl", 100, ctbm)
-    queries, test_hash = select_rows(DATA / "SMOTE_test.jsonl", 30, ctbm)
+    train, train_hash = select_rows(data / "SMOTE_train.jsonl", 100, ctbm)
+    queries, test_hash = select_rows(data / "SMOTE_test.jsonl", 30, ctbm)
     if set(x["id"] for x in train) & set(x["id"] for x in queries): raise ValueError("train_test_id_overlap")
     print("MODELS_READY", str(device), flush=True)
 
