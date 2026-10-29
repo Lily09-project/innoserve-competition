@@ -37,6 +37,66 @@
       "bytes": 8261,
       "sha256": "57a961b73b0c6beae550841e8d850811c48c5063c0ffceb26d380cece6c3a69a",
       "hash_normalization": "LF"
+    },
+    "deliverables/source/slides/01_slide.svg": {
+      "bytes": 8759,
+      "sha256": "76d561f8eff0d7e39c439cceecdcd9cfeeebb3f1f64d27c0cd520d0da19f072b",
+      "hash_normalization": "LF"
+    },
+    "deliverables/source/slides/02_slide.svg": {
+      "bytes": 2921,
+      "sha256": "fc88638793c2004f5b61fa15ec3c7749e9ec2339a110e9386f3be3ef2b5a6328",
+      "hash_normalization": "LF"
+    },
+    "deliverables/source/slides/03_slide.svg": {
+      "bytes": 12839,
+      "sha256": "5f8a6a5a568bc4ad8691bc62bc6ba371f8fce2aa95244f2765f9a82a4936abb9",
+      "hash_normalization": "LF"
+    },
+    "deliverables/source/slides/04_slide.svg": {
+      "bytes": 8452,
+      "sha256": "0267f0feae6ced617fa3b4b584718ed961d0448e7e601701bc6864fee1dbdc81",
+      "hash_normalization": "LF"
+    },
+    "deliverables/source/slides/05_slide.svg": {
+      "bytes": 11072,
+      "sha256": "cc120feea9ea31973e7c94a0b29984a5667d8afd78bb9efe4943b7e9b283b5e8",
+      "hash_normalization": "LF"
+    },
+    "deliverables/source/slides/06_slide.svg": {
+      "bytes": 9015,
+      "sha256": "be1653f56c35ea460537788188f1c2ee2190aa6921663e42b2fe5264a1a63d46",
+      "hash_normalization": "LF"
+    },
+    "deliverables/source/slides/07_slide.svg": {
+      "bytes": 5828,
+      "sha256": "50b9dba13d523795bda95ff840e8c434ae65b59f591fa8dea4fb2b8064194184",
+      "hash_normalization": "LF"
+    },
+    "deliverables/source/slides/08_slide.svg": {
+      "bytes": 7123,
+      "sha256": "999f3abb05b39e9b4af33dc5b6dcff5c88fe38f001369d3e7c88308245f4c70f",
+      "hash_normalization": "LF"
+    },
+    "deliverables/source/slides/09_slide.svg": {
+      "bytes": 7056,
+      "sha256": "518f34b7f726b94a78935d5ba86b4eea651084e49ee0a920a5ae63b0eb3c1ac0",
+      "hash_normalization": "LF"
+    },
+    "deliverables/source/slides/10_slide.svg": {
+      "bytes": 11326,
+      "sha256": "ff3dadec8e89bcec91f106de2c5daf2dd7a1eb5ee3e025a274478af0be310b6a",
+      "hash_normalization": "LF"
+    },
+    "deliverables/source/slides/11_slide.svg": {
+      "bytes": 8290,
+      "sha256": "61329799e6a0b89eb39ce549568596aa28b30869fbc06edfacf31ef2bb90b066",
+      "hash_normalization": "LF"
+    },
+    "deliverables/source/slides/12_slide.svg": {
+      "bytes": 12052,
+      "sha256": "ee4a3bb8277a072a0889bd9599def6813864462e5efa25044c809d9ce6e41136",
+      "hash_normalization": "LF"
     }
   },
   "slides": 12,
@@ -209,5 +269,10 @@
     "actual_measurement_values_changed": false,
     "title_centered": true,
     "overflow_findings": 0
+  },
+  "public_source_sync": {
+    "slides": 12,
+    "scope": "current approved presentation authoring SVG; slide 2 is the media placement source, film embedded separately",
+    "all_slide_sources_match_authoring": true
   }
 }
