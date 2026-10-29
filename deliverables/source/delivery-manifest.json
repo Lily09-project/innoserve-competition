@@ -1,5 +1,5 @@
 {
-  "base_revision": "67ad983",
+  "base_revision": "04a5d3e",
   "files": {
     "deliverables/決賽簡報_AI資安框架.pptx": {
       "bytes": 1862733,
@@ -34,8 +34,8 @@
       "sha256": "f751934664f50aa2ca0848d811c5d8271ba7cfa3bd517a5739b65acd32aaea1b"
     },
     "deliverables/source/release-validation.json": {
-      "bytes": 7864,
-      "sha256": "300d18a62b08b69fb580c78561f71b258645dea0ce9565f8df8d4412d97b1d6f",
+      "bytes": 8261,
+      "sha256": "ab33c5bb4d6e48ba0ff3740de8cb855c4217c51498d71b50a1bc9438dacb24fd",
       "hash_normalization": "LF"
     }
   },
@@ -141,8 +141,8 @@
     "gold_tint": "#FFF4DD"
   },
   "recorded_detector_and_judge_metrics_changed": false,
-  "fresh_audit_started_utc": "20261029T043638Z",
-  "source_revision": "9ec0566daf57d0b08ab6f0a34dc105e74a1914c9453dd93b42279075785db35b",
+  "fresh_audit_started_utc": "20261029T054500Z",
+  "source_revision": "fd8a456582977be90a32585198977740190073d0e044fdb08c1a10077ab9b670",
   "film_results_seconds": 2.5,
   "local_judge_parser_regression_cases": 463,
   "local_judge_parser_assessment_changes": 0,
@@ -176,8 +176,16 @@
     "private_assets_present": false,
     "local_config_present": false,
     "submodules_initialized": true,
-    "python_tests": 89,
+    "python_tests": 104,
     "media_chapters_compiled": 9,
     "delivery_binding_check": "passed"
+  },
+  "asset_revision": "977ab6014516622dff32d9b94481a1b013f407d0917a87cd0347945918d114ca",
+  "code_review": {
+    "addressed_findings": 5,
+    "python_tests": 104,
+    "execution_source_files": 23,
+    "runtime_asset_files": 23,
+    "report": "docs/程式審查修正.md"
   }
 }

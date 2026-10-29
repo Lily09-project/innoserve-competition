@@ -9,6 +9,7 @@ from pathlib import Path
 import sys
 
 import numpy as np
+from judge_response import JUDGE_PROMPT
 from network_contract import B_NAMES
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -99,7 +100,12 @@ class TrainOnlyBank:
                 for rank, i in enumerate(order)]
 
 
-def check_judge(cached, event_id, prediction, evidence):
+def judge_context_digest(event_id, payload, prompt_sha256, model_revision):
+    return digest({'event_id':event_id,'payload':payload,'prompt_sha256':prompt_sha256,
+                   'model_revision':model_revision})
+
+
+def check_judge(cached, event_id, prediction, evidence, payload=None, model_revision=None):
     if cached is None:
         return {"assessment": "review", "mode": "manual_review", "reason": "缺少同事件授權稽核回覆，保留人工複核。"}
     if not evidence or len(evidence) != 5:
@@ -107,6 +113,23 @@ def check_judge(cached, event_id, prediction, evidence):
     expected = digest({"event_id": event_id, "prediction": prediction, "evidence": evidence})
     if cached.get("input_sha256") != expected:
         raise ValueError("judge_input_binding_mismatch")
+    if payload is None or cached.get('payload') != payload:
+        raise ValueError('judge_payload_binding_mismatch')
+    if cached.get('valid_json') is not True and cached.get('assessment') != 'uncertain':
+        raise ValueError('invalid_judge_response_cannot_authorize_action')
+    if type(cached.get('valid_json')) is not bool:
+        raise ValueError('judge_validity_must_be_explicit')
+    if not isinstance(cached.get('model_revision'),str) or not cached['model_revision']:
+        raise ValueError('missing_judge_model_revision')
+    if model_revision is not None and cached['model_revision'] != model_revision:
+        raise ValueError('judge_model_revision_mismatch')
+    if cached.get('prompt_sha256') != hashlib.sha256(JUDGE_PROMPT.encode()).hexdigest():
+        raise ValueError('judge_prompt_revision_mismatch')
+    context = judge_context_digest(event_id,payload,cached['prompt_sha256'],cached['model_revision'])
+    if cached.get('binding_version',1) not in (1,2):
+        raise ValueError('unsupported_judge_binding_version')
+    if cached.get('binding_version') == 2 and cached.get('context_sha256') != context:
+        raise ValueError('judge_context_binding_mismatch')
     if cached.get("assessment") not in {"support", "review", "uncertain"}:
         raise ValueError("invalid_judge_assessment")
     if not cached.get("model") or not cached.get("prompt_sha256") or cached.get("store") is not False:
@@ -115,7 +138,9 @@ def check_judge(cached, event_id, prediction, evidence):
         raise ValueError("judge_cannot_change_formal_classification")
     return {"assessment": cached["assessment"], "mode": cached.get("execution_mode", "authorized_cached_response"),
             "reason": str(cached.get("reason", "")), "input_sha256": expected,
-            "model": cached["model"], "valid_json": cached.get("valid_json", True)}
+            "model": cached["model"], "valid_json": cached['valid_json'],
+            'context_sha256':context,'prompt_sha256':cached['prompt_sha256'],
+            'model_revision':cached['model_revision']}
 
 
 def audit_payload(event, evidence):
@@ -162,9 +187,8 @@ def run_event(event, bank=None, cached=None):
         evidence = bank.retrieve(task_vector(event["embedding"], p), event["event_id"],
                                  event["representation_id"], event["model_sha256"])
     retrieval_ms = (time.perf_counter() - started) * 1000 if bank is not None else None
-    if cached is not None and "payload" in cached and cached["payload"] != audit_payload(event, evidence):
-        raise ValueError("judge_payload_binding_mismatch")
-    judge = check_judge(cached, event["event_id"], prediction, evidence)
+    payload = audit_payload(event,evidence) if cached is not None else None
+    judge = check_judge(cached, event["event_id"], prediction, evidence,payload,event.get('judge_model_revision'))
     policy = guard(prediction, judge["assessment"], ttl=event.get("policy_ttl_seconds",300))
     if judge["assessment"] == "support" and (float(p.max()) < 0.8 or sum(x["label_id"] == prediction for x in evidence) < 4):
         policy = {"allowed": False, "action": "capture_evidence", "execution_mode": "manual_review",

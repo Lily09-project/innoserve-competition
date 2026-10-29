@@ -90,6 +90,7 @@ python scripts/import_local_assets.py --source PATH_TO_LOCAL_DELIVERY
 
 ## 驗證與協作
 
+- [程式審查修正](docs/程式審查修正.md)
 - [全項測試矩陣](docs/測試矩陣.md)
 - [驗收與重現方式](docs/驗收與重現方式.md)
 - [實測與證據索引](docs/實測與證據索引.md)

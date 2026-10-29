@@ -6,6 +6,7 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "app"))
 from pipeline import TrainOnlyBank, LABELS, audit_payload, check_judge, digest, guard, run_event, task_vector, verify_ledger
+from contract_fixtures import judge_record
 
 
 class PipelineTests(unittest.TestCase):
@@ -17,7 +18,7 @@ class PipelineTests(unittest.TestCase):
                                   [7] * 6, ["train"] * 6, "fixture.v1", "a" * 64)
         self.event = {"event_id": "query-1", "prediction": 7, "probabilities": self.p.tolist(),
                       "embedding": self.e.tolist(), "representation_id": "fixture.v1", "model_sha256": "a" * 64,
-                      "mode": "synthetic_test_fixture"}
+                      "mode": "synthetic_test_fixture","pred_ctbm":7,"pred_pbcnn":7}
 
     def test_vector_dimensions_normalization(self):
         self.assertEqual(self.v.shape, (529,))
@@ -50,9 +51,7 @@ class PipelineTests(unittest.TestCase):
 
     def test_cached_judge_bound_to_same_input(self):
         evidence = self.bank.retrieve(self.v, "query-1", "fixture.v1", "a" * 64)
-        cached = {"input_sha256": digest({"event_id": "query-1", "prediction": 7, "evidence": evidence}),
-                  "assessment": "support", "model": "fixture", "prompt_sha256": "b" * 64,
-                  "store": False, "classification_changed": False}
+        cached = judge_record(self.event,evidence)
         result = run_event(self.event, self.bank, cached)
         self.assertEqual(result["judge"]["assessment"], "support")
         self.assertTrue(result["policy"]["allowed"])
@@ -75,9 +74,7 @@ class PipelineTests(unittest.TestCase):
     def test_low_confidence_support_cannot_auto_act(self):
         event={**self.event,"pred_ctbm":7,"pred_pbcnn":7,"probabilities":([.4]+[0.]*6+[.6]+[0.]*9)}
         evidence=self.bank.retrieve(task_vector(self.e,event["probabilities"]),"query-1","fixture.v1","a"*64)
-        cached={"input_sha256":digest({"event_id":"query-1","prediction":7,"evidence":evidence}),
-                "assessment":"support","model":"fixture","prompt_sha256":"b"*64,"store":False,
-                "classification_changed":False,"payload":audit_payload(event,evidence)}
+        cached=judge_record(event,evidence)
         self.assertFalse(run_event(event,self.bank,cached)["policy"]["allowed"])
         cached["payload"]["confidence"]=.99
         with self.assertRaises(ValueError):run_event(event,self.bank,cached)

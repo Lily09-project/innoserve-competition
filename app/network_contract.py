@@ -6,6 +6,59 @@ Ground truth selects only the synthetic evaluation traffic, never the action.
 from __future__ import annotations
 import hashlib
 import json
+import math
+
+NON_DISRUPTIVE = {'monitor','capture_evidence'}
+RULE_COUNTS = {'auth_hardening':2,'rate_limit':2,'upstream_scrubbing':2,
+               'waf_virtual_patch':1,'block_c2_destination':1}
+PROFILE_PORTS = {'Benign':8080,'BruteForce-FTP':21,'BruteForce-SSH':22,'Bot':4444}
+
+
+def expected_effect(scenario):
+    if scenario['action'] in NON_DISRUPTIVE:
+        return False
+    return scenario['action'] == 'rate_limit' or PROFILE_PORTS.get(scenario['true_label'],80) == PROFILE_PORTS.get(scenario['reason_label'],80)
+
+
+def validate_measurement(scenario, receipt):
+    """Verify isolation actions actually occurred; hashes alone do not prove success."""
+    for key in ('baseline','background_baseline','subject_after','background_after','recovery','background_recovery'):
+        rate = receipt[key]['success_rate']
+        if isinstance(rate,bool) or not isinstance(rate,(int,float)) or not math.isfinite(rate) or not 0 <= rate <= 1:
+            raise ValueError('invalid_transaction_measurement')
+        if key != 'subject_after' and rate != 1:
+            raise ValueError('baseline_background_or_recovery_failed')
+    disruptive = scenario['action'] not in NON_DISRUPTIVE
+    count = RULE_COUNTS.get(scenario['action'],0)
+    if type(receipt['rules_applied']) is not int or receipt['rules_applied'] != count:
+        raise ValueError('expected_policy_rules_missing')
+    if receipt.get('network_test_executed') is not True or receipt.get('network_action_executed') is not disruptive:
+        raise ValueError('policy_execution_flag_mismatch')
+    rules = [line for line in receipt['rule_readback']['iptables'].splitlines() if line.startswith('-A ')]
+    if len(rules) != count:
+        raise ValueError('policy_readback_count_mismatch')
+    if disruptive:
+        port = PROFILE_PORTS.get(scenario['reason_label'],80)
+        if any('-s 10.10.1.10' not in line or '-p tcp' not in line for line in rules):
+            raise ValueError('policy_readback_scope_mismatch')
+        if scenario['action'] != 'rate_limit' and any('--dport '+str(port)+' ' not in line+' ' for line in rules):
+            raise ValueError('policy_readback_port_mismatch')
+        if not any('-j DROP' in line for line in rules):
+            raise ValueError('policy_readback_has_no_drop')
+        if receipt.get('commands_executed',0) <= 0:
+            raise ValueError('policy_commands_missing')
+        elapsed = receipt.get('ttl_rollback_elapsed_seconds')
+        if isinstance(elapsed,bool) or not isinstance(elapsed,(int,float)) or not math.isfinite(elapsed) or not scenario['ttl_seconds'] <= elapsed < scenario['ttl_seconds']+5:
+            raise ValueError('policy_expiry_not_verified')
+        if receipt.get('expiry_mode') != 'actual_monotonic_ttl_scheduler':
+            raise ValueError('policy_expiry_mode_mismatch')
+        if expected_effect(scenario) and receipt['subject_after']['success_rate'] >= receipt['baseline']['success_rate']:
+            raise ValueError('expected_policy_effect_missing')
+    elif receipt['subject_after']['success_rate'] != 1 or receipt.get('commands_executed') != 0:
+        raise ValueError('non_disruptive_policy_altered_traffic')
+    if receipt.get('rollback_integrity') is not True or receipt['rollback_rule_readback']['iptables'].strip():
+        raise ValueError('rollback_not_verified')
+    return True
 
 B_NAMES = {0: "Benign", 1: "BruteForce-FTP", 2: "BruteForce-SSH", 3: "DoS-GoldenEye",
            4: "DoS-Hulk", 7: "DDoS-LOIC-HTTP", 9: "DDoS-HOIC", 10: "WebAttack-BruteForce",

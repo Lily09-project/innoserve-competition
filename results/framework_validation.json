@@ -1,7 +1,8 @@
 {
-  "started_utc": "20261029T043638Z",
+  "started_utc": "20261029T054500Z",
   "api_version": "ai-security-demo.v3",
-  "source_revision": "9ec0566daf57d0b08ab6f0a34dc105e74a1914c9453dd93b42279075785db35b",
+  "source_revision": "fd8a456582977be90a32585198977740190073d0e044fdb08c1a10077ab9b670",
+  "asset_revision": "977ab6014516622dff32d9b94481a1b013f407d0917a87cd0347945918d114ca",
   "real_live_classes": 17,
   "real_local_llm_calls": 17,
   "network_cases": 6,
@@ -25,6 +26,8 @@
       "validation_label": "BENIGN",
       "action": "monitor",
       "assessment": "support",
+      "reason_label": "Benign",
+      "expected_policy_effect": false,
       "rules_applied": 0,
       "baseline_success_rate": 1.0,
       "after_success_rate": 1.0,
@@ -37,42 +40,50 @@
       "validation_label": "FTP-BruteForce",
       "action": "auth_hardening",
       "assessment": "support",
+      "reason_label": "BruteForce-FTP",
+      "expected_policy_effect": true,
       "rules_applied": 2,
       "baseline_success_rate": 1.0,
       "after_success_rate": 0.16666666666666666,
       "background_success_rate": 1.0,
       "recovery_success_rate": 1.0,
       "rollback_integrity": true,
-      "ttl_rollback_elapsed_seconds": 30.130085680999997
+      "ttl_rollback_elapsed_seconds": 30.111781388999997
     },
     {
       "validation_label": "SSH-Bruteforce",
       "action": "auth_hardening",
       "assessment": "support",
+      "reason_label": "BruteForce-SSH",
+      "expected_policy_effect": true,
       "rules_applied": 2,
       "baseline_success_rate": 1.0,
       "after_success_rate": 0.16666666666666666,
       "background_success_rate": 1.0,
       "recovery_success_rate": 1.0,
       "rollback_integrity": true,
-      "ttl_rollback_elapsed_seconds": 30.119649617000007
+      "ttl_rollback_elapsed_seconds": 30.112609642000002
     },
     {
       "validation_label": "DDoS-LOIC-HTTP",
       "action": "upstream_scrubbing",
       "assessment": "support",
+      "reason_label": "DDoS-LOIC-HTTP",
+      "expected_policy_effect": true,
       "rules_applied": 2,
       "baseline_success_rate": 1.0,
       "after_success_rate": 0.16666666666666666,
       "background_success_rate": 1.0,
       "recovery_success_rate": 1.0,
       "rollback_integrity": true,
-      "ttl_rollback_elapsed_seconds": 30.114278103999993
+      "ttl_rollback_elapsed_seconds": 30.14535162899999
     },
     {
       "validation_label": "Web-XSS",
       "action": "capture_evidence",
       "assessment": "review",
+      "reason_label": "WebAttack-XSS",
+      "expected_policy_effect": false,
       "rules_applied": 0,
       "baseline_success_rate": 1.0,
       "after_success_rate": 1.0,
@@ -85,13 +96,15 @@
       "validation_label": "Bot",
       "action": "block_c2_destination",
       "assessment": "support",
+      "reason_label": "Bot",
+      "expected_policy_effect": true,
       "rules_applied": 1,
       "baseline_success_rate": 1.0,
       "after_success_rate": 0.0,
       "background_success_rate": 1.0,
       "recovery_success_rate": 1.0,
       "rollback_integrity": true,
-      "ttl_rollback_elapsed_seconds": 30.120165974999992
+      "ttl_rollback_elapsed_seconds": 30.12160971599998
     }
   ]
 }

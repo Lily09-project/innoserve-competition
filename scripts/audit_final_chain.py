@@ -16,7 +16,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "app"))
-from network_contract import build_network_scenario, verify_network_receipt, valid_ledger
+from network_contract import build_network_scenario, verify_network_receipt, valid_ledger, validate_measurement
 from pipeline import LABELS
 from server import source_revision
 
@@ -68,11 +68,17 @@ def main():
     assert status.get('source_revision') == source_revision(), 'Running service differs from current checkout'
     print("WARMUP",flush=True)
     operation("warmup")
+    status=request('/api/status')
+    from provenance import runtime_assets, identifier
+    assets=runtime_assets(ROOT)
+    assert status.get('asset_revision') == identifier(assets), 'Running assets differ from current checkout'
+    save('asset_manifest.json',assets)
     source={e["event_id"]:e for e in json.loads((ROOT / "evidence/fresh17/events.json").read_text(encoding="utf-8"))}
     live=[]
     for event_id in status["live_event_ids"]:
         value=operation("live",event_id)
         assert value["execution_mode"]=="live_local_models"
+        assert value.get('asset_revision') == status['asset_revision']
         assert value["result"]["prediction"]==value["prediction"]==source[event_id]["prediction"]
         assert value["result"]["judge"]["mode"]=="live_local_llm_inference"
         assert value['result']['judge']['valid_json'] is True
@@ -90,6 +96,7 @@ def main():
         scenario=build_network_scenario(event)
         value=operation("network",event["event_id"],event["execution_id"])
         assert verify_network_receipt(scenario,value)
+        validate_measurement(scenario,value)
         assert value["baseline"]["success_rate"]==1
         assert value["background_after"]["success_rate"]==1
         assert value["rollback_integrity"] is True
@@ -105,6 +112,7 @@ def main():
     anonymous=scan_delivery_anonymity()
     save("anonymous_display_scan.json",anonymous)
     summary={"status":"passed", "started_utc":stamp,"api_version":status["product"],"source_revision":status['source_revision'],
+        'asset_revision':status['asset_revision'],
         "real_live_classes":17,"real_local_llm_calls":17,"network_cases":len(network),
         "network_validation_labels":[LABELS[c] for c in (0,1,2,7,11,13)],
         "network_receipts_bound_to_same_execution":True,"stale_execution_rejected":True,

@@ -15,6 +15,9 @@ import preflight
 
 
 class PreflightTests(unittest.TestCase):
+    def setUp(self):
+        self.asset_patch=patch.object(preflight,'runtime_assets',return_value={'fixture':True})
+        self.asset_patch.start();self.addCleanup(self.asset_patch.stop)
     def test_missing_private_asset_does_not_become_ready(self):
         with tempfile.TemporaryDirectory(prefix='preflight-assets-contract-') as folder:
             root=Path(folder);data=root/'evidence/fresh17';data.mkdir(parents=True)
@@ -27,7 +30,8 @@ class PreflightTests(unittest.TestCase):
 
     def status(self, ready=False):
         return {'product':'ai-security-demo.v3','source_revision':preflight.source_revision(),
-                'model_ready':ready,'live_event_ids':[str(i) for i in range(17)]}
+                'model_ready':ready,'asset_revision':preflight.identifier({'fixture':True}),
+                'live_event_ids':[str(i) for i in range(17)]}
 
     def test_no_warmup_never_posts_a_job(self):
         probe=preflight.Preflight(warmup=False)
@@ -49,7 +53,7 @@ class PreflightTests(unittest.TestCase):
     def warmup(self, state, clock=None):
         probe=preflight.Preflight(warmup=True)
         response=io.BytesIO(b'{"job_id":"fixture"}')
-        with patch.object(probe,'get',side_effect=[self.status(),state]),patch.object(preflight.urllib.request,'urlopen',return_value=response),patch.object(preflight.time,'monotonic',side_effect=clock or [0,1]):
+        with patch.object(probe,'get',side_effect=[self.status(),state,self.status(True)]),patch.object(preflight.urllib.request,'urlopen',return_value=response),patch.object(preflight.time,'monotonic',side_effect=clock or [0,1]):
             return probe.service()
 
     def test_warmup_requires_readiness_receipt(self):
@@ -87,6 +91,11 @@ class PreflightTests(unittest.TestCase):
         with patch.object(probe,'assets',return_value={}),patch.object(probe,'models',side_effect=ValueError('hash mismatch')),patch.object(probe,'gpu',side_effect=RuntimeError('CUDA')),patch.object(probe,'network',return_value={}),patch.object(probe,'service',return_value={}):
             result=probe.run();self.assertFalse(result['passed']);self.assertEqual(len(result['checks']),5)
             self.assertEqual([r['passed'] for r in result['checks']],[True,False,False,True,True])
+
+    def test_changed_model_assets_require_restart(self):
+        probe=preflight.Preflight()
+        with patch.object(probe,'get',return_value={**self.status(True),'asset_revision':'stale'}):
+            with self.assertRaisesRegex(ValueError,'model assets differ'):probe.service()
 
     def test_model_hash_mismatch_and_missing_weights_fail(self):
         with tempfile.TemporaryDirectory(prefix='preflight-model-contract-') as folder:

@@ -9,7 +9,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT / "sources/paper_code/sim"))
 sys.path.insert(0,str(ROOT / "app"))
-from network_contract import validate_network_scenario, bind_network_receipt
+from network_contract import validate_network_scenario, bind_network_receipt, validate_measurement
 from active_defense_mininet_replay import build_network,reset_policy,apply_policy,inspect_policy,run_client,profile_for_label,SERVER_IP
 
 
@@ -47,6 +47,7 @@ def main():
                 "ttl_rollback_elapsed_seconds":rollback-applied if commands else None,
                 "expiry_mode":"actual_monotonic_ttl_scheduler" if commands else "non_disruptive_no_rule",
                 "scope":"synthetic TCP transactions in isolated namespaces; not original PCAP attack effectiveness"}
+        validate_measurement(scenario,result)
         result=bind_network_receipt(scenario,result)
         Path(args.output).write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding="utf-8")
         print(json.dumps(result,ensure_ascii=False),flush=True)

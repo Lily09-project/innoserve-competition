@@ -5,8 +5,11 @@ import shutil
 import os
 import stat
 import tempfile
+import sys
 
 ROOT=Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(ROOT/'app'))
+from asset_validation import validate_bundle
 REQUIRED = ('train_bank.npz', 'train_bank_manifest.json', 'events.json',
             'live_inputs_private.npz', 'judge_records_private.jsonl')
 
@@ -47,6 +50,7 @@ def import_assets(source, root=ROOT):
             stage = Path(tempfile.mkdtemp(prefix='.fresh17-import-', dir=parent))
             shutil.copytree(origin, stage, dirs_exist_ok=True, symlinks=True)
             validate_tree(stage)
+            validate_bundle(stage)
             if target.exists() or target.is_symlink():
                 raise FileExistsError('Private assets already exist; no files were overwritten')
             os.rename(stage, target)

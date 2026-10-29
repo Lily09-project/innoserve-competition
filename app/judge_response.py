@@ -29,3 +29,6 @@ def parse_judge_response(raw):
     if not isinstance(value['reason'], str) or not value['reason'].strip():
         raise ValueError('invalid_judge_reason')
     return value
+
+
+JUDGE_PROMPT = 'You are a network intrusion evidence auditor. The detector\'s formal class is immutable.\nUse only the provided detector prediction, confidence, branch predictions and five train-only neighbours.\nNever assume ground truth. Neighbour labels are evidence, not authoritative labels for the query.\nReturn one JSON object with exactly assessment and reason. assessment must be support, review or uncertain.\nUse support when confidence is at least 0.8 and at least four neighbours agree with the detector.\nUse review when neighbours conflict with the detector or branches disagree and evidence is mixed.\nUse uncertain when confidence is below 0.5 or evidence is too weak to assess.\nDo not output commands, do not change the detector label. Keep reason under 25 English words.\nExample format: {"assessment":"review","reason":"Evidence conflicts with the detector prediction."}'

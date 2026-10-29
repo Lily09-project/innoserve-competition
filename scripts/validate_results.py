@@ -95,6 +95,9 @@ def validate_results(data):
         / judge["support_count"],
     )
     cases = framework["cases"]
+    network_labels=['BENIGN','FTP-BruteForce','SSH-Bruteforce','DDoS-LOIC-HTTP','Web-XSS','Bot']
+    if framework['network_validation_labels']!=network_labels or [row['validation_label'] for row in cases]!=network_labels:
+        raise ValueError('Framework predetermined class coverage mismatch')
     if (
         len(cases) != framework["network_cases"]
         or framework["real_live_classes"] != 17
@@ -114,6 +117,28 @@ def validate_results(data):
     ):
         raise ValueError("Framework deployment count mismatch")
     for row in cases:
+        counts={'monitor':0,'capture_evidence':0,'auth_hardening':2,'rate_limit':2,
+                'upstream_scrubbing':2,'waf_virtual_patch':1,'block_c2_destination':1}
+        if row['action'] not in counts or type(row['rules_applied']) is not int or row['rules_applied']!=counts[row['action']]:
+            raise ValueError('Framework policy rules missing')
+        for key in ('baseline_success_rate','after_success_rate','background_success_rate','recovery_success_rate'):
+            rate=row[key]
+            if isinstance(rate,bool) or not isinstance(rate,(int,float)) or not math.isfinite(rate) or not 0<=rate<=1:
+                raise ValueError('Invalid framework transaction rate')
+            if key!='after_success_rate' and rate!=1:
+                raise ValueError('Framework baseline, background or recovery failed')
+        if row['rollback_integrity'] is not True:
+            raise ValueError('Framework rollback failed')
+        if row['rules_applied']:
+            if row['assessment']!='support':raise ValueError('Framework intervention lacks support')
+            # Derive the expected effect from actual predicted and measured service ports.
+            ports={'Benign':8080,'BruteForce-FTP':21,'BruteForce-SSH':22,'Bot':4444}
+            true_ports={'BENIGN':8080,'FTP-BruteForce':21,'SSH-Bruteforce':22,'Bot':4444}
+            effect=row['action']=='rate_limit' or ports.get(row['reason_label'],80)==true_ports.get(row['validation_label'],80)
+            if row['expected_policy_effect'] is not effect or (effect and row['after_success_rate']>=row['baseline_success_rate']):
+                raise ValueError('Framework expected policy effect missing')
+        elif row['after_success_rate']!=1 or row['ttl_rollback_elapsed_seconds'] is not None:
+            raise ValueError('Framework non-disruptive scope mismatch')
         if (
             row["rules_applied"] > 0
             and not 30 <= row["ttl_rollback_elapsed_seconds"] < 35
