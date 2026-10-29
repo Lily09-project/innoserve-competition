@@ -18,3 +18,5 @@
 簡報製作來源：scripts/presentation/editorial_assets.py；影片來源：media/film/scene.mjs及scripts/render_product_film.mjs。三種成果共用配色、字型及平面向量圖示。簡報PPTX以PPT Master原生DrawingML編譯，圖形及文字可編輯。海報由scripts/presentation/build_a2_poster.py使用python-pptx製作，經PowerPoint輸出與文字框檢查。詳見source/README.md與design-system/DESIGN.md。
 
 海報保留15mm安全邊界，不含品牌識別或公開庫二維碼。印刷前依印刷廠確認紙材、出血及局部實際尺寸打樣。模型展示操作與實際彩排清單見docs/本機展示操作單.md及docs/展前驗收與備援.md。
+
+加豐版海報包含四階段產物、Top-5順位圖卡、多類事件策略及六種隔離情境的實測路徑。source/slides/已同步最新12頁設計，並納入source/delivery-manifest.json逐檔雜湊。公開內容與私有資料的盤點見[公開發布盤點](../docs/公開發布盤點.md)。
