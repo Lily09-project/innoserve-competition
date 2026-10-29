@@ -4,7 +4,7 @@ import path from 'node:path';
 import {createRequire} from 'node:module';
 import {spawn,execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
-import {frameSvg,duration,chapters,playbackSpeed,presentationDuration,maxDuration} from '../media/film/scene.mjs';
+import {frameSvg,duration,chapters,controlTimeline,playbackSpeed,presentationDuration,maxDuration} from '../media/film/scene.mjs';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const require=createRequire(process.env.RENDER_NODE_MODULES+'/package.json');
 const sharp=require('sharp');
@@ -28,5 +28,5 @@ for(let f=0;f<presentationDuration*fps;f++){
 }
 encoder.stdin.end();await exit;
 const analysis=execFileSync(ffmpeg,['-hide_banner','-i',file,'-f','null','-'],{encoding:'utf8',stdio:['ignore','pipe','pipe'],windowsHide:true});
-fs.writeFileSync(path.join(output,'render.json'),JSON.stringify({file,duration_seconds:presentationDuration,source_timeline_seconds:duration,playback_speed:playbackSpeed,maximum_seconds:maxDuration,fps,width,height,frames:presentationDuration*fps,has_audio:false,renderer:'shared frameSvg -> sharp -> ffmpeg',bytes:fs.statSync(file).size},null,2));
+fs.writeFileSync(path.join(output,'render.json'),JSON.stringify({file,duration_seconds:presentationDuration,source_timeline_seconds:duration,playback_speed:playbackSpeed,maximum_seconds:maxDuration,fps,width,height,frames:presentationDuration*fps,has_audio:false,chapters:chapters.map(c=>({title:c.title,second:c.at/playbackSpeed})),control_timeline:Object.fromEntries(Object.entries(controlTimeline).map(([key,value])=>[key,value/playbackSpeed])),renderer:'shared frameSvg -> sharp -> ffmpeg',bytes:fs.statSync(file).size},null,2));
 console.log(JSON.stringify({file,bytes:fs.statSync(file).size}));

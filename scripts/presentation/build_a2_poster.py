@@ -170,39 +170,39 @@ def build():
     rect(16,375,388,14,'FFF4DD')
     text(20,375,380,14,'同一事件識別碼：正式分類／案例證據／稽核結論／處置回條',18,NAVY,align=PP_ALIGN.CENTER)
 
-    section(399, '02', '三項創新，直接對應可展示成果')
+    section(397, '02', '三項創新，直接對應可展示成果')
     innovations = [('互補判定','時序與局部內容共同判斷\n校準後形成固定17類分類'),
                    ('任務證據','表徵與類別機率共同檢索\n為每個事件附上相關案例'),
                    ('可追溯處置','稽核附回原事件、策略另檢查\n讀回與到期回復留下紀錄')]
     for i,(heading,copy) in enumerate(innovations):
         x=16+i*133
-        if i:line(x-6,417,x-6,455)
-        text(x,416,122,11,heading,22,BLUE)
-        text(x,431,124,23,copy,16,MUTED)
+        if i:line(x-6,414,x-6,448)
+        text(x,413,122,11,heading,22,BLUE)
+        text(x,426,124,22,copy,16,MUTED)
 
-    section(465,'03','以分階段實測呈現效果')
-    text(16,480,184,10,'相同18,998筆測試的 Macro-F1',17)
+    section(455,'03','以分階段實測呈現效果')
+    text(16,470,184,10,'相同18,998筆測試的 Macro-F1',17)
     for i,name in enumerate(('PBCNN','CTBM','OOF Gate')):
-        y=494+i*17
+        y=484+i*17
         value=data['detection'][name]['macro_f1']*100
         text(16,y,44,10,name,18,BLUE if i==2 else INK,i==2)
         rect(64,y+2,94,6,PALE)
         rect(64,y+2,94*value/100,6,GOLD if i==2 else '7294A9')
         text(161,y,39,10,f'{value:.2f}%',21,BLUE if i==2 else INK,i==2,PP_ALIGN.RIGHT)
-    text(16,545,184,9,'整體準確率98.08%·固定17類分類',16,MUTED)
-    line(210,480,210,559)
+    text(16,535,184,9,'整體準確率98.08%·固定17類分類',16,MUTED)
+    line(210,470,210,549)
     r,j=data['retrieval'],data['judge']
-    text(220,480,184,10,'1,550筆訓練案例／463筆查詢',17)
-    text(220,492,184,12,f'Top-5  {r["top5"]*100:.2f}%',28,BLUE,True)
-    text(220,507,184,10,f'MRR@5  {r["mrr5"]*100:.2f}%·訓練／查詢重疊0',15,MUTED)
+    text(220,470,184,10,'1,550筆訓練案例／463筆查詢',17)
+    text(220,482,184,12,f'Top-5  {r["top5"]*100:.2f}%',28,BLUE,True)
+    text(220,497,184,10,f'MRR@5  {r["mrr5"]*100:.2f}%·訓練／查詢重疊0',15,MUTED)
     for i,(name,key) in enumerate((('支持','support'),('複核','review'),('不確定','uncertain'))):
         x=220+i*63
-        text(x,520,58,12,str(j['assessment_counts'][key]),26,BLUE,align=PP_ALIGN.CENTER)
-        text(x,533,58,9,name,17,align=PP_ALIGN.CENTER)
-    text(220,546,184,14,'30筆偵測誤判中18筆分流\n其餘12筆獲支持，處置另經策略檢查',13.5,MUTED)
-    line(16,562,404,562)
-    text(16,565,388,9,'整合驗證：17類真實張量重跑；6種隔離TCP情境，背景保留與回復皆6/6。',16,BLUE)
-    text(16,574,388,5,'6種情境含4種套用規則、2種監測或蒐證；6/6為隔離交易與回復結果，非原生攻擊防禦率。',11,MUTED)
+        text(x,510,58,12,str(j['assessment_counts'][key]),26,BLUE,align=PP_ALIGN.CENTER)
+        text(x,523,58,9,name,17,align=PP_ALIGN.CENTER)
+    text(220,536,184,14,'30筆偵測誤判中18筆分流\n其餘12筆獲支持，處置另經策略檢查',14.5,MUTED)
+    line(16,552,404,552)
+    text(16,555,388,8,'整合驗證：17類真實張量重跑；6種隔離TCP情境，背景保留與回復皆6/6。',16,BLUE)
+    text(16,564.5,388,14,'6種隔離情境：4種套用規則、2種監測或蒐證。\n6/6為隔離交易與回復結果，非原生攻擊防禦率。',16,MUTED)
 
     target = ROOT / 'deliverables/決賽海報_AI資安框架_A2.pptx'
     intermediate = ROOT / 'validation/poster-a2/authoring.pptx'
