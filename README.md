@@ -74,6 +74,21 @@
 
 同一彙整提供Web-XSS與Web-BruteForce的封存測試混淆及463筆查詢分析。本輪保持既有模型與測試切分，分析不作為以測試答案調參的依據。復原實測與操作範圍見[決賽穩定性與操作整合](docs/決賽穩定性與操作整合.md)。
 
+### 補充對照與真實服務實驗
+
+新增[補充實驗報告](docs/補充實驗與適用範圍.md)與[實驗重現入口](experiments/README.md)，分開驗證稽核、檢索、SSH服務及整合延遲，保留既有權重、測試切分與正式媒體。
+
+| 補充項目 | 實際量測範圍 | 公開證據 |
+| --- | --- | --- |
+| 稽核對照 | 同463筆輸入、兩個規則組與三個AI組；共1,389次新AI回覆 | [五組結果](results/auditor_ablation.json) |
+| 檢索敏感度 | 固定查詢，五個種子、三種訓練案例庫比例、兩種向量，共30組 | [逐組結果](results/retrieval_sensitivity.json) |
+| 真實SSH服務 | 三輪同埠登入、來源限速、30秒期限與回復；其他來源正常登入24/24 | [SSH服務PoC](results/ssh_service_poc.json) |
+| 程序載入與暖機效能 | 三個獨立模型程序、306次序列整合呼叫、17個重複真實輸入 | [延遲與p95](results/pipeline_latency.json) |
+
+新共同提示詞下，兩個檢索AI組的支持精確率均為95.64%，未勝過規則證據組98.50%；512維與529維也未顯示稽核精確率差異。這批結果不能證明加入AI或17維機率會提升判斷。它與原有正式提示詞的97.11%屬不同實驗，不互相替換。
+
+SSH PoC量測真實加密握手與密碼認證：錯誤密碼到達認證階段由24/24降為6/24；同來源合法登入也降至6/24，其他來源合法登入維持24/24。這是來源限速的效果與代價，不是漏洞修補率，也沒有宣稱模型辨識了實驗室即時SSH封包。公開彙整及來源雜湊由[補充驗收索引](results/supplementary_validation.json)綁定，逐筆事件與實驗憑證保留本機。
+
 ## 公開程式測試
 
 公開版不需要私有模型即可執行合約測試與媒體編譯檢查。使用Python 3.11、Node.js 24、pnpm 11.25.0與專案鎖檔；CI配置見[工作流程](.github/workflows/tests.yml)。
@@ -95,7 +110,7 @@ python scripts/check_public_files.py
 
 已有clone時先執行`git submodule update --init --recursive`。子模組必須初始化，才能載入真正的共用策略元件。
 
-目前127項Python測試涵蓋事件合約、Judge上下文、策略、逐筆證據、資產匯入、預檢、API、字型、匿名與交付一致性。媒體檢查另編譯九個動畫章節。測試中的合成fixture只測程式邊界，不列入模型成效；CI通過也不代表重新執行真實模型。完整項目見[測試矩陣](docs/測試矩陣.md)。
+目前135項Python測試涵蓋事件合約、Judge上下文、策略、逐筆證據、資產匯入、預檢、API、字型、匿名與交付一致性。媒體檢查另編譯九個動畫章節。測試中的合成fixture只測程式邊界，不列入模型成效；CI通過也不代表重新執行真實模型。完整項目見[測試矩陣](docs/測試矩陣.md)。
 
 ## 完整本機模型與隔離驗證
 
@@ -229,7 +244,8 @@ python scripts/finals_pipeline.py --stage validation/NEW_DELIVERY_FOLDER
 | [design-system/](design-system/) | 共用色盤、兩種字型、平面圖示與視覺規格 |
 | [deliverables/](deliverables/) | 正式PPTX、PDF、MP4、離線ZIP及預覽 |
 | [deliverables/source/](deliverables/source/) | 最新12頁SVG、架構圖、設計規格、講者稿及交付索引 |
-| [results/](results/) | 四份核心實測彙整及策略風險分析 |
+| [results/](results/) | 核心實測、策略風險、四份補充實驗及來源索引 |
+| [experiments/](experiments/) | 五組稽核、檢索敏感度、真實SSH與效能重現入口 |
 | [tests/](tests/) | 程式合約、交付一致性與媒體檢查 |
 | [docs/](docs/) | 方法、答詢、重現、驗收及版本紀錄 |
 | [sources/paper_code/](sources/paper_code/) | 第三方研究程式子模組，固定版本與來源由Git記錄 |
