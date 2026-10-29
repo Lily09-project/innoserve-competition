@@ -252,9 +252,15 @@
     "private_assets_present": false,
     "local_config_present": false,
     "submodules_initialized": true,
-    "python_tests": 104,
+    "python_tests": 109,
     "media_chapters_compiled": 9,
-    "delivery_binding_check": "passed"
+    "media_data_update_test": "passed",
+    "delivery_binding_check": "passed",
+    "public_file_paths": 151,
+    "public_audit_findings": 0,
+    "dependencies": "pnpm 11.25.0 frozen lockfile; 45 packages from offline cache",
+    "tested_commit": "3c6a9a7",
+    "scope": "fresh clone of the corrected runtime, source and evidence; no config.local.json or evidence directory"
   },
   "asset_revision": "977ab6014516622dff32d9b94481a1b013f407d0917a87cd0347945918d114ca",
   "code_review": {
