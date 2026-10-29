@@ -1,31 +1,31 @@
 {
-  "created_utc": "2026-10-29T05:49:54.254757+00:00",
+  "created_utc": "2026-10-29T06:32:20.564088+00:00",
   "source_revision": "fd8a456582977be90a32585198977740190073d0e044fdb08c1a10077ab9b670",
   "bindings": {
     "visual_sources": {
       "design-system/palette.json": "1d2563d56e2e33fb8798ec1f500b69180ccbee99c0e29261b490e9bf32e1e98b",
       "design-system/typography.json": "eef65fe31802c55d476d41351ed1fd7156eab2d07ee271fff95b84fca21a0c9c",
-      "design-system/icons.json": "d0bec75cb652aab8d5745e6cdf7c43b60d8dd7009b9ac600a6f5b33afb5ecd76",
+      "design-system/icons.json": "7997027b80b6b7990b8399383555d2775b4d8257902c3fa8c8f4f8a3b5e2aec7",
       "scripts/presentation/style_contract.py": "5de58b66b64c47f0191a482ed0089f5683750d7e88e3de516da80a29491bf512",
-      "scripts/presentation/editorial_assets.py": "0cb85b3d2f37fae73ef2480cc0318dbfeb407cca2b35376cfa7eb81573a7b198",
-      "scripts/presentation/build_a2_poster.py": "ae25e8d8b902fb2cc92d414f1f52e13bd144efc2304fd679639211ef07efbc06",
+      "scripts/presentation/editorial_assets.py": "f10d4f2e08acf07bdb07f4f696df50aae8564404590ffe6a3066a694c4574df7",
+      "scripts/presentation/build_a2_poster.py": "3582818571bcc61967ee338c7ef1a82e2f2a19f9dfd9d7a54717182c48218c47",
       "scripts/presentation/finalize_delivery.py": "18aa79f996f0b86158bbf57881d1cd38af3b7f232796da055205a6c2a7a1ce32",
-      "media/film/scene.mjs": "a06a13168aafd5ca1adda795f4f995c04d5afdf8384e693bd88cf8111af35bf9",
+      "media/film/scene.mjs": "856bcfcf54b78dffd08821c7c3b544bcf9fa1568991c0f92ab6f3de7c1c04b91",
       "scripts/render_product_film.mjs": "bd1f54fab6410a10393cab66d0b88fcb18dd99b24edb500f43b003ac469e5630"
     },
     "artifacts": {
-      "deliverables/決賽簡報_AI資安框架.pptx": "7c666f284498cb63cd803cca307fb5826bf53ac682e11a0dc161c11f2acb9647",
-      "deliverables/決賽簡報_AI資安框架.pdf": "7bc9effc6fda6f7a67126d0d28a9df79be0bb8b9adcda6b9da3488f009f1b53e",
-      "deliverables/決賽海報_AI資安框架_A2.pptx": "7e2bcb2e552fd80c85a2b09d3270adb3ca53a6a7488431ba1e55a6138b4ac37f",
-      "deliverables/決賽海報_AI資安框架_A2.pdf": "63b2fb7e0fb2caf8942d32731ab540584f93d5ccc0ce58c6f68b69ad8f90f3ed",
-      "deliverables/AI資安框架_系統展示影片_30秒快版.mp4": "0c30ade75ffa3c7ab86a0aa56983764d35813311ebf4921f73a48baabd161caf",
+      "deliverables/決賽簡報_AI資安框架.pptx": "8c20cce6f85eec12d0f8846ec3929af9aae626eae6cec64ecdaa462ec1364d73",
+      "deliverables/決賽簡報_AI資安框架.pdf": "d088451eabef6a85766fb1e452448138b775e07d1468b6838152e7607a78f734",
+      "deliverables/決賽海報_AI資安框架_A2.pptx": "e4be853a6d7399c2e38cdf75f82af56053de2202a9e2f6b05d24161f754e12f2",
+      "deliverables/決賽海報_AI資安框架_A2.pdf": "61f240fc57943347b8f2d055801d016519db7b6b52475c3d162b60f087a711ab",
+      "deliverables/AI資安框架_系統展示影片_30秒快版.mp4": "a5298f1439a38b3e6439b52507077803adecb55cf0c620d466e8708a7e719017",
       "deliverables/source/architecture.svg": "e99352554b800b2544969762ed91adaf067a81a6a3efe3efa39560a13a8aea2c",
       "deliverables/source/speaker-notes.md": "a0710803e4bf451b2cd7cb4cf3d695d937967b102b5e6cb8be5e4d839e44137b"
     },
     "previews": {
-      "deliverables/figures/slides-preview.png": "c3ebc8b630931683172177b96bd12f7c27cf3a5bda9d86df964e74d795fd50bf",
-      "deliverables/figures/poster-a2-preview.png": "419fe772b5d0ad95561b8a027e1208ccdde293ba36dc070226f5f5f682ee2482",
-      "deliverables/figures/film-preview.png": "5f33cb067840f639376b488f735e8ea95da543524c11bea7c96b13c6ee704ad6",
+      "deliverables/figures/slides-preview.png": "2be393a130a59bbf8bc79158dfcf80a2b63b83b0c06ad805ecfcf4affbb7b793",
+      "deliverables/figures/poster-a2-preview.png": "28145d645201efe76ffd7bd8c2fcab92850586abc7a5a50b8b58e7a62d0c68e2",
+      "deliverables/figures/film-preview.png": "57c140a6900a743929abe3bc6fd091f92461aee94bc8b018d8e9b3797838b32e",
       "deliverables/figures/fig_architecture.png": "3c583b8bc89579e3caa9021312b1f77af47f33bdde6108695d728049700c5e75"
     },
     "results": {

@@ -295,3 +295,6 @@
 ## XVII. Unified visual and typography contract
 
 海報、PPT、影片共同讀取palette.json、typography.json與icons.json。中文與中文標點使用DFKai-SB，英文、數字、其他符號使用Times New Roman。原始立體素材不再進入正式成品；四個共用平面圖示、影片設備、原生線稿均用同一線條與填色。無陰影或漸層。
+
+
+<!-- visual refinement 2026-10-29: original shared framework emblem on cover, blue title rule, discreet progress marks, outlined model branches and QA rails; existing page content, charts, notes and order retained. -->
