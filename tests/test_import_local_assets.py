@@ -7,6 +7,7 @@ from unittest.mock import patch
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'scripts'))
 import import_local_assets as importer
+from contract_fixtures import write_private_bundle
 
 
 class ImportAssetTests(unittest.TestCase):
@@ -16,7 +17,7 @@ class ImportAssetTests(unittest.TestCase):
         self.source=base/'source';self.root=base/'destination'
         self.origin=self.source/'evidence/fresh17';self.origin.mkdir(parents=True)
         self.root.mkdir()
-        for name in importer.REQUIRED:(self.origin/name).write_bytes(b'disposable file fixture')
+        write_private_bundle(self.origin)
 
     def tearDown(self):self.temp.cleanup()
 
@@ -75,3 +76,12 @@ class ImportAssetTests(unittest.TestCase):
         with patch.object(Path,'is_symlink',lambda p:p==name or original(p)):
             with self.assertRaises(ValueError):importer.import_assets(self.source,self.root)
         self.assertFalse((self.root/'evidence').exists())
+
+    def test_invalid_json_and_npz_never_publish(self):
+        for name in ('events.json','live_inputs_private.npz'):
+            original=(self.origin/name).read_bytes()
+            (self.origin/name).write_bytes(b'invalid bundle')
+            with self.assertRaises(ValueError):importer.import_assets(self.source,self.root)
+            self.assertFalse((self.root/'evidence/fresh17').exists())
+            self.assertEqual(list((self.root/'evidence').iterdir()),[])
+            (self.origin/name).write_bytes(original)

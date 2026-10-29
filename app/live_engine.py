@@ -13,15 +13,19 @@ import numpy as np
 ROOT=Path(__file__).resolve().parents[1]
 from settings import optional_asset_path
 from judge_response import parse_judge_response
+from provenance import runtime_assets, identifier
 sys.path.insert(0,str(optional_asset_path("judge_packages_dir",ROOT / "runtime/judge_packages")))
 sys.path.insert(0,str(ROOT / "scripts"))
 os.environ["HF_HUB_OFFLINE"]="1"
 os.environ["TRANSFORMERS_OFFLINE"]="1"
-from pipeline import TrainOnlyBank, task_vector, run_event, digest
+from pipeline import TrainOnlyBank, task_vector, run_event, digest, judge_context_digest
 
 
 class LiveEngine:
     def __init__(self,progress):
+        progress('核對完整模型、Gate、輸入與執行資產版本')
+        self.asset_manifest = runtime_assets(ROOT)
+        self.asset_revision = identifier(self.asset_manifest)
         import torch
         from transformers import AutoTokenizer,AutoModelForCausalLM
         from rebuild_retrieval import model_module,load_gate,REF,MODEL_ROOT,sha
@@ -84,7 +88,8 @@ class LiveEngine:
         gp=self.gate(cp,pp)[0]
         detector_ms=(time.perf_counter()-started)*1000
         fresh={**event,"execution_id":uuid.uuid4().hex,"policy_ttl_seconds":30,"prediction":int(gp.argmax()),"confidence":float(gp.max()),"probabilities":gp.tolist(),
-               "embedding":embed.tolist(),"pred_ctbm":int(cp.argmax()),"pred_pbcnn":int(pp.argmax()),"mode":"live_checkpoint_inference"}
+               "embedding":embed.tolist(),"pred_ctbm":int(cp.argmax()),"pred_pbcnn":int(pp.argmax()),"mode":"live_checkpoint_inference",
+               'asset_revision':self.asset_revision,'judge_model_revision':self.model_revision}
         progress("以529維任務向量重新查詢Top-5訓練案例")
         began=time.perf_counter()
         fresh["evidence"]=self.bank.retrieve(task_vector(embed,gp),fresh["event_id"],fresh["representation_id"],fresh["model_sha256"])
@@ -111,6 +116,7 @@ class LiveEngine:
                 "prompt_sha256":hashlib.sha256(self.prompt.encode()).hexdigest(),"store":False,
                 "classification_changed":False,"model_revision":self.model_revision,"raw_response":raw,"valid_json":valid,"payload":payload,
                 "execution_mode":"live_local_llm_inference"}
+        record.update(binding_version=2,context_sha256=judge_context_digest(fresh['event_id'],payload,record['prompt_sha256'],self.model_revision))
         progress("策略檢核與保存事件紀錄")
         result=run_event(fresh,self.bank,record)
         fresh["result"]=result

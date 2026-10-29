@@ -14,6 +14,8 @@ sys.path.insert(0, str(ROOT / 'app'))
 from settings import asset_path, optional_asset_path, execution_settings
 from pipeline import TrainOnlyBank, digest
 from server import source_revision
+from asset_validation import validate_bundle
+from provenance import runtime_assets, identifier
 
 
 class Preflight:
@@ -23,11 +25,7 @@ class Preflight:
 
     def assets(self):
         folder = self.root / 'evidence/fresh17'
-        bank = TrainOnlyBank.load(folder/'train_bank.npz', folder/'train_bank_manifest.json')
-        for name in ('events.json', 'live_inputs_private.npz', 'judge_records_private.jsonl'):
-            if not (folder/name).is_file():
-                raise FileNotFoundError(name)
-        return {'train_cases': len(bank.ids), 'representation': bank.representation_id}
+        return validate_bundle(folder)
 
     def models(self):
         ref = asset_path('ids_reference_root')
@@ -80,6 +78,8 @@ class Preflight:
         if value.get('source_revision') != source_revision():
             raise ValueError('Running service differs from this checkout; restart the local API')
         if value.get('model_ready'):
+            if value.get('asset_revision') != identifier(runtime_assets(self.root)):
+                raise ValueError('Running model assets differ from this checkout')
             return {'version': value['product'], 'model_ready': True}
         if not self.warmup:
             raise RuntimeError('Preload models before entering the competition area')
@@ -95,6 +95,11 @@ class Preflight:
             if state.get('state') == 'done':
                 if state.get('result', {}).get('ready') is not True:
                     raise ValueError('model preload completion has no readiness receipt')
+                status = self.get('/api/status')
+                if status.get('model_ready') is not True or status.get('source_revision')!=source_revision():
+                    raise ValueError('Preload finished without current ready service')
+                if status.get('asset_revision') != identifier(runtime_assets(self.root)):
+                    raise ValueError('Preloaded assets differ from this checkout')
                 return {'version':value['product'], 'model_ready':True}
             time.sleep(.5)
         raise TimeoutError('model preload')

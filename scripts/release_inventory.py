@@ -11,6 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'app'))
 from server import source_revision
 from audit_selection import select_audit
+from provenance import runtime_assets, identifier
 
 VISUAL_SOURCES = [
     'design-system/palette.json','design-system/typography.json','design-system/icons.json',
@@ -66,17 +67,17 @@ def distribution(values):
 
 def build(root=ROOT, audit_dir=None):
     root = Path(root)
-    folder = select_audit(root/'validation',source_revision(),audit_dir)
+    folder = select_audit(root/'validation',source_revision(),audit_dir,identifier(runtime_assets(root)))
     read = lambda name:json.loads((folder/name).read_text(encoding='utf-8'))
     summary,live,receipts = (read(name) for name in ('summary.json','live_events_private.json','network_receipts_private.json'))
     detector = json.loads((root/RESULTS[0]).read_text(encoding='utf-8'))['OOF Gate']
     normal = detector['per_class'][0]
     return {
         'created_utc':datetime.now(timezone.utc).isoformat(), 'source_revision':source_revision(),
-        'bindings':bindings(root),
+        'bindings':bindings(root), 'asset_revision':summary['asset_revision'],
         'evidence':{'audit_started_utc':summary['started_utc'],'status':summary['status'],
                     'private_receipt_hashes':{name:sha(folder/name) for name in
-                        ('summary.json','live_events_private.json','network_receipts_private.json','asset_alignment.json')},
+                        ('summary.json','live_events_private.json','network_receipts_private.json','asset_alignment.json','asset_manifest.json')},
                     'real_live_classes':17,'real_local_llm_calls':17,'network_cases':6,
                     'background_preserved':summary['background_preserved_cases'],
                     'rollback_passed':summary['rollback_passed_cases'],

@@ -7,6 +7,7 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "app"))
 from pipeline import TrainOnlyBank, task_vector, digest, run_event
 from network_contract import build_network_scenario, bind_network_receipt, verify_network_receipt, validate_network_scenario
+from contract_fixtures import judge_record
 
 
 class NetworkContractTests(unittest.TestCase):
@@ -17,11 +18,9 @@ class NetworkContractTests(unittest.TestCase):
         self.event = {"event_id":"query", "execution_id":"run-1", "execution_mode":"live_local_models",
             "mode":"live_checkpoint_inference", "prediction":7, "validation_label":7,
             "embedding":np.ones(512).tolist(), "probabilities":p.tolist(), "representation_id":"fixture",
-            "model_sha256":"a"*64, "policy_ttl_seconds":30}
+            "model_sha256":"a"*64, "policy_ttl_seconds":30,"pred_ctbm":7,"pred_pbcnn":7}
         evidence = bank.retrieve(vector, "query", "fixture", "a"*64)
-        record = {"input_sha256":digest({"event_id":"query", "prediction":7, "evidence":evidence}),
-            "assessment":"support", "model":"fixture", "prompt_sha256":"b"*64,
-            "store":False, "classification_changed":False, "execution_mode":"live_local_llm_inference"}
+        record = judge_record(self.event,evidence)
         self.event["result"] = run_event(self.event, bank, record)
         self.scenario = build_network_scenario(self.event)
 

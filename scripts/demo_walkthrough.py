@@ -11,7 +11,7 @@ import urllib.request
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'app'))
-from network_contract import build_network_scenario, digest, valid_ledger, verify_network_receipt
+from network_contract import build_network_scenario, digest, valid_ledger, verify_network_receipt, validate_measurement
 
 LABELS = ['BENIGN', 'FTP-BruteForce', 'SSH-Bruteforce', 'DoS-GoldenEye',
           'DoS-Hulk', 'DoS-Slowloris', 'DoS-SlowHTTPTest', 'DDoS-LOIC-HTTP',
@@ -151,6 +151,7 @@ def main():
             receipt = job({'action': 'network', 'event_id': key, 'execution_id': event['execution_id']})
             if not verify_network_receipt(scenario, receipt):
                 raise ValueError('invalid_network_receipt')
+            validate_measurement(scenario,receipt)
             summary['network_receipt'] = summarize_receipt(receipt)
             summary['network_executed_in_this_walkthrough'] = True
             print('同次執行回條驗證通過。')

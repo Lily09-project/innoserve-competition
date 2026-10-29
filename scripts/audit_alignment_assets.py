@@ -12,6 +12,7 @@ from settings import asset_path, optional_asset_path
 from pipeline import digest, audit_payload, LABELS
 from server import source_revision
 from audit_selection import select_audit
+from provenance import runtime_assets, identifier
 
 
 def sha(path):
@@ -37,7 +38,7 @@ def main():
         event=source[row["event_id"]]
         assert row["payload"]==audit_payload(event,event["evidence"])
         assert "validation_label" not in row["payload"] and "true_label" not in row["payload"]
-    folder=select_audit(ROOT/'validation',source_revision(),args.audit_dir)
+    folder=select_audit(ROOT/'validation',source_revision(),args.audit_dir,identifier(runtime_assets(ROOT)))
     fresh=json.loads((folder / "live_events_private.json").read_text(encoding="utf-8"))
     errors=[]
     for e in fresh:
@@ -61,7 +62,8 @@ def main():
         "acceptance_scope":"checkpoint hashes, formal classes and ranked case IDs agree; floating probabilities are measured, not asserted identical",
         "live_vs_saved_top5_case_ids_all_match":True,"live_input_classes":17,
         "current_gate_files_sha256":{p.name:sha(p) for p in files},
-        "gate_hash_scope":"current files recorded; fresh vs saved probability alignment checked separately"}
+        'asset_revision':identifier(runtime_assets(ROOT)),
+        "gate_hash_scope":"Gate, model, tokenizer and input asset hashes match the actual live audit asset version"}
     (folder / "asset_alignment.json").write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding="utf-8")
     print(json.dumps(result,ensure_ascii=False))
 

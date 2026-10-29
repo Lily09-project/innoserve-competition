@@ -33,6 +33,13 @@ class PublicResultsTests(unittest.TestCase):
             with self.subTest(path=path), self.assertRaises(ValueError):
                 validate_results(data)
 
+    def test_zero_rule_intervention_cannot_be_reported_as_success(self):
+        data=copy.deepcopy(read_results())
+        for row in data['framework']['cases']:
+            row['rules_applied']=0;row['after_success_rate']=1;row['ttl_rollback_elapsed_seconds']=None
+        data['framework']['non_disruptive_network_cases']=6
+        with self.assertRaisesRegex(ValueError,'policy rules missing'):validate_results(data)
+
     def test_deck_and_film_are_synchronized(self):
         deck = ROOT / "deliverables/決賽簡報_AI資安框架.pptx"
         film = ROOT / "deliverables/AI資安框架_系統展示影片_30秒快版.mp4"

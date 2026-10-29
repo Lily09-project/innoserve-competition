@@ -12,25 +12,16 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "app"))
 from settings import optional_asset_path
-from judge_response import parse_judge_response
+from judge_response import parse_judge_response, JUDGE_PROMPT as PROMPT
 sys.path.insert(0, str(optional_asset_path("judge_packages_dir", ROOT / "runtime/judge_packages")))
 os.environ["HF_HUB_OFFLINE"] = "1"
 os.environ["TRANSFORMERS_OFFLINE"] = "1"
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
-from pipeline import LABELS, TrainOnlyBank, digest, run_event
+from pipeline import LABELS, TrainOnlyBank, digest, run_event, judge_context_digest
 
 from settings import asset_path
 MODEL = asset_path("llama_model_dir")
-PROMPT = """You are a network intrusion evidence auditor. The detector's formal class is immutable.
-Use only the provided detector prediction, confidence, branch predictions and five train-only neighbours.
-Never assume ground truth. Neighbour labels are evidence, not authoritative labels for the query.
-Return one JSON object with exactly assessment and reason. assessment must be support, review or uncertain.
-Use support when confidence is at least 0.8 and at least four neighbours agree with the detector.
-Use review when neighbours conflict with the detector or branches disagree and evidence is mixed.
-Use uncertain when confidence is below 0.5 or evidence is too weak to assess.
-Do not output commands, do not change the detector label. Keep reason under 25 English words.
-Example format: {"assessment":"review","reason":"Evidence conflicts with the detector prediction."}"""
 
 
 def dump(path, value):
@@ -95,6 +86,7 @@ def main():
                           "mode":"fresh_local_llm_inference", "raw_response":text,
                           "valid_json":valid, "batch_ms":batch_ms, "batch_size":len(chunk),
                           "payload":payload_for(event)}
+                record.update(binding_version=2,context_sha256=judge_context_digest(event['event_id'],record['payload'],prompt_hash,MODEL.name))
                 f.write(json.dumps(record, ensure_ascii=False) + "\n"); f.flush()
                 existing[event["event_id"]] = record
             print("JUDGE", len(existing), "/", len(events), flush=True)
