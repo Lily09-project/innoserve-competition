@@ -1,7 +1,7 @@
 {
-  "started_utc": "20261029T075603Z",
+  "started_utc": "20261029T114436Z",
   "api_version": "ai-security-demo.v3",
-  "source_revision": "eacad886f75819fe6a8ceea7eaa65d037339a2a73d590a98953df87dded69f57",
+  "source_revision": "ede0cb0775aa4e542c6763c4d41496970ff59eaedab29d89b2db2d2f7d02566e",
   "asset_revision": "977ab6014516622dff32d9b94481a1b013f407d0917a87cd0347945918d114ca",
   "real_live_classes": 17,
   "real_local_llm_calls": 17,
@@ -34,6 +34,7 @@
       "background_success_rate": 1.0,
       "recovery_success_rate": 1.0,
       "rollback_integrity": true,
+      "cleanup_passed": true,
       "ttl_rollback_elapsed_seconds": null
     },
     {
@@ -48,7 +49,8 @@
       "background_success_rate": 1.0,
       "recovery_success_rate": 1.0,
       "rollback_integrity": true,
-      "ttl_rollback_elapsed_seconds": 30.126287652
+      "cleanup_passed": true,
+      "ttl_rollback_elapsed_seconds": 30.119792843
     },
     {
       "validation_label": "SSH-Bruteforce",
@@ -62,7 +64,8 @@
       "background_success_rate": 1.0,
       "recovery_success_rate": 1.0,
       "rollback_integrity": true,
-      "ttl_rollback_elapsed_seconds": 30.13369013100001
+      "cleanup_passed": true,
+      "ttl_rollback_elapsed_seconds": 30.113804571999992
     },
     {
       "validation_label": "DDoS-LOIC-HTTP",
@@ -76,7 +79,8 @@
       "background_success_rate": 1.0,
       "recovery_success_rate": 1.0,
       "rollback_integrity": true,
-      "ttl_rollback_elapsed_seconds": 30.12167685899999
+      "cleanup_passed": true,
+      "ttl_rollback_elapsed_seconds": 30.13138867100001
     },
     {
       "validation_label": "Web-XSS",
@@ -90,6 +94,7 @@
       "background_success_rate": 1.0,
       "recovery_success_rate": 1.0,
       "rollback_integrity": true,
+      "cleanup_passed": true,
       "ttl_rollback_elapsed_seconds": null
     },
     {
@@ -104,7 +109,8 @@
       "background_success_rate": 1.0,
       "recovery_success_rate": 1.0,
       "rollback_integrity": true,
-      "ttl_rollback_elapsed_seconds": 30.111608172000004
+      "cleanup_passed": true,
+      "ttl_rollback_elapsed_seconds": 30.11559877399999
     }
   ]
 }

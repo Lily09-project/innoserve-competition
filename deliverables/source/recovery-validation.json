@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "source_revision": "ede0cb0775aa4e542c6763c4d41496970ff59eaedab29d89b2db2d2f7d02566e",
+  "probe_script_sha256": "584fd6ed1c3538ee14bf67a178cde6c71b15ef77ce8eae6334e0f2649bcd7e88",
+  "deadline_cleanup": true,
+  "signal_cleanup": true,
+  "concurrent_rejected": true,
+  "retry_with_rules_and_expiry": true,
+  "owned_links_remaining": [],
+  "scope": "Real Mininet/iptables recovery on one saved approved scenario. No fresh detector or LLM calls; not an attack effectiveness experiment."
+}

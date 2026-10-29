@@ -79,6 +79,16 @@ def audit(root=ROOT):
         verify_bindings(json.loads((root/'deliverables/source/release-validation.json').read_text(encoding='utf-8')),root)
     except (ValueError,OSError):
         errors.append('Release source/artifact/preview evidence binding mismatch')
+    recovery_path=root/'deliverables/source/recovery-validation.json'
+    if recovery_path.exists():
+        try:
+            recovery=json.loads(recovery_path.read_text(encoding='utf-8'))
+            release=json.loads((root/'deliverables/source/release-validation.json').read_text(encoding='utf-8'))
+            probe=root/'scripts/network_fault_probe.py'
+            if recovery['status']!='passed' or recovery['source_revision']!=release['source_revision'] or recovery['probe_script_sha256']!=delivery_digest(probe.read_bytes(),'LF') or recovery['owned_links_remaining']!=[] or any(recovery.get(k) is not True for k in ('deadline_cleanup','signal_cleanup','concurrent_rejected','retry_with_rules_and_expiry')):
+                raise ValueError('invalid_recovery_binding')
+        except (ValueError,OSError,KeyError,TypeError):
+            errors.append('Recovery proof differs from current sources or cleanup did not pass')
     films = list((root / 'deliverables').rglob('*.mp4'))
     if len(films) != 1:
         errors.append('Exactly one current presentation film must be delivered')

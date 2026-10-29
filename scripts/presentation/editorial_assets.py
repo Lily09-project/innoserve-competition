@@ -3,7 +3,6 @@ from pathlib import Path
 from html import escape
 import json
 import sys
-from PIL import Image
 from style_contract import TYPOGRAPHY, font_runs, icon_fragment
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -41,6 +40,7 @@ def image(x, y, w, h, file):
 
 
 def split_icons():
+    from PIL import Image
     sheet = Image.open(DEST / 'security-icons-sheet.png').convert('RGBA')
     w, h = sheet.size
     for i in range(4):

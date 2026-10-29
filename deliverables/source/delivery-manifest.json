@@ -34,8 +34,8 @@
       "sha256": "4184aec4b630f40bedc1fc812959e87d92b15dda1489a7689e68ab776f4c1a9f"
     },
     "deliverables/source/release-validation.json": {
-      "bytes": 9981,
-      "sha256": "7898aa38c9ef164dd607081ea92cce0221ad7b2f5ebc71cb78c591c1261589c2",
+      "bytes": 10198,
+      "sha256": "a67a224eb5223a6948f5eeff2c0e6c600ec00542a2626b33d0b868a9cc874d81",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/01_slide.svg": {
@@ -100,18 +100,28 @@
     },
     "media/film/metrics.json": {
       "bytes": 1256,
-      "sha256": "6ec25adf9dffe06d6b2931e16185b1b0b30cc4befef0dd07ac8881c567cf1e0f",
+      "sha256": "816450d6ba5340d14b5bae6aeb133a462deb6be3f6eb3f4a37fb8274656222c1",
       "hash_normalization": "LF"
     },
     "media/film/metrics.mjs": {
-      "bytes": 1019,
+      "bytes": 1032,
       "sha256": "39180d26ce80926435c92e3cdbef0bbaeb16c9a612c9ef9db97ff36716a79701",
       "hash_normalization": "LF"
     },
     "scripts/media_results.py": {
-      "bytes": 2777,
+      "bytes": 2840,
       "sha256": "9823f3ba4a60908ae3ba51dbd90ffb5a4a748297cb5663034a33fc7a6c5d2eae",
       "hash_normalization": "LF"
+    },
+    "results/policy_risk_analysis.json": {
+      "hash_normalization": "LF",
+      "bytes": 3205,
+      "sha256": "bfcedc00b7526ea4d924d2aa5f1acdb2380d1d743c4d7c559f4dbf0f37767948"
+    },
+    "deliverables/source/recovery-validation.json": {
+      "hash_normalization": "LF",
+      "bytes": 522,
+      "sha256": "8e4e75552d3b7ae3b9c401843a53eb012fadd8591f7d75b4439a636115bbc9f3"
     }
   },
   "slides": 12,
@@ -132,12 +142,12 @@
     2560,
     1072
   ],
-  "python_tests": 109,
+  "python_tests": 127,
   "website": "removed; API-only",
   "review": "89 Python tests and deterministic nine-chapter media compilation passed; current real 17-class/17-LLM and six-isolated-scenario validation passed. Existing visual acceptance retained; no visual content changed.",
   "results_changed": true,
-  "markdown_documents": 27,
-  "local_links_checked": 118,
+  "markdown_documents": 28,
+  "local_links_checked": 127,
   "presentation_limit_seconds": 360,
   "buffer_seconds": 60,
   "visual_theme": "white and light gray canvas; navy titles, medium blue diagrams, gold highlights, ink body",
@@ -149,7 +159,7 @@
   "fresh_rollback_passed_cases": 6,
   "model_lineage_checkpoints": 3,
   "maximum_live_saved_probability_delta": 0.00011988392251005564,
-  "live_audit_source": "framework_audit_20261029T075603Z",
+  "live_audit_source": "framework_audit_20261029T114436Z",
   "fresh_audit_status": "passed",
   "video_slot_slide": 2,
   "video_embedded": true,
@@ -216,8 +226,8 @@
     "gold_tint": "#FFF4DD"
   },
   "recorded_detector_and_judge_metrics_changed": false,
-  "fresh_audit_started_utc": "20261029T075603Z",
-  "source_revision": "eacad886f75819fe6a8ceea7eaa65d037339a2a73d590a98953df87dded69f57",
+  "fresh_audit_started_utc": "20261029T114436Z",
+  "source_revision": "ede0cb0775aa4e542c6763c4d41496970ff59eaedab29d89b2db2d2f7d02566e",
   "film_results_seconds": 2.5,
   "local_judge_parser_regression_cases": 463,
   "local_judge_parser_assessment_changes": 0,
@@ -252,15 +262,17 @@
     "private_assets_present": false,
     "local_config_present": false,
     "submodules_initialized": true,
-    "python_tests": 109,
+    "python_tests": 127,
     "media_chapters_compiled": 9,
     "media_data_update_test": "passed",
     "delivery_binding_check": "passed",
-    "public_file_paths": 151,
+    "public_file_paths": 163,
     "public_audit_findings": 0,
     "dependencies": "pnpm 11.25.0 frozen lockfile; 45 packages from offline cache",
-    "tested_commit": "3c6a9a7",
-    "scope": "fresh clone of the corrected runtime, source and evidence; no config.local.json or evidence directory"
+    "tested_commit": "de7c180",
+    "tested_source_revision": "ede0cb0775aa4e542c6763c4d41496970ff59eaedab29d89b2db2d2f7d02566e",
+    "standalone_pipeline_and_staging": "passed",
+    "scope": "fresh public clone, no private assets/config; approved native assets preserved and 12 SVG sources regenerated identically"
   },
   "asset_revision": "977ab6014516622dff32d9b94481a1b013f407d0917a87cd0347945918d114ca",
   "code_review": {
@@ -309,5 +321,24 @@
     "equivalent_poster_paragraphs": 172,
     "formal_media_bytes_changed": false,
     "retired_renderer_no_output": true
+  },
+  "operational_hardening": {
+    "report": "docs/決賽穩定性與操作整合.md",
+    "recovery_evidence": "deliverables/source/recovery-validation.json",
+    "policy_analysis": "results/policy_risk_analysis.json",
+    "anonymous_console": "scripts/showcase.py",
+    "pipeline": "scripts/finals_pipeline.py",
+    "error_code_and_failed_log_write_recovery": true,
+    "deadline_signal_concurrency_retry_verified": true,
+    "no_native_media_changes": true,
+    "execution_source_files": 26,
+    "python_tests": 127,
+    "scenario_modes_tested": [
+      "saved",
+      "live",
+      "isolated_execution"
+    ],
+    "newly_rendered_svgs_verified": 12,
+    "clean_clone_pipeline_verified": true
   }
 }

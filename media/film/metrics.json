@@ -4,7 +4,7 @@
     "results/detection_17class.json": "f095d2a74131bfbbad13f7d4a205d96836a08c716793c56e60a9160ed9ab84f0",
     "results/retrieval_17class.json": "44ba49c678aa34130abe1cd5fccf12ab5fde89caffc92891fce272feb7ce8b75",
     "results/local_judge_17class.json": "d21337eacb513357ba9ec56497e3cded60b52f2b1d0b80f1f38f3d0ec73c6666",
-    "results/framework_validation.json": "eebba83df8cc68947566bee080ebacf4c14e374157bae5523e41e31fa3937728"
+    "results/framework_validation.json": "2fe0ad0008b3026e9ad11bc48bbaa349b791d73e7263902291ca0ba54b3c68ea"
   },
   "values": {
     "detection_n": 18998,

@@ -129,6 +129,8 @@ def validate_results(data):
                 raise ValueError('Framework baseline, background or recovery failed')
         if row['rollback_integrity'] is not True:
             raise ValueError('Framework rollback failed')
+        if row.get('cleanup_passed') is not True:
+            raise ValueError('Framework cleanup failed')
         if row['rules_applied']:
             if row['assessment']!='support':raise ValueError('Framework intervention lacks support')
             # Derive the expected effect from actual predicted and measured service ports.

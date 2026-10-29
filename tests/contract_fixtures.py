@@ -138,6 +138,7 @@ def measurement(scenario):
     result.update(
         {
             "rules_applied": count,
+            'cleanup':{'passed':True,'commands_drained':True,'policy_reset':True,'server_stopped':True,'network_stopped':True,'remaining_owned_links':[],'errors':[]},
             "network_test_executed": True,
             "network_action_executed": active,
             "commands_executed": count,

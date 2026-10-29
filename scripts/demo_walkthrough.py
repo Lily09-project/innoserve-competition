@@ -110,13 +110,17 @@ def summarize_receipt(receipt):
     }
 
 
-def main():
+def main(argv=None):
+    global BASE
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--mode', choices=('live', 'saved'), default='live')
     parser.add_argument('--event-index', type=int, default=0,
                         help='Index in the API live input list, from 0 to 16; not a class label')
     parser.add_argument('--network', action='store_true', help='Run the isolated Mininet validation for this fresh execution')
-    args = parser.parse_args()
+    parser.add_argument('--port',type=int,default=8765)
+    parser.add_argument('--event-label',choices=LABELS,help='Select by the saved prediction label; live output remains authoritative')
+    args = parser.parse_args(argv)
+    BASE=f'http://127.0.0.1:{args.port}'
     if args.network and args.mode != 'live':
         parser.error('--network requires --mode live')
     try:
@@ -124,6 +128,10 @@ def main():
         ids = status['live_event_ids']
         if status['product'] != 'ai-security-demo.v3' or len(ids) != 17:
             raise ValueError('unexpected_service')
+        if args.event_label:
+            choices=[row['index'] for row in status.get('live_event_options',[]) if row['prediction_label']==args.event_label]
+            if not choices:raise ValueError('saved_prediction_label_unavailable')
+            args.event_index=choices[0]
         if not 0 <= args.event_index < len(ids):
             raise ValueError('invalid_event_index')
         key = ids[args.event_index]

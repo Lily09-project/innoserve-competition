@@ -38,6 +38,7 @@ def main():
             "rules_applied":row["rules_applied"],"baseline_success_rate":row["baseline"]["success_rate"],
             "after_success_rate":row["subject_after"]["success_rate"],"background_success_rate":row["background_after"]["success_rate"],
             "recovery_success_rate":row["recovery"]["success_rate"],"rollback_integrity":row["rollback_integrity"],
+            "cleanup_passed":row['cleanup']['passed'],
             "ttl_rollback_elapsed_seconds":row["ttl_rollback_elapsed_seconds"]})
     (ROOT / "results/framework_validation.json").write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding="utf-8")
     print("Exported aggregate framework validation:",len(live),"live inputs,",len(rows),"network cases.")
