@@ -116,7 +116,7 @@ const messages=[
 export function frameSvg(t){
  const i=chapterAt(t),local=t-chapters[i].at,dark=false,bg=i>=7?'#F0F2F3':'#FFFFFF',ink=dark?'#FFFFFF':'#171C1D',muted=dark?'#D6DDE0':'#53666E';
  let s=box(0,0,1280,720,bg,0);
- if(i>0&&i<7){const labels=['流量','表徵','判定','檢索','稽核','回復'];labels.forEach((label,k)=>{const x=650+k*94;s+=box(x,39,84,40,k===i-1?G:'#F0F2F3',20)+tx(x+42,68,label,28,k===i-1?N:'#53666E',k===i-1?600:400,'middle');});}
+ if(i>0&&i<7){const labels=['流量','表徵','判定','檢索','稽核','回復'];labels.forEach((label,k)=>{const x=650+k*94;s+=box(x,39,84,40,k===i-1?G:k<i-1?palette.teal_tint:palette.gray,20)+tx(x+42,68,label,28,k===i-1?N:k<i-1?T:palette.muted,k===i-1?600:400,'middle');});}
  if(i===0){
   s+=tx(64,78,'AI SECURITY FRAMEWORK',18,B,600);
   ['融合新型內容相依時序方向模型','入侵偵測與任務導向檢索增強稽核','之 AI 資安框架'].forEach((v,k)=>s+=`<g opacity="${ease((local-.25*k)/.9)}" transform="translate(0 ${(1-ease((local-.25*k)/.9))*30})">${tx(64,230+k*76,v,45,N,300)}</g>`);
@@ -130,7 +130,7 @@ export function frameSvg(t){
   s+=tx(64,625,'展示結束 · 接續架構與實測成果說明',26,'#53666E');
  }else if(i===7){
   s+=tx(64,94,'實測成果',44,N,300);
-  [[percent(m.accuracy),'17類偵測 Accuracy'],[percent(m.top5),'Top-5 命中率'],[`${m.rollback} / ${m.network_cases}`,'隔離情境完整回復']].forEach(([v,l],k)=>{const x=64+k*400,u=ease((local-k*.12)/.6);s+=`<g opacity="${u}" transform="translate(0 ${(1-u)*16})">${box(x-16,206,368,244,'#FFFFFF')}${flatIcon(['model','retrieval','shield'][k],x+274,229,48)}${tx(x,310,v,56,N,300)}${box(x,328,210,6,G,0)}${tx(x,375,l,24,'#171C1D')}</g>`;});
+  [[percent(m.accuracy),'17類偵測 Accuracy'],[percent(m.top5),'Top-5 命中率'],[`${m.rollback} / ${m.network_cases}`,'隔離情境完整回復']].forEach(([v,l],k)=>{const x=64+k*400,u=ease((local-k*.12)/.6);s+=`<g opacity="${u}" transform="translate(0 ${(1-u)*16})">${box(x-16,206,368,244,'#FFFFFF')}${flatIcon(['model','retrieval','shield'][k],x+274,229,48)}${tx(x,310,v,60,T,400)}${box(x,328,210,4,T,0)}${tx(x,375,l,24,'#171C1D')}</g>`;});
   s+=tx(64,525,'偵測有依據，稽核有證據，處置可回復。',34,'#171C1D',300)+tx(64,610,`${count(m.detection_n)}筆偵測測試／${m.queries}筆檢索稽核／${m.network_cases}種隔離情境`,26,'#53666E');
  }else{
   s+=tx(64,65,`0${i} / 06`,32,dark?'#53B1FF':B,600)+tx(64,128,messages[i][0],44,N,300);

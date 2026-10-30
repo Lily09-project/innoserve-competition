@@ -2,16 +2,16 @@
   "base_revision": "7d95faf",
   "files": {
     "deliverables/決賽簡報_AI資安框架.pptx": {
-      "bytes": 1946752,
-      "sha256": "60d573716cbf354b0bf5f38c7fab55e97b94791983a506b5c1a88c2acfe89952"
+      "bytes": 2052538,
+      "sha256": "042d59a8844ddb3257598b746840e06f4cbf4c9d78f003d2de34ebf7bba64806"
     },
     "deliverables/決賽簡報_AI資安框架.pdf": {
-      "bytes": 248530,
-      "sha256": "9cb5882b5ad57423964b5a8e98d9ebdb4614386a4faadf5b6dd5bf9c3c2b06f0"
+      "bytes": 347756,
+      "sha256": "953c3bdfb2bf2b2823bd7be85d574b3e0fe100acaf7ae0f781c40874c6b6352c"
     },
     "deliverables/AI資安框架_系統展示影片_30秒快版.mp4": {
-      "bytes": 1724948,
-      "sha256": "dc4123dd2b57c95e3c3658912fbb43bdd9bcfe7d5826851c72c345dacb6c132e"
+      "bytes": 1736502,
+      "sha256": "171fd94ef7c3a1845c1faf9c9b3625114f979b43bf3b907371a341677aa37c2e"
     },
     "deliverables/figures/fig_architecture.png": {
       "bytes": 306120,
@@ -22,20 +22,20 @@
       "sha256": "86653758099d489c828767f59eec0ee811a4a047600348d7499d02e5bb4a7943"
     },
     "deliverables/決賽海報_AI資安框架_A2.pptx": {
-      "bytes": 137562,
-      "sha256": "a9d57d8bde37f20e9635c6aeecfbdd3973b896bd845bcc6632a6d2bc1dae6de1"
+      "bytes": 135110,
+      "sha256": "f4dbd0ea0106e02845d4034cdbe5672995b04b74da6020f05855ef19dd11bc72"
     },
     "deliverables/決賽海報_AI資安框架_A2.pdf": {
-      "bytes": 220645,
-      "sha256": "8ddb82d551ab7e95a51fe11abc6651f672947a8520e978778ff4f15ce5e318ab"
+      "bytes": 217567,
+      "sha256": "eae3195161633c62735b4da057e19cc13ae4b76c88c1f6ab170ddfa5d5a5773a"
     },
     "deliverables/決賽離線展示包.zip": {
-      "bytes": 4111502,
-      "sha256": "53d3984fe58a040874f9556c2dedc5e28c07f69c3c91a1e0970411490ebd3490"
+      "bytes": 4326212,
+      "sha256": "081697c78df0807eb7315b516753d2cc811e812c06a20baf8feb353dcf5f039f"
     },
     "deliverables/source/release-validation.json": {
       "bytes": 10198,
-      "sha256": "8ee52addc4eedc2c44536176792c8c41d55a5a1175b73278280915c35f4442ec",
+      "sha256": "0c5a5d70b31984f3f27edd3abb6d9fef250fe9a2d0c738ad2db3894bf9573770",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/01_slide.svg": {
@@ -70,12 +70,12 @@
     },
     "deliverables/source/slides/07_slide.svg": {
       "bytes": 5828,
-      "sha256": "16d53f85dda705403574be0efa140ac3a0598727ef1565dc51d134f90273700b",
+      "sha256": "11bd0bb23b7f2b032ab45555e6442d25db5479dd17e4913035e175e4107dbb7e",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/08_slide.svg": {
       "bytes": 7123,
-      "sha256": "b649ea49d3d43965bdde70ee885c3445a751bf0c4516f1c401a000d276ecafd8",
+      "sha256": "70c885b4b8f131ed9a145d474ac8df8401fed1507c5faae385b1a1e34ba06996",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/09_slide.svg": {
@@ -85,17 +85,17 @@
     },
     "deliverables/source/slides/10_slide.svg": {
       "bytes": 11326,
-      "sha256": "70ab2a2f564be46688dd7d4623aef09d77c409488df91bf8dd0855715795f7bc",
+      "sha256": "bc393338e150680ebfd9ba0b6e312094bf93ee234dd2ef639ca4c47bce1106ea",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/11_slide.svg": {
       "bytes": 8290,
-      "sha256": "9d0f6456bf12c5d67c9e135b65d257060b341ccc218de611ff7449ab47b3c4a4",
+      "sha256": "e19f514bacbde423a10b8982ceb3f5692a02d109f70825000b275cf369f585f8",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/12_slide.svg": {
       "bytes": 12052,
-      "sha256": "1694d5261d9d8cb4323db5d2be40e665ec2cf5df219b9dca4f674ecd275e357c",
+      "sha256": "6ec7da7d6d75d673168ede7a4318dd6cbdf959bf54645fd3a364263194e37c75",
       "hash_normalization": "LF"
     },
     "media/film/metrics.json": {
@@ -131,7 +131,7 @@
     "deliverables/source/finals-readiness.json": {
       "hash_normalization": "LF",
       "bytes": 3544,
-      "sha256": "9435e518ec348b9143e8b25ee45ac7c9bebf715f56c478467a438f0ff21e3af2"
+      "sha256": "8f0f58bc6daa627e1b13b7410aff62ab6e6fe4fb40aa6b8a6b67c873e884a911"
     },
     "docs/決賽五分鐘口語稿.md": {
       "hash_normalization": "LF",
@@ -150,18 +150,18 @@
     },
     "deliverables/interactive/README.md": {
       "hash_normalization": "LF",
-      "bytes": 2700,
+      "bytes": 2729,
       "sha256": "df698b33d0a29d788f7aa35427a756940c592729d6dd681d7311a62ff5103f58"
     },
     "tests/offline-exhibit.cjs": {
       "hash_normalization": "LF",
-      "bytes": 10903,
+      "bytes": 11212,
       "sha256": "4196bb0b41382c9b06b5382e1208dda78f61796dbb21a4a562ed35ed0ea94946"
     },
     "deliverables/interactive/AI資安框架_自動循環展示.html": {
       "hash_normalization": "LF",
-      "bytes": 134050,
-      "sha256": "04a805fc02afef27cb8eb219685da319f245c7ac75ae8095bb4ae0b2845733e7"
+      "bytes": 135106,
+      "sha256": "4043234c494966b78fbfd5e24393b96fcbd0c1c76d81f53a37029ad5715b71a6"
     }
   },
   "slides": 12,
@@ -182,15 +182,15 @@
     2560,
     1072
   ],
-  "python_tests": 151,
+  "python_tests": 152,
   "website": "removed; API-only",
-  "review": "89 Python tests and deterministic nine-chapter media compilation passed; current real 17-class/17-LLM and six-isolated-scenario validation passed. Existing visual acceptance retained; no visual content changed.",
+  "review": "151 Python tests, media smoke/data checks, offline exhibit loop tests, static native alignment and public delivery checks; no native playback.",
   "results_changed": true,
   "markdown_documents": 32,
-  "local_links_checked": 156,
+  "local_links_checked": 158,
   "presentation_limit_seconds": 360,
   "buffer_seconds": 60,
-  "visual_theme": "white and light gray canvas; navy titles, medium blue diagrams, gold highlights, ink body",
+  "visual_theme": "white canvas; navy titles, blue flow/icons, teal method/results/completion, restrained warm gold packets/current stage",
   "workstation_preflight": "passed",
   "fresh_live_classes": 17,
   "fresh_local_llm_calls": 17,
@@ -292,7 +292,7 @@
     "design-system/icons.json"
   ],
   "alignment": {
-    "native_text_anchors": 329,
+    "native_text_anchors": 322,
     "tolerance_pt": 0.1,
     "native_grid_checks": 12,
     "film_chapters": 9,
@@ -435,5 +435,31 @@
     "static_pdf_movie_poster_automated": true,
     "regression_tests": 8,
     "native_playback_executed": false
+  },
+  "reference_led_polish": {
+    "date": "2026-10-30",
+    "deck_metric_pages": [
+      7,
+      8,
+      10,
+      11,
+      12
+    ],
+    "poster_top5_pt": 32,
+    "film_result_px": 60,
+    "native_text_anchors": 322,
+    "grid_checks": 12,
+    "alignment_tolerance_pt": 0.1,
+    "decoded_video_frames": 720,
+    "final_mp4_sample_frames": 9,
+    "native_playback_executed": false,
+    "real_browser_layout_verified": false,
+    "poster_title_pt": 44,
+    "poster_centered_sections": true,
+    "poster_advantages": [
+      "互補判定",
+      "任務證據",
+      "受控可追溯"
+    ]
   }
 }

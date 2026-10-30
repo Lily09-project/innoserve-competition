@@ -95,6 +95,21 @@ class FinalsDeliveryTests(unittest.TestCase):
                     self.assertFalse(item.text)
         self.assertTrue((ROOT / 'deliverables/決賽海報_AI資安框架_A2.pdf').read_bytes().startswith(b'%PDF'))
 
+    def test_poster_centered_hierarchy_and_visible_advantages(self):
+        ns = {'p': 'http://schemas.openxmlformats.org/presentationml/2006/main',
+              'a': 'http://schemas.openxmlformats.org/drawingml/2006/main'}
+        with zipfile.ZipFile(ROOT / 'deliverables/決賽海報_AI資安框架_A2.pptx') as archive:
+            slide = ET.fromstring(archive.read('ppt/slides/slide1.xml'))
+            texts = slide.findall('.//p:sp', ns)
+            title = next(s for s in texts if s.find('p:nvSpPr/p:cNvPr', ns).get('name') == 'PosterTitle_Centered_210mm')
+            self.assertTrue(all(int(r.get('sz')) >= 4400 for r in title.findall('.//a:rPr', ns)))
+            paragraphs = [p for p in slide.findall('.//a:p', ns) if p.find('a:r', ns) is not None]
+            centered = [p for p in paragraphs if p.find('a:pPr', ns) is not None and p.find('a:pPr', ns).get('algn') == 'ctr']
+            self.assertGreater(len(centered) / len(paragraphs), .85)
+            content = ''.join(t.text or '' for t in slide.findall('.//a:t', ns))
+            for phrase in ('互補判定', '任務證據', '受控可追溯', '保留正式分類', '本機AI', '到期回復'):
+                self.assertIn(phrase, content)
+
     def event(self):
         evidence = [{'rank': i+1, 'label_id': 2, 'label': 'SSH-Bruteforce', 'similarity': .9, 'case_id': 'private-case-'+str(i)} for i in range(5)]
         judge = {'assessment': 'support', 'mode': 'live_local_llm_inference',
