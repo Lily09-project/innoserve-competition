@@ -2,12 +2,12 @@
   "base_revision": "7d95faf",
   "files": {
     "deliverables/決賽簡報_AI資安框架.pptx": {
-      "bytes": 2052538,
-      "sha256": "042d59a8844ddb3257598b746840e06f4cbf4c9d78f003d2de34ebf7bba64806"
+      "bytes": 2013301,
+      "sha256": "a7e7a6bdb5c6c4cfddd6bc40600a5637c373ae17acb5f4f5ccf80b8deff0973f"
     },
     "deliverables/決賽簡報_AI資安框架.pdf": {
-      "bytes": 347756,
-      "sha256": "953c3bdfb2bf2b2823bd7be85d574b3e0fe100acaf7ae0f781c40874c6b6352c"
+      "bytes": 347782,
+      "sha256": "bd165a579d2e77caea9b4641ebb01bdd15bc8298577d681f406dca09bde7e889"
     },
     "deliverables/AI資安框架_系統展示影片_30秒快版.mp4": {
       "bytes": 1736502,
@@ -22,20 +22,20 @@
       "sha256": "86653758099d489c828767f59eec0ee811a4a047600348d7499d02e5bb4a7943"
     },
     "deliverables/決賽海報_AI資安框架_A2.pptx": {
-      "bytes": 136327,
-      "sha256": "428401b836e480238f14bf8bb3200b68e0e72426d2bc250e05ccb8364f88459d"
+      "bytes": 136472,
+      "sha256": "83161e4422eb82283eee4a420793f149e4dc947a506280364fe6d40fc6a3dbe2"
     },
     "deliverables/決賽海報_AI資安框架_A2.pdf": {
-      "bytes": 219010,
-      "sha256": "9938f45ef7251933efbd24f20fcf60cdb3fb06c0b9e857b1dcdfacad46b94029"
+      "bytes": 219389,
+      "sha256": "99b8ee2ff491b4807861687b15e46f7cba9e6eb4e8725b05d7f06ad061845fc9"
     },
     "deliverables/決賽離線展示包.zip": {
-      "bytes": 4328530,
-      "sha256": "31327c737b0fea8f1fd27d79b992489293e017e32918db80997639ab8e5bc405"
+      "bytes": 4294109,
+      "sha256": "7d490abfb83476376f854242915fd17464403df857eb975c31b98d9fc30f44c8"
     },
     "deliverables/source/release-validation.json": {
       "bytes": 10198,
-      "sha256": "39cca67451a8a337cf4478b0b6f9ae3e8e0b5d288a58ca925bc87ebefd38a5a7",
+      "sha256": "77fceb8f07c737f8e2cbbee90200d2baee601cc0b9de9c15c2732fecbb745105",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/01_slide.svg": {
@@ -85,17 +85,17 @@
     },
     "deliverables/source/slides/10_slide.svg": {
       "bytes": 11326,
-      "sha256": "bc393338e150680ebfd9ba0b6e312094bf93ee234dd2ef639ca4c47bce1106ea",
+      "sha256": "a61a8a8f18dba70686f40896cc98b7f06d9422c56dd2b50f314113de3d4b6c04",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/11_slide.svg": {
       "bytes": 8290,
-      "sha256": "e19f514bacbde423a10b8982ceb3f5692a02d109f70825000b275cf369f585f8",
+      "sha256": "3977f3771510e91226ef212db160484751c0b5bc7dffe8b74bd2de1d26d71cac",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/12_slide.svg": {
       "bytes": 12052,
-      "sha256": "6ec7da7d6d75d673168ede7a4318dd6cbdf959bf54645fd3a364263194e37c75",
+      "sha256": "6fc0657825fa3e5b45104eab613939ff07cd55128a9822f6069fe1cf78dd7cef",
       "hash_normalization": "LF"
     },
     "media/film/metrics.json": {
@@ -131,7 +131,7 @@
     "deliverables/source/finals-readiness.json": {
       "hash_normalization": "LF",
       "bytes": 3544,
-      "sha256": "3c3de497fe7ea20ee9bcc1d4aece1c2f6df460d5c1eecc177d3746c833dbeebe"
+      "sha256": "1d1604436b449961ca4a53614f66bcc7928709cddc96b56fdcd4eec4b89d479a"
     },
     "docs/決賽五分鐘口語稿.md": {
       "hash_normalization": "LF",
@@ -150,17 +150,17 @@
     },
     "deliverables/interactive/README.md": {
       "hash_normalization": "LF",
-      "bytes": 3477,
+      "bytes": 3512,
       "sha256": "5f3a35a7c0ba1ce9d2148700af4bc52c43344122a041ee1989558604a62ac8e9"
     },
     "tests/offline-exhibit.cjs": {
       "hash_normalization": "LF",
-      "bytes": 12517,
+      "bytes": 12872,
       "sha256": "9dbe8375cafb8d9eac01d229b16b7643e4726e531642b6cb5dfc9b04059e5191"
     },
     "deliverables/interactive/AI資安框架_自動循環展示.html": {
       "hash_normalization": "LF",
-      "bytes": 142959,
+      "bytes": 147399,
       "sha256": "523bfa0a57e67f4d5e6e571e8c719189cf93a9112332f967d768bd6b3cb98693"
     }
   },
@@ -478,5 +478,25 @@
     "inspection_exits_focus_and_pauses": true,
     "native_text_anchors": 325,
     "real_browser_layout_verified": false
+  },
+  "outcome_grouping": {
+    "poster_equal_group_mm": [
+      58,
+      24
+    ],
+    "poster_groups": [
+      "support",
+      "review",
+      "uncertain"
+    ],
+    "area_encodes_count": false,
+    "qa_summary_pages": [
+      10,
+      11,
+      12
+    ],
+    "summary_surface": "teal_tint",
+    "slide_texts_unchanged": 12,
+    "embedded_movie_unchanged": true
   }
 }

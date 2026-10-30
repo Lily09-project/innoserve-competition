@@ -220,7 +220,8 @@ def build():
     text(220,497,184,10,f'MRR@5  {r["mrr5"]*100:.2f}%·訓練／查詢重疊{m["overlap"]}',15,MUTED)
     for i,(name,key) in enumerate((('支持','support'),('複核','review'),('不確定','uncertain'))):
         x=220+i*63
-        text(x,510,58,12,str(j['assessment_counts'][key]),26,BLUE,align=PP_ALIGN.CENTER)
+        rect(x,509,58,24,PALETTE['teal_tint'].lstrip('#') if key=='support' else PALE)
+        text(x,510,58,12,str(j['assessment_counts'][key]),26,TEAL if key=='support' else BLUE,align=PP_ALIGN.CENTER)
         text(x,523,58,9,name,17,align=PP_ALIGN.CENTER)
     text(220,536,184,14,f'{m["errors"]}筆偵測誤判中{m["intercepted"]}筆分流\n其餘{m["false_support"]}筆獲支持，處置另經策略檢查',14.5,MUTED)
     line(16,552,404,552)
