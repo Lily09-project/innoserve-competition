@@ -79,33 +79,84 @@ function evidencePanel(index,local,t){
  }
  return s;
 }
-function node(x,y,label,kind='pc'){
- return box(x-54,y-38,108,76,N,12)+frame(x-54,y-38,108,76,EDGE,12)+flatIcon(kind,x-36,y-36,72)+tx(x,y+72,label,24,FG,700,'middle');
+// Packet Tracer simulation mode: devices on a logical workspace, envelope PDUs hop link by link.
+const inout=v=>{v=Math.max(0,Math.min(1,v));return v<.5?4*v*v*v:1-Math.pow(2-2*v,3)/2;};
+const DEVICES={user:[110,245],attack:[110,455],core:[310,350],gate:[515,350],app:[715,350],ids:[310,519],top5:[515,519],judge:[715,519]};
+const NORMAL=['user','core','gate','app'].map(k=>DEVICES[k]),ATTACK=['attack','core','gate','app'].map(k=>DEVICES[k]);
+const MIRROR=[DEVICES.core,[390,350],[390,519],DEVICES.ids];
+// Chapter focus device, the inspector heading and the event-list row it adds.
+const focus=[null,['core','核心交換器'],['ids','IDS'],['ids','IDS'],['top5','Top-5'],['judge','AI Judge'],['gate','策略閘道']];
+const events=[null,['異常來源','核心交換器','TCP',G],['核心交換器','IDS','鏡像副本',G],['IDS','IDS','17 類判定',B],['IDS','Top-5','證據查詢',B],['Top-5','AI Judge','稽核請求',T],['AI Judge','策略閘道','策略套用',G]];
+function hop(points,u){
+ const n=points.length-1,k=Math.min(n-1,Math.floor(u*n)),f=inout((u*n-k)/.72),a=points[k],b=points[k+1];
+ return [a[0]+(b[0]-a[0])*f,a[1]+(b[1]-a[1])*f];
 }
-function packet(x,y,c=G){return box(x-11,y-8,22,16,c,3)+`<path d="M${x-11} ${y-8}L${x} ${y+1}L${x+11} ${y-8}" fill="none" stroke="${N}" stroke-width="1.5"/>`;}
-function topology(t){
- let s=box(60,175,718,410,PANEL,16);const nodes=[[110,245,'正常使用者','pc'],[110,455,'異常來源','pc'],[310,350,'核心交換器','switch'],[515,350,'策略閘道','fw'],[715,350,'應用服務','server']];
- [[110,245,310,350],[110,455,310,350],[310,350,515,350],[515,350,715,350]].forEach(v=>s+=line(...v));
- [[310,350,515,350],[515,350,715,350]].forEach((v,k)=>{
-  const u=ease(((t*.32+k*.5)%1));
-  s+=line(v[0],v[1],v[0]+(v[2]-v[0])*u,v[3],FLOW);
+function envelope(x,y,c,open=0){
+ const flap=open?`<path d="M${x-15} ${y-11}L${x} ${y-11-13*open}L${x+15} ${y-11}" fill="${c}" stroke="${N}" stroke-width="1.8" stroke-linejoin="round"/>`:'';
+ return flap+box(x-15,y-11,30,22,c,3)+`<path d="M${x-15} ${y-11}L${x} ${y+1}L${x+15} ${y-11}" fill="none" stroke="${N}" stroke-width="1.8" stroke-linejoin="round"/>`;
+}
+const dropped=(x,y)=>`<path d="M${x-13} ${y-13}L${x+13} ${y+13}M${x+13} ${y-13}L${x-13} ${y+13}" stroke="${N}" stroke-width="8" stroke-linecap="round"/><path d="M${x-13} ${y-13}L${x+13} ${y+13}M${x+13} ${y-13}L${x-13} ${y+13}" stroke="${G}" stroke-width="4.5" stroke-linecap="round"/>`;
+const rule=(x,y,a,b)=>`<path d="M${x} ${y}L${a} ${b}" stroke="${EDGE}" stroke-width="1.5"/>`;
+function node(x,y,label,kind='pc'){
+ return box(x-54,y-38,108,76,PANEL,12)+frame(x-54,y-38,108,76,EDGE,12)+flatIcon(kind,x-36,y-36,72)+tx(x,y+72,label,24,FG,700,'middle');
+}
+function linkLights(a,b,c1=FLOW,c2=FLOW){
+ const d=Math.hypot(b[0]-a[0],b[1]-a[1]),ux=(b[0]-a[0])/d,uy=(b[1]-a[1])/d,o=Math.abs(ux)>Math.abs(uy)?66:58;
+ return `<circle cx="${a[0]+ux*o}" cy="${a[1]+uy*o}" r="5" fill="${c1}"/><circle cx="${b[0]-ux*o}" cy="${b[1]-uy*o}" r="5" fill="${c2}"/>`;
+}
+function topology(t,i,local){
+ const ruled=t>=controlTimeline.apply&&t<controlTimeline.expiry;
+ let s=`<rect x="64" y="190" width="736" height="412" fill="url(#grid)"/>`;
+ [[DEVICES.user,DEVICES.core],[DEVICES.attack,DEVICES.core],[DEVICES.core,DEVICES.gate],[DEVICES.gate,DEVICES.app]].forEach(([a,b])=>s+=line(a[0],a[1],b[0],b[1]));
+ s+=line(362,350,390,350)+line(390,350,390,519)+line(390,519,383,519)+line(310,519,715,519)+tx(402,446,'鏡像',18,SUB);
+ s+=linkLights(DEVICES.user,DEVICES.core)+linkLights(DEVICES.attack,DEVICES.core)+linkLights(DEVICES.core,DEVICES.gate)+linkLights(DEVICES.gate,DEVICES.app,ruled?G:FLOW);
+ if(t>=controlTimeline.start)s+=`<path d="M715 483V462H585V350H569" fill="none" stroke="${FLOW}" stroke-width="3" stroke-dasharray="7 5"/>`+tx(620,449,'策略檢查',22,SUB,700);
+ [[110,245,'正常使用者','pc'],[110,455,'異常來源','pc'],[310,350,'核心交換器','switch'],[515,350,'策略閘道','fw'],[715,350,'應用服務','server']].forEach(v=>s+=node(...v));
+ [['IDS',310,12],['Top-5',515,30],['AI Judge',715,38]].forEach(([name,x,at])=>{
+  const active=t>=at;
+  s+=box(x-73,483,146,72,active?T:PANEL,12)+(active?'':frame(x-73,483,146,72,EDGE,12))+`<circle cx="${x+58}" cy="496" r="5" fill="${active?FLOW:SUB}"/>`+tx(x,541,name,28,active?FG:SUB,700,'middle');
  });
- nodes.forEach(v=>s+=node(...v));
- // A separate branch makes the inference/evidence chain visible.
- s+=line(362,350,390,350)+line(390,350,390,530)+line(390,530,363,530)+line(310,530,715,530);
- [['IDS',310],['Top-5',515],['AI Judge',715]].forEach(([name,x],k)=>{
-  const active=t>=[12,30,38][k];
-  s+=box(x-73,505,146,64,active?T:N,12)+(active?'':frame(x-73,505,146,64,EDGE,12))+tx(x,547,name,29,active?FG:SUB,700,'middle');
- });
- if(t>=12&&t<30){const d=260*((t*.24)%1),x=390-(d-180);if(d<180)s+=packet(390,350+d);else if(x>377)s+=packet(x,530);}
- if(t>=30){const x=310+(t>=38?405:205)*((t*.24)%1);if((x>395&&x<430)||(x>600&&x<630))s+=packet(x,530);}
- if(t>=controlTimeline.start)s+=`<path d="M715 505V480H585V350H567" fill="none" stroke="${FLOW}" stroke-width="3" stroke-dasharray="7 5"/>`+tx(620,465,'策略檢查',24,SUB,700);
- const p=(t*.38)%1;
- s+=packet(110+200*p,245+105*p,FLOW)+packet(310+405*((t*.28)%1),350,FLOW);
- if(t<controlTimeline.apply||t>=controlTimeline.expiry)s+=packet(110+200*((t*.5)%1),455-105*((t*.5)%1),G);
- if(t>=controlTimeline.apply&&t<controlTimeline.expiry)s+=box(450,260,136,42,G,21)+tx(518,289,'規則生效',25,N,700,'middle');
- if(t>=controlTimeline.expiry)s+=box(450,260,136,42,T,21)+tx(518,289,'到期回復',25,FG,700,'middle');
- return s;
+ // Selection ring on the device being inspected, as when a PDU is clicked in simulation mode.
+ const [fx,fy]=DEVICES[focus[i][0]],wide=fy>400,w=wide?166:128,h=wide?92:96;
+ s+=`<rect x="${fx-w/2}" y="${fy-h/2}" width="${w}" height="${h}" rx="16" fill="none" stroke="${G}" stroke-width="2.5" stroke-dasharray="8 6" stroke-dashoffset="${(-t*24).toFixed(2)}" opacity="${ease(local/.5)}"/>`;
+ // Traffic: normal PDUs always reach the service; the anomalous PDU is dropped while the rule is live.
+ s+=envelope(...hop(NORMAL,((t-5)*.3)%1),FLOW);
+ const u=((t-5)*.27+.45)%1;
+ if(ruled){const p=hop(ATTACK.slice(0,3),Math.min(u*1.5,1));s+=envelope(...p,G);if(u*1.5>=.86)s+=dropped(p[0],p[1]);}
+ else s+=envelope(...hop(ATTACK,u),G);
+ if(i===2)s+=envelope(...hop(MIRROR,(local*.32)%1),G);
+ if(i===3)s+=envelope(310,505,G,ease((local%2.4)/.8));
+ if(i===4)s+=envelope(...hop([DEVICES.ids,DEVICES.top5],(local*.36)%1),B);
+ if(i===5)s+=envelope(...hop([DEVICES.top5,DEVICES.judge],(local*.4)%1),T);
+ if(i===6&&t<controlTimeline.apply+.4)s+=envelope(...hop([[715,483],[715,462],[585,462],[585,350],[569,350]],Math.min(1,local/1.3)),G);
+ if(ruled)s+=box(450,248,136,42,G,21)+tx(518,277,'規則生效',25,N,700,'middle');
+ if(t>=controlTimeline.expiry)s+=box(450,248,136,42,T,21)+tx(518,277,'到期回復',25,FG,700,'middle');
+ // Gentle push toward the inspected device; the workspace stays clipped to its window.
+ const z=1+.03*ease(local/1.6);
+ return `<g clip-path="url(#ws)"><g transform="translate(432 396) scale(.86) translate(-432 -396)"><g transform="translate(${fx} ${fy}) scale(${z.toFixed(4)}) translate(${-fx} ${-fy})">${s}</g></g></g>`;
+}
+function simulationWindow(t,i,local){
+ let s=box(64,150,1152,452,PANEL,16)+box(64,150,1152,40,EDGE,16)+box(64,170,1152,20,EDGE,0);
+ [[88,G],[106,FLOW],[124,SUB]].forEach(([x,c])=>s+=`<circle cx="${x}" cy="170" r="5" fill="${c}"/>`);
+ s+=tx(144,177,'Packet Tracer 式模擬 · 事件鏈',18,FG,700)+tx(1066,177,'Realtime',17,SUB,400,'end');
+ s+=box(1080,158,124,24,FLOW,12)+tx(1142,176,'Simulation',17,N,700,'middle');
+ s+=`<rect x="64" y="190" width="736" height="412" fill="${N}"/>`+topology(t,i,local)+rule(800,190,800,602);
+ s+=tx(824,226,'PDU 資訊',22,FG,700)+tx(1192,226,'在 '+focus[i][1],20,FLOW,700,'end')+rule(824,244,1192,244);
+ const e=events[i];
+ s+=rule(824,548,1192,548)+envelope(840,575,e[3])+tx(866,582,'類型：'+eventType(t,i),20,FG,700);
+ return s+frame(64,150,1152,452,EDGE,16);
+}
+const eventType=(t,i)=>i===6&&t>=controlTimeline.expiry?'規則到期撤銷':events[i][2];
+function eventList(t,i){
+ const row=k=>{const e=events[k];return e[0]===e[1]?`在 ${e[1]}`:`${e[0]}→${e[1]}`;};
+ let s=box(64,612,1152,64,PANEL,14);
+ s+=`<circle cx="100" cy="644" r="19" fill="none" stroke="${FLOW}" stroke-width="2.5"/>`+box(92,634,5,20,FLOW,1)+box(103,634,5,20,FLOW,1);
+ s+=`<path d="M136 634V654M154 634L140 644L154 654Z M176 634L190 644L176 654Z M194 634V654" fill="${SUB}" stroke="${SUB}" stroke-width="2.5" stroke-linejoin="round"/>`;
+ s+=tx(214,651,'事件清單',19,FLOW,700)+rule(320,624,320,664);
+ if(i>1)s+=envelope(352,634,events[i-1][3])+tx(380,641,row(i-1),18,SUB)+tx(760,641,events[i-1][2],18,SUB);
+ const e=events[i];
+ s+=`<circle cx="334" cy="661" r="4" fill="${G}"/>`+envelope(358,661,e[3])+tx(386,668,row(i),20,FG,700)+tx(760,668,eventType(t,i),20,FG,700);
+ return s+tx(1192,651,'同一事件 ID 貫穿全程',19,SUB,400,'end');
 }
 const messages=[
  [],['封包流動','正常／異常流量|進入同一事件鏈'],
@@ -137,9 +188,9 @@ export function frameSvg(t){
   s+=tx(64,525,'偵測有依據，稽核有證據，處置可回復。',32,FG,700)+tx(64,606,`${count(m.detection_n)}筆偵測測試／${m.queries}筆檢索稽核／${m.network_cases}種隔離情境`,24,SUB);
  }else{
   s+=tx(64,66,`0${i} / 06`,24,FLOW,700)+tx(64,128,messages[i][0],44,FG,700);
-  const scale=.96+.04*ease(local/.9);
-  s+=`<g transform="translate(${(1-scale)*400} ${(1-scale)*350}) scale(${scale})">${topology(t)}</g>`;
-  s+=box(835,225,381,300,PANEL,16)+frame(835,225,381,300,EDGE,16)+box(835,249,5,252,G,2);
+  s+=simulationWindow(t,i,local);
+  const u=ease(local/.42);
+  s+=`<g opacity="${u}" transform="translate(${-18+(1-u)*24} 14)">`;
   if(i===3){
    s+=tx(859,264,'同一流量輸入',26,FG,700);
    s+=`<path d="M1025 276V285H930V292 M1025 285H1120V292 M930 342V377H1025V410 M1120 342V377H1025" fill="none" stroke="${FLOW}" stroke-width="3"/>`;
@@ -148,13 +199,11 @@ export function frameSvg(t){
    s+=box(1050,292,140,50,B,10)+tx(1120,325,'PBCNN',27,FG,700,'middle');
    s+=box(899,410,252,58,T,10)+tx(1025,447,'校準＋OOF Gate',26,FG,700,'middle');
    s+=tx(859,505,'17類＋信心＋模型表徵',25,SUB);
-  }else{
-   const u=ease(local/.42);
-   s+=`<g opacity="${u}" transform="translate(${(1-u)*24} 0)">${evidencePanel(i,local,t)}</g>`;
-  }
-  s+=box(64,593,1152,60,PANEL,14)+`<circle cx="94" cy="623" r="6" fill="${G}"/>`+tx(112,631,'同一事件 ID：判定 → 案例 → 稽核 → 處置回條',23,FG,700);
+  }else s+=evidencePanel(i,local,t);
+  s+='</g>'+eventList(t,i);
  }
- s+=tx(64,694,'方法流程示意 · 隔離TCP交易實測',20,SUB);
+ s+=tx(64,700,'方法流程示意 · 隔離TCP交易實測',18,SUB);
  s+=box(0,714,1280,6,PANEL,0)+box(0,714,1280*t/duration,6,G,0);
- return resolveColors(`<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" font-family="${FONT}">${s}</svg>`);
+ const defs=`<defs><pattern id="grid" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="14" cy="14" r="1.3" fill="${EDGE}"/></pattern><clipPath id="ws"><rect x="64" y="190" width="736" height="412"/></clipPath></defs>`;
+ return resolveColors(`<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" font-family="${FONT}">${defs}${s}</svg>`);
 }

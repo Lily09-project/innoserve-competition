@@ -38,7 +38,7 @@
 | 交付項目 | 內容與用途 | 原始來源 |
 | --- | --- | --- |
 | 決賽簡報 | 12頁：9頁正式報告、結束頁後3頁六題圖解備詢；第2頁內嵌30秒影片，各頁附繁體中文講者備忘稿 | [逐頁SVG](deliverables/source/slides/)、[製作程式](scripts/presentation/editorial_assets.py)、[講者稿](deliverables/source/speaker-notes.md) |
-| 方法動畫 | 1920×1080、24fps、30秒、2倍速、無音軌；以網路拓樸與封包傳遞說明完整流程 | [動畫來源](media/film/scene.mjs)、[渲染程式](scripts/render_product_film.mjs) |
+| 方法動畫 | 1920×1080、24fps、30秒、2倍速、無音軌；以Packet Tracer模擬模式的拓樸、逐站PDU、PDU資訊窗與事件清單說明完整流程 | [動畫來源](media/film/scene.mjs)、[渲染程式](scripts/render_product_film.mjs) |
 | A2海報 | 420×594mm直向；深夜藍標題區46pt作品名稱與四節點證據鏈、四階段產物、Top-5圖卡、策略例子、實測比較與六情境圖解 | [原生製作程式](scripts/presentation/build_a2_poster.py)、[印刷規格](deliverables/source/poster-a2-spec.md) |
 | 離線包 | 簡報、影片、海報、口語稿、答詢、備援卡、互動HTML及SHA256清單 | [包裝程式](scripts/package_finals.py) |
 | 驗收索引 | 正式檔案、來源、預覽與實測彙整的雜湊及驗收範圍 | [交付清單](deliverables/source/delivery-manifest.json)、[實測索引](deliverables/source/release-validation.json) |
