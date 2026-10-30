@@ -83,6 +83,17 @@ function boot(reduced = false, input = html) {
 async function main() {
   const { w, api, downloads, tick, errors } = boot();
   assert.equal(api.LABELS.length, 17);
+  assert.equal(w.document.querySelectorAll(".light-legend > span").length, 4);
+  for (const selector of [
+    "#sceneLabel",
+    "#sceneCaption",
+    "#processingLabel",
+    ".light-legend",
+    ".view-tools",
+    "#stageMessage",
+    "#openDetail",
+  ])
+    assert.equal(w.document.querySelectorAll(selector).length, 1, selector);
   const zoom = w.document.querySelector("#diagramZoom");
   for (const value of ["100", "125", "150", "200"]) {
     zoom.value = value;
