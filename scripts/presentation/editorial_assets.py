@@ -2,6 +2,7 @@
 from pathlib import Path
 from html import escape
 import json
+import re
 import sys
 from style_contract import TYPOGRAPHY, font_runs, icon_fragment, resolve_colors
 
@@ -20,6 +21,10 @@ SY, OY = 1, 0
 
 
 def text(x, y, value, size=26, color='#171C1D', weight=400, anchor='start'):
+    if color == BLUE and re.fullmatch(r'(?:[\d,.]+\s*%|[\d,]+(?:\s*/\s*[\d,]+)?|529 維|同一 ID)', value) and (size >= 30 or '%' in value):
+        color = TEAL
+        if '%' in value and size >= 44:
+            size += 4
     runs=[]
     for part, family in font_runs(value):
         runs.append(f'<tspan font-family="{family}">{escape(part)}</tspan>')

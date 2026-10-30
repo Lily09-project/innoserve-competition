@@ -14,6 +14,8 @@
 
 [下載離線簡報、影片與海報備援包](deliverables/決賽離線展示包.zip) · [簡報PDF備援](deliverables/決賽簡報_AI資安框架.pdf) · [正式版本封存與SHA256](https://github.com/Lily09-project/innoserve-competition/releases)
 
+本輪已同步精修簡報、A2、30秒影片與HTML的成果層級與流程狀態，保留既有方法、真實數據與匿名設定。[參考來源與轉譯範圍](docs/海報與影片參考轉譯.md)。
+
 [成果與規格](#成果與規格) · [系統方法](#系統方法與創新) · [實測結果](#實測結果與適用範圍) · [公開測試](#公開程式測試) · [完整執行](#完整本機模型與隔離驗證) · [目錄](#專案目錄與來源) · [發布範圍](#公開內容與版本維護)
 
 ![決賽投影片預覽](deliverables/figures/slides-preview.png)

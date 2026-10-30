@@ -57,6 +57,10 @@ def build():
         return shape(MSO_SHAPE.RECTANGLE, x, y, w, h, fill, stroke)
 
     def text(x, y, w, h, content, size=18, color=INK, bold=False, align=PP_ALIGN.LEFT):
+        if color == BLUE and '%' in content and (content.startswith('Top-5') or content.replace('.', '').replace('%', '').isdigit()):
+            color = TEAL
+            if content.startswith('Top-5'):
+                size = 32
         box = slide.shapes.add_textbox(Mm(x), Mm(y), Mm(w), Mm(h))
         tf = box.text_frame
         tf.clear()

@@ -1491,6 +1491,43 @@
         height: 28px;
         flex-shrink: 0;
       }
+      /* Quiet completed nodes keep attention on the active station. */
+      #board .node.complete .node-box {
+        stroke: var(--line);
+      }
+      #board .node.complete .heading {
+        fill: var(--navy);
+      }
+      .light-legend .legend-packet {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 2px;
+        background: var(--gold);
+        margin-left: 10px;
+      }
+      .light-legend .legend-complete {
+        display: inline-block;
+        width: 12px;
+        height: 3px;
+        background: var(--teal);
+        margin-left: 10px;
+        vertical-align: middle;
+      }
+      .detail-grid p,
+      .help-list {
+        line-height: 1.65;
+      }
+      table {
+        font-size: 14px;
+      }
+      th {
+        color: var(--navy);
+        background: var(--gray);
+      }
+      tr:focus-within {
+        background: var(--teal-tint);
+      }
     </style>
   </head>
   <body data-playback="auto">
@@ -1638,7 +1675,11 @@
           <span id="sceneLabel">HTTP 洪流</span
           ><span id="sceneCaption">選一個情境，讓資料帶著光往前走。</span
           ><span id="processingLabel" class="processing-label">等待啟動</span
-          ><span class="light-legend"><i></i>目前處理 <b></b>等待抵達</span>
+          ><span class="light-legend"
+            ><i></i>目前處理 <b></b>等待抵達
+            <span class="legend-complete"></span>已完成流程
+            <span class="legend-packet"></span>封包</span
+          >
         </div>
         <div class="board-scroll">
           <svg
