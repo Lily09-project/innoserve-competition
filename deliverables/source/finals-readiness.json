@@ -46,7 +46,7 @@
     "scripts/check_finals_readiness.py": "382de23644d21f09c070f01e6f5f2207aa63347a110824e46b5063819e9bdfff",
     "scripts/package_finals.py": "a7b2ee1791268e0d22647ba71bb2f82b4c9647f0386550ffb4bbfc2bf5700035",
     "deliverables/決賽離線展示包.zip": "9012f67af5a17c36b2259edbdd0fd3c95eb61c086bc7b76ca535273e9075034d",
-    "README.md": "9af414e4158dae0ee4f8d115f2578d1abf49c3af47b1a523243acc638de82df3",
+    "README.md": "2c5989f52f30ca73be6997a1d4ee8a73d991ee39ee4d67727df033542e2620c8",
     "media/film/metrics.json": "816450d6ba5340d14b5bae6aeb133a462deb6be3f6eb3f4a37fb8274656222c1",
     "design-system/palette.json": "3c7c609fbe761752756a835954ecfa098194c09b38620054655d5e4bc487cb2e",
     "scripts/presentation/recolor_roundtrip.py": "99c31bd32859090b69eb22792846461cbea268bfeefc34f33a5ee6604e304ea1",
@@ -54,7 +54,7 @@
     "scripts/presentation/export_static_delivery.ps1": "ff0060a8276ef0cc016404cd2892f0dcfa9d49d55d2f43473629d81bc160992c",
     "scripts/presentation/merge_static_poster.py": "6637fe2def917166dcab1e6f46e9ec5fd72af2e22a51ccbe766243a82dea409a",
     "tests/offline-exhibit.cjs": "3665861805ebdbf6f7177b61284735268acbd172ab11a2f1a5c493e82f2ec173",
-    "deliverables/interactive/README.md": "184199d603bf86066455899632e426443d78f56a6d8ffdbceb716b74a58120ab"
+    "deliverables/interactive/README.md": "0dc41472f27ab4a88a5ff2fdf57324dfed6c4c933bc39054633710de5d111816"
   },
-  "created_utc": "2026-10-30T13:22:25.049637+00:00"
+  "created_utc": "2026-10-30T14:00:52.931114+00:00"
 }

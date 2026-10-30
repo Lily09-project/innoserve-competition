@@ -131,7 +131,7 @@
     "deliverables/source/finals-readiness.json": {
       "hash_normalization": "LF",
       "bytes": 3544,
-      "sha256": "29dd542123543eef934d72af8d2050c0d93b4efcda2a46a66cc36405641535b1"
+      "sha256": "59bd9dd3c3ea00a2cf3d3aaf2d1d0b9dfd6d125e85cfeeb1d908dd09d597790b"
     },
     "docs/決賽五分鐘口語稿.md": {
       "hash_normalization": "LF",
@@ -150,8 +150,8 @@
     },
     "deliverables/interactive/README.md": {
       "hash_normalization": "LF",
-      "bytes": 4210,
-      "sha256": "184199d603bf86066455899632e426443d78f56a6d8ffdbceb716b74a58120ab"
+      "bytes": 4395,
+      "sha256": "0dc41472f27ab4a88a5ff2fdf57324dfed6c4c933bc39054633710de5d111816"
     },
     "tests/offline-exhibit.cjs": {
       "hash_normalization": "LF",
@@ -187,7 +187,7 @@
   "review": "153 Python tests, media smoke/data checks, offline exhibit regressions, native static alignment and public delivery checks passed; no native playback.",
   "results_changed": true,
   "markdown_documents": 33,
-  "local_links_checked": 157,
+  "local_links_checked": 158,
   "presentation_limit_seconds": 360,
   "buffer_seconds": 60,
   "visual_theme": "white canvas; navy titles, blue flow/icons, teal method/results/completion, restrained warm gold packets/current stage",

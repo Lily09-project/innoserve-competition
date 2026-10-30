@@ -67,8 +67,10 @@ def audit(root=ROOT):
             links += 1
         if re.search(r'_40秒快版\.mp4|_60秒\.mp4', text):
             errors.append(f'{name}: superseded film filename')
-        if 'lily09-project.github.io/innoserve-competition' in text:
-            errors.append(f'{name}: retired website URL')
+        # Pages only serves the offline exhibit file; the former website paths stay retired.
+        for path in re.findall(r'lily09-project\.github\.io/innoserve-competition(/[^\s)\]"\'>]*)?', text):
+            if not path.startswith('/deliverables/interactive/'):
+                errors.append(f'{name}: retired website URL')
     manifest = json.loads((root / 'deliverables/source/delivery-manifest.json').read_text(encoding='utf-8'))
     for name, entry in manifest['files'].items():
         path = root / name
