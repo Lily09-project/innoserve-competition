@@ -21,8 +21,9 @@ const typography = require('../design-system/typography.json');
   for(const span of [controlTimeline.readback-controlTimeline.apply,controlTimeline.expiry-controlTimeline.readback,resultsAt-controlTimeline.expiry]){
     assert.ok(span/playbackSpeed>=1,'apply, readback and recovery each need at least one second');
   }
-  for(const label of ['正常使用者','異常來源','核心交換器','策略閘道','應用服務','IDS','Top-5','AI Judge','CTBM','PBCNN','校準＋OOF Gate']){
-    const document = new JSDOM(frameSvg(24), {contentType:'image/svg+xml'}).window.document;
+  // Each label is checked in the chapter that shows it: topology, detection, retrieval and audit.
+  for(const [time,label] of [...['正常使用者','異常來源','核心交換器','策略閘道','應用服務','IDS'].map(l=>[9,l]),...['CTBM','PBCNN','校準＋OOF Gate'].map(l=>[24,l]),[35,'Top-5'],[41,'AI Judge'],[47.5,'規則生效'],[51.5,'到期回復']]){
+    const document = new JSDOM(frameSvg(time), {contentType:'image/svg+xml'}).window.document;
     const node = [...document.querySelectorAll('text')].find(text=>text.textContent===label);
     assert.ok(node, `missing label: ${label}`);
     assert.equal(node.getAttribute('text-anchor'),'middle',`label must be explicitly centered: ${label}`);

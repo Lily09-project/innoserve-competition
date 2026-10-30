@@ -32,11 +32,11 @@
   ],
   "human_checks_verified_by_this_script": false,
   "bindings": {
-    "deliverables/決賽簡報_AI資安框架.pptx": "3222a505bc376ddc12efa568b01a61ace40777d6f1da76d07f56f1377d0181d6",
-    "deliverables/決賽簡報_AI資安框架.pdf": "cfa5f08590c9f5e7d9cda5ad841e51a8a33a50a1f57261ee82d307710260e897",
-    "deliverables/AI資安框架_系統展示影片_30秒快版.mp4": "cd943dfaf1c396eed30819c030b3b4ebdb001c99852d330aee2b83a44d28ddef",
+    "deliverables/決賽簡報_AI資安框架.pptx": "6a8070982c128ef5d2a61043c96e3f9f9885af0fb8578e4f6af75f85850d129c",
+    "deliverables/決賽簡報_AI資安框架.pdf": "5c541d1e1afe45e0460b3edcfe1d424f831e1dc4f35864a230e904ca36429575",
+    "deliverables/AI資安框架_系統展示影片_30秒快版.mp4": "712efa4e1cc4ca8a784af07b2187c9fca4f12fd3bdd780821ca366a2ea971303",
     "deliverables/決賽海報_AI資安框架_A2.pptx": "c45fad843979352f8c1a357beaa0e5a426a020edaaa9f98eb7bac1b0c5ed8545",
-    "deliverables/決賽海報_AI資安框架_A2.pdf": "264e03038611a9081c5918c105220d78309187bb435cffe1944d2eb9e9e7639c",
+    "deliverables/決賽海報_AI資安框架_A2.pdf": "e5e2aca4fb060c2a1ed26ed99e1e4960b244922ace03bedb2053f50c815ebe1e",
     "deliverables/source/speaker-notes.md": "a0710803e4bf451b2cd7cb4cf3d695d937967b102b5e6cb8be5e4d839e44137b",
     "deliverables/source/finals-runbook.json": "d9d084456c9b287f1c09711b1a3427b1b518c045e20bd143f3ae3e7dd53aeda6",
     "docs/決賽五分鐘口語稿.md": "39e88d21d17e9d8a2b8fa547013cc0ac88469ec6b5e1f0fd29b513799f325858",
@@ -45,8 +45,8 @@
     "deliverables/interactive/AI資安框架_自動循環展示.html": "0699305f8aed0898fb06da53326e29e76461babf322924d6644fb9b7d7c45d06",
     "scripts/check_finals_readiness.py": "382de23644d21f09c070f01e6f5f2207aa63347a110824e46b5063819e9bdfff",
     "scripts/package_finals.py": "a7b2ee1791268e0d22647ba71bb2f82b4c9647f0386550ffb4bbfc2bf5700035",
-    "deliverables/決賽離線展示包.zip": "5fc9afd3b0b801193561c83fea031bfa3282bd556a41133dae4cae72b2c49627",
-    "README.md": "85caebff9c017d3633bbd1f6e3a8c386ef741c508ec46423cbca68658a960fcf",
+    "deliverables/決賽離線展示包.zip": "884631c5a3d64de8fffc656b4516c42fcd45c80fa1c8260ec9a7eee3e71476e6",
+    "README.md": "40b3b0eba1e54c50ae9b7b0047c842db1d3e10b9b5e79f69d66c7d2a6e750416",
     "media/film/metrics.json": "816450d6ba5340d14b5bae6aeb133a462deb6be3f6eb3f4a37fb8274656222c1",
     "design-system/palette.json": "3c7c609fbe761752756a835954ecfa098194c09b38620054655d5e4bc487cb2e",
     "scripts/presentation/recolor_roundtrip.py": "99c31bd32859090b69eb22792846461cbea268bfeefc34f33a5ee6604e304ea1",
@@ -56,5 +56,5 @@
     "tests/offline-exhibit.cjs": "3665861805ebdbf6f7177b61284735268acbd172ab11a2f1a5c493e82f2ec173",
     "deliverables/interactive/README.md": "0dc41472f27ab4a88a5ff2fdf57324dfed6c4c933bc39054633710de5d111816"
   },
-  "created_utc": "2026-10-30T14:27:10.932632+00:00"
+  "created_utc": "2026-10-30T14:57:21.481083+00:00"
 }

@@ -19,7 +19,7 @@ for(let index=0;index<chapters.length;index++){
   guides+=`<path d="M${x} ${+y-size}V${+y+8}" stroke="${color}" stroke-width="1"/>`;
   textCount++;
   const label=content.replace(/<[^>]+>/g,'');
-  const expected={'正常使用者':110,'異常來源':110,'核心交換器':310,'策略閘道':515,'應用服務':715,'IDS':310,'Top-5':515,'AI Judge':715,'CTBM':930,'PBCNN':1120,'校準＋OOF Gate':1025,'規則生效':518,'到期回復':518}[label];
+  const expected={'正常使用者':250,'異常來源':250,'核心交換器':520,'策略閘道':790,'應用服務':1060,'IDS':655,'Top-5':270,'AI Judge':640,'CTBM':420,'PBCNN':420,'校準＋OOF Gate':760,'規則生效':790,'到期回復':790}[label];
   if(expected!==undefined){
    if(anchor!=='middle'||Math.abs(+x-expected)>.01)throw new Error(`Misaligned: ${label}`);
    centerChecks++;
