@@ -54,6 +54,25 @@ class OfflineExhibitTests(unittest.TestCase):
                       'id="playPause"', 'id="restart"', 'id="seek"', 'id="speed"'):
             self.assertIn(value, self.html)
 
+    def test_all_literal_ui_colors_belong_to_shared_palette(self):
+        palette = json.loads((ROOT / 'design-system/palette.json').read_text(encoding='utf-8'))
+        allowed = {v.lower() for v in palette.values() if isinstance(v, str) and v.startswith('#')}
+        for value in re.findall(r'#[0-9a-fA-F]{3,8}\b', self.html):
+            color = value[1:].lower()
+            if len(color) in (3, 4):
+                color = ''.join(c * 2 for c in color)
+            self.assertIn('#' + color[:6], allowed, value)
+        self.assertNotIn('fill="hsl(', self.html)
+        self.assertNotIn('background:hsl(', self.html)
+        for unwanted in ('Consolas', 'Segoe UI', 'Microsoft JhengHei'):
+            self.assertNotIn(unwanted, self.html)
+
+    def test_four_stage_navigation_has_explicit_labels_and_boundaries(self):
+        for stage in ('traffic', 'detection', 'audit', 'policy'):
+            self.assertIn('data-stage="' + stage + '"', self.html)
+        self.assertIn('aria-label="四階段方法流程"', self.html)
+        self.assertIn('aria-current', self.html)
+
 
 if __name__ == '__main__':
     unittest.main()
