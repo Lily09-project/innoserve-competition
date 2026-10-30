@@ -1,4 +1,4 @@
-param([string]$Root = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path,
+﻿param([string]$Root = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path,
       [string]$OutputFolder = 'validation\palette-powerpoint')
 $ErrorActionPreference = 'Stop'
 $source = Join-Path $Root 'deliverables\決賽簡報_AI資安框架.pptx'

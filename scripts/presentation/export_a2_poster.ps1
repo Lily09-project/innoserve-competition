@@ -1,4 +1,4 @@
-param([string]$Root = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path)
+﻿param([string]$Root = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path)
 $ErrorActionPreference = 'Stop'
 $source = Join-Path $Root 'deliverables\決賽海報_AI資安框架_A2.pptx'
 $pdf = Join-Path $Root 'deliverables\決賽海報_AI資安框架_A2.pdf'

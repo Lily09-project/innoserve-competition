@@ -2,100 +2,100 @@
   "base_revision": "7d95faf",
   "files": {
     "deliverables/決賽簡報_AI資安框架.pptx": {
-      "bytes": 2013301,
-      "sha256": "a7e7a6bdb5c6c4cfddd6bc40600a5637c373ae17acb5f4f5ccf80b8deff0973f"
+      "bytes": 2008592,
+      "sha256": "e1a1f16051f377043fc5a4176cf14ef5f78e429b2e2df07b65e88097a1952928"
     },
     "deliverables/決賽簡報_AI資安框架.pdf": {
-      "bytes": 347782,
-      "sha256": "bd165a579d2e77caea9b4641ebb01bdd15bc8298577d681f406dca09bde7e889"
+      "bytes": 438033,
+      "sha256": "963435fceb27c944c61aa32d48f113c37d3a20356362b94d8cd81b238afabc7e"
     },
     "deliverables/AI資安框架_系統展示影片_30秒快版.mp4": {
-      "bytes": 1736502,
-      "sha256": "171fd94ef7c3a1845c1faf9c9b3625114f979b43bf3b907371a341677aa37c2e"
+      "bytes": 1736463,
+      "sha256": "88b8690adc05608568e265ac91dc73c3ff8d2e953aed8103b6db0001358b4ce8"
     },
     "deliverables/figures/fig_architecture.png": {
-      "bytes": 306120,
-      "sha256": "7b5b329882908b7329466e036df53e7483bf9f25bb8c3f3d2885c460f56b507a"
+      "bytes": 248967,
+      "sha256": "dc785fe60482a12f4e1d91d39bab81b2f496b31b28f27ee02948af318efa1c94"
     },
     "deliverables/source/architecture.svg": {
-      "bytes": 10851,
-      "sha256": "86653758099d489c828767f59eec0ee811a4a047600348d7499d02e5bb4a7943"
+      "bytes": 17096,
+      "sha256": "bf3842b11f3a38f889d401a3b764dce1ee9b8f7f8f0bbd8d4164485d39ee7153"
     },
     "deliverables/決賽海報_AI資安框架_A2.pptx": {
-      "bytes": 136472,
-      "sha256": "83161e4422eb82283eee4a420793f149e4dc947a506280364fe6d40fc6a3dbe2"
+      "bytes": 140025,
+      "sha256": "c45fad843979352f8c1a357beaa0e5a426a020edaaa9f98eb7bac1b0c5ed8545"
     },
     "deliverables/決賽海報_AI資安框架_A2.pdf": {
-      "bytes": 219389,
-      "sha256": "99b8ee2ff491b4807861687b15e46f7cba9e6eb4e8725b05d7f06ad061845fc9"
+      "bytes": 264455,
+      "sha256": "e6d6e69f607f2fc9d0b0f20adc7d400751bde3012be0cc30a3cbeeeaff4e3c9b"
     },
     "deliverables/決賽離線展示包.zip": {
-      "bytes": 4294693,
-      "sha256": "e466b1157d68fbad286007143e5397f63e3e3e1cc76c0b4909671edb7a34df4f"
+      "bytes": 4428219,
+      "sha256": "9012f67af5a17c36b2259edbdd0fd3c95eb61c086bc7b76ca535273e9075034d"
     },
     "deliverables/source/release-validation.json": {
       "bytes": 10198,
-      "sha256": "4859f3931caa7fc1c07d88f7bb3d6595f5ab715c56590670917dfd5c6f969acd",
+      "sha256": "9867f68f8a7713166ea0795aa18c69c35eecf2dfd80ffc65577a267946f2e2d1",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/01_slide.svg": {
-      "bytes": 8759,
-      "sha256": "5f21523cf598e38955566315ce636532820e39e95f9cdc02bd061eff3cbe8d77",
+      "bytes": 8960,
+      "sha256": "e4dcfeaf0305f9d24375044194ab5657ba5939e1bdc25a560f7be9d7bd5d2985",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/02_slide.svg": {
-      "bytes": 2921,
-      "sha256": "b81ea46629cb5a64884cb89b35c81c93a0d47506e20ce957e95ece2565e58aa4",
+      "bytes": 2823,
+      "sha256": "bc759749425a99a2025b4e4ed2c93195f8d7b74e6c7a8c475bbf39d455439602",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/03_slide.svg": {
-      "bytes": 12839,
-      "sha256": "5720fee616f6ed01c1c619a2dbf65a3e0c52305ac62bf0d92c9458d2c6acc90a",
+      "bytes": 19056,
+      "sha256": "c8789832c756caa389a6b40569147e331bb3f85e8156d5004b11a9dad13676bf",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/04_slide.svg": {
-      "bytes": 8452,
-      "sha256": "cc53168f39b5d83a8c794a02a2b9db51918dad8d0baa01cbb96d251a2c178bad",
+      "bytes": 10075,
+      "sha256": "afd3ec944666aaaecf7b197c02057540ad5d10fbb597d56a5f4e3a38673325ff",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/05_slide.svg": {
-      "bytes": 11072,
-      "sha256": "eb117c921259c7737c8ac846d516252a2b22805dace1850bee01d45ba7cc72fc",
+      "bytes": 12814,
+      "sha256": "e5b1538dedb41df5d399f97998724f77d9e8e17bfdafe4016843509233203bda",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/06_slide.svg": {
-      "bytes": 9015,
-      "sha256": "1a84b06bf85f419ce305ae49c38c4b1f1c59aba3bfe7f400f95c700c11df7fb0",
+      "bytes": 9767,
+      "sha256": "bd325b1b8b1c4e8d634b0314e571f93d72a70c42152fb36b0956bdb30c954027",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/07_slide.svg": {
-      "bytes": 5828,
-      "sha256": "11bd0bb23b7f2b032ab45555e6442d25db5479dd17e4913035e175e4107dbb7e",
+      "bytes": 6310,
+      "sha256": "2ed81ee11af9ff4c9cec8b3cdb34c32c1fa8efbe5519d9fdf45291cc64275fd1",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/08_slide.svg": {
-      "bytes": 7123,
-      "sha256": "70c885b4b8f131ed9a145d474ac8df8401fed1507c5faae385b1a1e34ba06996",
+      "bytes": 7887,
+      "sha256": "396f176334b24ca029b73a8da3e4dafe66e1853bd03376701a903a6bfb14ac9e",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/09_slide.svg": {
-      "bytes": 7056,
-      "sha256": "8dd743c8be553d9e65f3ebc6492bcc3b109b091f1b1ca0bc4b30d49e8a18c396",
+      "bytes": 6550,
+      "sha256": "99a0a9eed08d6441e5fc9d22e56b615eeb66f8dae1e544693750a3c378f3c807",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/10_slide.svg": {
-      "bytes": 11326,
-      "sha256": "a61a8a8f18dba70686f40896cc98b7f06d9422c56dd2b50f314113de3d4b6c04",
+      "bytes": 11894,
+      "sha256": "7629d82ea8e988918627acc295166206f03c1726977604f3ecae2f9fc797a8ae",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/11_slide.svg": {
-      "bytes": 8290,
-      "sha256": "3977f3771510e91226ef212db160484751c0b5bc7dffe8b74bd2de1d26d71cac",
+      "bytes": 8818,
+      "sha256": "de5277a48dbe7d1d7ba8361917200a86a5ebe05af15283d004fe5104956e272e",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/12_slide.svg": {
-      "bytes": 12052,
-      "sha256": "6fc0657825fa3e5b45104eab613939ff07cd55128a9822f6069fe1cf78dd7cef",
+      "bytes": 12467,
+      "sha256": "99f08476b51eb8023bcb8598f9fe559254f49187e3ef81ea296a9794f4cfc57b",
       "hash_normalization": "LF"
     },
     "media/film/metrics.json": {
@@ -131,7 +131,7 @@
     "deliverables/source/finals-readiness.json": {
       "hash_normalization": "LF",
       "bytes": 3544,
-      "sha256": "b16d0654bd11f9d710f20e06650b7c8d16cc4b1a71810ef770aca36daeedced7"
+      "sha256": "29dd542123543eef934d72af8d2050c0d93b4efcda2a46a66cc36405641535b1"
     },
     "docs/決賽五分鐘口語稿.md": {
       "hash_normalization": "LF",
@@ -145,23 +145,23 @@
     },
     "docs/現場控場與備援卡.md": {
       "hash_normalization": "LF",
-      "bytes": 2855,
-      "sha256": "2407a165ffe4df3c51f1fa59be76098ca095b5c4f8893cececba6b2b1c666079"
+      "bytes": 2875,
+      "sha256": "0a34ff144b3d7318b6757e903c8f534e891107d258cbf5d447a80ad76967f5ec"
     },
     "deliverables/interactive/README.md": {
       "hash_normalization": "LF",
-      "bytes": 4113,
-      "sha256": "28e6ef28ec9b4040b88fc7848676615aecef93c2a572a91208ede7b7d190c8f7"
+      "bytes": 4210,
+      "sha256": "184199d603bf86066455899632e426443d78f56a6d8ffdbceb716b74a58120ab"
     },
     "tests/offline-exhibit.cjs": {
       "hash_normalization": "LF",
-      "bytes": 14573,
+      "bytes": 14992,
       "sha256": "3665861805ebdbf6f7177b61284735268acbd172ab11a2f1a5c493e82f2ec173"
     },
     "deliverables/interactive/AI資安框架_自動循環展示.html": {
       "hash_normalization": "LF",
-      "bytes": 145582,
-      "sha256": "7d8baceeb04e90a580bb019c03b8f36dbe98ff5ddbbd5838233e0af326a2d8dd"
+      "bytes": 151173,
+      "sha256": "0699305f8aed0898fb06da53326e29e76461babf322924d6644fb9b7d7c45d06"
     }
   },
   "slides": 12,
@@ -187,7 +187,7 @@
   "review": "153 Python tests, media smoke/data checks, offline exhibit regressions, native static alignment and public delivery checks passed; no native playback.",
   "results_changed": true,
   "markdown_documents": 33,
-  "local_links_checked": 159,
+  "local_links_checked": 157,
   "presentation_limit_seconds": 360,
   "buffer_seconds": 60,
   "visual_theme": "white canvas; navy titles, blue flow/icons, teal method/results/completion, restrained warm gold packets/current stage",

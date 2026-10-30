@@ -28,7 +28,10 @@ def embed(source, reference, movie, poster, output):
             elif kind=='slideLayout':row.set('Target',layout)
             elif kind!='notesSlide':raise ValueError('Unexpected approved media relationship: '+kind)
             if row.get('TargetMode')=='External':raise ValueError('Media must be fully embedded')
+        # Tags of the replaced static slide-2 text would otherwise remain as orphan parts.
+        orphans={'ppt/'+row.attrib['Target'].replace('../','',1) for row in native if row.attrib['Type'].endswith('/tags')}
         types=ET.fromstring(current.read('[Content_Types].xml'))
+        for row in [row for row in types if row.get('PartName','').lstrip('/') in orphans]:types.remove(row)
         for extension,kind in (('mp4','video/mp4'),('png','image/png')):
             if not any(row.get('Extension')==extension for row in types):
                 ET.SubElement(types,'{'+CT+'}Default',Extension=extension,ContentType=kind)
@@ -36,7 +39,7 @@ def embed(source, reference, movie, poster, output):
                   '[Content_Types].xml':ET.tostring(types,encoding='utf-8',xml_declaration=True)}
         with zipfile.ZipFile(output,'w',zipfile.ZIP_DEFLATED) as result:
             for info in current.infolist():
-                if (info.filename.startswith('ppt/media/') and info.filename.lower().endswith('.mp4')) or info.filename=='ppt/media/opening-poster.png':
+                if (info.filename.startswith('ppt/media/') and info.filename.lower().endswith('.mp4')) or info.filename in orphans or info.filename=='ppt/media/opening-poster.png':
                     continue
                 result.writestr(info,replaced.get(info.filename,current.read(info.filename)))
             result.writestr('ppt/media/opening-film.mp4',Path(movie).read_bytes())

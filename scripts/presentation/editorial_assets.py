@@ -1,8 +1,7 @@
-"""Build light-canvas presentation art with the shared flat icon and font system."""
+"""Build the evidence-chain presentation art with the shared icon, palette and font system."""
 from pathlib import Path
 from html import escape
 import json
-import re
 import sys
 from style_contract import TYPOGRAPHY, font_runs, icon_fragment, resolve_colors
 
@@ -12,332 +11,362 @@ from media_results import load_metrics
 DEST = ROOT / 'deliverables/source'
 PROJECT = ROOT / 'projects/finals_editorial_ppt169_20261028'
 PALETTE = json.loads((ROOT/'design-system/palette.json').read_text(encoding='utf-8'))
-BLUE, NAVY, GOLD = (PALETTE[key] for key in ('blue', 'navy', 'gold'))
-TEAL = PALETTE['teal']
+NAVY, BLUE, TEAL, GOLD = (PALETTE[key] for key in ('navy', 'blue', 'teal', 'gold'))
+INK, MUTED, LINE, GRAY, WHITE = (PALETTE[key] for key in ('ink', 'muted', 'line', 'gray', 'white'))
+BLUE_TINT, TEAL_TINT, BLUE_MUTED = (PALETTE[key] for key in ('blue_tint', 'teal_tint', 'blue_muted'))
+NIGHT_PANEL, NIGHT_LINE, CYAN, DARK_MUTED = (PALETTE[key] for key in ('night_panel', 'night_line', 'cyan', 'on_dark_muted'))
 FONT = TYPOGRAPHY['latin']
-CJK_FONT = TYPOGRAPHY['cjk']
 PAGE_NUMBERS = {1:1, 6:2, 2:3, 3:4, 4:5, 5:6, 7:7, 8:8, 9:9}
-SY, OY = 1, 0
+# Icons drawn on the night canvas swap their light fills for night surfaces.
+ON_DARK = {'white':'night_panel', 'blue':'cyan', 'gray':'night_line', 'blue_tint':'night_panel', 'line':'night_line'}
 
 
-def text(x, y, value, size=26, color='#171C1D', weight=400, anchor='start'):
-    if color == BLUE and re.fullmatch(r'(?:[\d,.]+\s*%|[\d,]+(?:\s*/\s*[\d,]+)?|529 維|同一 ID)', value) and (size >= 30 or '%' in value):
-        color = TEAL
-        if '%' in value and size >= 44:
-            size += 4
-    runs=[]
-    for part, family in font_runs(value):
-        runs.append(f'<tspan font-family="{family}">{escape(part)}</tspan>')
-    return f'<text x="{x}" y="{y*SY+OY}" font-size="{size}" fill="{color}" font-weight="{weight}" text-anchor="{anchor}">{"".join(runs)}</text>'
+def text(x, y, value, size=22, color=INK, weight=400, anchor='start'):
+    runs=''.join(f'<tspan font-family="{family}">{escape(part)}</tspan>' for part, family in font_runs(value))
+    return f'<text x="{x}" y="{y}" font-size="{size}" fill="{color}" font-weight="{weight}" text-anchor="{anchor}">{runs}</text>'
 
 
-def rect(x, y, w, h, fill='#F0F2F3', radius=8, stroke='none'):
-    return f'<rect x="{x}" y="{y*SY+OY}" width="{w}" height="{h*SY}" rx="{radius}" fill="{fill}" stroke="{stroke}"/>'
+def rect(x, y, w, h, fill=GRAY, radius=10, stroke='none', width=1):
+    edge=f' stroke-width="{width}"' if stroke!='none' else ''
+    return f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="{radius}" fill="{fill}" stroke="{stroke}"{edge}/>'
 
 
-def svg(body, height=720, bg='#FFFFFF'):
+def circle(cx, cy, r, fill=WHITE, stroke='none', width=2):
+    return f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="{fill}" stroke="{stroke}" stroke-width="{width}"/>'
+
+
+def rule(x1, y1, x2, y2, color=LINE, width=1.5, dashed=False):
+    dash=' stroke-dasharray="5 5"' if dashed else ''
+    return f'<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" stroke="{color}" stroke-width="{width}" stroke-linecap="round"{dash}/>'
+
+
+def arrow(points, color=BLUE, dashed=False, width=2.5):
+    path='M'+' L'.join(f'{x} {y}' for x,y in points)
+    (px,py),(x,y)=points[-2:]
+    if x>px: head=f'M{x-8} {y-6}L{x} {y}L{x-8} {y+6}'
+    elif x<px: head=f'M{x+8} {y-6}L{x} {y}L{x+8} {y+6}'
+    elif y>py: head=f'M{x-6} {y-8}L{x} {y}L{x+6} {y-8}'
+    else: head=f'M{x-6} {y+8}L{x} {y}L{x+6} {y+8}'
+    dash=' stroke-dasharray="6 5"' if dashed else ''
+    return (f'<path d="{path}" fill="none" stroke="{color}" stroke-width="{width}" stroke-linejoin="round"{dash}/>'
+            f'<path d="{head}" fill="none" stroke="{color}" stroke-width="{width}" stroke-linecap="round" stroke-linejoin="round"/>')
+
+
+def chevron(x, y, color=BLUE_MUTED):
+    return f'<path d="M{x-4} {y-8}L{x+4} {y}L{x-4} {y+8}" fill="none" stroke="{color}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>'
+
+
+def icon(name, x, y, size, dark=False):
+    return f'<g transform="translate({x} {y}) scale({size/64})">{icon_fragment(name, **(ON_DARK if dark else {}))}</g>'
+
+
+def svg(body, height=720, bg=WHITE):
     return resolve_colors(f'<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="{height}" viewBox="0 0 1280 {height}" font-family="{FONT}">{rect(0,0,1280,height,bg,0)}{body}</svg>')
 
 
-def image(x, y, w, h, file):
-    index = int(file.rsplit('-', 1)[1].split('.')[0])-1
-    name = ('network', 'model', 'retrieval', 'shield')[index]
-    return f'<g transform="translate({x} {y*SY+OY}) scale({w/64} {h*SY/64})">{icon_fragment(name)}</g>'
+def glyph(kind, x, y, size=64, stroke=BLUE, fill=WHITE, soft=BLUE_MUTED):
+    """Qualitative object illustrations: no data values are encoded."""
+    def line(a,b,c,d,color=stroke,width=2.5):
+        return f'<line x1="{a}" y1="{b}" x2="{c}" y2="{d}" stroke="{color}" stroke-width="{width}" stroke-linecap="round"/>'
+    body=''
+    if kind=='packet':
+        body=rect(5,15,54,36,fill,5,stroke,2.5)+line(5,15,32,35)+line(32,35,59,15)
+    elif kind=='clock':
+        body=circle(32,32,25,fill,stroke,2.5)+line(32,32,32,15)+line(32,32,45,39)
+    elif kind=='firewall':
+        body=rect(5,8,54,48,fill,4,stroke,2.5)
+        for yy in (24,40):body+=line(5,yy,59,yy,soft,2)
+        for xx,a,b in [(23,8,24),(43,8,24),(15,24,40),(37,24,40),(23,40,56),(43,40,56)]:body+=line(xx,a,xx,b,soft,2)
+    elif kind=='server':
+        for j in range(3):body+=rect(9,7+j*18,46,14,fill,3,stroke,2.5)+circle(47,14+j*18,2,stroke,stroke,1)+line(15,14+j*18,35,14+j*18,soft,2)
+    elif kind=='document':
+        body=rect(12,5,40,54,fill,4,stroke,2.5)
+        for yy in (18,29,40,51):body+=line(21,yy,44,yy,soft,2)
+    elif kind=='vector':
+        body=line(12,7,5,7)+line(5,7,5,57)+line(5,57,12,57)+line(52,7,59,7)+line(59,7,59,57)+line(59,57,52,57)
+        for yy in (16,27,38,49):body+=rect(18,yy-3,28,6,soft,2)
+    elif kind=='search':
+        body=circle(26,26,19,fill,stroke,2.5)+line(40,40,58,58,stroke,5)
+    elif kind=='check':
+        body=circle(32,32,26,TEAL_TINT if fill==WHITE else fill,stroke,2.5)+line(19,33,28,42,stroke,4)+line(28,42,46,22,stroke,4)
+    elif kind=='review':
+        body=circle(26,26,17,fill,stroke,2.5)+line(39,39,56,56,stroke,4)
+    elif kind=='question':
+        body=circle(32,32,26,BLUE_TINT if fill==WHITE else fill,stroke,2.5)+line(32,44,32,45,stroke,5)+f'<path d="M24 24C24 14 40 14 40 24C40 31 32 31 32 37" fill="none" stroke="{stroke}" stroke-width="4" stroke-linecap="round"/>'
+    else:
+        body=rect(12,12,40,40,fill,5,stroke,2.5)+rect(23,23,18,18,BLUE_TINT,2,stroke,2)
+        for v in (20,32,44):body+=line(v,3,v,12)+line(v,52,v,61)+line(3,v,12,v)+line(52,v,61,v)
+    return f'<g transform="translate({x} {y}) scale({size/64})">{body}</g>'
 
 
-def split_icons():
-    from PIL import Image
-    sheet = Image.open(DEST / 'security-icons-sheet.png').convert('RGBA')
-    w, h = sheet.size
-    for i in range(4):
-        part = sheet.crop((i*w//4, 0, (i+1)*w//4, h))
-        if i == 2:
-            # Remove the isolated edge fragment of the neighbouring chip icon.
-            part.paste((0,0,0,0),(0,0,60,h))
-        bbox = part.getchannel('A').point(lambda a: 255 if a > 35 else 0).getbbox()
-        part = part.crop(bbox)
-        canvas = Image.new('RGBA', (600,600))
-        part.thumbnail((530,530), Image.Resampling.LANCZOS)
-        canvas.alpha_composite(part, ((600-part.width)//2,(600-part.height)//2))
-        canvas.save(DEST / f'icon-{i+1}.png')
+def node(x, y, w, h, title, sub='', tone='plain', size=19):
+    """A labelled card; tone marks the stage output (teal) or a neutral step."""
+    fill, stroke, color = {'plain':(WHITE,LINE,INK), 'out':(TEAL_TINT,'none',TEAL), 'key':(BLUE_TINT,'none',BLUE)}[tone]
+    body=rect(x,y,w,h,fill,10,stroke)
+    if sub:
+        body+=text(x+16,y+h/2-3,title,size,color,700)+text(x+16,y+h/2+20,sub,14,MUTED)
+    else:
+        body+=text(x+w/2,y+h/2+7,title,size,color,700,'middle')
+    return body
 
 
-def architecture(save=True):
-    # Two tiers preserve readable labels without stretching imagery. The IDS
-    # branches are parallel; retrieval receives their final event representation.
-    def route(points, color=BLUE, dashed=False):
-        d='M'+' L'.join(f'{x} {y*SY+OY}' for x,y in points)
-        (px,py),(x,y)=points[-2:]
-        if x>px: tip=f'M{x-7} {y*SY+OY-5}L{x} {y*SY+OY}L{x-7} {y*SY+OY+5}'
-        elif y>py: tip=f'M{x-5} {y*SY+OY-7}L{x} {y*SY+OY}L{x+5} {y*SY+OY-7}'
-        else: tip=f'M{x-5} {y*SY+OY+7}L{x} {y*SY+OY}L{x+5} {y*SY+OY+7}'
-        dash=' stroke-dasharray="5 4"' if dashed else ''
-        return f'<path d="{d}" fill="none" stroke="{color}" stroke-width="2"{dash}/><path d="{tip}" fill="none" stroke="{color}" stroke-width="2"/>'
-    s=rect(16,16,226,205,'#F0F2F3',8,'#D6DDE0')
-    s+=text(34,48,'a  流量表徵',24,BLUE,600)+image(190,20,34,34,'icon-1.png')
-    s+=text(34,97,'真實前處理張量',21)+text(34,142,'封包內容',22)+text(34,174,'時間差·方向',22)
-    s+=text(34,204,'遮罩欄位·流量切窗',20,'#53666E')
-    s+=rect(266,16,998,205,'#F0F2F3',8,'#D6DDE0')
-    s+=image(282,22,36,36,'icon-2.png')+text(328,48,'b  互補模型與 17 類判定',24,BLUE,600)
-    for y,title,sub in [(70,'CTBM','內容·時間差·方向'),(148,'PBCNN','短窗位元組模式')]:
-        s+=rect(292,y,300,60,'#FFFFFF',8,'#D6DDE0')+text(310,y+26,title,24,weight=600)+text(310,y+50,sub,20)
-    s+=rect(660,90,278,90,'#FFFFFF',8,'#D6DDE0')+text(682,123,'校準＋OOF Gate',24,weight=600)+text(682,160,'依事件證據融合',22)
-    s+=rect(966,90,276,90,'#FFFFFF',8,'#D6DDE0')+text(986,123,'17 類正式判定',24,weight=600)+text(986,160,'512 維表徵＋17 維機率',20)
-    s+=route([(242,118),(280,118),(280,100),(292,100)])+route([(280,118),(280,178),(292,178)])
-    s+=route([(592,100),(625,100),(625,135),(660,135)])+route([(592,178),(625,178),(625,135),(660,135)])+route([(938,135),(966,135)])
-    s+=rect(16,282,840,186,'#F0F2F3',8,'#D6DDE0')+image(34,288,36,36,'icon-3.png')+text(80,314,'c  任務導向檢索與 AI 稽核',24,BLUE,600)
-    for x,w,title,sub in [(40,190,'529 維任務向量','L2 正規化'),(260,244,'Top-5 相似案例','僅訓練資料案例庫'),(540,292,'本機 AI 稽核','支持／複核／不確定')]:
-        s+=rect(x,340,w,82,'#FFFFFF',8,'#D6DDE0')+text(x+14,374,title,22,weight=600)+text(x+14,405,sub,20)
-    s+=route([(1104,180),(1104,249),(5,249),(5,381),(40,381)])
-    s+=text(620,240,'正式類別·信心·模型表徵',22,anchor='middle')
-    s+=route([(230,381),(260,381)])+route([(504,381),(540,381)])
-    s+=text(380,454,'訓練案例庫',20,'#53666E',anchor='middle')+route([(380,434),(380,422)],'#53666E',True)
-    s+=text(554,454,'稽核保留正式分類',20,'#53666E')
-    s+=rect(880,282,384,186,'#F0F2F3',8,'#D6DDE0')+image(898,287,36,36,'icon-4.png')+text(944,314,'d  受控處置與回復',24,BLUE,600)
-    s+=text(904,364,'策略檢查 → 套用',24)+text(904,401,'讀回 → 到期撤銷',24)+text(904,451,'複核／不確定 → 蒐證',20,'#53666E')
-    s+=route([(832,381),(880,381)])
-    s+=rect(16,484,1248,38,'#F0F2F3',8,'#D6DDE0')+text(640,510,'共用事件 ID：正式判定｜Top-5 證據｜AI 稽核｜處置與回復回條',22,anchor='middle')
-    standalone = svg(s,536).replace('../images/','')
-    if save: (DEST/'architecture.svg').write_text(standalone,encoding='utf-8')
+STAGES=[('network','流量表徵','前處理張量'),('model','互補判定','CTBM＋PBCNN'),('retrieval','證據稽核','Top-5＋本機 AI'),('shield','受控回復','策略·讀回·到期')]
+
+
+def architecture(save=True, oy=24):
+    """Four lanes, read left to right; every lane hands the same event ID forward."""
+    s=''
+    xs=[64+i*294 for i in range(4)]
+    for i,(name,title,sub) in enumerate(STAGES):
+        x=xs[i]
+        s+=circle(x+22,oy+22,22,BLUE_TINT)+icon(name,x+8,oy+8,28)
+        s+=text(x+56,oy+16,f'0{i+1}',13,TEAL,700)+text(x+82,oy+16,sub,13,MUTED)
+        s+=text(x+56,oy+40,title,21,NAVY,700)
+        if i<3:s+=chevron(x+282,oy+22)
+        s+=rect(x,oy+60,270,312,GRAY,14)
+    x=xs[0]
+    s+=node(x+16,oy+78,238,62,'真實前處理張量','遮罩欄位 · 流量切窗')
+    s+=text(x+16,oy+170,'三種線索',14,MUTED,700)
+    for k,label in enumerate(['內容','時間差','方向']):
+        s+=rect(x+16+k*82,oy+182,74,40,WHITE,8,LINE)+text(x+53+k*82,oy+208,label,16,INK,700,'middle')
+    s+=arrow([(x+135,oy+226),(x+135,oy+272)])
+    s+=node(x+16,oy+276,238,62,'流量表徵','送入兩個互補模型','out')
+    x=xs[1]
+    s+=node(x+16,oy+78,222,58,'CTBM','內容 · 時間差 · 方向')+node(x+16,oy+150,222,58,'PBCNN','短窗位元組模式')
+    s+=arrow([(x+238,oy+107),(x+256,oy+107),(x+256,oy+251),(x+240,oy+251)])+rule(x+238,oy+179,x+256,oy+179,BLUE,2.5)
+    s+=node(x+16,oy+222,222,58,'校準＋OOF Gate','依事件證據融合','key')
+    s+=arrow([(x+127,oy+280),(x+127,oy+296)])
+    s+=node(x+16,oy+298,238,58,'17 類正式判定','信心 ＋ 512 維表徵','out')
+    x=xs[2]
+    s+=node(x+16,oy+78,238,58,'529 維任務向量','512 表徵 ＋ 17 機率 · L2')
+    s+=arrow([(x+135,oy+136),(x+135,oy+152)])
+    s+=rect(x+16,oy+154,238,74,WHITE,10,LINE)+text(x+32,oy+180,'Top-5 相似案例',19,INK,700)
+    for k in range(5):s+=rect(x+32+k*30,oy+194,24,22,BLUE_TINT,4)+text(x+44+k*30,oy+210,str(k+1),13,BLUE,700,'middle')
+    s+=text(x+188,oy+210,'訓練庫',13,MUTED)
+    s+=arrow([(x+135,oy+228),(x+135,oy+244)])
+    s+=node(x+16,oy+246,238,50,'本機 AI 稽核','')
+    for k,label in enumerate(['支持','複核','不確定']):
+        s+=rect(x+16+k*82,oy+308,74,48,TEAL_TINT,10)+text(x+53+k*82,oy+339,label,16,TEAL,700,'middle')
+    x=xs[3]
+    for k,(label,tone) in enumerate([('策略檢查','plain'),('套用規則','plain'),('讀回驗證','plain'),('到期回復','out')]):
+        s+=node(x+16,oy+78+k*66,238,50,label,'',tone)
+        if k<3:s+=arrow([(x+135,oy+128+k*66),(x+135,oy+144+k*66)])
+    s+=text(x+135,oy+354,'複核／不確定 → 監測或蒐證',14,MUTED,400,'middle')
+    s+=rect(64,oy+392,1152,48,NAVY,12)
+    for x in xs:
+        s+=rule(x+135,oy+372,x+135,oy+392,BLUE_MUTED,1.5,True)+circle(x+135,oy+392,5,GOLD)
+    s+=text(640,oy+423,'同一事件 ID 串起  正式判定 · Top-5 證據 · AI 稽核結論 · 處置回條',19,WHITE,700,'middle')
+    if save:(DEST/'architecture.svg').write_text(svg(s,oy+464),encoding='utf-8')
     return s
 
 
 def group(key, body):
-    bounds={'headline':'64 24 1152 110','footer':'64 660 1152 45','page-content':'0 140 1280 520'}.get(key)
+    bounds={'headline':'64 36 1152 100','footer':'64 664 1152 44','page-content':'0 140 1280 520'}.get(key)
     bound=f' data-pptx-bounds="{bounds}"' if bounds else ''
     return f'<g id="{key}"{bound}>{body}</g>'
 
 
-def arrow(points, color=BLUE, dashed=False):
-    path = 'M'+' L'.join(f'{x} {y}' for x,y in points)
-    (px,py),(x,y)=points[-2:]
-    if x>px: head=f'M{x-7} {y-5}L{x} {y}L{x-7} {y+5}'
-    elif x<px: head=f'M{x+7} {y-5}L{x} {y}L{x+7} {y+5}'
-    elif y>py: head=f'M{x-5} {y-7}L{x} {y}L{x+5} {y-7}'
-    else: head=f'M{x-5} {y+7}L{x} {y}L{x+5} {y+7}'
-    dash=' stroke-dasharray="6 5"' if dashed else ''
-    return f'<path d="{path}" fill="none" stroke="{color}" stroke-width="2.5"{dash}/><path d="{head}" fill="none" stroke="{color}" stroke-width="2.5"/>'
-
-
-def glyph(kind,x,y,size=64):
-    """Qualitative device/object illustrations: no data values are encoded."""
-    def line(a,b,c,d,color=BLUE,width=2.5):
-        return f'<line x1="{a}" y1="{b}" x2="{c}" y2="{d}" stroke="{color}" stroke-width="{width}" stroke-linecap="round"/>'
-    def circle(cx,cy,r,fill='none'):
-        return f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="{fill}" stroke="{BLUE}" stroke-width="2.5"/>'
-    body=''
-    if kind=='packet':
-        body=rect(5,15,54,36,'#FFFFFF',5,BLUE)+line(5,15,32,35)+line(32,35,59,15)
-    elif kind=='clock':
-        body=circle(32,32,25,'#FFFFFF')+line(32,32,32,14)+line(32,32,46,39)
-        body+=line(32,4,32,9)+line(32,55,32,60)
-    elif kind=='firewall':
-        body=rect(5,8,54,48,'#FFFFFF',4,BLUE)
-        for yy in (24,40):body+=line(5,yy,59,yy,'#7294A9',2)
-        for xx,a,b in [(23,8,24),(43,8,24),(15,24,40),(37,24,40),(23,40,56),(43,40,56)]:body+=line(xx,a,xx,b,'#7294A9',2)
-    elif kind=='server':
-        for j in range(3):body+=rect(9,7+j*18,46,14,'#FFFFFF',3,BLUE)+circle(47,14+j*18,2,BLUE)+line(15,14+j*18,35,14+j*18,'#7294A9',2)
-    elif kind=='document':
-        body=rect(12,5,40,54,'#FFFFFF',4,BLUE)
-        for yy in (18,29,40,51):body+=line(21,yy,44,yy,'#7294A9',2)
-    elif kind=='vector':
-        body=line(12,7,5,7)+line(5,7,5,57)+line(5,57,12,57)+line(52,7,59,7)+line(59,7,59,57)+line(59,57,52,57)
-        for yy in (16,27,38,49):body+=rect(18,yy-3,28,6,'#7294A9',2)
-    elif kind=='search':
-        body=circle(26,26,19,'#FFFFFF')+line(40,40,59,59,BLUE,5)
-    elif kind=='check':
-        body=circle(32,32,25,'#EAF0F4')+line(18,32,28,42,BLUE,4)+line(28,42,47,21,BLUE,4)
-    elif kind=='review':
-        body=circle(26,26,17,'#FFFFFF')+line(39,39,56,56,BLUE,4)
-    elif kind=='question':
-        body=circle(32,32,25,'#EAF0F4')
-    else:
-        body=rect(12,12,40,40,'#FFFFFF',5,BLUE)+rect(23,23,18,18,'#EAF0F4',2,BLUE)
-        for v in (20,32,44):body+=line(v,3,v,12)+line(v,52,v,61)+line(3,v,12,v)+line(52,v,61,v)
-    result=f'<g transform="translate({x} {y}) scale({size/64})">{body}</g>'
-    if kind=='question':result+=text(x+size/2,y+size*.7,'?',size*.59,BLUE,600,'middle')
-    return result
-
-
-def capability_icon(index,x,y,size):
-    if index==0:return image(x,y,size,size,'icon-2.png')
-    if index==1:return image(x,y,size,size,'icon-3.png')
-    if index==2:return glyph('document',x,y,size*.9)+glyph('check',x+size*.56,y+size*.56,size*.4)
-    return image(x,y,size,size,'icon-4.png')
-
-
-def graphic_page(n,title,body,kicker='METHOD',role='content',bg='#FFFFFF'):
-    heading=group('headline',rect(64,27,4,30,GOLD,1)+text(80,49,kicker,17,BLUE,600)+text(64,116,title,42,NAVY,300)+(rect(64,138,80,3,BLUE,0) if title else ''))
-    progress=''.join(rect(930+k*20,684,12,3,GOLD if k==(PAGE_NUMBERS[n]-1 if n<=9 else n-10) else '#D6DDE0',1) for k in range(9 if n<=9 else 3))
-    footer=group('footer',f'<line x1="64" y1="667" x2="1216" y2="667" stroke="#D6DDE0" stroke-width="1"/>'+text(64,692,'AI 資安框架 · 資安技術組',15,'#53666E')+text(1216,692,(f'{PAGE_NUMBERS[n]:02d} / 09' if n<=9 else f'答詢備用 {n-9} / 3'),15,'#53666E',400,'end')+progress)
+def graphic_page(n, title, body, kicker='METHOD', role='content', dark=False):
+    title_color, kicker_color, footer_color, rail = (WHITE, CYAN, DARK_MUTED, NIGHT_LINE) if dark else (NAVY, TEAL, MUTED, LINE)
+    heading=rect(64,50,10,10,GOLD,2)+text(84,60,kicker,15,kicker_color,700)
+    if title:heading+=text(64,114,title,38,title_color,700)
+    current=PAGE_NUMBERS[n]-1 if n<=9 else n-10
+    progress=''.join(rect(916+k*20,688,14,4,GOLD if k==current else rail,2) for k in range(9 if n<=9 else 3))
+    label=f'{PAGE_NUMBERS[n]:02d} / 09' if n<=9 else f'答詢備用 {n-9} / 3'
+    footer=rule(64,672,1216,672,rail,1)+text(64,697,'AI 資安框架 · 資安技術組決賽',14,footer_color)+progress+text(1216,697,label,14,footer_color,700,'end')
+    bg=NAVY if dark else WHITE
     background=rect(0,0,1280,720,bg,0).replace('<rect ','<rect id="page-background" data-pptx-role="background" ',1)
-    return f'<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" font-family="{FONT}" data-pptx-page-role="{role}">{background}{heading}{group("page-content",body)}{footer}</svg>'
+    return f'<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" font-family="{FONT}" data-pptx-page-role="{role}">{background}{group("headline",heading)}{group("page-content",body)}{group("footer",footer)}</svg>'
+
+
+def evidence_chain(y, labels, dark=True, x0=98, step=210):
+    """The brand motif: four stages strung on one line, the same event moving through."""
+    stroke, panel, title, sub = (CYAN, NIGHT_PANEL, WHITE, DARK_MUTED) if dark else (BLUE, WHITE, NAVY, MUTED)
+    s=rule(x0,y,x0+step*(len(labels)-1),y,NIGHT_LINE if dark else LINE,2)
+    for i,(name,label,detail) in enumerate(labels):
+        cx=x0+i*step
+        s+=circle(cx,y,36,panel,stroke,2)
+        s+=icon(name,cx-19,y-19,38,dark) if name in ('network','model','retrieval','shield') else glyph(name,cx-19,y-19,38,stroke,panel,DARK_MUTED if dark else BLUE_MUTED)
+        s+=text(cx,y+70,label,22,title,700,'middle')+text(cx,y+98,detail,15,sub,400,'middle')
+    return s
 
 
 def build_pages(limit=12):
-    global SY, OY
-    import json
     out=PROJECT/'svg_output';out.mkdir(parents=True,exist_ok=True)
     detector=json.loads((ROOT/'results/detection_17class.json').read_text(encoding='utf-8'))
     m=load_metrics(ROOT)
     pages=[]
-    # P01: formal name plus a compact, connected product chain.
+    # P01: night cover; the formal name, then the four-stage chain the talk follows.
     s=''
-    for k,l in enumerate(['融合新型內容相依時序方向模型','入侵偵測與任務導向檢索增強稽核','之 AI 資安框架']):s+=text(64,205+k*65,l,43,NAVY,300)
-    s+=text(64,430,'從流量判定，走到有證據的處置。',28,'#53666E')
-    for i,label in enumerate(['偵測','檢索','稽核','回復']):
-        x=64+i*222
-        s+=rect(x,500,188,72)+capability_icon(i,x+8,509,50)+text(x+115,546,label,26,BLUE,600,'middle')
-        if i<3:s+=arrow([(x+188,536),(x+222,536)])
-    s+=f'<g transform="translate(938 170) scale(4.25)">{icon_fragment("framework")}</g>'
-    pages.append(graphic_page(1,'',s,'2026 資安技術組 · 決賽','cover'))
-    # P02: native architecture carries the full topological contract.
-    SY,OY=1,142
-    s=architecture(False)
-    SY,OY=1,0
-    pages.append(graphic_page(2,'一個框架，四個連續階段',s,'FRAMEWORK'))
+    for k,l in enumerate(['融合新型內容相依時序方向模型','入侵偵測與任務導向檢索增強稽核','之 AI 資安框架']):s+=text(64,206+k*62,l,44,WHITE,700)
+    s+=rect(64,350,56,4,GOLD,2)+text(64,400,'從流量判定，走到有證據、可回復的處置。',24,DARK_MUTED)
+    s+=evidence_chain(512,[('model','偵測','17 類互補判定'),('retrieval','檢索','Top-5 訓練案例'),('document','稽核','本機 AI 三態'),('shield','回復','讀回＋到期回復')])
+    s+=f'<g transform="translate(912 150) scale(4.6)">{icon_fragment("framework", white="navy", blue_tint="night_panel", line="night_line", blue="cyan", gray="night_line")}</g>'
+    pages.append(graphic_page(1,'',s,'2026 資安技術組 · 決賽','cover',True))
+    # P02 (source order): the four-lane architecture.
+    pages.append(graphic_page(2,'一個框架，四個連續階段',architecture(False,150),'FRAMEWORK'))
     # P03: two complementary paths, one calibrated output.
-    s=rect(64,190,220,350)+text(86,232,'同一流量輸入',26,BLUE,600)
-    for j,(label,pattern) in enumerate([('封包內容','位元組'),('時間差','間隔'),('方向','往返')]):
-        y=292+j*82
-        s+=text(86,y,label,24)+rect(196,y-24,66,30,'#EAF0F4',4)
-        for z in range(4):s+=rect(202+z*13,y-18,7,18 if j!=1 else 8+z*3,BLUE,1)
-    s+=arrow([(284,365),(328,365),(328,270),(370,270)])+arrow([(328,365),(328,455),(370,455)])
-    s+=rect(370,196,340,148,'#FFFFFF',8,'#D6DDE0')+rect(370,196,4,148,BLUE,0)+image(390,211,82,82,'icon-2.png')+text(492,240,'CTBM',32,BLUE,600)+text(492,278,'內容·時序·方向',21)+text(394,323,'讀取流量的時序關係',21,'#53666E')
-    s+=rect(370,381,340,148,'#FFFFFF',8,'#D6DDE0')+rect(370,381,4,148,BLUE,0)+glyph('packet',394,398,70)+text(492,425,'PBCNN',32,BLUE,600)+text(492,465,'短窗位元組模式',21)+text(394,508,'補充局部內容特徵',21,'#53666E')
-    s+=arrow([(710,270),(760,270),(760,365),(810,365)])+arrow([(710,455),(760,455),(760,365)])
-    s+=rect(810,273,406,180,'#EAF0F4')+text(835,320,'校準＋OOF Gate',30,BLUE,600)+text(835,365,'依事件證據融合',25)+text(835,412,'形成同一次正式判定',23,'#53666E')
-    s+=arrow([(1013,453),(1013,565)])+rect(64,565,1152,64)+text(88,605,'17 類判定  ＋  校準信心  ＋  模型表徵  →  後段檢索與稽核',25)
+    s=rect(64,150,280,300,GRAY,14)+text(88,190,'同一流量輸入',18,TEAL,700)
+    for j,label in enumerate(['封包內容','時間差','方向']):
+        y=246+j*70
+        s+=text(88,y,label,21,INK,700)+rect(222,y-26,98,34,WHITE,6)
+        for z in range(5):s+=rect(232+z*16,y-20+(0 if j!=1 else 12-z*3),9,22 if j!=1 else 10+z*3,BLUE,2)
+    s+=arrow([(344,300),(372,300),(372,218),(400,218)])+arrow([(372,300),(372,383),(400,383)])
+    for y,name,sub,desc,art in [(150,'CTBM','內容 · 時序 · 方向','讀取流量的時序關係','model'),(316,'PBCNN','短窗位元組模式','補充局部內容特徵','packet')]:
+        s+=rect(400,y,360,134,WHITE,14,LINE)+rect(400,y+24,4,86,BLUE,2)
+        s+=(icon('model',428,y+33,68) if art=='model' else glyph('packet',428,y+33,68))
+        s+=text(520,y+52,name,28,BLUE,700)+text(520,y+84,sub,18,INK)+text(520,y+110,desc,15,MUTED)
+    s+=arrow([(760,218),(790,218),(790,300),(820,300)])+arrow([(760,383),(790,383),(790,300)])
+    s+=rect(820,196,396,208,TEAL_TINT,16)+text(850,250,'校準＋OOF Gate',30,TEAL,700)+text(850,292,'依事件證據融合',21,INK)+text(850,328,'形成同一次正式判定',18,MUTED)
+    s+=text(850,378,f'Macro-F1 {m["macro_f1"]["OOF Gate"]*100:.2f}%',18,TEAL,700)+text(1010,378,'見第 07 頁',15,MUTED)
+    s+=arrow([(1018,404),(1018,486)])+rect(64,488,1152,72,NAVY,14)
+    s+=text(640,532,'17 類判定  ＋  校準信心  ＋  模型表徵   →   後段檢索與稽核',22,WHITE,700,'middle')
+    s+=text(64,612,'兩個模型讀同一筆流量：CTBM 看時序與方向，PBCNN 看短窗位元組，再由 Gate 依證據融合。',17,MUTED)
     pages.append(graphic_page(3,'互補模型，形成同一次判定',s,'DETECTION'))
     # P04: vector composition is qualitative, not a falsely scaled 512:17 chart.
-    s=text(64,192,'01  組合任務向量',23,BLUE,600)
-    s+=rect(64,226,260,75)+glyph('vector',77,238,49)+text(220,272,'512 維表徵',24,anchor='middle')
-    s+=text(194,335,'＋',30,BLUE,600,'middle')+rect(64,357,260,75)+glyph('vector',77,370,49)+text(220,403,'17 維類別機率',23,anchor='middle')
-    s+=arrow([(324,264),(350,264),(350,460),(194,460),(194,478)])+arrow([(194,432),(194,478)])
-    s+=rect(64,478,260,98,'#EAF0F4')+text(194,521,'529 維任務向量',26,BLUE,600,'middle')+text(194,556,'L2 正規化',21,'#53666E',400,'middle')
-    s+=arrow([(324,527),(390,527),(390,323),(430,323)])
-    s+=text(430,192,'02  找出相似案例',23,BLUE,600)+image(444,213,135,135,'icon-3.png')
-    s+=text(606,249,'訓練案例庫',25)+text(606,286,f'{m["bank_rows"]:,} 筆案例',22,'#53666E')
-    for i in range(5):
-        x=430+i*66
-        s+=rect(x,390,56,90,'#EAF0F4',4,BLUE)+text(x+28,444,str(i+1),24,BLUE,600,'middle')
-    s+=text(430,520,'Top-5 相似案例',25)+text(430,557,'只檢索訓練資料',21,'#53666E')
-    s+=arrow([(756,435),(800,435),(800,296),(850,296)])+text(850,192,'03  本機 AI 稽核',23,BLUE,600)
-    s+=rect(850,240,366,112,'#EAF0F4')+text(1033,288,'判定＋案例證據',26,BLUE,600,'middle')+text(1033,325,'核對同一事件',22,'#53666E',400,'middle')
-    s+=arrow([(1033,352),(1033,371),(909,371),(909,390)])+arrow([(1033,371),(1033,390)])+arrow([(1033,371),(1157,371),(1157,390)])
-    for i,label in enumerate(['支持','複核','不確定']):
-        x=850+i*124
-        s+=rect(x,390,118,65)+text(x+59,432,label,24,anchor='middle')
-    s+=text(850,520,'保留正式分類',25)+text(850,557,'稽核結論附回事件紀錄',21,'#53666E')
-    s+=text(64,628,'同一事件 ID：分類結果與檢索證據一路可追溯。',24)
+    cols=[64,467,870]
+    s=''
+    for i,title in enumerate(['組合任務向量','找出相似案例','本機 AI 稽核']):
+        s+=text(cols[i],172,f'STEP 0{i+1}',14,TEAL,700)+text(cols[i],204,title,24,NAVY,700)
+        if i<2:s+=arrow([(cols[i]+352,380),(cols[i+1]-16,380)],BLUE_MUTED)
+    x=cols[0]
+    s+=rect(x,232,346,66,WHITE,12,LINE)+glyph('vector',x+18,243,44)+text(x+80,278,'512 維表徵',21,INK,700)
+    s+=text(x+173,330,'＋',26,BLUE,700,'middle')
+    s+=rect(x,344,346,66,WHITE,12,LINE)+glyph('vector',x+18,355,44)+text(x+80,390,'17 維類別機率',21,INK,700)
+    s+=arrow([(x+173,410),(x+173,444)])
+    s+=rect(x,446,346,96,TEAL_TINT,14)+text(x+173,490,'529 維任務向量',27,TEAL,700,'middle')+text(x+173,523,'L2 正規化後檢索',17,MUTED,400,'middle')
+    x=cols[1]
+    s+=icon('retrieval',x,236,92)+text(x+112,270,'訓練案例庫',22,INK,700)+text(x+112,302,f'{m["bank_rows"]:,} 筆案例',18,MUTED)
+    for i in range(5):s+=rect(x+i*70,350,60,84,BLUE_TINT if i else BLUE,10)+text(x+30+i*70,402,str(i+1),26,WHITE if not i else BLUE,700,'middle')
+    s+=text(x,474,'Top-5 相似案例',22,INK,700)+text(x,504,'只檢索訓練資料，依相似度排序',16,MUTED)
+    x=cols[2]
+    s+=rect(x,232,346,92,BLUE_TINT,14)+text(x+173,272,'判定＋案例證據',24,BLUE,700,'middle')+text(x+173,304,'核對同一事件',17,MUTED,400,'middle')
+    s+=arrow([(x+173,324),(x+173,340),(x+57,340),(x+57,356)])+arrow([(x+173,340),(x+173,356)])+arrow([(x+173,340),(x+289,340),(x+289,356)])
+    for i,(label,art) in enumerate([('支持','check'),('複核','review'),('不確定','question')]):
+        s+=rect(x+i*120,358,106,100,WHITE,12,LINE)+glyph(art,x+i*120+35,370,36,TEAL if not i else BLUE)+text(x+i*120+53,440,label,19,INK,700,'middle')
+    s+=text(x,494,'保留正式分類',22,INK,700)+text(x,524,'稽核結論附回事件紀錄',16,MUTED)
+    s+=rect(64,584,1152,56,GRAY,12)+circle(92,612,6,GOLD)+text(112,619,'同一事件 ID：分類結果與檢索證據一路可追溯。',20,INK,700)
     pages.append(graphic_page(4,'把偵測表徵，變成可核對的證據',s,'EVIDENCE'))
     # P05: four object illustrations explain controlled execution and expiry.
     s=''
-    stages=[('政策檢查','範圍·允許動作·期限','shield'),('套用規則','受允許策略才執行','firewall'),('讀回驗證','核對規則與事件回條','document'),('到期回復','撤銷並確認服務恢復','clock')]
+    stages=[('政策檢查','範圍 · 允許動作 · 期限','shield'),('套用規則','受允許策略才執行','firewall'),('讀回驗證','核對規則與事件回條','document'),('到期回復','撤銷並確認服務恢復','clock')]
     for i,(label,detail,kind) in enumerate(stages):
         x=64+i*294
-        s+=rect(x,195,270,257,'#EAF0F4' if i==0 else '#F0F2F3')
-        s+=text(x+22,232,f'0{i+1}',20,BLUE,600)
-        s+=image(x+77,239,116,116,'icon-4.png') if kind=='shield' else glyph(kind,x+87,250,96)
-        s+=text(x+135,391,label,29,'#171C1D',400,'middle')+text(x+135,431,detail,20,'#53666E',400,'middle')
-        if i<3:s+=arrow([(x+270,323),(x+294,323)])
-    s+=arrow([(199,452),(199,513),(424,513)],'#53666E',True)
-    s+=rect(424,478,792,69)+glyph('document',442,490,42)+text(500,521,'複核／不確定 → 監測或蒐證',26)
-    s+=rect(64,576,1152,64)+text(88,616,f'{m["network_cases"]} 種隔離 TCP 情境：{m["rules_cases"]} 種套用規則、{m["passive_cases"]} 種監測或蒐證；背景保留與回復皆 {m["rollback"]}/{m["network_cases"]}。',22)
+        s+=rect(x,156,270,250,TEAL_TINT if i==3 else WHITE,16,'none' if i==3 else LINE)
+        s+=text(x+24,190,f'0{i+1}',16,TEAL,700)
+        s+=icon('shield',x+87,206,96) if kind=='shield' else glyph(kind,x+87,206,96)
+        s+=text(x+135,346,label,26,TEAL if i==3 else NAVY,700,'middle')+text(x+135,378,detail,16,MUTED,400,'middle')
+        if i<3:s+=chevron(x+282,281)
+    s+=arrow([(160,406),(160,456),(410,456)],BLUE_MUTED,True,2)
+    s+=rect(424,430,792,52,GRAY,12)+glyph('document',444,438,36)+text(496,464,'複核／不確定  →  不自動處置，改為監測或蒐證',19,INK,700)
+    s+=rule(64,520,1216,520)
+    s+=text(64,566,f'{m["network_cases"]} 種隔離 TCP 情境',26,NAVY,700)+text(64,600,f'{m["rules_cases"]} 種套用規則、{m["passive_cases"]} 種監測或蒐證',18,MUTED)
+    s+=text(64,632,'隔離交易與回復驗證，不等同原生攻擊防禦率',15,MUTED)
+    for i,(value,label) in enumerate([(f'{m["background"]}/{m["network_cases"]}','背景服務保留'),(f'{m["rollback"]}/{m["network_cases"]}','到期回復完整')]):
+        x=760+i*228
+        s+=text(x,606,value,56,TEAL,700)+text(x,636,label,16,MUTED)
     pages.append(graphic_page(5,'受控執行，留下可回復的處置紀錄',s,'CONTROL'))
     # P06: native 16:9 movie frame; embedded in the packaging pass.
-    s=rect(192,151,896,504,'#F0F2F3',8,'#D6DDE0')
-    s+='<circle cx="640" cy="350" r="40" fill="#EAF0F4"/>'
-    s+=text(640,360,'播放',25,BLUE,400,'middle')+text(640,430,'產品方法動畫',32,'#171C1D',300,'middle')+text(640,476,'30 秒 · 2 倍速',23,'#53666E',400,'middle')
+    s=rect(192,151,896,504,NAVY,16)+circle(640,376,44,NIGHT_PANEL,CYAN,2)+'<path d="M628 356L658 376L628 396Z" fill="#5EEAD4"/>'
+    s+=text(640,470,'產品方法動畫',30,WHITE,700,'middle')+text(640,508,'30 秒 · 2 倍速',20,DARK_MUTED,400,'middle')
     pages.append(graphic_page(6,'一個事件，走完完整流程',group('video-slot',s),'METHOD FILM'))
-    # P07: genuine zero-baseline comparison. Plot domain 0..100, x=200..850.
-    s=text(64,180,f'相同 {m["detection_n"]:,} 筆封存測試 · Macro-F1',24,'#53666E')
+    # P07: genuine zero-baseline comparison. Plot domain 0..100, x=200..820.
+    s=text(64,176,f'相同 {m["detection_n"]:,} 筆封存測試 · Macro-F1',18,MUTED)
     chart=''
     for tick in [0,50,100]:
-        x=200+650*tick/100
-        chart+=f'<line x1="{x}" y1="220" x2="{x}" y2="550" stroke="#D6DDE0" stroke-width="1"/>'+text(x,585,str(tick)+'%',20,'#53666E',400,'middle')
+        x=200+620*tick/100
+        chart+=rule(x,206,x,498,LINE,1)+text(x,528,f'{tick}%',15,MUTED,400,'middle')
     marks=''
-    for i,(name,label) in enumerate([('PBCNN','PBCNN'),('CTBM','CTBM'),('OOF Gate','OOF Gate')]):
+    for i,name in enumerate(['PBCNN','CTBM','OOF Gate']):
         value=detector[name]['macro_f1']*100
-        y=254+i*110
-        marks+=text(64,y+29,label,23,BLUE if i==2 else '#171C1D',600 if i==2 else 400)
-        marks+=rect(200,y,650*value/100,42,TEAL if i==2 else '#7294A9',0)
-        marks+=text(200+650*value/100+12,y+29,f'{value:.2f}%',23,BLUE if i==2 else '#171C1D',600)
-    chart+= '<!-- chart-plot-area: object=detector-comparison | 200,220,850,550 -->'+marks
+        y=232+i*92
+        best=i==2
+        marks+=text(64,y+33,name,22,TEAL if best else INK,700)
+        marks+=rect(200,y,620*value/100,48,TEAL if best else BLUE_MUTED,6)
+        marks+=text(200+620*value/100+14,y+33,f'{value:.2f}%',24,TEAL if best else INK,700)
+    chart+='<!-- chart-plot-area: object=detector-comparison | 200,206,820,498 -->'+marks
     s+=group('detector-comparison',group('detector-comparison-chartArea',chart))
-    s+=rect(953,221,263,329,'#EAF0F4')+text(978,276,'整體準確率',26)+text(978,366,f"{detector['OOF Gate']['accuracy']*100:.2f}%",48,BLUE,300)+text(978,425,'17 類分類',25)+text(978,479,'同一封存測試集',21,'#53666E')
-    s+=text(64,632,f'融合相較 PBCNN 提升 {m["gain_pbcnn"]:.2f} 個百分點；相較 CTBM 提升 {m["gain_ctbm"]:.2f} 個百分點。',23)
-    pages.append(graphic_page(7,'互補融合，提升整體辨識效果',s,'MEASURED RESULTS'))
+    s+=rect(916,176,300,340,NAVY,18)+text(946,226,'整體準確率',18,DARK_MUTED)
+    s+=text(946,306,f"{detector['OOF Gate']['accuracy']*100:.2f}%",62,CYAN,700)+text(946,348,'17 類分類 · OOF Gate',18,WHITE)
+    s+=rule(946,396,1186,396,NIGHT_LINE,1)+text(946,436,'同一封存測試集',16,DARK_MUTED)+text(946,466,'固定 17 類輸出',16,DARK_MUTED)
+    s+=rect(64,572,1152,64,TEAL_TINT,12)
+    s+=text(92,612,f'融合相較 PBCNN 提升 {m["gain_pbcnn"]:.2f} 個百分點；相較 CTBM 提升 {m["gain_ctbm"]:.2f} 個百分點。',20,INK,700)
+    pages.append(graphic_page(7,'互補融合，提升整體辨識效果',s,'RESULT · DETECTION'))
     # P08: outcomes form a qualitative branch; card area does not encode counts.
-    s=rect(64,190,362,369)+text(88,232,'檢索效果',25,BLUE,600)+text(88,309,f'{m["top5"]*100:.2f}%',48,BLUE,300)+text(88,347,'Top-5 命中率',24)+text(88,426,f'{m["mrr5"]*100:.2f}%',44,BLUE,300)+text(88,463,'MRR@5 排序品質',24)+text(88,527,f'{m["bank_rows"]:,} 案例／{m["queries"]} 查詢',21,'#53666E')
-    s+=rect(515,190,616,70,'#EAF0F4')+text(823,234,f'{m["queries"]} 筆事件 → 本機 AI 稽核',27,BLUE,600,'middle')
-    s+=arrow([(823,260),(823,298),(576,298),(576,336)])+arrow([(823,298),(823,336)])+arrow([(823,298),(1070,298),(1070,336)])
-    for i,(value,label) in enumerate([(str(m['support']),'支持'),(str(m['review']),'複核'),(str(m['uncertain']),'不確定')]):
-        x=470+i*247
-        s+=rect(x,336,212,151)+glyph(['check','review','question'][i],x+86,348,40)+text(x+106,429,value,39,BLUE,300,'middle')+text(x+106,468,label,24,anchor='middle')
-    s+=text(470,538,f'支持精確率 {m["support_precision"]*100:.2f}% · 正式分類保持可追溯',23)
-    s+=rect(64,584,1152,61,'#EAF0F4')+text(88,624,f'{m["intercepted"]} / {m["errors"]} 偵測誤判分流至複核或不確定；其餘 {m["false_support"]} 筆仍獲支持。',25)
-    pages.append(graphic_page(8,'案例提供證據，AI完成分流',s,'MEASURED RESULTS'))
-    # P09: explain the actual linked artifacts, rather than slogans alone.
-    s=text(64,195,'偵測有依據，稽核有證據，處置可回復。',36,'#171C1D',300)
-    for i,(a,b) in enumerate([('正式判定','17 類＋信心'),('檢索證據','Top-5 訓練案例'),('稽核結論','支持／複核／不確定'),('處置回條','讀回＋到期回復')]):
-        x=64+i*294
-        s+=rect(x,292,270,174,'#FFFFFF',8)+glyph(['document','search','check','clock'][i],x+104,305,62)+text(x+135,401,a,27,BLUE,600,'middle')+text(x+135,443,b,20,'#53666E',400,'middle')
-        if i<3:s+=arrow([(x+270,381),(x+294,381)])
-    s+=rect(64,502,1152,56,PALETTE['teal_tint'])+text(640,540,'同一事件 ID，串起分類、證據、判斷與回復紀錄。',26,NAVY,anchor='middle')
-    s+=text(64,604,f'{m["live_classes"]} 類真實張量重跑 · {m["network_cases"]} 種隔離 TCP 情境驗證',26)+text(64,645,'感謝聆聽，敬請指教。',24,BLUE)
-    pages.append(graphic_page(9,'一套可展示、可查核的資安框架',s,'AI SECURITY FRAMEWORK','ending','#F0F2F3'))
+    s=rect(64,164,380,388,GRAY,18)+text(94,206,'檢索效果',16,TEAL,700)
+    s+=text(94,286,f'{m["top5"]*100:.2f}%',62,TEAL,700)+text(94,320,'Top-5 命中率',19,INK,700)
+    s+=rule(94,354,414,354)+text(94,414,f'{m["mrr5"]*100:.2f}%',42,NAVY,700)+text(94,444,'MRR@5 排序品質',18,INK)
+    s+=text(94,516,f'{m["bank_rows"]:,} 案例 ／ {m["queries"]} 查詢 · 重疊 {m["overlap"]}',15,MUTED)
+    s+=rect(500,164,716,62,NAVY,14)+text(858,204,f'{m["queries"]} 筆事件  →  本機 AI 稽核',22,WHITE,700,'middle')
+    s+=arrow([(858,226),(858,252),(612,252),(612,276)])+arrow([(858,252),(858,276)])+arrow([(858,252),(1104,252),(1104,276)])
+    for i,(value,label,art) in enumerate([(str(m['support']),'支持','check'),(str(m['review']),'複核','review'),(str(m['uncertain']),'不確定','question')]):
+        x=500+i*246
+        s+=rect(x,278,224,196,TEAL_TINT if not i else WHITE,16,'none' if not i else LINE)
+        s+=glyph(art,x+90,296,44,TEAL if not i else BLUE)+text(x+112,400,value,52,TEAL if not i else NAVY,700,'middle')+text(x+112,442,label,19,INK,700,'middle')
+    s+=text(500,516,f'支持精確率 {m["support_precision"]*100:.2f}% · 正式分類保持可追溯',18,MUTED)
+    s+=rect(64,580,1152,58,BLUE_TINT,12)+text(92,617,f'{m["intercepted"]} / {m["errors"]}',24,BLUE,700)
+    s+=text(176,617,f'筆偵測誤判分流至複核或不確定；其餘 {m["false_support"]} 筆仍獲支持，處置另經策略檢查。',19,INK)
+    pages.append(graphic_page(8,'案例提供證據，AI 完成分流',s,'RESULT · EVIDENCE'))
+    # P09: night ending with the actual linked artifacts, rather than slogans alone.
+    s=text(64,196,'偵測有依據，稽核有證據，處置可回復。',30,CYAN,700)
+    s+=evidence_chain(318,[('document','正式判定','17 類＋信心'),('search','檢索證據','Top-5 訓練案例'),('check','稽核結論','支持／複核／不確定'),('clock','處置回條','讀回＋到期回復')],True,180,307)
+    s+=rect(64,480,1152,56,NIGHT_PANEL,14)+text(640,516,'同一事件 ID，串起分類、證據、判斷與回復紀錄。',21,WHITE,700,'middle')
+    s+=text(64,592,f'{m["live_classes"]} 類真實張量重跑 · {m["network_cases"]} 種隔離 TCP 情境驗證',19,DARK_MUTED)
+    s+=text(1216,630,'感謝聆聽，敬請指教。',30,WHITE,700,'end')
+    pages.append(graphic_page(9,'一套可展示、可查核的資安框架',s,'AI SECURITY FRAMEWORK','ending',True))
     pages=[pages[i] for i in [0,5,1,2,3,4,6,7,8]]
-    qa=[('創新在哪裡？與一般 IDS 加上 RAG 有何不同？', ['把流量表徵與類別機率組成任務向量，檢索相關證據。', 'AI 保留正式分類，同一事件一路連到策略與回復回條。'], '529 維', '任務導向證據向量', '正式分類保留 · 稽核證據可追溯 · 策略可回復'), ('如何證明前段判斷與後段處置已經串起來？', ['17 類本機推論與 AI 稽核已逐類執行，產物使用同一事件 ID。', '6 種隔離情境的回條綁定同次執行，過期執行 ID 會被拒絕。'], '同一 ID', '事件與執行可追溯', '分類、Top-5、Judge、策略與回條綁定同一事件'), ('評估資料如何切分？案例庫是否洩漏測試答案？', [f'偵測比較使用相同 {m["detection_n"]:,} 筆測試；案例庫只由訓練資料建立。', f'檢索使用 {m["bank_rows"]:,} 筆案例、{m["queries"]} 筆查詢，訓練與查詢沒有重疊。'], '0', '訓練／查詢重疊', '訓練庫只讀 · 查詢不重疊 · AI 不看真實標籤'), ('AI 若支持錯誤判斷，如何避免直接誤封？', [f'{m["errors"]} 筆偵測誤判有 {m["intercepted"]} 筆分流；其餘 {m["false_support"]} 筆仍獲 AI 支持。', '處置另經信心、政策、動作白名單與期限檢查，並可到期撤銷。'], f'{m["intercepted"]} / {m["errors"]}', '偵測誤判分流', f'{m["false_support"]} 筆為支持統計；處置與回復另以隔離情境驗證'), (f'{m["rollback"]}/{m["network_cases"]} 是否代表各種真實攻擊都能完全防住？', [f'{m["rollback"]}/{m["network_cases"]} 指隔離 TCP 情境中的背景服務保留及回復完整性。', f'{m["rules_cases"]} 種情境套用規則、{m["passive_cases"]} 種監測或蒐證；不等同真實攻擊防禦率。'], f'{m["rollback"]} / {m["network_cases"]}', '背景保留與回復', f'{m["rollback"]}/{m["network_cases"]} 驗證服務保留與回復；不等同真實攻擊防禦率'), ('如何部署、保護資料，並接到既有環境？', ['本機 GPU 模型與本機案例庫處理事件，敏感欄位先遮罩。', '17 類已以前處理張量驗證；場域接入依資料介面配置。'], '0', '外部 API 呼叫', '本機 AI 稽核；私有權重、輸入及逐筆回覆不公開')]
-    def qa_node(x,y,w,label,fill='#FFFFFF',size=22):
-        return rect(x,y,w,48,fill,6)+text(x+w/2,y+32,label,size,'#171C1D',400,'middle')
+    qa=[('創新在哪裡？與一般 IDS 加上 RAG 有何不同？', '529 維', '任務導向證據向量', '正式分類保留 · 稽核證據可追溯 · 策略可回復'), ('如何證明前段判斷與後段處置已經串起來？', '同一 ID', '事件與執行可追溯', '分類、Top-5、Judge、策略與回條綁定同一事件'), ('評估資料如何切分？案例庫是否洩漏測試答案？', '0', '訓練／查詢重疊', '訓練庫只讀 · 查詢不重疊 · AI 不看真實標籤'), ('AI 若支持錯誤判斷，如何避免直接誤封？', f'{m["intercepted"]} / {m["errors"]}', '偵測誤判分流', f'{m["false_support"]} 筆為支持統計；處置與回復另以隔離情境驗證'), (f'{m["rollback"]}/{m["network_cases"]} 是否代表各種真實攻擊都能完全防住？', f'{m["rollback"]} / {m["network_cases"]}', '背景保留與回復', f'{m["rollback"]}/{m["network_cases"]} 驗證服務保留與回復；不等同真實攻擊防禦率'), ('如何部署、保護資料，並接到既有環境？', '0', '外部 API 呼叫', '本機 AI 稽核；私有權重、輸入及逐筆回覆不公開')]
+    def qa_node(x,y,w,label,fill=WHITE,size=19):
+        return rect(x,y,w,46,fill,10,LINE if fill==WHITE else 'none')+text(x+w/2,y+30,label,size,INK,700,'middle')
 
     for page_index in range(3):
         content=''
         for slot in range(2):
             qi=page_index*2+slot
-            question,answers,metric,metric_label,proof=qa[qi]
-            y=165+slot*244
-            content+=rect(64,y,1152,220,'#F0F2F3')+rect(974,y,242,220,PALETTE['teal_tint'])
-            content+=rect(64,y,4,220,BLUE,0)
-            content+=text(88,y+40,f'Q{qi+1}',24,BLUE,600)+text(144,y+40,question,26,'#171C1D',600)
+            question,metric,metric_label,proof=qa[qi]
+            y=150+slot*256
+            content+=rect(64,y,1152,236,GRAY,16)+rect(960,y,256,236,TEAL_TINT,16)
+            content+=rect(88,y+22,54,30,NAVY,15)+text(115,y+43,f'Q{qi+1}',16,WHITE,700,'middle')+text(158,y+44,question,22,INK,700)
+            d=y+8
             if qi==0:
-                for j,label in enumerate(['互補判定','529 維檢索','AI 稽核','策略與回復']):
-                    x=88+j*210
-                    content+=capability_icon(j,x+52,y+66,84)+text(x+94,y+177,label,22,anchor='middle')
-                    if j<3:content+=arrow([(x+149,y+108),(x+247,y+108)])
+                for j,(name,label) in enumerate([('model','互補判定'),('retrieval','529 維檢索'),('document','AI 稽核'),('shield','策略與回復')]):
+                    x=88+j*212
+                    content+=circle(x+94,d+108,40,WHITE)+(icon(name,x+70,d+84,48) if name!='document' else glyph('document',x+70,d+84,48))+text(x+94,d+174,label,18,INK,700,'middle')
+                    if j<3:content+=arrow([(x+144,d+108),(x+256,d+108)],BLUE_MUTED)
             elif qi==1:
                 for j,label in enumerate(['正式類別','Top-5 案例','稽核結論','處置回條']):
-                    x=88+j*210
-                    content+=glyph('document',x+69,y+67,51)+text(x+94,y+140,label,21,anchor='middle')
-                    if j<3:content+=arrow([(x+127,y+96),(x+272,y+96)])
-                content+=rect(88,y+151,818,31,'#EAF0F4',6)+text(497,y+174,'同一 event_id  ＋  同次 execution_id',22,BLUE,400,'middle')
+                    x=88+j*212
+                    content+=glyph('document',x+72,d+66,46)+text(x+94,d+136,label,18,INK,700,'middle')
+                    if j<3:content+=arrow([(x+128,d+90),(x+268,d+90)],BLUE_MUTED)
+                content+=rect(88,d+152,800,34,BLUE_TINT,10)+text(488,d+175,'同一 event_id  ＋  同次 execution_id',18,BLUE,700,'middle')
             elif qi==2:
-                content+=image(172,y+72,74,74,'icon-3.png')+text(209,y+161,f'訓練案例 {m["bank_rows"]:,}',23,'#171C1D',400,'middle')+glyph('search',475,y+71,68)+text(506,y+161,'Top-5 檢索',23,BLUE,400,'middle')+glyph('document',780,y+75,62)+text(811,y+161,f'測試查詢 {m["queries"]}',23,'#171C1D',400,'middle')
-                content+=arrow([(280,y+110),(465,y+110)])+arrow([(764,y+110),(553,y+110)])
+                content+=icon('retrieval',176,d+70,70)+text(211,d+168,f'訓練案例 {m["bank_rows"]:,}',19,INK,700,'middle')
+                content+=glyph('search',462,d+72,64)+text(494,d+168,'Top-5 檢索',19,BLUE,700,'middle')
+                content+=glyph('document',760,d+74,60)+text(790,d+168,f'測試查詢 {m["queries"]}',19,INK,700,'middle')
+                content+=arrow([(280,d+106),(450,d+106)],BLUE_MUTED)+arrow([(744,d+106),(540,d+106)],BLUE_MUTED)
             elif qi==3:
-                content+=qa_node(88,y+107,150,f'{m["errors"]} 筆誤判')
-                content+=arrow([(238,y+131),(274,y+131),(274,y+91),(312,y+91)])+arrow([(274,y+131),(274,y+153),(312,y+153)])
-                content+=qa_node(312,y+67,240,f'{m["intercepted"]} 複核／不確定')+qa_node(312,y+129,240,f'{m["false_support"]} 仍支持')
-                content+=arrow([(552,y+91),(612,y+91)])+arrow([(552,y+153),(612,y+153)])
-                content+=qa_node(612,y+67,296,'監測／蒐證','#EAF0F4')+qa_node(612,y+129,296,'若觸發 → 策略檢查','#EAF0F4',21)
+                content+=qa_node(88,d+104,150,f'{m["errors"]} 筆誤判')
+                content+=arrow([(238,d+127),(272,d+127),(272,d+89),(306,d+89)],BLUE_MUTED)+arrow([(272,d+127),(272,d+151),(306,d+151)],BLUE_MUTED)
+                content+=qa_node(306,d+66,240,f'{m["intercepted"]} 複核／不確定')+qa_node(306,d+128,240,f'{m["false_support"]} 仍支持')
+                content+=arrow([(546,d+89),(600,d+89)],BLUE_MUTED)+arrow([(546,d+151),(600,d+151)],BLUE_MUTED)
+                content+=qa_node(600,d+66,288,'監測／蒐證',BLUE_TINT)+qa_node(600,d+128,288,'若觸發 → 策略檢查',BLUE_TINT,18)
             elif qi==4:
-                content+=rect(88,y+70,330,109,'#FFFFFF',6)+text(253,y+96,'隔離 TCP 測試床',22,'#171C1D',400,'middle')+glyph('server',124,y+107,40)+glyph('firewall',233,y+107,40)+glyph('server',342,y+107,40)+arrow([(166,y+128),(233,y+128)])+arrow([(275,y+128),(342,y+128)])+text(253,y+170,f'{m["rules_cases"]} 規則＋{m["passive_cases"]} 監測',20,BLUE,400,'middle')
-                content+=arrow([(418,y+126),(450,y+126),(450,y+96),(480,y+96)])+arrow([(450,y+126),(450,y+152),(480,y+152)])
-                content+=qa_node(480,y+72,428,f'背景服務保留 {m["background"]} / {m["network_cases"]}','#EAF0F4')+qa_node(480,y+128,428,f'回復完整性 {m["rollback"]} / {m["network_cases"]}','#EAF0F4')
+                content+=rect(88,d+64,330,120,WHITE,12,LINE)+text(253,d+92,'隔離 TCP 測試床',18,INK,700,'middle')+glyph('server',124,d+104,40)+glyph('firewall',233,d+104,40)+glyph('server',342,d+104,40)
+                content+=arrow([(166,d+124),(231,d+124)])+arrow([(275,d+124),(340,d+124)])+text(253,d+170,f'{m["rules_cases"]} 規則＋{m["passive_cases"]} 監測',16,BLUE,700,'middle')
+                content+=arrow([(418,d+124),(450,d+124),(450,d+93),(480,d+93)],BLUE_MUTED)+arrow([(450,d+124),(450,d+153),(480,d+153)],BLUE_MUTED)
+                content+=qa_node(480,d+70,408,f'背景服務保留 {m["background"]} / {m["network_cases"]}',BLUE_TINT)+qa_node(480,d+130,408,f'回復完整性 {m["rollback"]} / {m["network_cases"]}',BLUE_TINT)
             else:
-                content+=rect(88,y+74,820,103,'#EAF0F4',7)+text(110,y+99,'本機工作站  ·  GPU 模型與案例庫',22,BLUE)
-                for j,label in enumerate(['欄位遮罩','17 類推論','檢索＋AI','策略回條']):
-                    x=104+j*200
-                    content+=rect(x,y+114,170,48,'#FFFFFF',6)+(glyph('document',x+3,y+118,40) if j==0 else image(x+3,y+118,40,40,f'icon-{j+1}.png'))+text(x+108,y+145,label,20,anchor='middle')
-                    if j<3:content+=arrow([(x+170,y+138),(x+200,y+138)])
-            content+=text(88,y+204,proof,20,BLUE)
-            content+=text(1095,y+97,metric,38,BLUE,400,'middle')+text(1095,y+147,metric_label,21,'#53666E',400,'middle')
+                content+=rect(88,d+62,800,118,WHITE,12,LINE)+text(110,d+90,'本機工作站 · GPU 模型與案例庫',17,BLUE,700)
+                for j,(art,label) in enumerate([('document','欄位遮罩'),('model','17 類推論'),('retrieval','檢索＋AI'),('shield','策略回條')]):
+                    x=104+j*196
+                    content+=rect(x,d+108,170,52,GRAY,10)+(glyph('document',x+8,d+114,40) if art=='document' else icon(art,x+8,d+114,40))+text(x+106,d+141,label,17,INK,700,'middle')
+                    if j<3:content+=chevron(x+183,d+134)
+            content+=text(88,y+222,proof,15,TEAL,700)
+            content+=text(1088,y+124,metric,46,TEAL,700,'middle')+text(1088,y+162,metric_label,16,MUTED,400,'middle')
         pages.append(graphic_page(10+page_index,['答詢圖解｜創新與整合','答詢圖解｜評估與誤判','答詢圖解｜效果與部署'][page_index],content,'JUDGES · Q&A'))
-    for i,p in enumerate(pages[:limit]):(out/f'{i+1:02d}_slide.svg').write_text(p,encoding='utf-8')
+    for i,p in enumerate(pages[:limit]):(out/f'{i+1:02d}_slide.svg').write_text(resolve_colors(p),encoding='utf-8')
     print(f'Authored {min(limit,len(pages))} graphical slides; all static.')
 
 
 if __name__ == '__main__':
-    import sys
     architecture();build_pages(int(sys.argv[1]) if len(sys.argv)>1 else 12)

@@ -15,7 +15,7 @@
 
 presentation-design-spec.md與presentation-spec-lock.md描述PPT Master製作專案。交付的slides/包含原生向量圖示，直接開啟SVG即可查看，不依賴外部圖片路徑。
 
-三種成果共用design-system/palette.json、typography.json及icons.json。中文與中文標點使用DFKai-SB（標楷體），英文、數字及其他支援符號使用Times New Roman；SVG以tspan分段呈現。PPT匯出後以scripts/presentation/finalize_delivery.py同步清理正文、備忘稿、母片、版型與主題內的所有字型宣告及主題色。內嵌影片頁為第2頁，封面後先展示，影片已內嵌。
+三種成果共用design-system/palette.json、typography.json及icons.json。中文與中文標點使用Microsoft JhengHei（微軟正黑體），英文、數字及其他支援符號使用Segoe UI；SVG以tspan分段呈現。PPT匯出後以scripts/presentation/finalize_delivery.py同步清理正文、備忘稿、母片、版型與主題內的所有字型宣告及主題色。內嵌影片頁為第2頁，封面後先展示，影片已內嵌。
 
 目前製作順序：PPT Master匯出靜態原生頁，以finalize_delivery.py設定字型，再用embed_movie_package.py保留已核對的第2頁媒體時序，封裝正式MP4與海報影格；最後進行原生字型、座標與檔案關聯檢查。embed_opening_film.ps1保留為PowerPoint直接插入媒體的另一種方式，非本輪正式封裝的必要步驟。第2頁SVG是版面來源，實際MP4由包裝步驟加入，不以外部連結播放。影片與PPT均有結束畫面。
 

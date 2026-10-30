@@ -16,6 +16,8 @@ from network_contract import digest
 from package_finals import ASSETS, asset_bytes
 from media_results import load_metrics
 
+TYPOGRAPHY = json.loads((ROOT / 'design-system/typography.json').read_text(encoding='utf-8'))
+
 
 class FinalsDeliveryTests(unittest.TestCase):
     def test_speaker_notes_match_embedded_notes(self):
@@ -38,7 +40,7 @@ class FinalsDeliveryTests(unittest.TestCase):
 
     def test_user_palette_is_present_in_native_poster_and_slides(self):
         colors = json.loads((ROOT / 'design-system/palette.json').read_text(encoding='utf-8'))
-        expected = {'navy': '#16324F', 'blue': '#245EA8', 'teal': '#087F8C', 'gray': '#F4F7FA', 'gold': '#E3A338', 'ink': '#243447'}
+        expected = {'navy': '#0B1B2E', 'blue': '#1D4ED8', 'teal': '#0F766E', 'gold': '#F59E0B', 'ink': '#15233A'}
         for key, value in expected.items():
             self.assertEqual(colors[key], value)
         for name in ('deliverables/決賽海報_AI資安框架_A2.pptx', 'deliverables/決賽簡報_AI資安框架.pptx'):
@@ -86,8 +88,8 @@ class FinalsDeliveryTests(unittest.TestCase):
                 self.assertIn(value, text)
             self.assertGreater(len(slide.findall('.//a:r', ns)), 50)
             for run in slide.findall('.//a:rPr', ns):
-                self.assertEqual(run.find('a:latin', ns).get('typeface'), 'Times New Roman')
-                self.assertEqual(run.find('a:ea', ns).get('typeface'), 'DFKai-SB')
+                self.assertEqual(run.find('a:latin', ns).get('typeface'), TYPOGRAPHY['latin'])
+                self.assertEqual(run.find('a:ea', ns).get('typeface'), TYPOGRAPHY['cjk'])
             self.assertIsNone(slide.find('p:transition', ns))
             core = ET.fromstring(archive.read('docProps/core.xml'))
             for item in core:
@@ -95,17 +97,15 @@ class FinalsDeliveryTests(unittest.TestCase):
                     self.assertFalse(item.text)
         self.assertTrue((ROOT / 'deliverables/決賽海報_AI資安框架_A2.pdf').read_bytes().startswith(b'%PDF'))
 
-    def test_poster_centered_hierarchy_and_visible_advantages(self):
+    def test_poster_masthead_hierarchy_and_visible_advantages(self):
         ns = {'p': 'http://schemas.openxmlformats.org/presentationml/2006/main',
               'a': 'http://schemas.openxmlformats.org/drawingml/2006/main'}
         with zipfile.ZipFile(ROOT / 'deliverables/決賽海報_AI資安框架_A2.pptx') as archive:
             slide = ET.fromstring(archive.read('ppt/slides/slide1.xml'))
             texts = slide.findall('.//p:sp', ns)
-            title = next(s for s in texts if s.find('p:nvSpPr/p:cNvPr', ns).get('name') == 'PosterTitle_Centered_210mm')
-            self.assertTrue(all(int(r.get('sz')) >= 4400 for r in title.findall('.//a:rPr', ns)))
-            paragraphs = [p for p in slide.findall('.//a:p', ns) if p.find('a:r', ns) is not None]
-            centered = [p for p in paragraphs if p.find('a:pPr', ns) is not None and p.find('a:pPr', ns).get('algn') == 'ctr']
-            self.assertGreater(len(centered) / len(paragraphs), .85)
+            title = next(s for s in texts if s.find('p:nvSpPr/p:cNvPr', ns).get('name') == 'PosterTitle_Masthead')
+            self.assertTrue(all(int(r.get('sz')) >= 4400 and r.get('b') == '1' for r in title.findall('.//a:rPr', ns)))
+            self.assertEqual(int(title.find('p:spPr/a:xfrm/a:off', ns).get('y')), 20*36000)
             content = ''.join(t.text or '' for t in slide.findall('.//a:t', ns))
             for phrase in ('互補判定', '任務證據', '受控可追溯', '保留正式分類', '本機AI', '到期回復'):
                 self.assertIn(phrase, content)

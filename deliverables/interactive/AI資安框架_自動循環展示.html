@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <meta name="theme-color" content="#f4f7fa" />
+    <meta name="theme-color" content="#f3f6fa" />
     <title>
       融合新型內容相依時序方向模型入侵偵測與任務導向檢索增強稽核之 AI 資安框架
     </title>
@@ -13,16 +13,16 @@
     />
     <style>
       :root {
-        --ink: #16324f;
-        --muted: #526477;
-        --line: #edf3fa;
-        --cyan: #087f8c;
-        --teal: #087f8c;
-        --coral: #245ea8;
-        --gold: #e3a338;
+        --ink: #0b1b2e;
+        --muted: #52637a;
+        --line: #eaf1fe;
+        --cyan: #0f766e;
+        --teal: #0f766e;
+        --coral: #1d4ed8;
+        --gold: #f59e0b;
         --paper: #ffffff;
-        --bg: #f4f7fa;
-        font-family: "Times New Roman", "Exhibit Kai", serif;
+        --bg: #f3f6fa;
+        font-family: "Segoe UI", "Exhibit Sans", sans-serif;
         color: var(--ink);
         background: var(--bg);
         font-synthesis: none;
@@ -52,14 +52,14 @@
           box-shadow 0.15s;
       }
       button:hover {
-        background: #f4f7fa;
-        border-color: #8198ae;
+        background: #f3f6fa;
+        border-color: #9aaac0;
       }
       button:focus-visible,
       select:focus-visible,
       input:focus-visible,
       [tabindex]:focus-visible {
-        outline: 3px solid #087f8c;
+        outline: 3px solid #0f766e;
         outline-offset: 3px;
       }
       button:disabled {
@@ -67,7 +67,7 @@
         cursor: default;
       }
       a {
-        color: #087f8c;
+        color: #0f766e;
       }
       main {
         max-width: 1920px;
@@ -84,16 +84,16 @@
       .eyebrow {
         font-size: 10px;
         letter-spacing: 2px;
-        color: #526477;
+        color: #52637a;
         margin: 0 0 7px;
         font-weight: 700;
       }
       h1 {
         font-size: clamp(20px, 1.95vw, 35px);
         line-height: 1.38;
-        letter-spacing: 0.03em;
+        letter-spacing: 0;
         margin: 0;
-        font-weight: 750;
+        font-weight: 700;
       }
       h1 span {
         font-weight: 650;
@@ -111,7 +111,7 @@
       }
       .mode {
         font-size: 11px;
-        border: 1px solid #8198ae;
+        border: 1px solid #9aaac0;
         border-radius: 20px;
         padding: 8px 13px;
         white-space: nowrap;
@@ -127,7 +127,7 @@
       .text-button {
         border: 0;
         background: transparent;
-        color: #526477;
+        color: #52637a;
         padding: 6px 8px;
       }
       .controls {
@@ -171,7 +171,7 @@
         border-color: var(--scenario-color);
         box-shadow:
           inset 0 0 0 1px var(--scenario-color),
-          0 3px 12px #16324f10;
+          0 3px 12px #0b1b2e10;
         background: color-mix(in srgb, var(--scenario-color) 7%, white);
       }
       .playback {
@@ -180,9 +180,9 @@
         gap: 6px;
       }
       .playback .play {
-        background: #16324f;
+        background: #0b1b2e;
         color: white;
-        border-color: #16324f;
+        border-color: #0b1b2e;
         min-width: 105px;
       }
       .playback label {
@@ -202,9 +202,9 @@
       }
       .exhibit {
         background: #ffffff;
-        border: 1px solid #edf3fa;
+        border: 1px solid #eaf1fe;
         border-radius: 16px;
-        box-shadow: 0 10px 28px #16324f10;
+        box-shadow: 0 10px 28px #0b1b2e10;
         overflow: hidden;
       }
       .stage-heading {
@@ -212,9 +212,9 @@
         align-items: center;
         gap: 16px;
         padding: 13px 19px;
-        border-bottom: 1px solid #edf3fa;
+        border-bottom: 1px solid #eaf1fe;
         font-size: 12px;
-        background: #f4f7fa;
+        background: #f3f6fa;
       }
       .stage-heading > span:first-child {
         font-weight: 750;
@@ -222,14 +222,14 @@
       }
       #sceneCaption {
         flex: 1;
-        color: #526477;
+        color: #52637a;
       }
       .light-legend {
         display: flex;
         align-items: center;
         gap: 6px;
         font-size: 10px;
-        color: #526477;
+        color: #52637a;
       }
       .light-legend i,
       .light-legend b {
@@ -237,10 +237,10 @@
         height: 7px;
         border-radius: 50%;
         background: var(--cyan);
-        box-shadow: 0 0 8px #087f8c80;
+        box-shadow: 0 0 8px #0f766e80;
       }
       .light-legend b {
-        background: #8198ae;
+        background: #9aaac0;
         box-shadow: none;
         margin-left: 8px;
       }
@@ -256,28 +256,28 @@
       }
       #board .tiny {
         font-size: 12px;
-        fill: #526477;
+        fill: #52637a;
       }
       #board .small {
         font-size: 14px;
-        fill: #526477;
+        fill: #52637a;
       }
       #board .heading {
         font-size: 18px;
         font-weight: 750;
       }
       #board .mono {
-        font-family: "Times New Roman", "Exhibit Kai", serif;
+        font-family: "Segoe UI", "Exhibit Sans", sans-serif;
         font-size: 13px;
       }
       #board .node-box {
         fill: url(#nodefill);
-        stroke: #edf3fa;
+        stroke: #eaf1fe;
         stroke-width: 1.5;
         filter: url(#shadow);
       }
       #board .node.live .node-box {
-        stroke: #087f8c;
+        stroke: #0f766e;
         stroke-width: 2;
         filter: url(#nodeGlow);
       }
@@ -285,22 +285,22 @@
         opacity: 0.5;
       }
       #board .node.complete .node-box {
-        stroke: #8198ae;
+        stroke: #9aaac0;
       }
       #board .clickable {
         cursor: pointer;
       }
       #board .clickable:hover .node-box {
-        stroke: #087f8c;
+        stroke: #0f766e;
       }
       #board .wire-track {
-        stroke: #edf3fa;
+        stroke: #eaf1fe;
         stroke-width: 9;
         fill: none;
         stroke-linecap: round;
       }
       #board .wire {
-        stroke: #8198ae;
+        stroke: #9aaac0;
         stroke-width: 2;
         stroke-dasharray: 1 10;
         stroke-linecap: round;
@@ -312,17 +312,17 @@
         filter: url(#light);
       }
       #board .wire.done {
-        stroke: #087f8c;
+        stroke: #0f766e;
         stroke-width: 2.5;
       }
       #board .pulse {
-        fill: #f4f7fa;
+        fill: #f3f6fa;
         filter: url(#light);
-        stroke: #087f8c;
+        stroke: #0f766e;
         stroke-width: 2;
       }
       #board .slot {
-        fill: #edf3fa;
+        fill: #eaf1fe;
         stroke: white;
         stroke-width: 1;
       }
@@ -332,27 +332,27 @@
         stroke-width: 0.8;
       }
       #board .matrix-cell:hover {
-        stroke: #e3a338;
+        stroke: #f59e0b;
         stroke-width: 2;
       }
       #board .rank-active {
-        fill: #f4f7fa;
-        stroke: #087f8c;
+        fill: #f3f6fa;
+        stroke: #0f766e;
       }
       #board .net-text {
         fill: white;
       }
       #board .net-muted {
-        fill: #8198ae;
+        fill: #9aaac0;
         font-size: 11px;
       }
       #board .bank-row.active {
-        fill: #e9f5f3;
-        stroke: #087f8c;
+        fill: #e2f3f0;
+        stroke: #0f766e;
       }
       #board .bank-row {
-        fill: #f4f7fa;
-        stroke: #edf3fa;
+        fill: #f3f6fa;
+        stroke: #eaf1fe;
       }
       #board .dim {
         opacity: 0.3;
@@ -362,10 +362,10 @@
         justify-content: space-between;
         align-items: center;
         padding: 9px 18px;
-        border-top: 1px solid #edf3fa;
+        border-top: 1px solid #eaf1fe;
         font-size: 12px;
-        color: #526477;
-        background: #f4f7fa;
+        color: #52637a;
+        background: #f3f6fa;
       }
       .mobile-hint {
         display: none;
@@ -384,11 +384,11 @@
       }
       .timeline-line input {
         flex: 1;
-        accent-color: #087f8c;
+        accent-color: #0f766e;
         cursor: pointer;
       }
       .timeline-line output {
-        font-family: "Times New Roman", "Exhibit Kai", serif;
+        font-family: "Segoe UI", "Exhibit Sans", sans-serif;
         font-size: 12px;
         white-space: nowrap;
       }
@@ -402,21 +402,21 @@
         background: transparent;
         border: 0;
         font-size: 11px;
-        color: #526477;
+        color: #52637a;
         border-radius: 5px;
         padding: 5px 7px;
       }
       .chapters button.active {
-        background: #e9f5f3;
-        color: #087f8c;
+        background: #e2f3f0;
+        color: #0f766e;
         font-weight: 700;
       }
       .chapters button.done {
-        color: #087f8c;
+        color: #0f766e;
       }
       .timing-note {
         font-size: 10px;
-        color: #526477;
+        color: #52637a;
         text-align: center;
         margin: 10px 0 25px;
       }
@@ -454,8 +454,8 @@
         white-space: nowrap;
       }
       .tabs button.active {
-        color: #087f8c;
-        border-bottom: 3px solid #087f8c;
+        color: #0f766e;
+        border-bottom: 3px solid #0f766e;
         font-weight: 700;
       }
       #detail {
@@ -487,20 +487,20 @@
       .tag {
         font-size: 10px;
         border-radius: 5px;
-        background: #f4f7fa;
-        color: #526477;
+        background: #f3f6fa;
+        color: #52637a;
         padding: 3px 7px;
         white-space: nowrap;
       }
       .note {
-        color: #526477;
+        color: #52637a;
         font-size: 12px;
         line-height: 1.8;
       }
       .callout {
         padding: 13px 16px;
-        border-left: 3px solid #087f8c;
-        background: #f4f7fa;
+        border-left: 3px solid #0f766e;
+        background: #f3f6fa;
         border-radius: 0 7px 7px 0;
       }
       .flow-options {
@@ -514,26 +514,26 @@
         padding: 6px 10px;
       }
       .flow-options button.active {
-        background: #e9f5f3;
-        border-color: #087f8c;
+        background: #e2f3f0;
+        border-color: #0f766e;
       }
       pre {
         white-space: pre-wrap;
         overflow-wrap: anywhere;
-        background: #16324f;
-        color: #edf3fa;
+        background: #0b1b2e;
+        color: #eaf1fe;
         padding: 15px;
         border-radius: 8px;
         font:
-          12px/1.8 "Times New Roman",
-          "Exhibit Kai",
+          12px/1.8 "Segoe UI",
+          "Exhibit Sans",
           serif;
         margin: 8px 0;
         max-height: 340px;
         overflow: auto;
       }
       code {
-        font-family: "Times New Roman", "Exhibit Kai", serif;
+        font-family: "Segoe UI", "Exhibit Sans", sans-serif;
       }
       table {
         border-collapse: collapse;
@@ -542,24 +542,24 @@
       }
       th {
         text-align: left;
-        color: #526477;
+        color: #52637a;
         font-size: 11px;
         font-weight: 600;
-        background: #f4f7fa;
+        background: #f3f6fa;
       }
       td,
       th {
         padding: 8px;
-        border-bottom: 1px solid #edf3fa;
+        border-bottom: 1px solid #eaf1fe;
       }
       tr.selected {
-        background: #e9f5f3;
+        background: #e2f3f0;
       }
       tr[data-packet] {
         cursor: pointer;
       }
       tr[data-packet]:hover {
-        background: #f4f7fa;
+        background: #f3f6fa;
       }
       .hex-grid {
         display: flex;
@@ -568,16 +568,16 @@
       }
       .hex-byte {
         font:
-          12px "Times New Roman",
-          "Exhibit Kai",
+          12px "Segoe UI",
+          "Exhibit Sans",
           serif;
-        background: #f4f7fa;
+        background: #f3f6fa;
         border-radius: 4px;
         padding: 6px;
       }
       .hex-byte.hit {
-        background: #e9f5f3;
-        color: #16324f;
+        background: #e2f3f0;
+        color: #0b1b2e;
       }
       .swatch {
         height: 42px;
@@ -586,7 +586,7 @@
         border-radius: 7px;
         vertical-align: middle;
         margin: 5px 10px 5px 0;
-        border: 1px solid #edf3fa;
+        border: 1px solid #eaf1fe;
       }
       .stat-row {
         display: flex;
@@ -599,7 +599,7 @@
         font-variant-numeric: tabular-nums;
       }
       .stat-row small {
-        color: #526477;
+        color: #52637a;
         font-size: 11px;
       }
       .comparison {
@@ -609,7 +609,7 @@
       }
       .comparison > div {
         padding: 13px;
-        background: #f4f7fa;
+        background: #f3f6fa;
         border-radius: 8px;
       }
       .check {
@@ -618,10 +618,10 @@
         margin: 8px 0;
       }
       .check.pass {
-        color: #087f8c;
+        color: #0f766e;
       }
       .check.fail {
-        color: #16324f;
+        color: #0b1b2e;
       }
       .vector-strip {
         display: flex;
@@ -639,7 +639,7 @@
         border: 0;
         padding: 0;
         text-align: left;
-        color: #087f8c;
+        color: #0f766e;
       }
       .nowrap {
         white-space: nowrap;
@@ -649,7 +649,7 @@
         align-items: center;
         gap: 12px;
         padding: 20px 0 5px;
-        color: #526477;
+        color: #52637a;
         font-size: 10px;
       }
       footer span {
@@ -661,16 +661,16 @@
       dialog {
         max-width: 800px;
         width: calc(100% - 36px);
-        border: 1px solid #8198ae;
+        border: 1px solid #9aaac0;
         border-radius: 16px;
-        box-shadow: 0 25px 90px #16324f3a;
+        box-shadow: 0 25px 90px #0b1b2e3a;
         padding: 28px;
         color: var(--ink);
         line-height: 1.8;
         font-size: 14px;
       }
       dialog::backdrop {
-        background: #16324f60;
+        background: #0b1b2e60;
         backdrop-filter: blur(3px);
       }
       dialog h2 {
@@ -702,7 +702,7 @@
         margin: 7px 0;
       }
       .disabled-text {
-        color: #526477;
+        color: #52637a;
       }
       @media (min-width: 1700px) {
         main {
@@ -841,7 +841,7 @@
         }
         .mobile-hint {
           display: inline;
-          color: #526477;
+          color: #52637a;
         }
         .stage-bottom button {
           font-size: 11px;
@@ -928,14 +928,14 @@
       .start-hint {
         font-size: 11px;
         line-height: 1.8;
-        color: #526477;
+        color: #52637a;
         margin: 0;
         white-space: nowrap;
       }
       .progress-track {
         flex: 1;
         height: 6px;
-        background: #edf3fa;
+        background: #eaf1fe;
         border-radius: 6px;
         overflow: hidden;
       }
@@ -943,23 +943,23 @@
         display: block;
         width: 0;
         height: 100%;
-        background: #087f8c;
+        background: #0f766e;
         border-radius: 6px;
       }
       .chapters span {
         font-size: 11px;
-        color: #526477;
+        color: #52637a;
         padding: 5px 7px;
         white-space: nowrap;
       }
       .chapters span.active {
-        background: #e9f5f3;
-        color: #087f8c;
+        background: #e2f3f0;
+        color: #0f766e;
         border-radius: 5px;
         font-weight: 700;
       }
       .chapters span.done {
-        color: #087f8c;
+        color: #0f766e;
       }
       @media (max-width: 700px) {
         .start-hint {
@@ -982,14 +982,14 @@
       }
 
       #board .node.live .node-box {
-        fill: #f4f7fa;
-        stroke: #087f8c;
+        fill: #f3f6fa;
+        stroke: #0f766e;
         stroke-width: 4;
         filter: url(#nodeGlow);
       }
       #board .node-halo {
         fill: none;
-        stroke: #087f8c;
+        stroke: #0f766e;
         stroke-width: 4;
         opacity: 0;
         pointer-events: none;
@@ -1006,28 +1006,28 @@
         display: block;
       }
       #board .node.live .heading {
-        fill: #087f8c;
+        fill: #0f766e;
       }
       #board #netNode.live .network-box {
         fill: url(#netfill);
       }
       #board .wire.lit {
-        stroke: #087f8c;
+        stroke: #0f766e;
         stroke-width: 4.5;
         stroke-dasharray: 3 9;
       }
       #board .pulse {
-        stroke: #087f8c;
+        stroke: #0f766e;
         stroke-width: 2.5;
       }
       #board .pulse-halo {
-        fill: #087f8c;
+        fill: #0f766e;
         opacity: 0.32;
         filter: url(#light);
       }
       #board .pulse-beam {
         fill: none;
-        stroke: #087f8c;
+        stroke: #0f766e;
         stroke-width: 8;
         stroke-linecap: round;
         opacity: 0.65;
@@ -1036,11 +1036,11 @@
       .processing-label {
         padding: 7px 11px;
         border-radius: 8px;
-        background: #edf3fa;
-        color: #087f8c;
+        background: #eaf1fe;
+        color: #0f766e;
         font-weight: 750;
         font-size: 12px;
-        border: 1px solid #8198ae;
+        border: 1px solid #9aaac0;
         white-space: nowrap;
       }
       @media (max-width: 1150px) {
@@ -1065,8 +1065,8 @@
         opacity: 0.85;
       }
       @font-face {
-        font-family: "Exhibit Kai";
-        src: local("DFKai-SB"), local("標楷體");
+        font-family: "Exhibit Sans";
+        src: local("Microsoft JhengHei"), local("微軟正黑體"), local("Noto Sans TC"), local("PingFang TC");
         unicode-range:
           U+2E80-2FFF, U+3000-303F, U+3100-312F, U+31A0-31BF, U+3400-4DBF,
           U+4E00-9FFF, U+F900-FAFF, U+FF01-FF0F, U+FF1A-FF20, U+FF3B-FF40,
@@ -1074,16 +1074,16 @@
         font-display: swap;
       }
       :root {
-        --ink: #243447;
-        --muted: #526477;
-        --line: #d7e1ea;
-        --cyan: #245ea8;
-        --teal: #087f8c;
-        --coral: #245ea8;
-        --gold: #e3a338;
+        --ink: #15233a;
+        --muted: #52637a;
+        --line: #dce3ec;
+        --cyan: #1d4ed8;
+        --teal: #0f766e;
+        --coral: #1d4ed8;
+        --gold: #f59e0b;
         --paper: #ffffff;
-        --bg: #f4f7fa;
-        font-family: "Times New Roman", "Exhibit Kai", serif;
+        --bg: #f3f6fa;
+        font-family: "Segoe UI", "Exhibit Sans", sans-serif;
       }
       body {
         background: #ffffff;
@@ -1099,7 +1099,7 @@
       select:focus-visible,
       input:focus-visible,
       [tabindex]:focus-visible {
-        outline-color: #245ea8;
+        outline-color: #1d4ed8;
       }
       .scenario strong {
         font-size: 16px;
@@ -1122,12 +1122,12 @@
       code,
       .hex-byte,
       .timeline-line output {
-        font-family: "Times New Roman", "Exhibit Kai", serif;
+        font-family: "Segoe UI", "Exhibit Sans", sans-serif;
       }
       pre {
         font-size: 14px;
-        background: #f4f7fa;
-        color: #243447;
+        background: #f3f6fa;
+        color: #15233a;
         border: 1px solid var(--line);
       }
       .playback-tools {
@@ -1143,18 +1143,18 @@
         gap: 6px;
       }
       .primary-control {
-        background: #245ea8;
+        background: #1d4ed8;
         color: #ffffff;
-        border-color: #245ea8;
+        border-color: #1d4ed8;
       }
       .primary-control:hover {
-        background: #16324f;
+        background: #0b1b2e;
         color: #ffffff;
       }
       #seek {
         flex: 1;
         min-width: 180px;
-        accent-color: #087f8c;
+        accent-color: #0f766e;
         min-height: 44px;
       }
       .chapters {
@@ -1170,8 +1170,8 @@
         font-size: 15px;
       }
       .tabs button[aria-pressed="true"] {
-        color: #245ea8;
-        border-bottom: 3px solid #087f8c;
+        color: #1d4ed8;
+        border-bottom: 3px solid #0f766e;
       }
       .exhibit {
         box-shadow: none;
@@ -1188,11 +1188,11 @@
       }
       .start-hint {
         font-size: 14px;
-        color: #526477;
+        color: #52637a;
       }
       .mode {
-        background: #e9f5f3;
-        color: #16324f;
+        background: #e2f3f0;
+        color: #0b1b2e;
         white-space: normal;
       }
       @media (max-width: 700px) {
@@ -1260,19 +1260,19 @@
       }
 
       .processing-badge rect {
-        fill: #16324f;
+        fill: #0b1b2e;
       }
 
       /* Shared identity: design-system/palette.json; data RGB cells are exempt. */
       :root {
-        --navy: #16324f;
-        --blue: #245ea8;
-        --teal: #087f8c;
-        --gold: #e3a338;
-        --gray: #f4f7fa;
-        --blue-tint: #edf3fa;
-        --teal-tint: #e9f5f3;
-        --gold-tint: #fff5e5;
+        --navy: #0b1b2e;
+        --blue: #1d4ed8;
+        --teal: #0f766e;
+        --gold: #f59e0b;
+        --gray: #f3f6fa;
+        --blue-tint: #eaf1fe;
+        --teal-tint: #e2f3f0;
+        --gold-tint: #fef3d7;
       }
       h1,
       h2,
@@ -1840,6 +1840,48 @@
         max-height: calc(100dvh - 32px);
         overflow: auto;
       }
+      /* Evidence-chain identity: a night masthead matches the deck cover and film. */
+      .masthead {
+        background: #0b1b2e;
+        color: #ffffff;
+        border-radius: 18px;
+        padding: 22px 26px;
+      }
+      .masthead .eyebrow {
+        color: #5eead4;
+      }
+      .masthead h1,
+      .masthead h1 span {
+        color: #ffffff;
+      }
+      .masthead .eyebrow::before {
+        content: "";
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 2px;
+        background: #f59e0b;
+        margin-right: 8px;
+      }
+      .masthead .mode {
+        border-color: #2a4260;
+        background: #15293f;
+        color: #ffffff;
+      }
+      .masthead .mode i {
+        background: #5eead4;
+      }
+      .masthead .text-button {
+        color: #a8b8cc;
+      }
+      .masthead .text-button:hover {
+        color: #ffffff;
+        background: #15293f;
+      }
+      button,
+      .scenario {
+        border-radius: 12px;
+      }
     </style>
   </head>
   <body data-playback="auto">
@@ -1874,7 +1916,7 @@
             >
               <g
                 fill="#FFFFFF"
-                stroke="#245EA8"
+                stroke="#1d4ed8"
                 stroke-width="3"
                 stroke-linecap="round"
                 stroke-linejoin="round"
@@ -1903,7 +1945,7 @@
             >
               <g
                 fill="#FFFFFF"
-                stroke="#245EA8"
+                stroke="#1d4ed8"
                 stroke-width="3"
                 stroke-linecap="round"
                 stroke-linejoin="round"
@@ -1915,7 +1957,7 @@
                   width="18"
                   height="18"
                   rx="3"
-                  fill="#F4F7FA"
+                  fill="#f3f6fa"
                 />
                 <path
                   d="M21 4V12M32 4V12M43 4V12M21 52V60M32 52V60M43 52V60M4 21H12M4 32H12M4 43H12M52 21H60M52 32H60M52 43H60"
@@ -1936,7 +1978,7 @@
             >
               <g
                 fill="#FFFFFF"
-                stroke="#245EA8"
+                stroke="#1d4ed8"
                 stroke-width="3"
                 stroke-linecap="round"
                 stroke-linejoin="round"
@@ -1944,7 +1986,7 @@
                 <path d="M7 13V44C7 53 45 53 45 44V13" />
                 <ellipse cx="26" cy="13" rx="19" ry="7" />
                 <path d="M7 27C7 36 45 36 45 27" fill="none" />
-                <circle cx="43" cy="40" r="11" fill="#F4F7FA" />
+                <circle cx="43" cy="40" r="11" fill="#f3f6fa" />
                 <path d="M51 48L60 58" stroke-width="4" />
               </g></svg
             >證據與稽核
@@ -1961,7 +2003,7 @@
             >
               <g
                 fill="#FFFFFF"
-                stroke="#245EA8"
+                stroke="#1d4ed8"
                 stroke-width="3"
                 stroke-linecap="round"
                 stroke-linejoin="round"
@@ -2138,7 +2180,7 @@
             title: "正常連線",
             short: "BENIGN",
             icon: "↔",
-            color: "#087f8c",
+            color: "#0f766e",
             desc: "請求與回應交錯，讓正常流量一路通行。",
             label: "BENIGN",
             confidence: 0.96,
@@ -2156,7 +2198,7 @@
             title: "DDoS 洪流",
             short: "HTTP FLOOD",
             icon: "≋",
-            color: "#245ea8",
+            color: "#1d4ed8",
             desc: "密集且重複的 HTTP 請求，超額連線在路由器被擋下。",
             label: "DDoS-LOIC-HTTP",
             confidence: 0.97,
@@ -2174,7 +2216,7 @@
             title: "SSH 暴力破解",
             short: "AUTH ATTEMPT",
             icon: "⌁",
-            color: "#16324f",
+            color: "#0b1b2e",
             desc: "重複的驗證嘗試，限縮同一來源的服務連線。",
             label: "SSH-Bruteforce",
             confidence: 0.94,
@@ -2192,7 +2234,7 @@
             title: "可疑 Web 流量",
             short: "HUMAN REVIEW",
             icon: "?",
-            color: "#16324f",
+            color: "#0b1b2e",
             desc: "相近案例出現分歧；保留證據，交由人員複核。",
             label: "Web-XSS",
             confidence: 0.68,
@@ -2835,7 +2877,7 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
                 (w / count - 0.8) +
                 '" height="' +
                 h +
-                '" rx="1" fill="#087f8c" opacity="' +
+                '" rx="1" fill="#0f766e" opacity="' +
                 (0.35 + Math.min(0.65, Math.abs(v) * 12)) +
                 '"/>',
             )
@@ -2869,12 +2911,12 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
             kind +
             'Scan" x="260" y="' +
             y +
-            '" width="208" height="15" rx="3" fill="none" stroke="#087f8c" stroke-width="2" filter="url(#light)"/>'
+            '" width="208" height="15" rx="3" fill="none" stroke="#0f766e" stroke-width="2" filter="url(#light)"/>'
           );
         }
         function buildBoard() {
           let svg =
-            '<defs><linearGradient id="nodefill" x2="0" y2="1"><stop stop-color="#ffffff"/><stop offset="1" stop-color="#f4f7fa"/></linearGradient><linearGradient id="netfill" x2="0" y2="1"><stop stop-color="#ffffff"/><stop offset="1" stop-color="#ffffff"/></linearGradient><filter id="shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#245ea8" flood-opacity=".08"/></filter><filter id="light" x="-200%" y="-200%" width="500%" height="500%"><feGaussianBlur stdDeviation="5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter><filter id="nodeGlow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="#245ea8" flood-opacity=".65"/></filter></defs>';
+            '<defs><linearGradient id="nodefill" x2="0" y2="1"><stop stop-color="#ffffff"/><stop offset="1" stop-color="#f3f6fa"/></linearGradient><linearGradient id="netfill" x2="0" y2="1"><stop stop-color="#ffffff"/><stop offset="1" stop-color="#ffffff"/></linearGradient><filter id="shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1d4ed8" flood-opacity=".08"/></filter><filter id="light" x="-200%" y="-200%" width="500%" height="500%"><feGaussianBlur stdDeviation="5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter><filter id="nodeGlow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="#1d4ed8" flood-opacity=".65"/></filter></defs>';
           svg +=
             T(25, 32, "01 / 封包與模型輸入", "small") +
             T(680, 32, "02 / 向量檢索", "small") +
@@ -2908,7 +2950,7 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
                   '<g id="ticket' +
                   i +
                   '">' +
-                  R(31, 242 + i * 26, 151, 22, "", 'fill="#f4f7fa" rx="4"') +
+                  R(31, 242 + i * 26, 151, 22, "", 'fill="#f3f6fa" rx="4"') +
                   T(
                     38,
                     258 + i * 26,
@@ -2989,7 +3031,7 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
             150,
             92,
             T(750, 308, "向量組合", "small", 'text-anchor="middle"') +
-              '<g id="vectorContent"><rect x="688" y="320" width="95" height="24" rx="4" fill="#087f8c"/><rect x="784" y="320" width="28" height="24" rx="4" fill="#245ea8"/>' +
+              '<g id="vectorContent"><rect x="688" y="320" width="95" height="24" rx="4" fill="#0f766e"/><rect x="784" y="320" width="28" height="24" rx="4" fill="#1d4ed8"/>' +
               T(
                 735,
                 338,
@@ -3101,7 +3143,7 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
                 i +
                 '"><rect x="1095" y="' +
                 (280 + i * 38) +
-                '" width="135" height="33" rx="6" fill="#f4f7fa" stroke="#edf3fa"/>' +
+                '" width="135" height="33" rx="6" fill="#f3f6fa" stroke="#eaf1fe"/>' +
                 T(1103, 300 + i * 38, "#" + (i + 1), "mono") +
                 T(
                   1130,
@@ -3123,27 +3165,27 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
             140,
             T(1306, 92, "AI 稽核", "heading") +
               T(1532, 91, "Llama 3 8B", "tiny", 'text-anchor="end"') +
-              '<rect x="1304" y="106" width="232" height="79" rx="6" fill="#e9f5f3"/>' +
+              '<rect x="1304" y="106" width="232" height="79" rx="6" fill="#e2f3f0"/>' +
               T(
                 1315,
                 126,
                 "分類＋信心＋分支結果",
                 "mono",
-                'style="fill:#087f8c" id="promptLine1"',
+                'style="fill:#0f766e" id="promptLine1"',
               ) +
               T(
                 1315,
                 148,
                 "＋ Top-5 案例證據",
                 "mono",
-                'style="fill:#087f8c" id="promptLine2"',
+                'style="fill:#0f766e" id="promptLine2"',
               ) +
               T(
                 1315,
                 173,
                 "等待 prompt",
                 "mono",
-                'style="fill:#087f8c" id="auditResult"',
+                'style="fill:#0f766e" id="auditResult"',
               ),
             "audit",
           );
@@ -3171,18 +3213,18 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
               381,
               "Mininet 拓樸示意",
               "heading",
-              'style="fill:#16324f"',
+              'style="fill:#0b1b2e"',
             ) +
             T(
               1564,
               380,
               "處置前",
               "tiny",
-              'style="fill:#526477" text-anchor="end" id="netMode"',
+              'style="fill:#52637a" text-anchor="end" id="netMode"',
             ) +
-            '<path d="M1282 426 H1331 L1410 473 H1471 H1530" fill="none" stroke="#526477" stroke-width="2"/><path d="M1282 526 H1331 L1410 473" fill="none" stroke="#087f8c" stroke-width="2"/>';
+            '<path d="M1282 426 H1331 L1410 473 H1471 H1530" fill="none" stroke="#52637a" stroke-width="2"/><path d="M1282 526 H1331 L1410 473" fill="none" stroke="#0f766e" stroke-width="2"/>';
           svg +=
-            '<rect x="1262" y="408" width="49" height="35" rx="7" fill="#526477"/>' +
+            '<rect x="1262" y="408" width="49" height="35" rx="7" fill="#52637a"/>' +
             T(
               1286,
               430,
@@ -3190,7 +3232,7 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
               "small",
               'style="fill:white" text-anchor="middle"',
             ) +
-            '<rect x="1262" y="508" width="49" height="35" rx="7" fill="#087f8c"/>' +
+            '<rect x="1262" y="508" width="49" height="35" rx="7" fill="#0f766e"/>' +
             T(
               1286,
               530,
@@ -3208,7 +3250,7 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
               (x - 12) +
               '" y="' +
               (y - 10) +
-              '" width="24" height="20" rx="4" fill="#245ea8" stroke="#526477"/>' +
+              '" width="24" height="20" rx="4" fill="#1d4ed8" stroke="#52637a"/>' +
               T(
                 x,
                 y + 4,
@@ -3217,7 +3259,7 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
                 'style="fill:white" text-anchor="middle"',
               );
           svg +=
-            '<circle id="router" cx="1410" cy="473" r="24" fill="#245ea8" stroke="#8198ae" stroke-width="2"/>' +
+            '<circle id="router" cx="1410" cy="473" r="24" fill="#1d4ed8" stroke="#9aaac0" stroke-width="2"/>' +
             T(
               1410,
               479,
@@ -3225,7 +3267,7 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
               "heading",
               'style="fill:white" text-anchor="middle"',
             ) +
-            '<rect x="1511" y="448" width="46" height="47" rx="7" fill="#526477" stroke="#526477"/>' +
+            '<rect x="1511" y="448" width="46" height="47" rx="7" fill="#52637a" stroke="#52637a"/>' +
             T(
               1534,
               476,
@@ -3239,7 +3281,7 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
               517,
               "正常通行",
               "tiny",
-              'style="fill:#526477" text-anchor="middle" id="routerState"',
+              'style="fill:#52637a" text-anchor="middle" id="routerState"',
             ) +
             '<g id="networkDots"></g>' +
             T(1266, 564, "通過 0", "net-muted", 'id="netPassed"') +
@@ -3275,7 +3317,7 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
                 (x + w - 65) +
                 '" y="' +
                 (y - 12) +
-                '" width="64" height="20" rx="10" fill="#087f8c"/>' +
+                '" width="64" height="20" rx="10" fill="#0f766e"/>' +
                 T(
                   x + w - 33,
                   y + 2,
@@ -3366,7 +3408,7 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
             return { x: 0, y: 0 };
           return a.path.getPointAtLength(a.length * clamp(p));
         }
-        function pulse(id, progress, color = "#f4f7fa") {
+        function pulse(id, progress, color = "#f3f6fa") {
           const head = point(id, progress),
             beam = Array.from({ length: 9 }, (_, i) =>
               point(id, Math.max(0, progress - 0.2 + i * 0.025)),
@@ -3501,7 +3543,7 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
               " ms（展示放慢）";
           for (const { kind, r, c, el, color, valid } of cells) {
             const reveal = clamp((s.rows - r) * 12 - c);
-            el.setAttribute("fill", reveal > 0 && valid ? color : "#edf3fa");
+            el.setAttribute("fill", reveal > 0 && valid ? color : "#eaf1fe");
             el.style.opacity = reveal > 0 ? String(0.5 + 0.5 * reveal) : "1";
           }
           for (const kind of ["ct", "pb"]) {
@@ -3525,7 +3567,7 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
             $("ticket" + i).style.opacity = i < ticketVisible ? "1" : ".23";
             $("ticket" + i)
               .querySelector("rect")
-              .setAttribute("fill", active ? "#e3a338" : "#f4f7fa");
+              .setAttribute("fill", active ? "#f59e0b" : "#f3f6fa");
             $("ticketText" + i).textContent =
               i < ticketVisible
                 ? "#" +
@@ -3613,9 +3655,9 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
                 "fill",
                 show
                   ? top[i].label === scenario.label
-                    ? "#e9f5f3"
-                    : "#fff5e5"
-                  : "#f4f7fa",
+                    ? "#e2f3f0"
+                    : "#fef3d7"
+                  : "#f3f6fa",
               );
           }
           $("promptLine1").style.opacity = t >= 28 ? "1" : ".3";
@@ -3661,7 +3703,7 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
               pulses += pulse(
                 id,
                 progress,
-                ["in", "deploy"].includes(id) ? "#e3a338" : "#e3a338",
+                ["in", "deploy"].includes(id) ? "#f59e0b" : "#f59e0b",
               );
             }
           }
@@ -3674,7 +3716,7 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
               '" y="' +
               (pt.y - 11) +
               '" width="80" height="22" rx="5" fill="' +
-              (disruptive ? "#8198ae" : "#e3a338") +
+              (disruptive ? "#9aaac0" : "#f59e0b") +
               '"/>' +
               T(
                 pt.x,
@@ -3687,8 +3729,8 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
           const net = networkAt(transactions, Math.min(t, COMMAND_ARRIVAL)),
             delivered = t >= COMMAND_ARRIVAL,
             limited = delivered && disruptive;
-          $("router").setAttribute("fill", limited ? "#526477" : "#245ea8");
-          $("router").setAttribute("stroke", limited ? "#8198ae" : "#8198ae");
+          $("router").setAttribute("fill", limited ? "#52637a" : "#1d4ed8");
+          $("router").setAttribute("stroke", limited ? "#9aaac0" : "#9aaac0");
           $("netMode").textContent = delivered ? "決定已送達" : "等待處置決定";
           $("routerState").textContent = limited ? "限速決定" : "正常通行";
           $("ttlLabel").textContent = delivered
@@ -3704,7 +3746,7 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
                 y,
                 alpha = 1;
               const sy = d.background ? 526 : 426,
-                color = d.background ? "#087f8c" : "#8198ae";
+                color = d.background ? "#0f766e" : "#9aaac0";
               if (d.age < 1) {
                 const u = d.age;
                 if (u < 0.35) {
@@ -3956,7 +3998,7 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
               .slice(0, 48)
               .map(
                 (x) =>
-                  '<i style="background:#087f8c;opacity:' +
+                  '<i style="background:#0f766e;opacity:' +
                   (0.35 + Math.min(0.65, Math.abs(x) * 12)) +
                   '"></i>',
               )

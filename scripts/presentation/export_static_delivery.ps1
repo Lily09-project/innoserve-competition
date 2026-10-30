@@ -1,4 +1,4 @@
-param([string]$Root = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path,
+﻿param([string]$Root = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path,
       [string]$OutputFolder = 'validation\visual-refinement-20261029\powerpoint',
       [string]$PythonExecutable = 'python')
 $ErrorActionPreference = 'Stop'
