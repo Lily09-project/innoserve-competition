@@ -298,7 +298,7 @@ def build_pages(limit=12):
             qi=page_index*2+slot
             question,answers,metric,metric_label,proof=qa[qi]
             y=165+slot*244
-            content+=rect(64,y,1152,220,'#F0F2F3')+rect(974,y,242,220,'#EAF0F4')
+            content+=rect(64,y,1152,220,'#F0F2F3')+rect(974,y,242,220,PALETTE['teal_tint'])
             content+=rect(64,y,4,220,BLUE,0)
             content+=text(88,y+40,f'Q{qi+1}',24,BLUE,600)+text(144,y+40,question,26,'#171C1D',600)
             if qi==0:
