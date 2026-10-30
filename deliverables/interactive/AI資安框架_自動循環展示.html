@@ -1799,9 +1799,54 @@
       .processing-label {
         overflow-wrap: anywhere;
       }
+      .skip-links {
+        flex-wrap: wrap;
+        max-width: calc(100% - 16px);
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        z-index: 100;
+        display: flex;
+        gap: 8px;
+        transform: translateY(-180%);
+      }
+      .skip-links:focus-within {
+        transform: none;
+      }
+      .skip-links a {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+        padding: 8px 16px;
+        background: white;
+        color: var(--navy);
+        border: 2px solid var(--blue);
+        border-radius: 8px;
+      }
+      .skip-links a:focus-visible {
+        outline: 3px solid var(--teal);
+        outline-offset: 3px;
+      }
+      button,
+      a,
+      select,
+      input {
+        touch-action: manipulation;
+      }
+      button:active:not(:disabled) {
+        border-color: var(--teal);
+      }
+      dialog {
+        max-height: calc(100dvh - 32px);
+        overflow: auto;
+      }
     </style>
   </head>
   <body data-playback="auto">
+    <nav class="skip-links" aria-label="快速導覽">
+      <a href="#diagramRegion">跳至方法流程圖</a
+      ><a href="#playPause">跳至播放控制</a>
+    </nav>
     <main id="app">
       <header class="masthead">
         <div>
@@ -1954,6 +1999,7 @@
         </div>
         <div
           class="board-scroll"
+          id="diagramRegion"
           tabindex="0"
           role="region"
           aria-label="方法流程圖，可用方向鍵捲動"
@@ -2051,13 +2097,18 @@
         ><button id="embedding">離線操作說明</button>
       </footer>
     </main>
-    <dialog id="dialog">
+    <dialog id="dialog" aria-labelledby="dialogTitle">
       <button id="closeDialog" class="dialog-close" aria-label="關閉說明">
         ×
       </button>
       <div id="dialogBody"></div>
     </dialog>
-    <div id="announcement" class="sr-only" aria-live="polite"></div>
+    <div
+      id="announcement"
+      class="sr-only"
+      aria-live="polite"
+      aria-atomic="true"
+    ></div>
     <script data-bundled>
       window.__CLEAN_DOCUMENT__ =
         "<!doctype html>\n" + document.documentElement.outerHTML;
@@ -4071,11 +4122,16 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
               block: "start",
             });
         }
+        let dialogOpener = null;
         function modal(html) {
+          dialogOpener = document.activeElement;
           state.playing = false;
           render(true);
           $("dialogBody").innerHTML = html;
+          const heading = $("dialogBody").querySelector("h2");
+          if (heading) heading.id = "dialogTitle";
           $("dialog").showModal();
+          $("closeDialog").focus();
         }
         function download(name, text, type = "application/json") {
           const url = URL.createObjectURL(new Blob([text], { type }));
@@ -4141,7 +4197,25 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
             "<h2>離線操作</h2><p>直接以瀏覽器開啟此 HTML，不需登入或連網。頁面自動依序播放正常流量、DDoS、SSH 與人工複核四個合成情境；每個情境 38 秒，2 倍速為 19 秒。</p><p>可暫停、調整速度、拖曳時間軸或點章節。開啟節點說明會暫停，按播放才繼續。Space 切換播放，方向鍵前後 5 秒；輸入欄位與對話框保留原有鍵盤操作。</p><p>減少動態效果設定啟用時不自動播放。JSON 匯出是合成示意紀錄，並非模型或處置實測證據。</p>",
           );
         }
+        function pauseForReading(message) {
+          if (!state.playing) return;
+          state.playing = false;
+          state.lastStamp = 0;
+          $("playPause").textContent = "播放";
+          $("playPause").setAttribute("aria-pressed", "false");
+          $("announcement").textContent = message;
+        }
         function bind() {
+          document.addEventListener("focusin", (e) => {
+            if (e.target.closest?.("#inspector,#board,[id=diagramRegion]"))
+              pauseForReading("已暫停輪播，可閱讀目前資料；按播放繼續。");
+          });
+          reducedMotion.addEventListener("change", (e) => {
+            if (e.matches)
+              pauseForReading(
+                "已依減少動態效果設定暫停；可手動播放或跳轉章節。",
+              );
+          });
           $("diagramZoom").onchange = () => {
             const zoom = Number($("diagramZoom").value);
             if (![100, 125, 150, 200].includes(zoom)) return;
@@ -4210,6 +4284,7 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
           };
           $("seek").oninput = () => jump(Number($("seek").value), false);
           $("follow").onclick = () => {
+            pauseForReading("已暫停，可選擇資料頁籤閱讀；按播放繼續。");
             state.follow = !state.follow;
             state.chapter = "";
             render(true);
@@ -4220,6 +4295,11 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
           $("closeDialog").onclick = () => $("dialog").close();
           $("dialog").addEventListener("close", () => {
             state.lastStamp = 0;
+            const target = dialogOpener?.isConnected
+              ? dialogOpener
+              : $("openDetail");
+            target.focus();
+            dialogOpener = null;
           });
           $("dialog").onclick = (e) => {
             if (e.target === $("dialog")) {
@@ -4314,6 +4394,7 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
             }
           });
           document.addEventListener("keydown", (e) => {
+            if (e.ctrlKey || e.altKey || e.metaKey || e.isComposing) return;
             const pixel = e.target.closest?.("[data-pixel]");
             if (pixel) {
               if (e.key === "Enter" || e.key === " ") {

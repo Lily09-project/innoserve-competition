@@ -30,12 +30,12 @@
       "sha256": "99b8ee2ff491b4807861687b15e46f7cba9e6eb4e8725b05d7f06ad061845fc9"
     },
     "deliverables/決賽離線展示包.zip": {
-      "bytes": 4294109,
-      "sha256": "7d490abfb83476376f854242915fd17464403df857eb975c31b98d9fc30f44c8"
+      "bytes": 4294693,
+      "sha256": "e466b1157d68fbad286007143e5397f63e3e3e1cc76c0b4909671edb7a34df4f"
     },
     "deliverables/source/release-validation.json": {
       "bytes": 10198,
-      "sha256": "77fceb8f07c737f8e2cbbee90200d2baee601cc0b9de9c15c2732fecbb745105",
+      "sha256": "4859f3931caa7fc1c07d88f7bb3d6595f5ab715c56590670917dfd5c6f969acd",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/01_slide.svg": {
@@ -131,7 +131,7 @@
     "deliverables/source/finals-readiness.json": {
       "hash_normalization": "LF",
       "bytes": 3544,
-      "sha256": "1d1604436b449961ca4a53614f66bcc7928709cddc96b56fdcd4eec4b89d479a"
+      "sha256": "b16d0654bd11f9d710f20e06650b7c8d16cc4b1a71810ef770aca36daeedced7"
     },
     "docs/決賽五分鐘口語稿.md": {
       "hash_normalization": "LF",
@@ -150,18 +150,18 @@
     },
     "deliverables/interactive/README.md": {
       "hash_normalization": "LF",
-      "bytes": 3512,
-      "sha256": "5f3a35a7c0ba1ce9d2148700af4bc52c43344122a041ee1989558604a62ac8e9"
+      "bytes": 4113,
+      "sha256": "28e6ef28ec9b4040b88fc7848676615aecef93c2a572a91208ede7b7d190c8f7"
     },
     "tests/offline-exhibit.cjs": {
       "hash_normalization": "LF",
-      "bytes": 12872,
-      "sha256": "9dbe8375cafb8d9eac01d229b16b7643e4726e531642b6cb5dfc9b04059e5191"
+      "bytes": 14573,
+      "sha256": "3665861805ebdbf6f7177b61284735268acbd172ab11a2f1a5c493e82f2ec173"
     },
     "deliverables/interactive/AI資安框架_自動循環展示.html": {
       "hash_normalization": "LF",
-      "bytes": 147399,
-      "sha256": "523bfa0a57e67f4d5e6e571e8c719189cf93a9112332f967d768bd6b3cb98693"
+      "bytes": 145582,
+      "sha256": "7d8baceeb04e90a580bb019c03b8f36dbe98ff5ddbbd5838233e0af326a2d8dd"
     }
   },
   "slides": 12,
@@ -186,8 +186,8 @@
   "website": "removed; API-only",
   "review": "153 Python tests, media smoke/data checks, offline exhibit regressions, native static alignment and public delivery checks passed; no native playback.",
   "results_changed": true,
-  "markdown_documents": 32,
-  "local_links_checked": 158,
+  "markdown_documents": 33,
+  "local_links_checked": 159,
   "presentation_limit_seconds": 360,
   "buffer_seconds": 60,
   "visual_theme": "white canvas; navy titles, blue flow/icons, teal method/results/completion, restrained warm gold packets/current stage",

@@ -42,19 +42,19 @@
     "docs/決賽五分鐘口語稿.md": "39e88d21d17e9d8a2b8fa547013cc0ac88469ec6b5e1f0fd29b513799f325858",
     "docs/決賽六題答詢口徑.md": "d2a41e50b7b6c8e9f0307715897e6adfeefb5bd904623ce0fd5942ee205e83a9",
     "docs/現場控場與備援卡.md": "2407a165ffe4df3c51f1fa59be76098ca095b5c4f8893cececba6b2b1c666079",
-    "deliverables/interactive/AI資安框架_自動循環展示.html": "523bfa0a57e67f4d5e6e571e8c719189cf93a9112332f967d768bd6b3cb98693",
+    "deliverables/interactive/AI資安框架_自動循環展示.html": "7d8baceeb04e90a580bb019c03b8f36dbe98ff5ddbbd5838233e0af326a2d8dd",
     "scripts/check_finals_readiness.py": "382de23644d21f09c070f01e6f5f2207aa63347a110824e46b5063819e9bdfff",
     "scripts/package_finals.py": "f6fd78f1fb193d5e1bd329ed00e5e002dcac63ffb71dfed79beaa1b1d5b90d5c",
-    "deliverables/決賽離線展示包.zip": "7d490abfb83476376f854242915fd17464403df857eb975c31b98d9fc30f44c8",
-    "README.md": "82c1c2485285c465cd8ff971f428b5727b377c08e61ff8c69f1bb4e424b7c94a",
+    "deliverables/決賽離線展示包.zip": "e466b1157d68fbad286007143e5397f63e3e3e1cc76c0b4909671edb7a34df4f",
+    "README.md": "1ae3bbe34cec3bd600d22dc41ae0bfdcf300e0f30ead969c9ee8be73a1889952",
     "media/film/metrics.json": "816450d6ba5340d14b5bae6aeb133a462deb6be3f6eb3f4a37fb8274656222c1",
     "design-system/palette.json": "74e8c16afce43eff3ecd901a80fe6329a4bad6e8a436015a0b62c525b270d196",
     "scripts/presentation/recolor_roundtrip.py": "99c31bd32859090b69eb22792846461cbea268bfeefc34f33a5ee6604e304ea1",
     "scripts/presentation/restore_alignment.py": "9039eaf1b21077d0030f9d1926af3acbd44d1a9357c9fcaba3f83328e3359b50",
     "scripts/presentation/export_static_delivery.ps1": "c011d0bb82cc62c55cd1a7b130b16ddfc086e4f66f8ae140adbcb68f9c132ce1",
     "scripts/presentation/merge_static_poster.py": "6637fe2def917166dcab1e6f46e9ec5fd72af2e22a51ccbe766243a82dea409a",
-    "tests/offline-exhibit.cjs": "9dbe8375cafb8d9eac01d229b16b7643e4726e531642b6cb5dfc9b04059e5191",
-    "deliverables/interactive/README.md": "5f3a35a7c0ba1ce9d2148700af4bc52c43344122a041ee1989558604a62ac8e9"
+    "tests/offline-exhibit.cjs": "3665861805ebdbf6f7177b61284735268acbd172ab11a2f1a5c493e82f2ec173",
+    "deliverables/interactive/README.md": "28e6ef28ec9b4040b88fc7848676615aecef93c2a572a91208ede7b7d190c8f7"
   },
-  "created_utc": "2026-10-30T11:16:23.410574+00:00"
+  "created_utc": "2026-10-30T12:24:09.923899+00:00"
 }
