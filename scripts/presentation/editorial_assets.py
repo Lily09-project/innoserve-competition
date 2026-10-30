@@ -166,7 +166,7 @@ def group(key, body):
     return f'<g id="{key}"{bound}>{body}</g>'
 
 
-def graphic_page(n, title, body, kicker='METHOD', role='content', dark=False):
+def graphic_page(n, title, body, kicker='METHOD', role='content', dark=False, canvas=None):
     title_color, kicker_color, footer_color, rail = (WHITE, CYAN, DARK_MUTED, NIGHT_LINE) if dark else (NAVY, TEAL, MUTED, LINE)
     heading=rect(64,50,10,10,GOLD,2)+text(84,60,kicker,15,kicker_color,700)
     if title:heading+=text(64,114,title,38,title_color,700)
@@ -174,7 +174,7 @@ def graphic_page(n, title, body, kicker='METHOD', role='content', dark=False):
     progress=''.join(rect(916+k*20,688,14,4,GOLD if k==current else rail,2) for k in range(9 if n<=9 else 3))
     label=f'{PAGE_NUMBERS[n]:02d} / 09' if n<=9 else f'答詢備用 {n-9} / 3'
     footer=rule(64,672,1216,672,rail,1)+text(64,697,'AI 資安框架 · 資安技術組決賽',14,footer_color)+progress+text(1216,697,label,14,footer_color,700,'end')
-    bg=NAVY if dark else WHITE
+    bg=canvas or (NAVY if dark else WHITE)
     background=rect(0,0,1280,720,bg,0).replace('<rect ','<rect id="page-background" data-pptx-role="background" ',1)
     return f'<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" font-family="{FONT}" data-pptx-page-role="{role}">{background}{group("headline",heading)}{group("page-content",body)}{group("footer",footer)}</svg>'
 
@@ -196,13 +196,13 @@ def build_pages(limit=12):
     detector=json.loads((ROOT/'results/detection_17class.json').read_text(encoding='utf-8'))
     m=load_metrics(ROOT)
     pages=[]
-    # P01: night cover; the formal name, then the four-stage chain the talk follows.
+    # P01: light cover matching the film canvas; the formal name, then the four-stage chain the talk follows.
     s=''
-    for k,l in enumerate(['融合新型內容相依時序方向模型','入侵偵測與任務導向檢索增強稽核','之 AI 資安框架']):s+=text(64,206+k*62,l,44,WHITE,700)
-    s+=rect(64,350,56,4,GOLD,2)+text(64,400,'從流量判定，走到有證據、可回復的處置。',24,DARK_MUTED)
-    s+=evidence_chain(512,[('model','偵測','17 類互補判定'),('retrieval','檢索','Top-5 訓練案例'),('document','稽核','本機 AI 三態'),('shield','回復','讀回＋到期回復')])
-    s+=f'<g transform="translate(912 150) scale(4.6)">{icon_fragment("framework", white="navy", blue_tint="night_panel", line="night_line", blue="cyan", gray="night_line")}</g>'
-    pages.append(graphic_page(1,'',s,'2026 資安技術組 · 決賽','cover',True))
+    for k,l in enumerate(['融合新型內容相依時序方向模型','入侵偵測與任務導向檢索增強稽核','之 AI 資安框架']):s+=text(64,206+k*62,l,44,BLUE if k==2 else NAVY,700)
+    s+=rect(64,350,56,4,GOLD,2)+text(64,400,'從流量判定，走到有證據、可回復的處置。',24,MUTED)
+    s+=evidence_chain(512,[('model','偵測','17 類互補判定'),('retrieval','檢索','Top-5 訓練案例'),('document','稽核','本機 AI 三態'),('shield','回復','讀回＋到期回復')],False)
+    s+=f'<g transform="translate(912 150) scale(4.6)">{icon_fragment("framework")}</g>'
+    pages.append(graphic_page(1,'',s,'2026 資安技術組 · 決賽','cover',canvas=GRAY))
     # P02 (source order): the four-lane architecture.
     pages.append(graphic_page(2,'一個框架，四個連續階段',architecture(False,150),'FRAMEWORK'))
     # P03: two complementary paths, one calibrated output.
@@ -307,13 +307,13 @@ def build_pages(limit=12):
     s+=rect(64,580,1152,58,BLUE_TINT,12)+text(92,617,f'{m["intercepted"]} / {m["errors"]}',24,BLUE,700)
     s+=text(176,617,f'筆偵測誤判分流至複核或不確定；其餘 {m["false_support"]} 筆仍獲支持，處置另經策略檢查。',19,INK)
     pages.append(graphic_page(8,'案例提供證據，AI 完成分流',s,'RESULT · EVIDENCE'))
-    # P09: night ending with the actual linked artifacts, rather than slogans alone.
-    s=text(64,196,'偵測有依據，稽核有證據，處置可回復。',30,CYAN,700)
-    s+=evidence_chain(318,[('document','正式判定','17 類＋信心'),('search','檢索證據','Top-5 訓練案例'),('check','稽核結論','支持／複核／不確定'),('clock','處置回條','讀回＋到期回復')],True,180,307)
-    s+=rect(64,480,1152,56,NIGHT_PANEL,14)+text(640,516,'同一事件 ID，串起分類、證據、判斷與回復紀錄。',21,WHITE,700,'middle')
-    s+=text(64,592,f'{m["live_classes"]} 類真實張量重跑 · {m["network_cases"]} 種隔離 TCP 情境驗證',19,DARK_MUTED)
-    s+=text(1216,630,'感謝聆聽，敬請指教。',30,WHITE,700,'end')
-    pages.append(graphic_page(9,'一套可展示、可查核的資安框架',s,'AI SECURITY FRAMEWORK','ending',True))
+    # P09: light ending with the actual linked artifacts, rather than slogans alone.
+    s=text(64,196,'偵測有依據，稽核有證據，處置可回復。',30,BLUE,700)
+    s+=evidence_chain(318,[('document','正式判定','17 類＋信心'),('search','檢索證據','Top-5 訓練案例'),('check','稽核結論','支持／複核／不確定'),('clock','處置回條','讀回＋到期回復')],False,180,307)
+    s+=rect(64,480,1152,56,WHITE,14,LINE)+text(640,516,'同一事件 ID，串起分類、證據、判斷與回復紀錄。',21,NAVY,700,'middle')
+    s+=text(64,592,f'{m["live_classes"]} 類真實張量重跑 · {m["network_cases"]} 種隔離 TCP 情境驗證',19,MUTED)
+    s+=text(1216,630,'感謝聆聽，敬請指教。',30,NAVY,700,'end')
+    pages.append(graphic_page(9,'一套可展示、可查核的資安框架',s,'AI SECURITY FRAMEWORK','ending',canvas=GRAY))
     pages=[pages[i] for i in [0,5,1,2,3,4,6,7,8]]
     qa=[('創新在哪裡？與一般 IDS 加上 RAG 有何不同？', '529 維', '任務導向證據向量', '正式分類保留 · 稽核證據可追溯 · 策略可回復'), ('如何證明前段判斷與後段處置已經串起來？', '同一 ID', '事件與執行可追溯', '分類、Top-5、Judge、策略與回條綁定同一事件'), ('評估資料如何切分？案例庫是否洩漏測試答案？', '0', '訓練／查詢重疊', '訓練庫只讀 · 查詢不重疊 · AI 不看真實標籤'), ('AI 若支持錯誤判斷，如何避免直接誤封？', f'{m["intercepted"]} / {m["errors"]}', '偵測誤判分流', f'{m["false_support"]} 筆為支持統計；處置與回復另以隔離情境驗證'), (f'{m["rollback"]}/{m["network_cases"]} 是否代表各種真實攻擊都能完全防住？', f'{m["rollback"]} / {m["network_cases"]}', '背景保留與回復', f'{m["rollback"]}/{m["network_cases"]} 驗證服務保留與回復；不等同真實攻擊防禦率'), ('如何部署、保護資料，並接到既有環境？', '0', '外部 API 呼叫', '本機 AI 稽核；私有權重、輸入及逐筆回覆不公開')]
     def qa_node(x,y,w,label,fill=WHITE,size=19):

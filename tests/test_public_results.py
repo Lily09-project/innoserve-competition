@@ -142,8 +142,8 @@ class PublicResultsTests(unittest.TestCase):
                 else:
                     resolved = color.get("val")
                 palette = json.loads((ROOT / 'design-system/palette.json').read_text(encoding='utf-8'))
-                # Night canvas only for the cover and ending; content pages stay light.
-                allowed = ('navy',) if number in (1, 9) else ('white', 'gray')
+                # Every page sits on a light canvas; the cover and ending use the film's light gray.
+                allowed = ('white', 'gray')
                 self.assertIn(resolved, tuple(palette[role].lstrip('#') for role in allowed), number)
 
     def test_current_documentation_and_movie_contract(self):
