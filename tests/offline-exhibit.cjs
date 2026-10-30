@@ -83,6 +83,38 @@ function boot(reduced = false, input = html) {
 async function main() {
   const { w, api, downloads, tick, errors } = boot();
   assert.equal(api.LABELS.length, 17);
+  const zoom = w.document.querySelector("#diagramZoom");
+  for (const value of ["100", "125", "150", "200"]) {
+    zoom.value = value;
+    zoom.dispatchEvent(new w.Event("change"));
+    assert.equal(
+      w.document
+        .querySelector("#board")
+        .style.getPropertyValue("--diagram-width"),
+      value + "%",
+    );
+  }
+  const originalTime = api.state.time;
+  w.document.querySelector("#focusView").click();
+  assert.equal(w.document.body.classList.contains("focus-view"), true);
+  assert.equal(
+    w.document.querySelector("#focusView").getAttribute("aria-pressed"),
+    "true",
+  );
+  w.document.dispatchEvent(
+    new w.KeyboardEvent("keydown", { key: "Escape", bubbles: true }),
+  );
+  assert.equal(w.document.body.classList.contains("focus-view"), false);
+  assert.equal(api.state.time, originalTime);
+  const scrollRegion = w.document.querySelector(".board-scroll");
+  scrollRegion.dispatchEvent(
+    new w.KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true }),
+  );
+  assert.equal(
+    api.state.time,
+    originalTime,
+    "arrow keys in diagram scroll rather than seek",
+  );
   assert.equal(w.document.querySelectorAll("[data-scenario]").length, 4);
   assert.equal(api.state.speed, 1);
   assert.equal(api.state.playing, true);
@@ -176,6 +208,9 @@ async function main() {
     .querySelector("[data-inspect]")
     .dispatchEvent(new w.KeyboardEvent("keydown", { key: " ", bubbles: true }));
   assert.equal(api.state.playing, false);
+  w.document.querySelector("#focusView").click();
+  w.document.querySelector("#openDetail").click();
+  assert.equal(w.document.body.classList.contains("focus-view"), false);
   w.document.querySelector("#about").click();
   assert.ok(w.document.querySelector("#dialog").open);
   w.document.querySelector("#closeDialog").click();
