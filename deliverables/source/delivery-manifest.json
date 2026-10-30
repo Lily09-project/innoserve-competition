@@ -30,12 +30,12 @@
       "sha256": "8ddb82d551ab7e95a51fe11abc6651f672947a8520e978778ff4f15ce5e318ab"
     },
     "deliverables/決賽離線展示包.zip": {
-      "bytes": 4110635,
-      "sha256": "b2203d1f5a23426c8358c176d10b94822c821ad4fa850091720d337115d66644"
+      "bytes": 4111502,
+      "sha256": "53d3984fe58a040874f9556c2dedc5e28c07f69c3c91a1e0970411490ebd3490"
     },
     "deliverables/source/release-validation.json": {
       "bytes": 10198,
-      "sha256": "fa4b3998ea9a204ba493b87a126c420dd447d801a7d2c40313106210493a0443",
+      "sha256": "8ee52addc4eedc2c44536176792c8c41d55a5a1175b73278280915c35f4442ec",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/01_slide.svg": {
@@ -131,7 +131,7 @@
     "deliverables/source/finals-readiness.json": {
       "hash_normalization": "LF",
       "bytes": 3544,
-      "sha256": "412c24345cd53947290c7340a90c641d5e9bfae35b8f1e8cb1934cb0991ba1f0"
+      "sha256": "9435e518ec348b9143e8b25ee45ac7c9bebf715f56c478467a438f0ff21e3af2"
     },
     "docs/決賽五分鐘口語稿.md": {
       "hash_normalization": "LF",
@@ -150,18 +150,18 @@
     },
     "deliverables/interactive/README.md": {
       "hash_normalization": "LF",
-      "bytes": 2053,
-      "sha256": "f0debe9bc66d5151d9a475a49fc7cba380ca0032c91f2b2058c688eb11394dbe"
+      "bytes": 2700,
+      "sha256": "df698b33d0a29d788f7aa35427a756940c592729d6dd681d7311a62ff5103f58"
     },
     "tests/offline-exhibit.cjs": {
       "hash_normalization": "LF",
-      "bytes": 10495,
-      "sha256": "b444653844da783602490456eb17c53189fd712ed14b3315a604183d67d6bd0e"
+      "bytes": 10903,
+      "sha256": "4196bb0b41382c9b06b5382e1208dda78f61796dbb21a4a562ed35ed0ea94946"
     },
     "deliverables/interactive/AI資安框架_自動循環展示.html": {
       "hash_normalization": "LF",
-      "bytes": 123927,
-      "sha256": "9760eaed91b5b5569506d5216491ba8b030403042d7438c58e8b7beb12977eda"
+      "bytes": 134050,
+      "sha256": "04a805fc02afef27cb8eb219685da319f245c7ac75ae8095bb4ae0b2845733e7"
     }
   },
   "slides": 12,
@@ -182,7 +182,7 @@
     2560,
     1072
   ],
-  "python_tests": 149,
+  "python_tests": 151,
   "website": "removed; API-only",
   "review": "89 Python tests and deterministic nine-chapter media compilation passed; current real 17-class/17-LLM and six-isolated-scenario validation passed. Existing visual acceptance retained; no visual content changed.",
   "results_changed": true,

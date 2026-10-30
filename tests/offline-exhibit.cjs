@@ -104,6 +104,22 @@ async function main() {
       assert.ok(top[i - 1].similarity >= top[i].similarity);
     for (const time of [0, 2, 14, 17, 20, 26, 28, 32, 36, 37, 37.6, 38]) {
       api.jump(time, false);
+      const stage =
+        time < 14
+          ? "traffic"
+          : time < 20
+            ? "detection"
+            : time < 32
+              ? "audit"
+              : "policy";
+      assert.equal(
+        w.document.querySelectorAll('[aria-current="step"]').length,
+        1,
+      );
+      assert.equal(
+        w.document.querySelector('[aria-current="step"]').dataset.stage,
+        stage,
+      );
       assert.ok(!w.document.querySelector("#board").outerHTML.includes("NaN"));
       assert.ok(w.document.querySelector("#detail").textContent.length > 10);
       const count = api.networkAt(api.makeTransactions(key), time).counts;
