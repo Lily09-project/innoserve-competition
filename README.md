@@ -4,17 +4,19 @@
 
 本作品以同一事件串接17類入侵偵測、訓練案例檢索、本機AI稽核與受控處置。前段提供正式分類、校準信心與流量表徵；後段附上Top-5證據、稽核結論、策略檢查及回復回條，保留各階段的來源與執行關係。
 
+### ▶ [線上開啟互動展示（免下載，直接在瀏覽器播放）](https://lily09-project.github.io/innoserve-competition/deliverables/interactive/AI%E8%B3%87%E5%AE%89%E6%A1%86%E6%9E%B6_%E8%87%AA%E5%8B%95%E5%BE%AA%E7%92%B0%E5%B1%95%E7%A4%BA.html)
+
+[下載HTML單檔離線使用](deliverables/interactive/AI資安框架_自動循環展示.html) · [互動展示操作與範圍](deliverables/interactive/README.md)
+
 **[下載決賽簡報](deliverables/決賽簡報_AI資安框架.pptx)** · **[觀看／下載30秒方法動畫](deliverables/AI資安框架_系統展示影片_30秒快版.mp4)**
 
 **[A2海報印刷PDF](deliverables/決賽海報_AI資安框架_A2.pdf)** · **[海報可編輯PPTX](deliverables/決賽海報_AI資安框架_A2.pptx)**
 
-**[下載自動循環展示HTML](deliverables/interactive/AI資安框架_自動循環展示.html)** · [互動展示操作與範圍](deliverables/interactive/README.md)
-
-自動循環展示可直接下載後用瀏覽器開啟，依序播放四種情境，每個38秒；可暫停、調速、跳轉時間軸與查看資料。點節點說明時會暫停，閱讀後可繼續。它使用合成示意資料解說方法，不執行真實模型或網路規則；正式實測仍以本文結果與本機模型控制台為準。
+互動展示可用上方連結直接在瀏覽器開啟，也可下載單檔離線使用；依序播放四種情境，每個38秒；可暫停、調速、跳轉時間軸與查看資料。點節點說明時會暫停，閱讀後可繼續。它使用合成示意資料解說方法，不執行真實模型或網路規則；正式實測仍以本文結果與本機模型控制台為準。
 
 [下載離線簡報、影片與海報備援包](deliverables/決賽離線展示包.zip) · [簡報PDF備援](deliverables/決賽簡報_AI資安框架.pdf) · [正式版本封存與SHA256](https://github.com/Lily09-project/innoserve-competition/releases)
 
-本輪已同步精修簡報、A2、30秒影片與HTML的成果層級與流程狀態，保留既有方法、真實數據與匿名設定。[參考來源與轉譯範圍](docs/海報與影片參考轉譯.md)。
+簡報、A2海報、30秒影片與互動展示已改用共用的[證據鏈視覺系統](design-system/DESIGN.md)：深夜藍封面與影片、白底內頁、微軟正黑體＋Segoe UI，以「偵測 → 檢索 → 稽核 → 回復」四節點串成同一條鏈；方法、真實數據與匿名設定不變。[參考來源與轉譯範圍](docs/海報與影片參考轉譯.md)。
 
 [互動展示 UX 檢查與修正](docs/互動展示UX檢查.md)：鍵盤閱讀自動暫停、即時減少動態偏好、對話框焦點及快捷鍵保留。
 
@@ -37,7 +39,7 @@
 | --- | --- | --- |
 | 決賽簡報 | 12頁：9頁正式報告、結束頁後3頁六題圖解備詢；第2頁內嵌30秒影片，各頁附繁體中文講者備忘稿 | [逐頁SVG](deliverables/source/slides/)、[製作程式](scripts/presentation/editorial_assets.py)、[講者稿](deliverables/source/speaker-notes.md) |
 | 方法動畫 | 1920×1080、24fps、30秒、2倍速、無音軌；以網路拓樸與封包傳遞說明完整流程 | [動畫來源](media/film/scene.mjs)、[渲染程式](scripts/render_product_film.mjs) |
-| A2海報 | 420×594mm直向；34pt置中作品名稱、四階段產物、Top-5圖卡、策略例子、實測比較與六情境圖解 | [原生製作程式](scripts/presentation/build_a2_poster.py)、[印刷規格](deliverables/source/poster-a2-spec.md) |
+| A2海報 | 420×594mm直向；深夜藍標題區46pt作品名稱與四節點證據鏈、四階段產物、Top-5圖卡、策略例子、實測比較與六情境圖解 | [原生製作程式](scripts/presentation/build_a2_poster.py)、[印刷規格](deliverables/source/poster-a2-spec.md) |
 | 離線包 | 簡報、影片、海報、口語稿、答詢、備援卡、互動HTML及SHA256清單 | [包裝程式](scripts/package_finals.py) |
 | 驗收索引 | 正式檔案、來源、預覽與實測彙整的雜湊及驗收範圍 | [交付清單](deliverables/source/delivery-manifest.json)、[實測索引](deliverables/source/release-validation.json) |
 

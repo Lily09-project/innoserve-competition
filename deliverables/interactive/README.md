@@ -1,6 +1,6 @@
 # 自動循環展示
 
-[下載／開啟 HTML 單檔](AI資安框架_自動循環展示.html)。GitHub 可能顯示原始碼，請先下載再以瀏覽器開啟。無需連網、登入、套件或模型服務。本資料夾不部署公開網站。
+[線上開啟互動展示](https://lily09-project.github.io/innoserve-competition/deliverables/interactive/AI%E8%B3%87%E5%AE%89%E6%A1%86%E6%9E%B6_%E8%87%AA%E5%8B%95%E5%BE%AA%E7%92%B0%E5%B1%95%E7%A4%BA.html)（GitHub Pages 直接發布此單檔），或[下載 HTML 單檔](AI資安框架_自動循環展示.html)以瀏覽器離線開啟。無需登入、套件或模型服務；離線開啟也不需連網。
 
 ## 操作
 
