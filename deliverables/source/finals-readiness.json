@@ -42,19 +42,19 @@
     "docs/決賽五分鐘口語稿.md": "39e88d21d17e9d8a2b8fa547013cc0ac88469ec6b5e1f0fd29b513799f325858",
     "docs/決賽六題答詢口徑.md": "d2a41e50b7b6c8e9f0307715897e6adfeefb5bd904623ce0fd5942ee205e83a9",
     "docs/現場控場與備援卡.md": "2407a165ffe4df3c51f1fa59be76098ca095b5c4f8893cececba6b2b1c666079",
-    "deliverables/interactive/AI資安框架_離線互動展示.html": "051ed398fafe28a22c8371e13cdb9863379fe574706e0df92538a93ecb09fa12",
+    "deliverables/interactive/AI資安框架_自動循環展示.html": "9760eaed91b5b5569506d5216491ba8b030403042d7438c58e8b7beb12977eda",
     "scripts/check_finals_readiness.py": "382de23644d21f09c070f01e6f5f2207aa63347a110824e46b5063819e9bdfff",
-    "scripts/package_finals.py": "3b013e72b49da5682836c5a6136104f151cc8488c7eb6c833f83f13f13413250",
-    "deliverables/決賽離線展示包.zip": "927f72ae692b8005fbf198c2fc612643132efa4e981bfd7c804f2cab340e13c1",
-    "README.md": "58ef69a273fd1553e51afc4297d41187ae690fa38268f8630c76464b9ddba6b3",
+    "scripts/package_finals.py": "f6fd78f1fb193d5e1bd329ed00e5e002dcac63ffb71dfed79beaa1b1d5b90d5c",
+    "deliverables/決賽離線展示包.zip": "b2203d1f5a23426c8358c176d10b94822c821ad4fa850091720d337115d66644",
+    "README.md": "56230dd0488203a843663947e1b50d1cf716ccac8558d74918841ec1eeed4359",
     "media/film/metrics.json": "816450d6ba5340d14b5bae6aeb133a462deb6be3f6eb3f4a37fb8274656222c1",
     "design-system/palette.json": "74e8c16afce43eff3ecd901a80fe6329a4bad6e8a436015a0b62c525b270d196",
     "scripts/presentation/recolor_roundtrip.py": "99c31bd32859090b69eb22792846461cbea268bfeefc34f33a5ee6604e304ea1",
     "scripts/presentation/restore_alignment.py": "9039eaf1b21077d0030f9d1926af3acbd44d1a9357c9fcaba3f83328e3359b50",
     "scripts/presentation/export_static_delivery.ps1": "c011d0bb82cc62c55cd1a7b130b16ddfc086e4f66f8ae140adbcb68f9c132ce1",
     "scripts/presentation/merge_static_poster.py": "6637fe2def917166dcab1e6f46e9ec5fd72af2e22a51ccbe766243a82dea409a",
-    "tests/offline-exhibit.cjs": "b2703c83bf3edd7a751c0a10b3ce83de73c962cfb9e4a5e9b272fd50f91d5574",
-    "deliverables/interactive/README.md": "da10cfd5068f0f80a3b45ae91abcc87bac6aec752223df83d4aa4f4a7d2c1852"
+    "tests/offline-exhibit.cjs": "b444653844da783602490456eb17c53189fd712ed14b3315a604183d67d6bd0e",
+    "deliverables/interactive/README.md": "f0debe9bc66d5151d9a475a49fc7cba380ca0032c91f2b2058c688eb11394dbe"
   },
-  "created_utc": "2026-10-29T15:16:45.316390+00:00"
+  "created_utc": "2026-10-30T03:19:07.759712+00:00"
 }

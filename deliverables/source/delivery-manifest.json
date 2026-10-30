@@ -30,12 +30,12 @@
       "sha256": "8ddb82d551ab7e95a51fe11abc6651f672947a8520e978778ff4f15ce5e318ab"
     },
     "deliverables/決賽離線展示包.zip": {
-      "bytes": 4109718,
-      "sha256": "927f72ae692b8005fbf198c2fc612643132efa4e981bfd7c804f2cab340e13c1"
+      "bytes": 4110635,
+      "sha256": "b2203d1f5a23426c8358c176d10b94822c821ad4fa850091720d337115d66644"
     },
     "deliverables/source/release-validation.json": {
       "bytes": 10198,
-      "sha256": "43138f162633b97a07ab6fcd196ffc2fbd6b841150c3814ae3253acb7ed6f115",
+      "sha256": "fa4b3998ea9a204ba493b87a126c420dd447d801a7d2c40313106210493a0443",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/01_slide.svg": {
@@ -131,7 +131,7 @@
     "deliverables/source/finals-readiness.json": {
       "hash_normalization": "LF",
       "bytes": 3544,
-      "sha256": "a1943dda0e3f0b0b923168396f5d75c3d99eaa799765ba828e0d1270dd6a6718"
+      "sha256": "412c24345cd53947290c7340a90c641d5e9bfae35b8f1e8cb1934cb0991ba1f0"
     },
     "docs/決賽五分鐘口語稿.md": {
       "hash_normalization": "LF",
@@ -148,20 +148,20 @@
       "bytes": 2855,
       "sha256": "2407a165ffe4df3c51f1fa59be76098ca095b5c4f8893cececba6b2b1c666079"
     },
-    "deliverables/interactive/AI資安框架_離線互動展示.html": {
-      "hash_normalization": "LF",
-      "bytes": 123470,
-      "sha256": "051ed398fafe28a22c8371e13cdb9863379fe574706e0df92538a93ecb09fa12"
-    },
     "deliverables/interactive/README.md": {
       "hash_normalization": "LF",
-      "bytes": 2867,
-      "sha256": "da10cfd5068f0f80a3b45ae91abcc87bac6aec752223df83d4aa4f4a7d2c1852"
+      "bytes": 2053,
+      "sha256": "f0debe9bc66d5151d9a475a49fc7cba380ca0032c91f2b2058c688eb11394dbe"
     },
     "tests/offline-exhibit.cjs": {
       "hash_normalization": "LF",
-      "bytes": 8353,
-      "sha256": "b2703c83bf3edd7a751c0a10b3ce83de73c962cfb9e4a5e9b272fd50f91d5574"
+      "bytes": 10495,
+      "sha256": "b444653844da783602490456eb17c53189fd712ed14b3315a604183d67d6bd0e"
+    },
+    "deliverables/interactive/AI資安框架_自動循環展示.html": {
+      "hash_normalization": "LF",
+      "bytes": 123927,
+      "sha256": "9760eaed91b5b5569506d5216491ba8b030403042d7438c58e8b7beb12977eda"
     }
   },
   "slides": 12,
@@ -187,7 +187,7 @@
   "review": "89 Python tests and deterministic nine-chapter media compilation passed; current real 17-class/17-LLM and six-isolated-scenario validation passed. Existing visual acceptance retained; no visual content changed.",
   "results_changed": true,
   "markdown_documents": 32,
-  "local_links_checked": 157,
+  "local_links_checked": 156,
   "presentation_limit_seconds": 360,
   "buffer_seconds": 60,
   "visual_theme": "white and light gray canvas; navy titles, medium blue diagrams, gold highlights, ink body",
@@ -405,18 +405,26 @@
     "native_playback": "excluded_by_user"
   },
   "offline_interactive": {
-    "file": "deliverables/interactive/AI資安框架_離線互動展示.html",
+    "file": "deliverables/interactive/AI資安框架_自動循環展示.html",
     "documentation": "deliverables/interactive/README.md",
     "mode": "synthetic_educational_demo",
     "learned_models_executed": false,
     "network_rules_executed": false,
-    "default_speed": 2,
-    "source_timeline_seconds": 73,
-    "default_playback_seconds": 36.5,
+    "default_speed": 1,
+    "source_timeline_seconds": 38,
+    "default_playback_seconds": 38,
     "remote_runtime_dependencies": 0,
     "dom_scenarios": 4,
     "dom_time_states": 48,
-    "real_browser_layout_verified": false
+    "real_browser_layout_verified": false,
+    "automatic_cycle": true,
+    "cycle_seconds": 152,
+    "scenario_order": [
+      "benign",
+      "ddos",
+      "ssh",
+      "review"
+    ]
   },
   "delivery_reproducibility": {
     "atomic_zip_publication": true,

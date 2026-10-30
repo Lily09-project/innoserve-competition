@@ -22,7 +22,8 @@
         --gold: #b58724;
         --paper: #fff;
         --bg: #f3f6f8;
-        font-family: "Times New Roman", "Exhibit Kai", serif;
+        font-family:
+          Inter, "Segoe UI", "Microsoft JhengHei", "Noto Sans TC", sans-serif;
         color: var(--ink);
         background: var(--bg);
         font-synthesis: none;
@@ -267,7 +268,7 @@
         font-weight: 750;
       }
       #board .mono {
-        font-family: "Times New Roman", "Exhibit Kai", serif;
+        font-family: Consolas, monospace;
         font-size: 13px;
       }
       #board .node-box {
@@ -388,7 +389,7 @@
         cursor: pointer;
       }
       .timeline-line output {
-        font-family: "Times New Roman", "Exhibit Kai", serif;
+        font-family: Consolas, monospace;
         font-size: 12px;
         white-space: nowrap;
       }
@@ -525,14 +526,14 @@
         padding: 15px;
         border-radius: 8px;
         font:
-          12px/1.8 "Times New Roman",
-          serif;
+          12px/1.8 Consolas,
+          monospace;
         margin: 8px 0;
         max-height: 340px;
         overflow: auto;
       }
       code {
-        font-family: "Times New Roman", "Exhibit Kai", serif;
+        font-family: Consolas, monospace;
       }
       table {
         border-collapse: collapse;
@@ -567,8 +568,8 @@
       }
       .hex-byte {
         font:
-          12px "Times New Roman",
-          serif;
+          12px Consolas,
+          monospace;
         background: #f0f5f8;
         border-radius: 4px;
         padding: 6px;
@@ -979,6 +980,89 @@
         }
       }
 
+      #board .node.live .node-box {
+        fill: #e1fbff;
+        stroke: #00a8c9;
+        stroke-width: 4;
+        filter: url(#nodeGlow);
+      }
+      #board .node-halo {
+        fill: none;
+        stroke: #00c9f0;
+        stroke-width: 4;
+        opacity: 0;
+        pointer-events: none;
+      }
+      #board .node.live .node-halo {
+        opacity: var(--node-beat, 0.75);
+        filter: url(#light);
+      }
+      #board .processing-badge {
+        display: none;
+        pointer-events: none;
+      }
+      #board .node.live .processing-badge {
+        display: block;
+      }
+      #board .node.live .heading {
+        fill: #006c85;
+      }
+      #board #netNode.live .network-box {
+        fill: url(#netfill);
+      }
+      #board .wire.lit {
+        stroke: #00b8dd;
+        stroke-width: 4.5;
+        stroke-dasharray: 3 9;
+      }
+      #board .pulse {
+        stroke: #008caf;
+        stroke-width: 2.5;
+      }
+      #board .pulse-halo {
+        fill: #0bd4ff;
+        opacity: 0.32;
+        filter: url(#light);
+      }
+      #board .pulse-beam {
+        fill: none;
+        stroke: #00bde9;
+        stroke-width: 8;
+        stroke-linecap: round;
+        opacity: 0.65;
+        filter: url(#light);
+      }
+      .processing-label {
+        padding: 7px 11px;
+        border-radius: 8px;
+        background: #d8f7fe;
+        color: #006a83;
+        font-weight: 750;
+        font-size: 12px;
+        border: 1px solid #70d7eb;
+        white-space: nowrap;
+      }
+      @media (max-width: 1150px) {
+        .stage-heading {
+          flex-wrap: wrap;
+        }
+        .processing-label {
+          margin-left: auto;
+        }
+      }
+      @media (max-width: 700px) {
+        .processing-label {
+          font-size: 10px;
+          margin-left: 0;
+        }
+      }
+
+      #board #netNode .network-box {
+        fill: url(#netfill);
+      }
+      #board #netNode.waiting {
+        opacity: 0.85;
+      }
       @font-face {
         font-family: "Exhibit Kai";
         src: local("DFKai-SB"), local("標楷體");
@@ -1173,13 +1257,17 @@
           font-size: 13px;
         }
       }
+
+      .processing-badge rect {
+        fill: #16324f;
+      }
     </style>
   </head>
-  <body>
+  <body data-playback="auto">
     <main id="app">
       <header class="masthead">
         <div>
-          <p class="eyebrow">互動展示 / INNOSERVE</p>
+          <p class="eyebrow">自動循環展示 / INNOSERVE</p>
           <h1>
             融合新型內容相依時序方向模型入侵偵測<br /><span
               >與任務導向檢索增強稽核之 AI 資安框架</span
@@ -1193,14 +1281,15 @@
       </header>
       <section class="controls" aria-label="展示情境與播放控制">
         <div class="scenarios" id="scenarios"></div>
-        <p class="start-hint">
-          選擇情境開始；可暫停、調速或跳至章節<br />本頁只做流程示意，不執行模型與網路規則
+        <p class="start-hint" id="startHint">
+          按下情境，自動播放完整流程<br />再按任一情境，即從頭開始
         </p>
       </section>
       <section class="exhibit" aria-label="可互動的光流展示面板">
         <div class="stage-heading">
           <span id="sceneLabel">HTTP 洪流</span
           ><span id="sceneCaption">選一個情境，讓資料帶著光往前走。</span
+          ><span id="processingLabel" class="processing-label">等待啟動</span
           ><span class="light-legend"><i></i>目前處理 <b></b>等待抵達</span>
         </div>
         <div class="board-scroll">
@@ -1226,13 +1315,13 @@
             role="progressbar"
             aria-label="展示進度"
             aria-valuemin="0"
-            aria-valuemax="73"
+            aria-valuemax="38"
             aria-valuenow="0"
             id="progress"
           >
             <i id="progressFill"></i>
           </div>
-          <output id="clock">00:00 / 01:13</output>
+          <output id="clock">00:00 / 00:38</output>
         </div>
         <div class="playback-tools" aria-label="播放控制">
           <button id="playPause" class="primary-control" aria-pressed="false">
@@ -1242,9 +1331,9 @@
           <label for="speed"
             >速度
             <select id="speed">
-              <option value="1">1× 詳解</option>
+              <option value="1" selected>1× 詳解</option>
               <option value="1.5">1.5×</option>
-              <option value="2" selected>2× 展示</option>
+              <option value="2">2× 展示</option>
             </select></label
           >
           <label for="seek" class="sr-only">跳至展示時間</label
@@ -1252,7 +1341,7 @@
             id="seek"
             type="range"
             min="0"
-            max="73"
+            max="38"
             step="0.1"
             value="0"
             aria-valuetext="0秒"
@@ -1283,7 +1372,7 @@
           >合成封包、示意模型與稽核回覆；色碼轉換和 cosine similarity
           由瀏覽器實際計算。</span
         ><button id="offline">下載離線單檔 ↓</button
-        ><button id="embedding">離線操作說明 ↗</button>
+        ><button id="embedding">離線操作說明</button>
       </footer>
     </main>
     <dialog id="dialog">
@@ -1322,7 +1411,7 @@
             title: "正常連線",
             short: "BENIGN",
             icon: "↔",
-            color: "#16876f",
+            color: "#087f8c",
             desc: "請求與回應交錯，讓正常流量一路通行。",
             label: "BENIGN",
             confidence: 0.96,
@@ -1340,7 +1429,7 @@
             title: "DDoS 洪流",
             short: "HTTP FLOOD",
             icon: "≋",
-            color: "#dd644d",
+            color: "#245ea8",
             desc: "密集且重複的 HTTP 請求，超額連線在路由器被擋下。",
             label: "DDoS-LOIC-HTTP",
             confidence: 0.97,
@@ -1358,7 +1447,7 @@
             title: "SSH 暴力破解",
             short: "AUTH ATTEMPT",
             icon: "⌁",
-            color: "#627ad2",
+            color: "#16324f",
             desc: "重複的驗證嘗試，限縮同一來源的服務連線。",
             label: "SSH-Bruteforce",
             confidence: 0.94,
@@ -1376,7 +1465,7 @@
             title: "可疑 Web 流量",
             short: "HUMAN REVIEW",
             icon: "?",
-            color: "#b58a27",
+            color: "#e3a338",
             desc: "相近案例出現分歧；保留證據，交由人員複核。",
             label: "Web-XSS",
             confidence: 0.68,
@@ -1725,7 +1814,8 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
           return { ...pixel, channels, hex: "#" + channels.map(hex).join("") };
         }
 
-        const DURATION = 73;
+        const DURATION = 38;
+        const COMMAND_ARRIVAL = 37.6;
         const CHAPTERS = [
           {
             at: 0,
@@ -1790,22 +1880,27 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
             title: "傳送處置決定",
             text: "通過策略才將指令送向 r1；證據不足則走人工複核路徑。",
           },
-          {
-            at: 38,
-            end: 68,
-            key: "network",
-            title: "觀察網路效果",
-            text: "超額新連線在路由器停止；背景正常流量維持通行。",
-          },
-          {
-            at: 68,
-            end: 73,
-            key: "recovery",
-            title: "撤銷與回復",
-            text: "撤銷暫時限制，來源請求重新通行。回復不表示攻擊來源消失。",
-          },
         ];
         const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+        function activeNodeIds(time) {
+          const t = clamp(time, 0, DURATION);
+          if (t >= DURATION) return [];
+          if (t < 2) return ["packetNode"];
+          if (t < 14)
+            return stateAt(t).travel < 1
+              ? ["packetNode"]
+              : ["ctNode", "pbNode"];
+          if (t < 15) return ["ctNode", "pbNode"];
+          if (t < 17.8) return ["fusionNode"];
+          if (t < 18.9) return ["vectorNode"];
+          if (t < 19.5) return ["normNode"];
+          if (t < 20) return ["queryNode"];
+          if (t < 26.6) return ["bankNode", "compareNode"];
+          if (t < 28.7) return ["rankNode"];
+          if (t < 32.5) return ["auditNode"];
+          if (t < COMMAND_ARRIVAL) return ["policyNode"];
+          return ["netNode"];
+        }
         function stateAt(time) {
           const t = clamp(time, 0, DURATION),
             chapter = CHAPTERS.find((x) => t < x.end) || CHAPTERS.at(-1);
@@ -1820,7 +1915,6 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
             rows: t >= 14 ? 8 : t < 2 ? 0 : row + clamp((within - 0.38) / 0.48),
             scanned: t < 20 ? 0 : t >= 26 ? 24 : Math.floor((t - 20) * 4),
             topCount: t < 26 ? 0 : Math.min(5, Math.floor((t - 26) * 3) + 1),
-            ttl: clamp(68 - t, 0, 30),
             done: t >= DURATION,
           };
         }
@@ -1832,22 +1926,12 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
         }
         function makeTransactions(key) {
           const s = SCENARIOS[key],
-            all = [],
-            limited = isDisruptive(key);
-          let tokens = 1,
-            last = 38;
+            all = [];
           for (let i = 0; i < s.rate * (DURATION - 1); i++) {
             const start = i / s.rate,
-              arrival = start + 1;
-            let pass = true,
-              phase =
-                arrival < 38 ? "before" : arrival < 68 ? "after" : "recovered";
-            if (limited && phase === "after") {
-              tokens = Math.min(1, tokens + Math.max(0, arrival - last));
-              last = arrival;
-              pass = tokens >= 1 - 1e-9;
-              if (pass) tokens -= 1;
-            }
+              arrival = start + 1,
+              pass = true,
+              phase = "before";
             all.push({
               id: "s" + i,
               start,
@@ -1872,12 +1956,7 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
           return all;
         }
         function networkAt(transactions, t) {
-          const counts = {
-              before: { passed: 0, dropped: 0 },
-              after: { passed: 0, dropped: 0 },
-              recovered: { passed: 0, dropped: 0 },
-              background: 0,
-            },
+          const counts = { before: { passed: 0, dropped: 0 }, background: 0 },
             dots = [];
           for (const x of transactions) {
             if (x.background) {
@@ -1890,6 +1969,23 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
           return { counts, dots };
         }
 
+        const AUTO_MODE = document.body.dataset.playback === "auto";
+        const SCENARIO_ORDER = Object.keys(SCENARIOS);
+        const NODE_LABELS = {
+          packetNode: "流量輸入",
+          ctNode: "CTBM",
+          pbNode: "PBCNN",
+          fusionNode: "融合判定",
+          vectorNode: "向量組合",
+          normNode: "L2 正規化",
+          queryNode: "查詢向量",
+          bankNode: "案例庫",
+          compareNode: "相似度比對",
+          rankNode: "Top-5",
+          auditNode: "AI 稽核",
+          policyNode: "策略檢查",
+          netNode: "網路環境",
+        };
         const $ = (id) => document.getElementById(id);
         const esc = (s) =>
           String(s).replace(
@@ -1923,7 +2019,7 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
         };
         const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
         const state = {
-          speed: 2,
+          speed: 1,
           key: "ddos",
           time: 0,
           playing: false,
@@ -1986,18 +2082,18 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
           ["in", "M195 325 H216", 2, 14],
           ["ct", "M216 325 C232 325 225 170 245 170", 2, 14],
           ["pb", "M216 325 C232 325 225 455 245 455", 2, 14],
-          ["cf", "M480 200 H502 Q515 200 515 290 H525", 14, 17],
-          ["pf", "M480 455 H502 Q515 455 515 340 H525", 14, 17],
-          ["feat", "M480 112 H634 Q650 112 650 128 V305 H675", 17, 18.5],
-          ["prob", "M625 320 H650 V350 H675", 17, 18.5],
-          ["norm", "M750 377 V410", 18, 19],
-          ["query", "M745 452 V480", 19, 20],
+          ["cf", "M480 200 H502 Q515 200 515 290 H525", 14, 15],
+          ["pf", "M480 455 H502 Q515 455 515 340 H525", 14, 15],
+          ["feat", "M480 112 H634 Q650 112 650 128 V305 H675", 17, 17.8],
+          ["prob", "M625 320 H650 V350 H675", 17, 17.8],
+          ["norm", "M750 377 V410", 18.5, 18.9],
+          ["query", "M745 452 V480", 19.1, 19.5],
           ["search", "M830 512 H850 Q865 512 865 495 V400 H875", 20, 26],
           ["bank", "M945 230 V320", 20, 26],
-          ["rank", "M1055 370 H1085", 26, 28],
-          ["prompt", "M1240 320 H1257 Q1272 320 1272 305 V142 H1290", 28, 30],
-          ["judge", "M1420 205 V240", 32, 36],
-          ["deploy", "M1420 328 V355", 36, 38],
+          ["rank", "M1055 370 H1085", 26, 26.6],
+          ["prompt", "M1240 320 H1257 Q1272 320 1272 305 V142 H1290", 28, 28.7],
+          ["judge", "M1420 205 V240", 32, 32.5],
+          ["deploy", "M1420 328 V355", 36, COMMAND_ARRIVAL],
         ];
         function stripe(x, y, values, count = 24, w = 140, h = 12) {
           return values
@@ -2053,7 +2149,7 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
         }
         function buildBoard() {
           let svg =
-            '<defs><linearGradient id="nodefill" x2="0" y2="1"><stop stop-color="#fff"/><stop offset="1" stop-color="#f6f9fb"/></linearGradient><linearGradient id="netfill" x2="0" y2="1"><stop stop-color="#17394e"/><stop offset="1" stop-color="#102b3d"/></linearGradient><filter id="shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#244859" flood-opacity=".08"/></filter><filter id="light" x="-200%" y="-200%" width="500%" height="500%"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter><filter id="nodeGlow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#16d2ea" flood-opacity=".25"/></filter></defs>';
+            '<defs><linearGradient id="nodefill" x2="0" y2="1"><stop stop-color="#fff"/><stop offset="1" stop-color="#f6f9fb"/></linearGradient><linearGradient id="netfill" x2="0" y2="1"><stop stop-color="#16324f"/><stop offset="1" stop-color="#16324f"/></linearGradient><filter id="shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#244859" flood-opacity=".08"/></filter><filter id="light" x="-200%" y="-200%" width="500%" height="500%"><feGaussianBlur stdDeviation="5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter><filter id="nodeGlow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="#245ea8" flood-opacity=".65"/></filter></defs>';
           svg +=
             T(25, 32, "01 / 封包與模型輸入", "small") +
             T(680, 32, "02 / 向量檢索", "small") +
@@ -2422,16 +2518,38 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
             "</g>";
           svg += '<g id="pulses"></g><g id="commandPacket"></g>';
           $("board").innerHTML = svg;
-          document.querySelectorAll("[data-pixel]").forEach((cell, index) => {
-            cell.setAttribute(
-              "aria-label",
-              "檢查" +
-                (cell.dataset.pixel.startsWith("ct") ? "CTBM" : "PBCNN") +
-                "輸入格 " +
-                cell.dataset.pixel,
+          for (const id of Object.keys(NODE_LABELS)) {
+            const g = $(id),
+              box = g.querySelector("rect");
+            g.classList.add("node");
+            box.classList.add("node-box");
+            if (id === "netNode") box.classList.add("network-box");
+            const x = +box.getAttribute("x"),
+              y = +box.getAttribute("y"),
+              w = +box.getAttribute("width"),
+              h = +box.getAttribute("height");
+            g.insertAdjacentHTML(
+              "afterbegin",
+              R(x - 5, y - 5, w + 10, h + 10, "node-halo"),
             );
-            cell.setAttribute("tabindex", index === 0 ? "0" : "-1");
-          });
+            g.insertAdjacentHTML(
+              "beforeend",
+              '<g class="processing-badge" aria-hidden="true"><rect x="' +
+                (x + w - 65) +
+                '" y="' +
+                (y - 12) +
+                '" width="64" height="20" rx="10" fill="#007f9e"/>' +
+                T(
+                  x + w - 33,
+                  y + 2,
+                  "處理中",
+                  "",
+                  'text-anchor="middle" style="fill:white;font-size:11px;font-weight:700"',
+                ) +
+                "</g>",
+            );
+          }
+
           paths = {};
           for (const [id] of lineDefs) {
             const path = $("wire-" + id);
@@ -2512,9 +2630,13 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
           return a.path.getPointAtLength(a.length * clamp(p));
         }
         function pulse(id, progress, color = "#efffff") {
-          return [0, 0.065, 0.13]
-            .map((tail, i) => {
-              const p = progress - tail;
+          const head = point(id, progress),
+            beam = Array.from({ length: 9 }, (_, i) =>
+              point(id, Math.max(0, progress - 0.2 + i * 0.025)),
+            );
+          const trail = Array.from({ length: 7 }, (_, i) => 6 - i)
+            .map((i) => {
+              const p = progress - i * 0.03;
               if (p < 0 || p > 1) return "";
               const v = point(id, p);
               return (
@@ -2523,15 +2645,30 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
                 '" cy="' +
                 v.y +
                 '" r="' +
-                (4 - i * 0.7) +
+                (7.5 - i * 0.7) +
                 '" class="pulse" style="fill:' +
                 color +
                 ";opacity:" +
-                (1 - i * 0.23) +
+                (1 - i * 0.11) +
                 '"/>'
               );
             })
             .join("");
+          return (
+            '<path d="' +
+            beam.map((p, i) => (i ? "L" : "M") + p.x + " " + p.y).join(" ") +
+            '" class="pulse-beam"/><circle cx="' +
+            head.x +
+            '" cy="' +
+            head.y +
+            '" r="15" class="pulse-halo"/>' +
+            trail +
+            '<circle cx="' +
+            head.x +
+            '" cy="' +
+            head.y +
+            '" r="3.8" fill="white"/>'
+          );
         }
         function setData(key, flow = 0) {
           state.key = key;
@@ -2568,35 +2705,23 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
             p = policyFor(state.key);
           $("progress").setAttribute("aria-valuenow", t.toFixed(2));
           $("progressFill").style.width = (t / DURATION) * 100 + "%";
-          $("clock").textContent = fmt(t) + " / " + fmt(DURATION);
-          $("seek").value = String(t);
-          $("seek").setAttribute(
-            "aria-valuetext",
-            t.toFixed(1) + "秒，共73秒示意時間",
-          );
           $("playPause").textContent = state.playing ? "暫停" : "播放";
           $("playPause").setAttribute("aria-pressed", String(state.playing));
-          document
-            .querySelectorAll("[data-tab]")
-            .forEach((el) =>
-              el.setAttribute(
-                "aria-pressed",
-                String(el.dataset.tab === state.tab),
-              ),
-            );
+          $("seek").value = String(t);
+          $("seek").setAttribute("aria-valuetext", t.toFixed(1) + "秒");
+          $("clock").textContent = fmt(t) + " / " + fmt(DURATION);
           $("currentChapter").textContent = s.done
             ? "展示完成"
             : s.chapter.title;
           if (state.chapter !== s.chapter.key || force) {
             state.chapter = s.chapter.key;
             $("sceneCaption").textContent =
-              t === 0 ? "選一個情境，讓資料帶著光往前走。" : s.chapter.text;
+              t === 0
+                ? state.playing
+                  ? "情境啟動，資料開始流動。"
+                  : "選一個情境，讓資料帶著光往前走。"
+                : s.chapter.text;
             $("stageMessage").textContent = s.chapter.text;
-            if (s.chapter.key === "network" && !disruptive)
-              $("stageMessage").textContent =
-                state.key === "benign"
-                  ? "正常事件採監測，所有流量持續通行。"
-                  : "證據不足，保留蒐證與人工複核；不部署阻擋規則。";
             if (state.follow)
               state.tab = ["traffic"].includes(s.chapter.key)
                 ? "traffic"
@@ -2608,10 +2733,6 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
                       ? "audit"
                       : "policy";
             document.querySelectorAll("[data-chapter]").forEach((el) => {
-              el.setAttribute(
-                "aria-current",
-                String(+el.dataset.chapter === s.chapter.at),
-              );
               const at = +el.dataset.chapter;
               el.classList.toggle("active", at === s.chapter.at);
               el.classList.toggle("done", at < s.chapter.at);
@@ -2664,6 +2785,19 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
                   packets[i].text.slice(0, 11)
                 : "#" + (i + 1) + " 等待封包";
           }
+          const active = new Set(
+            state.playing || t > 0 ? activeNodeIds(t) : [],
+          );
+          $("board").style.setProperty(
+            "--node-beat",
+            String(0.55 + 0.3 * Math.sin(t * 5) ** 2),
+          );
+          $("processingLabel").textContent = active.size
+            ? "目前處理：" +
+              [...active].map((id) => NODE_LABELS[id]).join(" ＋ ")
+            : s.done
+              ? "本情境完成"
+              : "等待啟動";
           const nodeRanges = [
             ["packetNode", 0, 14],
             ["ctNode", 2, 14],
@@ -2676,9 +2810,11 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
             ["rankNode", 26, 28],
             ["auditNode", 28, 32],
             ["policyNode", 32, 38],
+            ["bankNode", 20, 26.6],
+            ["netNode", COMMAND_ARRIVAL, DURATION],
           ];
           nodeRanges.forEach(([id, a, b]) =>
-            setNode(id, t < a ? 0 : t < b ? 1 : 2),
+            setNode(id, active.has(id) ? 1 : t < a ? 0 : 2),
           );
           $("vectorContent").style.opacity = t >= 17 ? "1" : ".2";
           $("queryStripe").style.opacity = t >= 19 ? "1" : ".15";
@@ -2780,8 +2916,8 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
             }
           }
           $("pulses").innerHTML = pulses;
-          if (t >= 36 && t < 38) {
-            const pt = point("deploy", (t - 36) / 2);
+          if (t >= 36 && t < COMMAND_ARRIVAL) {
+            const pt = point("deploy", (t - 36) / (COMMAND_ARRIVAL - 36));
             $("commandPacket").innerHTML =
               '<rect x="' +
               (pt.x - 40) +
@@ -2798,36 +2934,19 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
                 'text-anchor="middle"',
               );
           } else $("commandPacket").innerHTML = "";
-          const net = networkAt(transactions, t),
-            limited = t >= 38 && t < 68 && disruptive;
+          const net = networkAt(transactions, Math.min(t, COMMAND_ARRIVAL)),
+            delivered = t >= COMMAND_ARRIVAL,
+            limited = delivered && disruptive;
           $("router").setAttribute("fill", limited ? "#8c4a4b" : "#366b83");
           $("router").setAttribute("stroke", limited ? "#ffab8d" : "#8cdce7");
-          $("netMode").textContent =
-            t < 38
-              ? "處置前"
-              : t >= 68
-                ? "回復後"
-                : disruptive
-                  ? "限制中"
-                  : state.key === "benign"
-                    ? "監測中"
-                    : "人工複核";
-          $("routerState").textContent = limited
-            ? "新連線 ≤ 1 / 秒"
-            : "正常通行";
-          $("ttlLabel").textContent = limited
-            ? "規則撤銷倒數 " + Math.ceil(s.ttl) + " 秒"
-            : t >= 68
-              ? disruptive
-                ? "規則已撤銷 · 通行已恢復"
-                : "未建立阻擋規則 · 維持通行"
-              : t >= 38
-                ? "保留監測／蒐證，不部署阻擋規則"
-                : "來源與背景流量都可通行";
-          const phase = t < 38 ? "before" : t < 68 ? "after" : "recovered",
-            cnt = net.counts[phase];
+          $("netMode").textContent = delivered ? "決定已送達" : "等待處置決定";
+          $("routerState").textContent = limited ? "限速決定" : "正常通行";
+          $("ttlLabel").textContent = delivered
+            ? "處置決定已送達 r1（示意）"
+            : "來源與背景流量都可通行";
+          const cnt = net.counts.before;
           $("netPassed").textContent = "通過 " + cnt.passed;
-          $("netDropped").textContent = "攔下 " + cnt.dropped;
+          $("netDropped").textContent = delivered ? "決定已送達" : "等待決定";
           $("netBackground").textContent = "正常 " + net.counts.background;
           $("networkDots").innerHTML = net.dots
             .map((d) => {
@@ -2859,7 +2978,7 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
                   (y - 4) +
                   ' l8 8 m-8 0 l8 -8" stroke="' +
                   color +
-                  '" stroke-width="2.5" opacity="' +
+                  '" stroke-width="4" opacity="' +
                   alpha +
                   '" filter="url(#light)"/>'
                 );
@@ -2869,9 +2988,9 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
                 x +
                 '" cy="' +
                 y +
-                '" r="3.3" fill="' +
+                '" r="5.5" fill="' +
                 color +
-                '" filter="url(#light)"/>'
+                '" stroke="#ffffff" stroke-width="1.3" filter="url(#light)"/>'
               );
             })
             .join("");
@@ -2879,14 +2998,6 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
             ? "跟隨流程 ✓"
             : "已固定此資料頁";
           $("follow").setAttribute("aria-pressed", String(state.follow));
-          document
-            .querySelectorAll("[data-tab]")
-            .forEach((el) =>
-              el.setAttribute(
-                "aria-pressed",
-                String(el.dataset.tab === state.tab),
-              ),
-            );
           const detailTick = Math.floor(t * 2);
           if (force || detailTick !== state.detailTick) {
             state.detailTick = detailTick;
@@ -3072,9 +3183,9 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
                 shownRgb.channels.join(", ") +
                 ")</code></p>"
               : "") +
-            '<p class="note">CTBM 採用每 3 個 payload bytes 組成 RGB 的教學映射。PBCNN 在本頁以「首格藍色時間差＋紅綠方向位元組」，不再採灰階；兩個模型的內容格共用四個範例的 byte 範圍 0–' +
+            '<p class="note">CTBM 暫保留每 3 個 payload bytes 組成 RGB 的教學映射。PBCNN 已依你們專案規劃改為「首格藍色時間差＋紅綠方向位元組」，不再採灰階；兩個模型的內容格共用四個範例的 byte 範圍 0–' +
             DISPLAY_RANGES.byteMax +
-            "，拉伸至 0–255；零值保留黑色。這是教學展示對比調整，不代表正式模型的輸入編碼或輸出。</p><p>目前已形成 <strong>" +
+            "，拉伸至 0–255；零值保留黑色。這是展示對比調整，原始資料與模型結果不變。</p><p>目前已形成 <strong>" +
             Math.floor(s.rows) +
             " / 8 列</strong>。</p></div></div>"
           );
@@ -3190,55 +3301,37 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
               .join("") +
             '<p class="note">動作：' +
             p.action +
-            "。正常監測與保留蒐證不需要部署阻擋規則。</p><h3>r1 指令" +
-            (s.t >= 68 && disruptive ? "：撤銷" : "：預覽") +
-            "</h3>" +
+            "。正常監測與保留蒐證不需要部署阻擋規則。</p><h3>r1 指令預覽</h3>" +
             (s.t >= 35
-              ? "<pre>" +
-                esc(
-                  (s.t >= 68 && disruptive
-                    ? ROLLBACK
-                    : commandsFor(state.key)
-                  ).join("\n"),
-                ) +
-                "</pre>"
+              ? "<pre>" + esc(commandsFor(state.key).join("\n")) + "</pre>"
               : '<div class="callout">策略完成前，尚未產生處置指令。</div>') +
-            '<p class="note">與原測試床相同的 iptables 形式；頁面不執行命令。限速允許每秒一個新連線，超額才 DROP。</p></div><div><h3>處置前後對照</h3><div class="comparison">' +
-            [
-              ["before", "處置前"],
-              ["after", "處置期間"],
-              ["recovered", "回復後"],
-            ]
-              .map(
-                ([key, label]) =>
-                  "<div><strong>" +
-                  label +
-                  "</strong><p>通過 " +
-                  net.counts[key].passed +
-                  "<br>攔下 " +
-                  net.counts[key].dropped +
-                  "</p></div>",
-              )
-              .join("") +
-            "</div><p>正常背景流量通過：<strong>" +
-            net.counts.background +
-            '</strong> 筆。</p><div class="callout">' +
+            '<p class="note">與原測試床相同的 iptables 形式；頁面不執行命令。限速允許每秒一個新連線，超額才 DROP。</p></div><div><h3>處置決定</h3><div class="callout">' +
+            (s.t >= COMMAND_ARRIVAL
+              ? "處置決定已送達 r1（示意）。"
+              : s.t >= 36
+                ? "處置決定正沿線傳往 r1。"
+                : "策略檢查完成後，將處置決定傳往 r1。") +
+            "</div><p>" +
             (disruptive
-              ? "規則在展示第 38 秒套用，第 68 秒撤銷。紅色光點在 r1 消散表示超額連線被丟棄；其他來源的背景流量在本示意中維持通行；相同受限來源的合法連線也可能受限。"
+              ? "決定內容：限制指定來源對目標服務的新連線，每秒允許一個，超額丟棄。"
               : state.key === "benign"
                 ? "正常情境只監測，所有流量維持通行。"
-                : "複核情境不部署阻擋規則，保留事件與證據供人工處理。") +
-            '</div><p class="note">數字由本頁合成交易計算，非原專案實驗成果；每秒最多顯示 8 個來源光點，計數仍包含全部交易。此圖保留 s1／s2／s3 與三個隔離網段，HTTP 洪流以單一測試來源示意，不宣稱重現分散式攻擊。</p></div></div>'
+                : "複核情境保留事件與證據，交由人工處理。") +
+            "</p><p>決定送達前的合成流量：來源通過 " +
+            net.counts.before.passed +
+            " 筆，正常背景通過 " +
+            net.counts.background +
+            ' 筆。</p><p class="note">展示在指令送達後結束；自動版立即進入下一個情境。此圖保留 s1／s2／s3 與三個網段，數字由合成交易計算，非實測結果。</p></div></div>'
           );
         }
         const aboutHTML =
-          '<h2>展示依據與範圍</h2><p>這是一個可離線操作的教學展示。目的是讓觀眾看見封包編碼、檢索、稽核與處置的關係。</p><ul class="help-list"><li><strong>實際計算：</strong>payload 位元組轉色碼、529 維向量串接與正規化、cosine similarity、Top-5 排序，以及簡化連線限速的通過／攔下計數。</li><li><strong>人工合成：</strong>封包、模型表徵、分類與信心、案例內容，以及 LLM 稽核回覆。沒有執行 CTBM、PBCNN、Llama 或 Mininet。</li><li><strong>模型輸入：</strong>公開專案透過外部來源載入完整前處理；CTBM 以每三個 payload bytes 映射一個 RGB 像素作教學簡化，未重現訓練時的完整編碼。PBCNN 依本頁教學設計：首格藍色表示同 flow 相鄰封包時間差，後續每 byte 依流入／流出放入紅／綠通道。內容與時間分別以四個範例共用範圍拉伸至 0–255；點格子可對照原始與展示 RGB，不更改原始資料。</li><li><strong>資料範圍：</strong>依原專案的 17 類合約與隔離 TCP 拓樸設計。第三方子模組另有 CICIDS2017／CSE-CIC-IDS2018 研究，但本頁不冒稱使用其原始資料，也不混用歷史 Fine-11 實驗。</li><li><strong>操作：</strong>按下任一情境就從頭播放；播放中再次按下，也會立即重新開始。點節點或色塊會暫停並開啟資料；可按播放繼續。</li><li><strong>時序：</strong>8 筆封包在展示中放慢輸入；模型輸入完成後才顯示結果。38–68 秒是 30 秒處置區間。可拖曳時間軸或按章節跳轉；2倍速時完整流程約36.5秒，30秒處置區間會壓縮為15秒的示意播放。</li></ul><p>本頁為獨立示意，正式方法與實測請依隨附說明文件查核。</p>';
+          '<h2>展示依據與範圍</h2><p>這是一個可離線操作的教學展示。目的是讓觀眾看見封包編碼、檢索、稽核與處置的關係。</p><ul class="help-list"><li><strong>實際計算：</strong>payload 位元組轉色碼、529 維向量串接與正規化、cosine similarity、Top-5 排序，以及指令送達前的合成連線計數。</li><li><strong>人工合成：</strong>封包、模型表徵、分類與信心、案例內容，以及 LLM 稽核回覆。沒有執行 CTBM、PBCNN、Llama 或 Mininet。</li><li><strong>模型輸入：</strong>公開專案透過外部來源載入完整前處理；CTBM 以每三個 payload bytes 映射一個 RGB 像素作教學簡化，未重現訓練時的完整編碼。PBCNN 依本頁教學設計：首格藍色表示同 flow 相鄰封包時間差，後續每 byte 依流入／流出放入紅／綠通道。內容與時間分別以四個範例共用範圍拉伸至 0–255；點格子可對照原始與展示 RGB，不更改原始資料。</li><li><strong>資料範圍：</strong>依原專案的 17 類合約與隔離 TCP 拓樸設計。第三方子模組另有 CICIDS2017／CSE-CIC-IDS2018 研究，但本頁不冒稱使用其原始資料，也不混用歷史 Fine-11 實驗。</li><li><strong>操作：</strong>按下任一情境就從頭播放；播放中再次按下，也會立即重新開始。點節點或色塊會暫停並開啟資料；可按播放繼續。</li><li><strong>時序：</strong>8 筆封包在展示中放慢輸入；模型輸入完成後才顯示結果。每個情境38秒，指令送達即結束；自動接續下一個情境。預設1倍速，可切換1.5倍或2倍速，2倍速每個情境19秒。頁面不模擬規則生效或期限回復。</li></ul><p>本頁為獨立示意，正式方法與實測請依隨附說明文件查核。</p>';
         function renderDetail(s, net) {
-          document
-            .querySelectorAll("[data-tab]")
-            .forEach((el) =>
-              el.classList.toggle("active", el.dataset.tab === state.tab),
-            );
+          document.querySelectorAll("[data-tab]").forEach((el) => {
+            const active = el.dataset.tab === state.tab;
+            el.classList.toggle("active", active);
+            el.setAttribute("aria-pressed", String(active));
+          });
           let html =
             state.tab === "traffic"
               ? detailTraffic(s)
@@ -3301,6 +3394,9 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
                 contract_source_revision:
                   "ede0cb0775aa4e542c6763c4d41496970ff59eaedab29d89b2db2d2f7d02566e",
                 current_playback_speed: state.speed,
+                playback: "automatic_cycle",
+                scenario_duration_seconds: DURATION,
+                scenario_order: SCENARIO_ORDER,
                 scenario: state.key,
                 display_time: state.time,
                 flow: flows[state.flow],
@@ -3341,7 +3437,7 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
         }
         function embedHelp() {
           modal(
-            '<h2>離線操作</h2><p>直接以瀏覽器開啟本HTML即可使用，不需登入、安裝或連接網路。</p><ol class="help-list"><li>選擇四種情境之一，按播放／暫停；預設2倍速，完整流程約36.5秒。</li><li>拖曳時間軸或點章節跳轉；點模型節點或輸入色格會暫停並展開資料。</li><li>Space播放／暫停，左右方向鍵前後5秒；輸入欄位、按鈕或對話框有焦點時不攔截原操作。</li><li>匯出JSON含示意資料來源與未執行模型／規則標記，不作實測證據。</li></ol><p>開啟減少動態效果時，選情境不會自動播放；可用章節靜態閱讀。本頁不提供真實模型或防火牆控制。</p>',
+            "<h2>離線操作</h2><p>直接以瀏覽器開啟此 HTML，不需登入或連網。頁面自動依序播放正常流量、DDoS、SSH 與人工複核四個合成情境；每個情境 38 秒，2 倍速為 19 秒。</p><p>可暫停、調整速度、拖曳時間軸或點章節。開啟節點說明會暫停，按播放才繼續。Space 切換播放，方向鍵前後 5 秒；輸入欄位與對話框保留原有鍵盤操作。</p><p>減少動態效果設定啟用時不自動播放。JSON 匯出是合成示意紀錄，並非模型或處置實測證據。</p>",
           );
         }
         function bind() {
@@ -3367,9 +3463,7 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
                 '<button data-tab="' + key + '">' + title + "</button>",
             )
             .join("");
-          $("chapters").innerHTML = CHAPTERS.filter(
-            (x) => !["ranking", "command"].includes(x.key),
-          )
+          $("chapters").innerHTML = CHAPTERS.filter((x) => x.key !== "ranking")
             .map(
               (x) =>
                 '<button type="button" data-chapter="' +
@@ -3422,14 +3516,14 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
               "<!doctype html>\n" + document.documentElement.outerHTML;
             if (document.querySelector("script[data-bundled]"))
               download(
-                "AI資安框架_離線互動展示.html",
+                "AI資安框架_自動循環展示.html",
                 window.__CLEAN_DOCUMENT__ || doc,
                 "text/html",
               );
             else {
               const a = document.createElement("a");
               a.href = "./offline.html";
-              a.download = "AI資安框架_離線互動展示.html";
+              a.download = "AI資安框架_自動循環展示.html";
               a.click();
             }
           };
@@ -3439,11 +3533,9 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
             );
             if (!target) return;
             const d = target.dataset;
+            if (!d.scenario) state.playing = false;
             if (d.scenario) {
-              setData(d.scenario);
-              state.follow = true;
-              state.chapter = "";
-              jump(0, !reducedMotion.matches);
+              startScenario(d.scenario);
             } else if (d.chapter !== undefined) {
               jump(Number(d.chapter), false);
             } else if (d.pixel) {
@@ -3556,6 +3648,24 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
             state.lastStamp = 0;
           });
         }
+        function startScenario(key) {
+          if (
+            document.activeElement &&
+            $("inspector").contains(document.activeElement)
+          )
+            document.activeElement.blur();
+          if ($("dialog").open) $("dialog").close();
+          setData(key);
+          state.follow = true;
+          state.chapter = "";
+          state.detailTick = -1;
+          if (AUTO_MODE)
+            $("startHint").innerHTML =
+              "自動輪播 · " +
+              (SCENARIO_ORDER.indexOf(key) + 1) +
+              " / 4<br>本情境播完，自動切換下一個";
+          jump(0, !reducedMotion.matches);
+        }
         function frame(stamp) {
           if (state.playing && !document.hidden) {
             if (state.lastStamp)
@@ -3564,17 +3674,42 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
                 state.time +
                   Math.min(0.1, (stamp - state.lastStamp) / 1000) * state.speed,
               );
-            if (state.time >= DURATION) state.playing = false;
+            if (state.time >= DURATION) {
+              if (AUTO_MODE)
+                startScenario(
+                  SCENARIO_ORDER[
+                    (SCENARIO_ORDER.indexOf(state.key) + 1) %
+                      SCENARIO_ORDER.length
+                  ],
+                );
+              else state.playing = false;
+            }
             render();
           }
           state.lastStamp = stamp;
           requestAnimationFrame(frame);
         }
         bind();
-        setData("ddos");
+        const firstKey = AUTO_MODE ? SCENARIO_ORDER[0] : "ddos";
+        setData(firstKey);
         buildBoard();
-        setData("ddos");
-        render(true);
+        document.querySelectorAll("[data-pixel]").forEach((cell, index) => {
+          cell.setAttribute(
+            "aria-label",
+            "檢查" +
+              (cell.dataset.pixel.startsWith("ct") ? "CTBM" : "PBCNN") +
+              "輸入格 " +
+              cell.dataset.pixel,
+          );
+          cell.setAttribute("tabindex", index === 0 ? "0" : "-1");
+        });
+
+        setData(firstKey);
+        if (AUTO_MODE) {
+          document.querySelector(".mode").innerHTML =
+            "<i></i>自動循環展示 · 合成資料";
+          startScenario(firstKey);
+        } else render(true);
         requestAnimationFrame(frame);
       })();
     </script>

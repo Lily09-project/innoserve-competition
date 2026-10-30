@@ -17,7 +17,7 @@ ASSETS = [
     'docs/決賽五分鐘口語稿.md',
     'docs/決賽六題答詢口徑.md',
     'docs/現場控場與備援卡.md',
-    'deliverables/interactive/AI資安框架_離線互動展示.html',
+    'deliverables/interactive/AI資安框架_自動循環展示.html',
 ]
 INSTRUCTIONS = '''決賽離線展示包
 
@@ -31,7 +31,7 @@ INSTRUCTIONS = '''決賽離線展示包
 
 本包為離線簡報、影片與海報備援，不包含模型部署、私有權重、案例庫或逐筆事件。
 模型展示使用已配置的本機工作站及本機展示操作單。
-interactive內的HTML可直接離線開啟，預設2倍速，可暫停或跳轉章節。
+interactive內的HTML可直接離線開啟，自動循環四個情境，每個38秒，可暫停、調速或跳轉章節。
 HTML使用合成示意資料，不執行模型或網路規則，匯出數字不可當作實測成果。
 正式投影前關閉通知，隱藏個人路徑、帳號與可識別資訊。
 docs內另附五分鐘口語稿、六題答詢與現場備援卡，source內含頁序與時間設定。
