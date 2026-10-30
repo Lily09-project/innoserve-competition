@@ -15,7 +15,7 @@ from provenance import code_revision
 
 class OfflineExhibitTests(unittest.TestCase):
     def setUp(self):
-        self.html = (ROOT / 'deliverables/interactive/AI資安框架_離線互動展示.html').read_text(encoding='utf-8')
+        self.html = (ROOT / 'deliverables/interactive/AI資安框架_自動循環展示.html').read_text(encoding='utf-8')
 
     def test_formal_class_names_and_prompt_are_consistent(self):
         labels = re.search(r'const LABELS = (\[.*?\]);', self.html, re.S)[1]

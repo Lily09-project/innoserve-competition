@@ -8,9 +8,9 @@
 
 **[A2海報印刷PDF](deliverables/決賽海報_AI資安框架_A2.pdf)** · **[海報可編輯PPTX](deliverables/決賽海報_AI資安框架_A2.pptx)**
 
-**[下載離線互動展示HTML](deliverables/interactive/AI資安框架_離線互動展示.html)** · [互動展示操作與範圍](deliverables/interactive/README.md)
+**[下載自動循環展示HTML](deliverables/interactive/AI資安框架_自動循環展示.html)** · [互動展示操作與範圍](deliverables/interactive/README.md)
 
-互動展示可直接下載後用瀏覽器開啟，提供四種情境、暫停、調速、時間軸與資料觀察窗。它使用合成示意資料解說方法，不執行真實模型或網路規則；正式實測仍以本文結果與本機模型控制台為準。
+自動循環展示可直接下載後用瀏覽器開啟，依序播放四種情境，每個38秒；可暫停、調速、跳轉時間軸與查看資料。點節點說明時會暫停，閱讀後可繼續。它使用合成示意資料解說方法，不執行真實模型或網路規則；正式實測仍以本文結果與本機模型控制台為準。
 
 [下載離線簡報、影片與海報備援包](deliverables/決賽離線展示包.zip) · [簡報PDF備援](deliverables/決賽簡報_AI資安框架.pdf) · [正式版本封存與SHA256](https://github.com/Lily09-project/innoserve-competition/releases)
 
