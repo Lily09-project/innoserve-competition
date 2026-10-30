@@ -29,5 +29,6 @@ def font_runs(value):
             yield token, TYPOGRAPHY['cjk'] if re.fullmatch(PATTERN+'+', token) else TYPOGRAPHY['latin']
 
 
-def icon_fragment(name):
-    return re.sub(r'\{\{(\w+)\}\}', lambda match: PALETTE[match[1]], ICONS[name])
+def icon_fragment(name, **roles):
+    """Render a shared icon; roles remap palette slots, e.g. blue='cyan' on dark surfaces."""
+    return re.sub(r'\{\{(\w+)\}\}', lambda match: PALETTE[roles.get(match[1], match[1])], ICONS[name])

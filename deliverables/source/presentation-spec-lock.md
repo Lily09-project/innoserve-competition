@@ -23,34 +23,37 @@
 ## visual_style
 
 - visual_style: custom
-- visual_style_behavior: 白底與淺灰章節，結語淺灰底，深藍、藍與青綠重點，暖金少量提示，輕量標題，8px平面面板與原創圖示。
+- visual_style_behavior: 證據鏈視覺：封面與結尾深夜藍底，內頁白底；粗體黑體標題、訊號藍流程、青綠成果、琥珀色只標示目前步驟；四階段串成一條鏈作為共同主視覺，以留白與細線分區取代大量色塊。
 
 ## colors
 
 - background: #FFFFFF
-- secondary_bg: #F4F7FA
-- primary: #245EA8
-- accent: #E3A338
-- secondary_accent: #F4F7FA
-- title_text: #16324F
-- body_text: #243447
-- secondary_text: #526477
-- divider: #D7E1EA
+- secondary_bg: #F3F6FA
+- night_bg: #0B1B2E
+- primary: #1D4ED8
+- accent: #F59E0B
+- secondary_accent: #0F766E
+- title_text: #0B1B2E
+- body_text: #15233A
+- secondary_text: #52637A
+- divider: #DCE3EC
 
 ## typography
 
-- font_family: DFKai-SB, Times New Roman
-- title_family: DFKai-SB, Times New Roman
-- body_family: DFKai-SB, Times New Roman
-- body: 24
-- title: 44
-- subtitle: 28
-- annotation: 18
-- support: 21
+- font_family: Microsoft JhengHei, Segoe UI
+- title_family: Microsoft JhengHei, Segoe UI
+- body_family: Microsoft JhengHei, Segoe UI
+- body: 20
+- title: 38
+- subtitle: 24
+- annotation: 15
+- support: 18
 - footer: 14
-- card_title: 32
-- display: 56
-- qa_metric: 38
+- card_title: 26
+- display: 62
+- qa_metric: 46
+- statement: 30
+- count: 52
 
 ## icons
 
@@ -84,4 +87,4 @@
 - HTML named entities in text; write typography as raw Unicode and escape XML reserved characters
 
 
-<!-- visual refinement 2026-10-29: original shared framework emblem on cover, blue title rule, discreet progress marks, outlined model branches and QA rails; existing page content, charts, notes and order retained. -->
+<!-- visual system 2026-10-30: evidence-chain redesign; night cover and ending, bold sans headlines, four-lane architecture, chain motif and amber current-step marks; page order, data, notes and Q&A content retained. -->

@@ -44,7 +44,7 @@
 - **Mode**: custom
 - **Mode Behavior**: 一頁一個主張，以方法流程引出實測結果。
 - **Visual style**: custom
-- **Visual Style Behavior**: 白底與淺灰章節，結語淺灰底#F4F7FA；輕量大標題、8px資訊面板、共用平面向量圖示。
+- **Visual Style Behavior**: 證據鏈視覺：封面與結尾深夜藍#0B1B2E，內頁白底；粗體黑體標題、四節點證據鏈主視覺、以留白與細線分區。
 - **Theme**: 相同事件的四階段延續。
 - **Tone**: 正式、簡潔、可核對。
 
@@ -53,13 +53,13 @@
 | Role | HEX | Purpose |
 | --- | --- | --- |
 | Background | #FFFFFF | light canvas |
-| Secondary background | #F4F7FA | pale gray canvas |
-| Primary | #245EA8 | main emphasis |
-| Accent | #E3A338 | key evidence and active state |
-| Title | #16324F | headline |
-| Secondary accent | #F4F7FA | light panels |
-| Body text | #243447 | light ink |
-| Secondary text | #526477 | captions |
+| Secondary background | #F3F6FA | pale section panels |
+| Primary | #1D4ED8 | flow and steps |
+| Accent | #F59E0B | current step, packets and chapter marks |
+| Title | #0B1B2E | headline and night canvas |
+| Secondary accent | #0F766E | method outputs and result figures |
+| Body text | #15233A | ink |
+| Secondary text | #52637A | captions |
 | Divider | #D7E1EA | hairline |
 
 ### AI Image Strategy
@@ -75,10 +75,10 @@
 
 | Role | Character (Reference) | Primary | English if non-English | Fallback tail |
 | --- | --- | --- | --- | --- |
-| Title | light | DFKai-SB | Times New Roman | none |
-| Body | clear | DFKai-SB | Times New Roman | none |
-- **Title stack**: DFKai-SB, Times New Roman
-- **Body stack**: DFKai-SB, Times New Roman
+| Title | bold | Microsoft JhengHei | Segoe UI | none |
+| Body | clear | Microsoft JhengHei | Segoe UI | none |
+- **Title stack**: Microsoft JhengHei, Segoe UI
+- **Body stack**: Microsoft JhengHei, Segoe UI
 
 ### Font Size Hierarchy
 
@@ -270,7 +270,7 @@
 
 ## XI. Script-specific fonts
 
-中文及中文標點使用標楷體DFKai-SB；英文、數字與其他符號使用Times New Roman，混合文字在同一文字框依字元分段。影片預留頁置於封面後，第2頁，影片以內嵌MP4置入，進入第2頁自動播放一次，結束停留該頁。
+中文及中文標點使用微軟正黑體Microsoft JhengHei；英文、數字與其他符號使用Segoe UI，混合文字在同一文字框依字元分段。影片預留頁置於封面後，第2頁，影片以內嵌MP4置入，進入第2頁自動播放一次，結束停留該頁。
 
 ## XII. Embedded opening film
 
@@ -294,7 +294,12 @@
 
 ## XVII. Unified visual and typography contract
 
-海報、PPT、影片共同讀取palette.json、typography.json與icons.json。中文與中文標點使用DFKai-SB，英文、數字、其他符號使用Times New Roman。原始立體素材不再進入正式成品；四個共用平面圖示、影片設備、原生線稿均用同一線條與填色。無陰影或漸層。
+海報、PPT、影片共同讀取palette.json、typography.json與icons.json。中文與中文標點使用Microsoft JhengHei，英文、數字、其他符號使用Segoe UI。原始立體素材不再進入正式成品；四個共用平面圖示、影片設備、原生線稿均用同一線條與填色。無陰影或漸層。
 
 
 <!-- visual refinement 2026-10-29: original shared framework emblem on cover, blue title rule, discreet progress marks, outlined model branches and QA rails; existing page content, charts, notes and order retained. -->
+
+
+## 證據鏈視覺系統（2026-10-30）
+
+依擁有者指示全面重做美感，取代上方白底配色精修段落的色值與字型：深夜藍#0B1B2E封面、結尾與影片，白底內頁，訊號藍#1D4ED8流程、青綠#0F766E成果、琥珀#F59E0B只標示目前步驟；中文微軟正黑體、英文數字Segoe UI，標題粗體。第3頁架構改為四條直欄＋事件 ID 軸，封面與結尾使用四節點證據鏈。頁序、內容、數據、講者稿與30秒影片時間軸不變。完整規則見[DESIGN.md](../../design-system/DESIGN.md)。

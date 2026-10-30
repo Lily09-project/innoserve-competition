@@ -103,6 +103,7 @@ class PublicResultsTests(unittest.TestCase):
 
     def test_deck_metadata_namespaces_and_light_backgrounds(self):
         import io
+        typography = json.loads((ROOT / 'design-system/typography.json').read_text(encoding='utf-8'))
         import xml.etree.ElementTree as ET
         with zipfile.ZipFile(ROOT / "deliverables/決賽簡報_AI資安框架.pptx") as archive:
             core = archive.read("docProps/core.xml")
@@ -128,8 +129,8 @@ class PublicResultsTests(unittest.TestCase):
                 for run in slide.findall(".//a:r", ns):
                     properties = run.find("a:rPr", ns)
                     self.assertIsNotNone(properties)
-                    self.assertEqual(properties.find("a:latin", ns).get("typeface"), "Times New Roman")
-                    self.assertEqual(properties.find("a:ea", ns).get("typeface"), "DFKai-SB")
+                    self.assertEqual(properties.find("a:latin", ns).get("typeface"), typography["latin"])
+                    self.assertEqual(properties.find("a:ea", ns).get("typeface"), typography["cjk"])
                 fill = slide.find(".//p:bg/p:bgPr/a:solidFill", ns)
                 self.assertIsNotNone(fill)
                 color = list(fill)[0]
@@ -141,7 +142,9 @@ class PublicResultsTests(unittest.TestCase):
                 else:
                     resolved = color.get("val")
                 palette = json.loads((ROOT / 'design-system/palette.json').read_text(encoding='utf-8'))
-                self.assertIn(resolved, (palette['white'].lstrip('#'), palette['gray'].lstrip('#')))
+                # Night canvas only for the cover and ending; content pages stay light.
+                allowed = ('navy',) if number in (1, 9) else ('white', 'gray')
+                self.assertIn(resolved, tuple(palette[role].lstrip('#') for role in allowed), number)
 
     def test_current_documentation_and_movie_contract(self):
         from check_delivery_docs import audit

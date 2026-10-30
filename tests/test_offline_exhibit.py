@@ -50,7 +50,8 @@ class OfflineExhibitTests(unittest.TestCase):
         palette = json.loads((ROOT / 'design-system/palette.json').read_text())
         for role in ('navy', 'blue', 'teal', 'gold', 'ink', 'gray', 'muted'):
             self.assertIn(palette[role].lower(), self.html.lower())
-        for value in ('DFKai-SB', 'Times New Roman', 'unicode-range:', 'prefers-reduced-motion',
+        typography = json.loads((ROOT / 'design-system/typography.json').read_text(encoding='utf-8'))
+        for value in (typography['cjk'], typography['latin'], 'unicode-range:', 'prefers-reduced-motion',
                       'id="playPause"', 'id="restart"', 'id="seek"', 'id="speed"'):
             self.assertIn(value, self.html)
 
@@ -64,7 +65,7 @@ class OfflineExhibitTests(unittest.TestCase):
             self.assertIn('#' + color[:6], allowed, value)
         self.assertNotIn('fill="hsl(', self.html)
         self.assertNotIn('background:hsl(', self.html)
-        for unwanted in ('Consolas', 'Segoe UI', 'Microsoft JhengHei'):
+        for unwanted in ('Consolas', 'Times New Roman', 'DFKai-SB'):
             self.assertNotIn(unwanted, self.html)
 
     def test_four_stage_navigation_has_explicit_labels_and_boundaries(self):

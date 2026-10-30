@@ -1,4 +1,4 @@
-param([string]$Root = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path,
+﻿param([string]$Root = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path,
       [switch]$CorrectText,
       [string]$OutputFolder = 'validation\alignment-20261029')
 $ErrorActionPreference = 'Stop'

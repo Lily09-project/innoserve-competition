@@ -1,13 +1,14 @@
 const assert = require('node:assert/strict');
 const palette = require('../design-system/palette.json');
+const typography = require('../design-system/typography.json');
 (async () => {
   const {frameSvg, duration, chapters,controlTimeline,playbackSpeed,presentationDuration,maxDuration} = await import('../media/film/scene.mjs');
   const {JSDOM} = require('jsdom');
   assert.equal(duration, 60);
   assert.equal(chapters.at(-1).title,'展示結束');
   assert.ok(frameSvg(59.9).includes('展示結束'));
-  assert.ok(frameSvg(59.9).includes('DFKai-SB'));
-  assert.ok(frameSvg(59.9).includes('Times New Roman'));
+  assert.ok(frameSvg(59.9).includes(typography.cjk));
+  assert.ok(frameSvg(59.9).includes(typography.latin));
   assert.ok(playbackSpeed>=1.5);
   assert.ok(presentationDuration<=maxDuration && maxDuration<=40);
   assert.ok(frameSvg(24).includes(palette.teal), 'completed stages use the shared teal');
@@ -32,7 +33,7 @@ const palette = require('../design-system/palette.json');
     const document = new JSDOM(source, {contentType: 'image/svg+xml'}).window.document;
     assert.equal(document.querySelector('parsererror'), null);
     assert.ok(document.querySelector('svg'));
-    assert.ok([palette.white,palette.gray].includes(document.querySelector('svg > rect').getAttribute('fill')), 'film chapters must use light canvas');
+    assert.equal(document.querySelector('svg > rect').getAttribute('fill'), palette.navy, 'film chapters share the night canvas of the deck cover');
     assert.ok(!source.includes('NaN'));
   }
   console.log('Media smoke: deterministic, valid SVG across all chapters');

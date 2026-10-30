@@ -41,7 +41,7 @@
 | 離線包 | 簡報、影片、海報、口語稿、答詢、備援卡、互動HTML及SHA256清單 | [包裝程式](scripts/package_finals.py) |
 | 驗收索引 | 正式檔案、來源、預覽與實測彙整的雜湊及驗收範圍 | [交付清單](deliverables/source/delivery-manifest.json)、[實測索引](deliverables/source/release-validation.json) |
 
-三種成果共用白底／極淺灰底、深藍與藍色流程、青綠主要方法及少量暖金提示，中文及中文標點使用標楷體DFKai-SB，其他文字使用Times New Roman。簡報關閉換頁特效與裝飾動畫，保留第2頁的內嵌媒體時序。報告規劃為五分鐘含影片，另留一分鐘緩衝；現場上限六分鐘，答詢七分鐘。
+簡報、海報、影片與互動展示共用證據鏈視覺系統：深夜藍封面／結尾／影片、白底內頁，訊號藍流程、青綠成果與少量琥珀標示目前步驟；中文及中文標點使用微軟正黑體Microsoft JhengHei，其他文字使用Segoe UI。簡報關閉換頁特效與裝飾動畫，保留第2頁的內嵌媒體時序。報告規劃為五分鐘含影片，另留一分鐘緩衝；現場上限六分鐘，答詢七分鐘。
 
 海報加豐版補入適用對象、各階段產物、FTP／SSH、HTTP型DDoS與Bot策略例子，以及六種隔離情境的規則／監測／蒐證路徑。所有正式交付物保持匿名；公開儲存庫的帳號資訊不放進競賽投影或海報。
 
@@ -223,7 +223,7 @@ python scripts/media_results.py --check
 
 此步驟只驗證既有彙整並重建媒體數據，不執行或替代模型實驗。若指標改變，須重製媒體、預覽及離線包後，再執行release_inventory與交付檢查。快照包含四份來源的雜湊與共同指標；來源變更而快照未更新時，產生器會停止，避免輸出舊數據。CI會檢查快照、文件連結及交付manifest，包含12張公開SVG。
 
-媒體重製使用`scripts/render_product_film.mjs`，設定`FFMPEG_BINARY`並使用新的輸出目錄；製作工作站須安裝標楷體與Times New Roman。舊的`render_film_resvg.py`已停用，執行會回報錯誤且不產生影片，避免替換成不符規格的字型。完整製作及交付同步步驟見[來源說明](deliverables/source/README.md)。
+媒體重製使用`scripts/render_product_film.mjs`，設定`FFMPEG_BINARY`並使用新的輸出目錄；製作工作站使用Windows內建的微軟正黑體與Segoe UI。舊的`render_film_resvg.py`已停用，執行會回報錯誤且不產生影片，避免替換成不符規格的字型。完整製作及交付同步步驟見[來源說明](deliverables/source/README.md)。
 
 ### 6. 交付驗證與封裝
 
