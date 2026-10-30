@@ -110,6 +110,15 @@ class FinalsDeliveryTests(unittest.TestCase):
             for phrase in ('互補判定', '任務證據', '受控可追溯', '保留正式分類', '本機AI', '到期回復'):
                 self.assertIn(phrase, content)
 
+    def test_poster_comparison_scale_is_explicit_and_zero_based(self):
+        ns = {'a': 'http://schemas.openxmlformats.org/drawingml/2006/main'}
+        with zipfile.ZipFile(ROOT / 'deliverables/決賽海報_AI資安框架_A2.pptx') as archive:
+            root = ET.fromstring(archive.read('ppt/slides/slide1.xml'))
+            labels = {''.join(p.itertext()) for p in root.findall('.//a:t', ns)}
+            self.assertTrue({'0%', '50%', '100%'}.issubset(labels))
+        source = (ROOT / 'scripts/presentation/build_a2_poster.py').read_text(encoding='utf-8')
+        self.assertIn('94*value/100', source)
+
     def event(self):
         evidence = [{'rank': i+1, 'label_id': 2, 'label': 'SSH-Bruteforce', 'similarity': .9, 'case_id': 'private-case-'+str(i)} for i in range(5)]
         judge = {'assessment': 'support', 'mode': 'live_local_llm_inference',

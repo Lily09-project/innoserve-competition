@@ -208,7 +208,11 @@ def build():
         rect(64,y+2,94,6,PALE)
         rect(64,y+2,94*value/100,6,TEAL if i==2 else '7294A9')
         text(161,y,39,10,f'{value:.2f}%',21,BLUE if i==2 else INK,i==2,PP_ALIGN.RIGHT)
-    text(16,535,184,9,f'整體準確率{m["accuracy"]*100:.2f}%·固定17類分類',16,MUTED)
+    for tick in (0, 50, 100):
+        x = 64 + 94*tick/100
+        line(x,530,x,532,LINE,.6)
+        text(x-9,532,18,6,str(tick)+'%',12,MUTED,align=PP_ALIGN.CENTER)
+    text(16,540,184,9,f'整體準確率{m["accuracy"]*100:.2f}%·固定17類分類',16,MUTED)
     line(210,470,210,549)
     r,j=data['retrieval'],data['judge']
     text(220,470,184,10,f'{m["bank_rows"]:,}筆訓練案例／{m["queries"]}筆查詢',17)

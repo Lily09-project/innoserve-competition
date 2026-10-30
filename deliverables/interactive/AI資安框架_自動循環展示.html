@@ -1528,6 +1528,51 @@
       tr:focus-within {
         background: var(--teal-tint);
       }
+      .board-scroll {
+        overflow: auto;
+      }
+      #board {
+        width: var(--diagram-width, 100%);
+        max-width: none;
+      }
+      .view-tools {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .view-tools label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .view-tools select {
+        padding: 8px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: white;
+        color: var(--ink);
+      }
+      #focusView[aria-pressed="true"] {
+        background: var(--teal-tint);
+        border-color: var(--teal);
+        color: var(--teal);
+      }
+      body.focus-view main {
+        max-width: none;
+        padding: 16px;
+      }
+      body.focus-view .masthead,
+      body.focus-view .roadmap,
+      body.focus-view .controls,
+      body.focus-view .inspector,
+      body.focus-view footer {
+        display: none;
+      }
+      .board-scroll:focus-visible {
+        outline: 3px solid var(--blue);
+        outline-offset: 3px;
+      }
     </style>
   </head>
   <body data-playback="auto">
@@ -1681,7 +1726,12 @@
             <span class="legend-packet"></span>封包</span
           >
         </div>
-        <div class="board-scroll">
+        <div
+          class="board-scroll"
+          tabindex="0"
+          role="region"
+          aria-label="方法流程圖，可用方向鍵捲動"
+        >
           <svg
             id="board"
             viewBox="0 0 1600 640"
@@ -1689,6 +1739,17 @@
           ></svg>
         </div>
         <div class="stage-bottom">
+          <div class="view-tools" aria-label="圖面檢視">
+            <label for="diagramZoom"
+              >圖面<select id="diagramZoom">
+                <option value="100">適合寬度</option>
+                <option value="125">125%</option>
+                <option value="150">150%</option>
+                <option value="200">200%</option>
+              </select></label
+            >
+            <button id="focusView" aria-pressed="false">專注展示</button>
+          </div>
           <span id="stageMessage">同一筆資料，同步形成兩種模型輸入。</span
           ><span class="mobile-hint">可左右滑動查看完整光流板</span
           ><button id="openDetail" class="text-button">
@@ -3770,6 +3831,8 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
           render(true);
         }
         function inspect(tab, scroll = true) {
+          if (document.body.classList.contains("focus-view"))
+            $("focusView").click();
           state.tab = tab;
           state.playing = false;
           state.follow = false;
@@ -3853,6 +3916,28 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
           );
         }
         function bind() {
+          $("diagramZoom").onchange = () => {
+            const zoom = Number($("diagramZoom").value);
+            if (![100, 125, 150, 200].includes(zoom)) return;
+            $("board").style.setProperty("--diagram-width", zoom + "%");
+          };
+          const focusView = (enabled) => {
+            document.body.classList.toggle("focus-view", enabled);
+            $("focusView").setAttribute("aria-pressed", String(enabled));
+            $("focusView").textContent = enabled ? "返回完整畫面" : "專注展示";
+          };
+          $("focusView").onclick = () =>
+            focusView(!document.body.classList.contains("focus-view"));
+          document.addEventListener("keydown", (e) => {
+            if (
+              e.key === "Escape" &&
+              document.body.classList.contains("focus-view") &&
+              !$("dialog").open
+            ) {
+              focusView(false);
+              $("focusView").focus();
+            }
+          });
           $("scenarios").innerHTML = Object.entries(SCENARIOS)
             .map(
               ([key, s]) =>
@@ -4043,7 +4128,7 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
             }
             if (
               e.target.closest?.(
-                "button,input,select,textarea,a,summary,[contenteditable=true]",
+                "button,input,select,textarea,a,summary,[contenteditable=true],.board-scroll",
               ) ||
               $("dialog").open
             )
