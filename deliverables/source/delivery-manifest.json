@@ -22,20 +22,20 @@
       "sha256": "86653758099d489c828767f59eec0ee811a4a047600348d7499d02e5bb4a7943"
     },
     "deliverables/決賽海報_AI資安框架_A2.pptx": {
-      "bytes": 137600,
-      "sha256": "3497381c363a6b64a0692468157350c75e4041ffc2f32d1a15b608495cf9703a"
+      "bytes": 135110,
+      "sha256": "f4dbd0ea0106e02845d4034cdbe5672995b04b74da6020f05855ef19dd11bc72"
     },
     "deliverables/決賽海報_AI資安框架_A2.pdf": {
-      "bytes": 220657,
-      "sha256": "1384c3573fc3bb23fb5ff4cd9d52ff28ec3e4cff9dd2e3e6c917cadfaeb4200c"
+      "bytes": 217567,
+      "sha256": "eae3195161633c62735b4da057e19cc13ae4b76c88c1f6ab170ddfa5d5a5773a"
     },
     "deliverables/決賽離線展示包.zip": {
-      "bytes": 4327927,
-      "sha256": "1ca8746d44d7fb32de64bc753913b2d93047d48ac1c6cc5f233b5ed1d65c2e29"
+      "bytes": 4326212,
+      "sha256": "081697c78df0807eb7315b516753d2cc811e812c06a20baf8feb353dcf5f039f"
     },
     "deliverables/source/release-validation.json": {
       "bytes": 10198,
-      "sha256": "dd23a83987162cbb05534f99941281d9456708dd8add01a03569431d9519a17f",
+      "sha256": "0c5a5d70b31984f3f27edd3abb6d9fef250fe9a2d0c738ad2db3894bf9573770",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/01_slide.svg": {
@@ -131,7 +131,7 @@
     "deliverables/source/finals-readiness.json": {
       "hash_normalization": "LF",
       "bytes": 3544,
-      "sha256": "6a462f97a3a6e61fb9157fe748d4d85ab22c5a3e4e250ba3580ee25128efc65f"
+      "sha256": "8f0f58bc6daa627e1b13b7410aff62ab6e6fe4fb40aa6b8a6b67c873e884a911"
     },
     "docs/決賽五分鐘口語稿.md": {
       "hash_normalization": "LF",
@@ -182,7 +182,7 @@
     2560,
     1072
   ],
-  "python_tests": 151,
+  "python_tests": 152,
   "website": "removed; API-only",
   "review": "151 Python tests, media smoke/data checks, offline exhibit loop tests, static native alignment and public delivery checks; no native playback.",
   "results_changed": true,
@@ -292,7 +292,7 @@
     "design-system/icons.json"
   ],
   "alignment": {
-    "native_text_anchors": 329,
+    "native_text_anchors": 322,
     "tolerance_pt": 0.1,
     "native_grid_checks": 12,
     "film_chapters": 9,
@@ -300,7 +300,7 @@
     "film_center_checks": 52,
     "errors": 0,
     "poster_print_safe_text_mm": 15,
-    "poster_title_center_delta_pt": 0.02252197265625
+    "poster_title_center_delta_pt": 0.025604248046875
   },
   "current_native_playback_verified": false,
   "design_reference_record": "docs/海報與影片參考轉譯.md",
@@ -447,12 +447,19 @@
     ],
     "poster_top5_pt": 32,
     "film_result_px": 60,
-    "native_text_anchors": 329,
+    "native_text_anchors": 322,
     "grid_checks": 12,
     "alignment_tolerance_pt": 0.1,
     "decoded_video_frames": 720,
     "final_mp4_sample_frames": 9,
     "native_playback_executed": false,
-    "real_browser_layout_verified": false
+    "real_browser_layout_verified": false,
+    "poster_title_pt": 44,
+    "poster_centered_sections": true,
+    "poster_advantages": [
+      "互補判定",
+      "任務證據",
+      "受控可追溯"
+    ]
   }
 }

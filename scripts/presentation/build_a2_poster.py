@@ -56,7 +56,7 @@ def build():
     def rect(x, y, w, h, fill=PALE, stroke=None):
         return shape(MSO_SHAPE.RECTANGLE, x, y, w, h, fill, stroke)
 
-    def text(x, y, w, h, content, size=18, color=INK, bold=False, align=PP_ALIGN.LEFT):
+    def text(x, y, w, h, content, size=18, color=INK, bold=False, align=PP_ALIGN.CENTER):
         if color == BLUE and '%' in content and (content.startswith('Top-5') or content.replace('.', '').replace('%', '').isdigit()):
             color = TEAL
             if content.startswith('Top-5'):
@@ -94,8 +94,7 @@ def build():
         slide.shapes.add_picture(str(ROOT / f'deliverables/source/flat-icon-{n}.png'), Mm(x), Mm(y), width=Mm(size), height=Mm(size))
 
     def section(y, number, title):
-        text(16, y, 12, 10, number, 20, BLUE, True)
-        text(31, y, 370, 10, title, 24, NAVY)
+        text(16, y, 388, 12, number+'  '+title, 25, NAVY, align=PP_ALIGN.CENTER)
 
     def module(x, y, number, title, image):
         rect(x, y, 184, 91, 'F0F2F3', LINE)
@@ -112,15 +111,15 @@ def build():
             line(x+29, y+46, x+35, y+37, BLUE, 2)
 
     # Editorial hierarchy: official name, one takeaway, four readable method lanes.
-    rect(16, 10, 388, 69, 'F0F2F3')
+    rect(16, 10, 388, 78, 'F0F2F3')
     text(16, 15, 388, 8, '資安技術組決賽作品', 14, BLUE, align=PP_ALIGN.CENTER)
-    title=text(16, 24, 388, 50, '融合新型內容相依時序方向模型\n入侵偵測與任務導向檢索增強稽核\n之 AI 資安框架', 34, NAVY, align=PP_ALIGN.CENTER)
+    title=text(16, 24, 388, 62, '融合新型內容相依時序方向模型\n入侵偵測與任務導向檢索增強稽核\n之 AI 資安框架', 44, NAVY, align=PP_ALIGN.CENTER)
     title.name='PosterTitle_Centered_210mm'
-    rect(190, 78, 40, 1.2, GOLD)
-    line(16, 85, 404, 85)
+    rect(190, 87, 40, 1.2, GOLD)
+    line(16, 90, 404, 90)
     text(16, 92, 388, 13, '從流量告警，走到有證據、可回復的處置', 26, NAVY)
     text(16, 105, 388, 9, '同一事件串起模型判定、相似案例、AI稽核與處置回條。', 19, MUTED)
-    text(16, 116, 388, 8, '面向校園與中小型組織的告警判讀，以案例證據協助核對事件，再依策略執行與回復。', 16, INK)
+    text(16, 116, 388, 8, '17類互補判定  ·  本機證據稽核  ·  同事件追溯  ·  策略受控回復', 18, TEAL)
     section(128, '01', '四階段方法，串成同一條事件鏈')
 
     stages = [('互補判定', '內容＋時序', 2), ('任務檢索', '表徵＋機率', 3),
@@ -133,9 +132,8 @@ def build():
         y = 145+i*56
         rect(16, y, 388, 50, 'EAF0F4' if i in (0,3) else PALE, LINE)
         rect(16, y, 1.5, 50, BLUE)
-        text(23, y+4, 10, 8, f'{i+1:02d}', 16, BLUE, True)
-        text(37, y+3, 73, 10, name, 23, BLUE)
-        text(37, y+14, 73, 8, detail, 15, MUTED)
+        text(23, y+3, 90, 10, f'{i+1:02d}  '+name, 23, BLUE, True)
+        text(23, y+14, 90, 8, detail, 15, MUTED)
         if image:
             icon(image, 25, y+25, 21)
         else:
@@ -181,7 +179,7 @@ def build():
     for j, label in enumerate(('支持','複核','不確定')):
         node(322,261+j*14,76,12,label)
     # 04: allowed action, readback and expiry, with the review branch explicit.
-    text(120,317,278,10,'策略檢查：範圍、允許動作與期限',18,INK)
+    text(120,317,278,10,'策略檢查：範圍、動作與期限｜來源限速等',18,INK)
     for j,label in enumerate(('套用規則','讀回驗證','到期回復')):
         x=120+j*98
         node(x,330,78,16,label)
@@ -190,23 +188,23 @@ def build():
     rect(16,375,388,14,PALETTE['teal_tint'].lstrip('#'))
     text(20,375,380,14,'同一事件識別碼：正式分類／案例證據／稽核結論／處置回條',18,NAVY,align=PP_ALIGN.CENTER)
 
-    section(397, '02', '三項創新，對應具體事件與產物')
-    innovations = [('互補判定','CTBM讀取內容、時序與方向\nPBCNN補充局部位元組模式\n校準融合後輸出固定17類'),
-                   ('任務證據','512維表徵＋17維類別機率\n529維向量檢索Top-5案例\nAI附回支持／複核／不確定'),
-                   ('可追溯處置','FTP／SSH：登入防護\nHTTP型DDoS：來源限速\nBot限制C2；讀回及到期回復')]
+    section(397, '02', '三項優勢，從判定走到可追溯處置')
+    innovations = [('互補判定','內容、時間差與方向互補\n校準融合，固定17類輸出\nMacro-F1達93.05%'),
+                   ('任務證據','529維任務向量找Top-5案例\nAI核對判定，保留正式分類\n命中率97.62%'),
+                   ('受控可追溯','本機AI，事件資料留在本機\n同事件串接判定、證據與回條\n策略檢查、讀回及到期回復')]
     for i,(heading,copy) in enumerate(innovations):
         x=16+i*133
-        rect(x,411,14,1,GOLD)
-        if i:line(x-6,414,x-6,448)
-        text(x,413,122,11,heading,22,BLUE)
-        text(x,425,124,25,copy,16,INK)
+        rect(x,410,122,39,PALETTE['teal_tint'].lstrip('#'))
+        rect(x+50,411,22,1,GOLD)
+        text(x,413,122,11,heading,23,TEAL,align=PP_ALIGN.CENTER)
+        text(x+2,425,118,24,copy,16.5,INK,align=PP_ALIGN.CENTER)
 
     section(455,'03','以分階段實測呈現效果')
     text(16,470,184,10,f'相同{m["detection_n"]:,}筆測試的 Macro-F1',17)
     for i,name in enumerate(('PBCNN','CTBM','OOF Gate')):
         y=484+i*17
         value=data['detection'][name]['macro_f1']*100
-        text(16,y,44,10,name,18,BLUE if i==2 else INK,i==2)
+        text(16,y,44,10,name,18,BLUE if i==2 else INK,i==2,PP_ALIGN.LEFT)
         rect(64,y+2,94,6,PALE)
         rect(64,y+2,94*value/100,6,TEAL if i==2 else '7294A9')
         text(161,y,39,10,f'{value:.2f}%',21,BLUE if i==2 else INK,i==2,PP_ALIGN.RIGHT)
@@ -214,7 +212,7 @@ def build():
     line(210,470,210,549)
     r,j=data['retrieval'],data['judge']
     text(220,470,184,10,f'{m["bank_rows"]:,}筆訓練案例／{m["queries"]}筆查詢',17)
-    text(220,482,184,12,f'Top-5  {r["top5"]*100:.2f}%',28,BLUE,True)
+    text(220,481,184,15,f'Top-5  {r["top5"]*100:.2f}%',32,TEAL,True)
     text(220,497,184,10,f'MRR@5  {r["mrr5"]*100:.2f}%·訓練／查詢重疊{m["overlap"]}',15,MUTED)
     for i,(name,key) in enumerate((('支持','support'),('複核','review'),('不確定','uncertain'))):
         x=220+i*63
