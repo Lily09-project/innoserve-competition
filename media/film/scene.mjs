@@ -13,10 +13,9 @@ export const maxDuration=40;
 export const chapters=[{at:0,title:'作品名稱'},{at:5,title:'網路拓樸'},{at:12,title:'流量表徵'},{at:21,title:'17類判定'},{at:30,title:'證據檢索'},{at:38,title:'本機AI稽核'},{at:45,title:'受控處置'},{at:52,title:'實測成果'},{at:57,title:'展示結束'}];
 export const controlTimeline={start:45,apply:46,readback:48,expiry:50};
 export const chapterAt=t=>Math.max(0,chapters.findLastIndex(c=>t>=c.at));
-// Night canvas shared with the deck cover so slide 1 -> 2 reads as one scene.
+// Light canvas: navy headings, blue accents, white panels; text on coloured fills uses W.
 const B=palette.blue,G=palette.gold,T=palette.teal,N=palette.navy,FONT=typography.latin+', '+typography.cjk;
-const PANEL=palette.night_panel,EDGE=palette.night_line,FG=palette.white,SUB=palette.on_dark_muted,FLOW=palette.cyan;
-const ON_DARK={white:'navy',blue:'cyan',gray:'night_line',blue_tint:'night_panel',line:'night_line'};
+const BG=palette.gray,PANEL=palette.white,EDGE=palette.line,WIRE=palette.blue_muted,FG=N,SUB=palette.muted,FLOW=B,W=palette.white,TINT=palette.blue_tint;
 const resolveColors=source=>source.replace(/#[0-9a-fA-F]{6}\b/g,hex=>palette[palette.legacy_roles[hex.slice(1).toUpperCase()]]||hex);
 const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
 // Motion curves; rnd is a fixed hash so every frame is reproducible.
@@ -32,11 +31,11 @@ const tx=(x,y,s,z=24,c=FG,w=400,anchor='start',extra='')=>{
 };
 const box=(x,y,w,h,c,r=10,extra='')=>`<rect x="${f(x)}" y="${f(y)}" width="${f(Math.max(0,w))}" height="${f(Math.max(0,h))}" rx="${r}" fill="${c}"${extra}/>`;
 const frame=(x,y,w,h,c,r=10,width=1.5)=>`<rect x="${f(x)}" y="${f(y)}" width="${f(w)}" height="${f(h)}" rx="${r}" fill="none" stroke="${c}" stroke-width="${width}"/>`;
-const seg=(x,y,a,b,c=EDGE,w=3,extra='')=>`<path d="M${f(x)} ${f(y)}L${f(a)} ${f(b)}" fill="none" stroke="${c}" stroke-width="${w}" stroke-linecap="round"${extra}/>`;
+const seg=(x,y,a,b,c=WIRE,w=3,extra='')=>`<path d="M${f(x)} ${f(y)}L${f(a)} ${f(b)}" fill="none" stroke="${c}" stroke-width="${w}" stroke-linecap="round"${extra}/>`;
 const grp=(body,{x=0,y=0,s=1,o=1,cx=0,cy=0}={})=>`<g opacity="${f(clamp(o))}" transform="translate(${f(x+cx)} ${f(y+cy)}) scale(${s.toFixed(4)}) translate(${-cx} ${-cy})">${body}</g>`;
 const pop=(body,cx,cy,v)=>grp(body,{s:back(v),o:v*3,cx,cy});
-const flatIcon=(name,x,y,size,roles=ON_DARK)=>`<g transform="translate(${f(x)} ${f(y)}) scale(${size/64})">${icons[name].replace(/\{\{(\w+)\}\}/g,(_,key)=>palette[roles[key]||key])}</g>`;
-const emblem=(x,y,size)=>flatIcon('framework',x,y,size,{white:'navy',blue_tint:'night_panel',line:'night_line',blue:'cyan',gray:'night_line'});
+const flatIcon=(name,x,y,size,roles={})=>`<g transform="translate(${f(x)} ${f(y)}) scale(${size/64})">${icons[name].replace(/\{\{(\w+)\}\}/g,(_,key)=>palette[roles[key]||key])}</g>`;
+const emblem=(x,y,size)=>flatIcon('framework',x,y,size);
 const chip=(cx,cy,w,h,label,z,fill,color=FG)=>box(cx-w/2,cy-h/2,w,h,fill,h/2)+tx(cx,cy+z*.36,label,z,color,700,'middle');
 function arc(cx,cy,r1,r2,a0,a1){
  const p=(r,a)=>`${f(cx+r*Math.cos(a))} ${f(cy+r*Math.sin(a))}`;
@@ -59,7 +58,7 @@ function along(points,u){
 }
 function envelope(x,y,c,size=1){
  const w=22*size,h=15*size;
- return box(x-w/2,y-h/2,w,h,c,2.5)+`<path d="M${f(x-w/2)} ${f(y-h/2)}L${f(x)} ${f(y+h*.12)}L${f(x+w/2)} ${f(y-h/2)}" fill="none" stroke="${N}" stroke-width="1.6" stroke-linejoin="round"/>`;
+ return box(x-w/2,y-h/2,w,h,c,2.5)+`<path d="M${f(x-w/2)} ${f(y-h/2)}L${f(x)} ${f(y+h*.12)}L${f(x+w/2)} ${f(y-h/2)}" fill="none" stroke="${W}" stroke-width="1.6" stroke-linejoin="round"/>`;
 }
 function packet(points,u,c,size=1,trail=.03){
  let s='';
@@ -90,9 +89,9 @@ function floor(o){
 function block(X,Y,accent){
  const q=46,h=26,P=list=>list.map(p=>p.map(f).join(' ')).join('L');
  return `<ellipse cx="${f(X)}" cy="${f(Y+30)}" rx="64" ry="20" fill="${accent}" opacity=".12"/>`
-  +`<path d="M${P([[X-q*.866,Y-h],[X,Y-h+q*.5],[X,Y+q*.5],[X-q*.866,Y]])}Z" fill="${PANEL}" stroke="${EDGE}"/>`
-  +`<path d="M${P([[X,Y-h+q*.5],[X+q*.866,Y-h],[X+q*.866,Y],[X,Y+q*.5]])}Z" fill="${N}" stroke="${EDGE}"/>`
-  +`<path d="M${P([[X,Y-h-q*.5],[X+q*.866,Y-h],[X,Y-h+q*.5],[X-q*.866,Y-h]])}Z" fill="${EDGE}" stroke="${accent}" stroke-width="2"/>`;
+  +`<path d="M${P([[X-q*.866,Y-h],[X,Y-h+q*.5],[X,Y+q*.5],[X-q*.866,Y]])}Z" fill="${TINT}" stroke="${WIRE}"/>`
+  +`<path d="M${P([[X,Y-h+q*.5],[X+q*.866,Y-h],[X+q*.866,Y],[X,Y+q*.5]])}Z" fill="${EDGE}" stroke="${WIRE}"/>`
+  +`<path d="M${P([[X,Y-h-q*.5],[X+q*.866,Y-h],[X,Y-h+q*.5],[X-q*.866,Y-h]])}Z" fill="${PANEL}" stroke="${accent}" stroke-width="2"/>`;
 }
 function device(key,t,v,accent=FLOW){
  const [X,Y]=at(key),bob=Math.sin(t*2.4+X/90)*4;
@@ -101,7 +100,7 @@ function device(key,t,v,accent=FLOW){
 }
 function cable(a,b,p,lit){
  const L=Math.hypot(b[0]-a[0],b[1]-a[1]);
- let s=seg(a[0],a[1],b[0],b[1],EDGE,4,` stroke-dasharray="${f(L)} ${f(L)}" stroke-dashoffset="${f(L*(1-clamp(p)))}"`);
+ let s=seg(a[0],a[1],b[0],b[1],WIRE,4,` stroke-dasharray="${f(L)} ${f(L)}" stroke-dashoffset="${f(L*(1-clamp(p)))}"`);
  if(p>=1)[.24,.76].forEach(r=>s+=`<circle cx="${f(a[0]+(b[0]-a[0])*r)}" cy="${f(a[1]+(b[1]-a[1])*r)}" r="5" fill="${lit?FLOW:G}"${lit?' filter="url(#glow)"':''}/>`);
  return s;
 }
@@ -109,7 +108,7 @@ function network(t,{build,cables,lit,traffic,mirror=false,ruled=false,quiet=fals
  let s=floor(.55*clamp(build*2));
  LINKS.forEach(([a,b],k)=>s+=cable(at(a),at(b),cables-k*.12,lit));
  const [cx,cy]=at('core'),[ix,iy]=at('ids');
- s+=seg(cx,cy,ix,iy,EDGE,3,` stroke-dasharray="8 7" opacity="${f(clamp(cables))}"`)+tx((cx+ix)/2-14,(cy+iy)/2+8,'鏡像',17,SUB,700,'end');
+ s+=seg(cx,cy,ix,iy,WIRE,3,` stroke-dasharray="8 7" opacity="${f(clamp(cables))}"`)+tx((cx+ix)/2-14,(cy+iy)/2+8,'鏡像',17,SUB,700,'end');
  ['user','attack','core','gate','app','ids'].forEach((key,k)=>s+=device(key,t,(build*1.8-k*.14)/.5,key==='gate'&&ruled?G:key==='ids'?T:FLOW));
  if(traffic>0){
   const normal=['user','core','gate','app'].map(k=>up(at(k)));
@@ -157,7 +156,7 @@ function featureScene(t,local){
  const e=back(local/.5),open=ease((local-.5)/.4);
  s+=`<circle cx="220" cy="420" r="120" fill="url(#spot)"/>`;
  s+=grp(`<g filter="url(#glow)">${box(140,365,160,110,G,10)}</g><path d="M140 365L220 ${f(365+60-110*open)}L300 365" fill="${G}" stroke="${N}" stroke-width="4" stroke-linejoin="round"/><path d="M140 365L220 425L300 365" fill="none" stroke="${N}" stroke-width="4" stroke-linejoin="round"/>`,{s:e,o:e*2,cx:220,cy:420});
- const lanes=[['內容',FLOW],['時間差',B],['方向',G]];
+ const lanes=[['內容',FLOW],['時間差',T],['方向',G]];
  let tiles='';
  lanes.forEach(([label,c],L)=>{
   const y=310+L*100,start=.9+L*.35,front=520+(local-start)*520;
@@ -179,7 +178,7 @@ function featureScene(t,local){
  const win=back((local-5.2)/.5);
  if(local>5.2){
   const k=(x,y,dx,dy)=>`<path d="M${x} ${y+dy*26}V${y}H${x+dx*26}" fill="none" stroke="${FLOW}" stroke-width="5" stroke-linecap="round"/>`;
-  s+=grp(`<g filter="url(#glow)">${k(760,262,1,1)+k(1080,262,-1,1)+k(760,560,1,-1)+k(1080,560,-1,-1)}</g>`+box(760,262,320,298,FLOW,8,' fill-opacity=".07"')+chip(920,232,150,40,'流量切窗',20,FLOW,N),{s:win,o:win*2,cx:920,cy:411});
+  s+=grp(`<g filter="url(#glow)">${k(760,262,1,1)+k(1080,262,-1,1)+k(760,560,1,-1)+k(1080,560,-1,-1)}</g>`+box(760,262,320,298,FLOW,8,' fill-opacity=".07"')+chip(920,232,150,40,'流量切窗',20,FLOW,W),{s:win,o:win*2,cx:920,cy:411});
  }
  return ghost('FEATURE',t)+s;
 }
@@ -190,13 +189,13 @@ function detectScene(t,local){
  engines.forEach(([name,y,sub],k)=>{
   const v=(local-.3-k*.2)/.45;
   s+=seg(210,385,310,y,EDGE,3)+seg(530,y,640,385,EDGE,3);
-  s+=pop(`<ellipse cx="420" cy="${y}" rx="138" ry="62" fill="none" stroke="${FLOW}" stroke-width="2" stroke-dasharray="6 9" stroke-dashoffset="${f(-t*40)}"/><g filter="url(#glow)">${box(310,y-40,220,80,B,14)}</g>`+tx(420,y+10,name,30,FG,700,'middle')+tx(420,y+88,sub,16,SUB,400,'middle'),420,y,v);
+  s+=pop(`<ellipse cx="420" cy="${y}" rx="138" ry="62" fill="none" stroke="${FLOW}" stroke-width="2" stroke-dasharray="6 9" stroke-dashoffset="${f(-t*40)}"/><g filter="url(#glow)">${box(310,y-40,220,80,B,14)}</g>`+tx(420,y+10,name,30,W,700,'middle')+tx(420,y+88,sub,16,SUB,400,'middle'),420,y,v);
  });
  if(local>.8){
   s+=packet([[64,385],[210,385],[310,290]],(t*.5)%1,FLOW,.8)+packet([[64,385],[210,385],[310,480]],(t*.5+.5)%1,FLOW,.8);
   s+=packet([[530,290],[640,385]],(t*.7)%1,FLOW,.7)+packet([[530,480],[640,385]],(t*.7+.5)%1,FLOW,.7);
  }
- s+=pop(`<g filter="url(#glow)">${box(640,345,240,80,T,14)}</g>`+tx(760,395,'校準＋OOF Gate',24,FG,700,'middle'),760,385,(local-1.1)/.45);
+ s+=pop(`<g filter="url(#glow)">${box(640,345,240,80,T,14)}</g>`+tx(760,395,'校準＋OOF Gate',24,W,700,'middle'),760,385,(local-1.1)/.45);
  s+=seg(880,385,935,385,EDGE,3);
  const dv=back((local-1.7)/.5),spin=clamp((local-2.2)/3),lock=local>5.4;
  let dial='';
@@ -254,7 +253,7 @@ function auditScene(t,local){
  outs.forEach(([label,y,c],k)=>{
   const v=back((local-2.1-k*.22)/.45);
   if(local>2.1+k*.22)s+=seg(724,390,930,y,EDGE,3)+packet([[724,390],[930,y]],clamp((local-2.1-k*.22)/.6),c,.8,.02);
-  s+=grp(`<g filter="url(#glow)">${box(930,y-32,220,64,c,32)}</g>`+tx(1040,y+9,label,26,FG,700,'middle'),{s:v,o:v*2,cx:1040,cy:y});
+  s+=grp(`<g filter="url(#glow)">${box(930,y-32,220,64,c,32)}</g>`+tx(1040,y+9,label,26,c===EDGE?FG:W,700,'middle'),{s:v,o:v*2,cx:1040,cy:y});
  });
  return s+grp(tx(930,580,'三種結果，皆附案例依據',20,SUB),{o:ease((local-3.2)/.5)});
 }
@@ -267,7 +266,7 @@ function controlScene(t,local){
  const flash=clamp((t-controlTimeline.apply)/.5);
  if(flash>0&&flash<1)world+=`<circle cx="${gx}" cy="${gy-20}" r="${f(30+160*ease(flash))}" fill="none" stroke="${G}" stroke-width="${f(8*(1-flash))}" opacity="${f(1-flash)}"/>`;
  if(ruled){const v=back((t-controlTimeline.apply)/.4);world+=grp(`<g filter="url(#glow)">${box(gx-74,240,148,46,G,23)}</g>`+tx(gx,271,'規則生效',24,N,700,'middle'),{s:v,o:v*2,cx:gx,cy:263});}
- if(gone){const v=back((t-controlTimeline.expiry)/.4);world+=grp(`<g filter="url(#glow)">${box(gx-74,240,148,46,T,23)}</g>`+tx(gx,271,'到期回復',24,FG,700,'middle'),{s:v,o:v*2,cx:gx,cy:263});}
+ if(gone){const v=back((t-controlTimeline.expiry)/.4);world+=grp(`<g filter="url(#glow)">${box(gx-74,240,148,46,T,23)}</g>`+tx(gx,271,'到期回復',24,W,700,'middle'),{s:v,o:v*2,cx:gx,cy:263});}
  const shake=ruled&&((t*.13+.4)%1)*1.35>1&&((t*.13+.4)%1)*1.35<1.12?Math.sin(t*90)*3:0;
  let s=grp(world,{s:1.06-.04*inout(local/7),x:shake,cx:640,cy:440});
  s+=headline([['受控處置',FG],['到期自動回復',FLOW]],local,64,130,48);
@@ -275,7 +274,7 @@ function controlScene(t,local){
  let card=box(930,92,286,190,PANEL,16,' fill-opacity=".92"')+frame(930,92,286,190,EDGE,16)+tx(954,128,'策略回條',20,FLOW,700);
  steps.forEach(([label,when],k)=>{
   const y=172+k*42,done=t>=(steps[k+1]?.[1]??controlTimeline.expiry+.6),now=t>=when&&!done;
-  card+=`<circle cx="966" cy="${y-7}" r="12" fill="${done?T:now?G:'none'}" stroke="${done?T:now?G:EDGE}" stroke-width="2"/>`+(done?`<path d="M960 ${y-7}L965 ${y-2}L973 ${y-12}" fill="none" stroke="${FG}" stroke-width="2.5"/>`:'');
+  card+=`<circle cx="966" cy="${y-7}" r="12" fill="${done?T:now?G:'none'}" stroke="${done?T:now?G:EDGE}" stroke-width="2"/>`+(done?`<path d="M960 ${y-7}L965 ${y-2}L973 ${y-12}" fill="none" stroke="${W}" stroke-width="2.5"/>`:'');
   card+=tx(990,y,label,20,done||now?FG:SUB,700);
  });
  const p=clamp((t-controlTimeline.apply)/(controlTimeline.expiry-controlTimeline.apply)),C=2*Math.PI*16;
@@ -307,7 +306,7 @@ function endScene(t,local){
 const scenes=[titleScene,topologyScene,featureScene,detectScene,retrievalScene,auditScene,controlScene,resultScene,endScene];
 function backdrop(t,i){
  const [sx,sy]=[[1075,305],[655,460],[220,420],[760,385],[860,380],[640,390],[790,440],[640,330],[1075,305]][i];
- let s=box(0,0,1280,720,N,0)+`<circle cx="${sx}" cy="${sy}" r="560" fill="url(#spot)"/>`;
+ let s=box(0,0,1280,720,BG,0)+`<circle cx="${sx}" cy="${sy}" r="560" fill="url(#spot)"/>`;
  for(let k=0;k<44;k++){
   const x=(rnd(k)*1280+t*(6+rnd(k+50)*16))%1280,y=((rnd(k+100)*720-t*(3+rnd(k+150)*6))%720+720)%720;
   s+=`<circle cx="${f(x)}" cy="${f(y)}" r="${f(.8+rnd(k+200)*1.6)}" fill="${FLOW}" opacity="${f(.1+rnd(k+250)*.3)}"/>`;
@@ -325,10 +324,10 @@ export function frameSvg(t){
  s+=`<rect x="0" y="0" width="1280" height="720" fill="url(#vignette)"/>`;
  s+=tx(64,700,'方法流程示意 · 隔離TCP交易實測',18,SUB);
  s+=box(0,714,1280,6,PANEL,0)+box(0,714,1280*t/duration,6,G,0);
- const defs=`<defs><radialGradient id="spot"><stop offset="0" stop-color="${FLOW}" stop-opacity=".16"/><stop offset="1" stop-color="${FLOW}" stop-opacity="0"/></radialGradient>`
-  +`<radialGradient id="vignette" cx=".5" cy=".5" r=".75"><stop offset=".6" stop-color="${N}" stop-opacity="0"/><stop offset="1" stop-color="${N}" stop-opacity=".8"/></radialGradient>`
+ const defs=`<defs><radialGradient id="spot"><stop offset="0" stop-color="${FLOW}" stop-opacity=".09"/><stop offset="1" stop-color="${FLOW}" stop-opacity="0"/></radialGradient>`
+  +`<radialGradient id="vignette" cx=".5" cy=".5" r=".75"><stop offset=".6" stop-color="${N}" stop-opacity="0"/><stop offset="1" stop-color="${N}" stop-opacity=".1"/></radialGradient>`
   +`<linearGradient id="streak" x1="0" x2="1"><stop offset="0" stop-color="${FLOW}" stop-opacity="0"/><stop offset="1" stop-color="${FLOW}" stop-opacity="1"/></linearGradient>`
-  +`<pattern id="hatch" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="10" height="10" fill="${N}"/><rect width="4" height="10" fill="${G}"/></pattern>`
+  +`<pattern id="hatch" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="10" height="10" fill="${W}"/><rect width="4" height="10" fill="${G}"/></pattern>`
   +`<filter id="glow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>`
   +`<clipPath id="lanes"><rect x="520" y="240" width="720" height="300"/></clipPath></defs>`;
  return resolveColors(`<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" font-family="${FONT}">${defs}${s}</svg>`);
