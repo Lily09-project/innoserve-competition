@@ -42,10 +42,10 @@
     "docs/決賽五分鐘口語稿.md": "39e88d21d17e9d8a2b8fa547013cc0ac88469ec6b5e1f0fd29b513799f325858",
     "docs/決賽六題答詢口徑.md": "d2a41e50b7b6c8e9f0307715897e6adfeefb5bd904623ce0fd5942ee205e83a9",
     "docs/現場控場與備援卡.md": "2407a165ffe4df3c51f1fa59be76098ca095b5c4f8893cececba6b2b1c666079",
-    "deliverables/interactive/AI資安框架_自動循環展示.html": "5ba5dacbca89b18e5c92d41ca38e3cbe56f1fe58e82c87ee780735716c294a96",
+    "deliverables/interactive/AI資安框架_自動循環展示.html": "523bfa0a57e67f4d5e6e571e8c719189cf93a9112332f967d768bd6b3cb98693",
     "scripts/check_finals_readiness.py": "382de23644d21f09c070f01e6f5f2207aa63347a110824e46b5063819e9bdfff",
     "scripts/package_finals.py": "f6fd78f1fb193d5e1bd329ed00e5e002dcac63ffb71dfed79beaa1b1d5b90d5c",
-    "deliverables/決賽離線展示包.zip": "43e27a38355525864a1fc2c99f752645cfa36eb08aa15bce7d1082ddc13bd9e6",
+    "deliverables/決賽離線展示包.zip": "31327c737b0fea8f1fd27d79b992489293e017e32918db80997639ab8e5bc405",
     "README.md": "82c1c2485285c465cd8ff971f428b5727b377c08e61ff8c69f1bb4e424b7c94a",
     "media/film/metrics.json": "816450d6ba5340d14b5bae6aeb133a462deb6be3f6eb3f4a37fb8274656222c1",
     "design-system/palette.json": "74e8c16afce43eff3ecd901a80fe6329a4bad6e8a436015a0b62c525b270d196",
@@ -53,8 +53,8 @@
     "scripts/presentation/restore_alignment.py": "9039eaf1b21077d0030f9d1926af3acbd44d1a9357c9fcaba3f83328e3359b50",
     "scripts/presentation/export_static_delivery.ps1": "c011d0bb82cc62c55cd1a7b130b16ddfc086e4f66f8ae140adbcb68f9c132ce1",
     "scripts/presentation/merge_static_poster.py": "6637fe2def917166dcab1e6f46e9ec5fd72af2e22a51ccbe766243a82dea409a",
-    "tests/offline-exhibit.cjs": "3e539c3fea84335e8c1466504fb8c81eee536e1a4ed8dbeab516ee2313c50570",
-    "deliverables/interactive/README.md": "3b5b0ec05f13b154e0e1e447a334c2995db9d466e1156a27997dd3fd24ddca15"
+    "tests/offline-exhibit.cjs": "9dbe8375cafb8d9eac01d229b16b7643e4726e531642b6cb5dfc9b04059e5191",
+    "deliverables/interactive/README.md": "5f3a35a7c0ba1ce9d2148700af4bc52c43344122a041ee1989558604a62ac8e9"
   },
-  "created_utc": "2026-10-30T04:13:53.537620+00:00"
+  "created_utc": "2026-10-30T11:09:42.365292+00:00"
 }

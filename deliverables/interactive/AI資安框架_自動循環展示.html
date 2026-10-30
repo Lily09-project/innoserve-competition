@@ -1573,6 +1573,232 @@
         outline: 3px solid var(--blue);
         outline-offset: 3px;
       }
+      /* Shared spacing and aligned reading zones. */
+      .controls {
+        gap: 16px;
+        margin-bottom: 16px;
+      }
+      .scenarios {
+        gap: 8px;
+        min-width: 0;
+      }
+      .scenario {
+        min-width: 0;
+        padding: 12px 16px;
+      }
+      .scenario small {
+        line-height: 1.4;
+      }
+      .start-hint {
+        margin: 0;
+        line-height: 1.6;
+      }
+      .stage-heading {
+        display: grid;
+        grid-template-columns: minmax(180px, 280px) minmax(0, 1fr);
+        gap: 12px 16px;
+        padding: 16px 24px;
+      }
+      #sceneLabel {
+        font-size: 16px;
+        line-height: 1.5;
+      }
+      #sceneCaption {
+        font-size: 14px;
+        line-height: 1.6;
+        min-width: 0;
+      }
+      .processing-label {
+        grid-column: 1;
+        justify-self: start;
+        margin: 0;
+        white-space: normal;
+        max-width: 100%;
+        line-height: 1.5;
+      }
+      .light-legend {
+        grid-column: 2;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 8px 16px;
+        min-width: 0;
+        line-height: 1.5;
+      }
+      .light-legend > span {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        white-space: nowrap;
+      }
+      .light-legend i,
+      .light-legend b,
+      .light-legend .legend-complete,
+      .light-legend .legend-packet {
+        display: inline-block;
+        flex-shrink: 0;
+        margin: 0;
+      }
+      .stage-bottom {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        gap: 12px 24px;
+        padding: 16px 24px;
+      }
+      #stageMessage {
+        font-size: 14px;
+        line-height: 1.6;
+        min-width: 0;
+      }
+      .stage-bottom .view-tools {
+        gap: 8px;
+      }
+      .timeline {
+        padding: 20px 24px;
+        margin-top: 16px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: white;
+      }
+      .timeline-line {
+        gap: 16px;
+      }
+      .timeline-line strong {
+        font-size: 15px;
+        line-height: 1.5;
+      }
+      .timeline-line output {
+        font-size: 15px;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+      .playback-tools {
+        margin: 12px 0 8px;
+        gap: 8px;
+      }
+      .chapters {
+        gap: 8px;
+        margin: 0;
+      }
+      .chapters button {
+        padding: 8px 12px;
+      }
+      .timing-note {
+        margin: 12px 0 0;
+      }
+      .inspect-head {
+        padding: 24px 24px 16px;
+        gap: 16px;
+      }
+      .inspect-head h2 {
+        margin: 4px 0 0;
+      }
+      .tabs {
+        padding: 0 24px;
+        gap: 8px;
+      }
+      #detail {
+        padding: 24px;
+      }
+      .detail-grid {
+        gap: 24px;
+      }
+      footer {
+        flex-wrap: wrap;
+        gap: 8px 16px;
+        padding-top: 24px;
+        line-height: 1.6;
+      }
+      footer > span {
+        flex: 1 1 480px;
+      }
+      @media (max-width: 1000px) {
+        .stage-bottom {
+          grid-template-columns: minmax(0, 1fr) auto;
+        }
+        .stage-bottom .view-tools {
+          grid-column: 1/-1;
+        }
+        .stage-heading {
+          grid-template-columns: minmax(0, 1fr);
+        }
+        #sceneCaption,
+        .processing-label,
+        .light-legend {
+          grid-column: 1;
+        }
+        .light-legend {
+          justify-content: flex-start;
+        }
+      }
+      @media (max-width: 600px) {
+        main,
+        body.focus-view main {
+          padding: 12px;
+        }
+        .roadmap {
+          margin-bottom: 16px;
+        }
+        .controls {
+          gap: 12px;
+        }
+        .stage-heading,
+        .stage-bottom,
+        .timeline,
+        .inspect-head,
+        #detail {
+          padding: 16px;
+        }
+        .stage-bottom {
+          grid-template-columns: minmax(0, 1fr);
+          gap: 12px;
+        }
+        .stage-bottom .view-tools {
+          grid-column: 1;
+        }
+        .stage-bottom .mobile-hint {
+          display: block;
+        }
+        .tabs {
+          padding: 0 16px;
+        }
+        .inspect-head,
+        .inspect-actions {
+          flex-wrap: wrap;
+        }
+        .scenario {
+          padding: 12px;
+          gap: 8px;
+        }
+        .view-tools {
+          align-items: stretch;
+        }
+        .view-tools label {
+          flex: 1;
+        }
+        .view-tools select {
+          flex: 1;
+          min-width: 0;
+        }
+        .light-legend {
+          gap: 8px 12px;
+        }
+      }
+      .tabs button {
+        background: transparent;
+        border-bottom: 3px solid transparent;
+      }
+      .tabs button[aria-pressed="true"] {
+        background: transparent;
+        color: var(--teal);
+        border-bottom-color: var(--teal);
+      }
+      .tabs button:hover {
+        background: var(--gray);
+      }
+      .processing-label {
+        overflow-wrap: anywhere;
+      }
     </style>
   </head>
   <body data-playback="auto">
@@ -1720,11 +1946,11 @@
           <span id="sceneLabel">HTTP 洪流</span
           ><span id="sceneCaption">選一個情境，讓資料帶著光往前走。</span
           ><span id="processingLabel" class="processing-label">等待啟動</span
-          ><span class="light-legend"
-            ><i></i>目前處理 <b></b>等待抵達
-            <span class="legend-complete"></span>已完成流程
-            <span class="legend-packet"></span>封包</span
-          >
+          ><span class="light-legend" aria-label="流程圖圖例">
+            <span><i></i>目前處理</span><span><b></b>等待抵達</span>
+            <span><span class="legend-complete"></span>已完成流程</span>
+            <span><span class="legend-packet"></span>封包</span>
+          </span>
         </div>
         <div
           class="board-scroll"
