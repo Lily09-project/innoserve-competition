@@ -41,11 +41,15 @@ function boot(reduced = false, input = html) {
     configurable: true,
   });
   w.TextEncoder = TextEncoder;
-  w.matchMedia = () => ({
+  const motionListeners = [];
+  const motion = {
     matches: reduced,
-    addEventListener() {},
+    addEventListener(type, callback) {
+      if (type === "change") motionListeners.push(callback);
+    },
     removeEventListener() {},
-  });
+  };
+  w.matchMedia = () => motion;
   w.requestAnimationFrame = (callback) => {
     tick = callback;
     return 1;
@@ -77,7 +81,17 @@ function boot(reduced = false, input = html) {
   );
   w.eval(instrumented);
   assert.equal(errors.length, 0, errors.join("\n"));
-  return { w, api: w.__test, errors, downloads, tick: (stamp) => tick(stamp) };
+  return {
+    w,
+    api: w.__test,
+    errors,
+    downloads,
+    tick: (stamp) => tick(stamp),
+    setReduced(value) {
+      motion.matches = value;
+      motionListeners.forEach((callback) => callback({ matches: value }));
+    },
+  };
 }
 
 async function main() {
@@ -288,6 +302,56 @@ async function main() {
   assert.equal(loop.api.state.time, time, "no background catch-up");
   assert.deepEqual(loop.errors, []);
   loop.w.close();
+  const reading = boot();
+  reading.api.jump(20, true);
+  reading.w.document.querySelector("#follow").focus();
+  assert.equal(
+    reading.api.state.playing,
+    false,
+    "focus pauses without replacing focused content",
+  );
+  assert.equal(reading.w.document.activeElement.id, "follow");
+  reading.w.document.querySelector("#playPause").click();
+  reading.w.document.querySelector("#diagramRegion").focus();
+  assert.equal(reading.api.state.playing, false);
+  reading.w.document.querySelector("#about").focus();
+  reading.w.document.querySelector("#about").click();
+  assert.equal(
+    reading.w.document.querySelector("#dialog").getAttribute("aria-labelledby"),
+    "dialogTitle",
+  );
+  assert.ok(
+    reading.w.document.querySelector("#dialogTitle").textContent.length > 0,
+  );
+  assert.equal(reading.w.document.activeElement.id, "closeDialog");
+  reading.w.document.querySelector("#closeDialog").click();
+  assert.equal(reading.w.document.activeElement.id, "about");
+  reading.api.jump(20, false);
+  const modified = new reading.w.KeyboardEvent("keydown", {
+    key: "ArrowRight",
+    ctrlKey: true,
+    bubbles: true,
+    cancelable: true,
+  });
+  reading.w.document.body.dispatchEvent(modified);
+  assert.equal(reading.api.state.time, 20);
+  assert.equal(modified.defaultPrevented, false);
+  reading.w.document.querySelector("#playPause").click();
+  reading.setReduced(true);
+  assert.equal(
+    reading.api.state.playing,
+    false,
+    "runtime preference change pauses",
+  );
+  reading.setReduced(false);
+  assert.equal(
+    reading.api.state.playing,
+    false,
+    "preference change does not restart",
+  );
+  assert.equal(reading.w.document.querySelectorAll(".skip-links a").length, 2);
+  assert.deepEqual(reading.errors, []);
+  reading.w.close();
   const reduced = boot(true);
   assert.equal(reduced.api.state.playing, false);
   reduced.w.document.querySelector("[data-scenario=ssh]").click();
