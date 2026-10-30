@@ -2,16 +2,16 @@
   "base_revision": "7d95faf",
   "files": {
     "deliverables/決賽簡報_AI資安框架.pptx": {
-      "bytes": 5929939,
-      "sha256": "6a8070982c128ef5d2a61043c96e3f9f9885af0fb8578e4f6af75f85850d129c"
+      "bytes": 5755584,
+      "sha256": "a2c5b45b701e0e74878ae37940adc9c8ed931527ed0d7172ce8bc935241ec2c8"
     },
     "deliverables/決賽簡報_AI資安框架.pdf": {
-      "bytes": 458529,
-      "sha256": "5c541d1e1afe45e0460b3edcfe1d424f831e1dc4f35864a230e904ca36429575"
+      "bytes": 454679,
+      "sha256": "3d6967c8d3197ebc2b2262a28d49b45b60b6c93aa52b52cda1e945d9b58503e2"
     },
     "deliverables/AI資安框架_系統展示影片_30秒快版.mp4": {
-      "bytes": 5329315,
-      "sha256": "712efa4e1cc4ca8a784af07b2187c9fca4f12fd3bdd780821ca366a2ea971303"
+      "bytes": 5247155,
+      "sha256": "c38c9cf2c68b8c3857c2e97b523fcf93784d92c6209023bae202df24b462c35d"
     },
     "deliverables/figures/fig_architecture.png": {
       "bytes": 248967,
@@ -27,15 +27,15 @@
     },
     "deliverables/決賽海報_AI資安框架_A2.pdf": {
       "bytes": 264455,
-      "sha256": "e5e2aca4fb060c2a1ed26ed99e1e4960b244922ace03bedb2053f50c815ebe1e"
+      "sha256": "5c3751b954b848c2a2ceaff58cb0e802bce8802c3fb3183e1d89724e722060d1"
     },
     "deliverables/決賽離線展示包.zip": {
-      "bytes": 11974015,
-      "sha256": "884631c5a3d64de8fffc656b4516c42fcd45c80fa1c8260ec9a7eee3e71476e6"
+      "bytes": 11714847,
+      "sha256": "8ad3f18bc1f1ee547edb19698ef66f8bd4dac7ebe08eb23185ad6527bdb129dd"
     },
     "deliverables/source/release-validation.json": {
       "bytes": 10198,
-      "sha256": "2eeb939c633985e8b4935355bd8b9f058314f9f5c44e94db3d2a5f3f33101349",
+      "sha256": "5d0d1153e82a5f8e742a886719ee898253a72865c0c852a5d96b0a9fb7a80fdb",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/01_slide.svg": {
@@ -131,7 +131,7 @@
     "deliverables/source/finals-readiness.json": {
       "hash_normalization": "LF",
       "bytes": 3544,
-      "sha256": "713f2dcef0c472501a5ac3e53c1cfd97599d88650f88bc8fdf83f841e1132aa4"
+      "sha256": "d12c0cbbeaf6048126fe5bc1e926949d93a8e29a82c0f3bbf51d13d9a57d77f7"
     },
     "docs/決賽五分鐘口語稿.md": {
       "hash_normalization": "LF",

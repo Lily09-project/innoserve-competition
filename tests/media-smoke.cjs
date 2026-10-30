@@ -34,7 +34,7 @@ const typography = require('../design-system/typography.json');
     const document = new JSDOM(source, {contentType: 'image/svg+xml'}).window.document;
     assert.equal(document.querySelector('parsererror'), null);
     assert.ok(document.querySelector('svg'));
-    assert.equal(document.querySelector('svg > rect').getAttribute('fill'), palette.navy, 'film chapters share the night canvas of the deck cover');
+    assert.equal(document.querySelector('svg > rect').getAttribute('fill'), palette.gray, 'film chapters use the light canvas');
     assert.ok(!source.includes('NaN'));
   }
   console.log('Media smoke: deterministic, valid SVG across all chapters');
