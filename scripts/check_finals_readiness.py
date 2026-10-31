@@ -45,7 +45,7 @@ def validate_plan(plan):
     if spoken != 260 or sum(r['seconds'] for r in plan['segments']) + plan['operation_seconds'] != 300:
         raise ValueError('five_minute_plan_mismatch')
     video = plan['video']
-    if video != {'slide': 2, 'seconds': 30, 'speed_factor': 2, 'audio_tracks': 0} or plan['segments'][1]['mode'] != 'video' or plan['segments'][1]['seconds'] != 30:
+    if video != {'slide': 2, 'seconds': 30, 'speed_factor': 2, 'audio_tracks': 1} or plan['segments'][1]['mode'] != 'video' or plan['segments'][1]['seconds'] != 30:
         raise ValueError('opening_video_plan_mismatch')
     if plan['target_seconds'] != 300 or plan['buffer_seconds'] != 60 or plan['report_limit_seconds'] != 360 or plan['operation_seconds'] != 10:
         raise ValueError('buffer_plan_mismatch')

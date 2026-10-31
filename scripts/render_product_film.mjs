@@ -19,7 +19,10 @@ if(mode==='preview'){console.log(JSON.stringify({preview_frames:sampleTimes.leng
 if(playbackSpeed<1.5||presentationDuration>maxDuration)throw Error('Finals film must be >=1.5x and <=40 seconds');
 const file=path.join(output,`AI資安框架_系統展示影片_${presentationDuration}秒快版.mp4`);
 if(fs.existsSync(file))throw Error('Output exists; choose a new output directory to retain previous release');
-const encoder=spawn(ffmpeg,['-hide_banner','-loglevel','error','-f','image2pipe','-framerate',String(fps),'-i','pipe:0','-an','-c:v','libx264','-preset','fast','-crf','20','-pix_fmt','yuv420p','-movflags','+faststart',file],{stdio:['pipe','inherit','inherit'],windowsHide:true});
+// Committed voiceover from build_narration.py; silent film if it is absent.
+const narration=path.join(root,'media/film/narration.m4a'),hasAudio=fs.existsSync(narration);
+const audioArgs=hasAudio?['-i',narration,'-map','0:v','-map','1:a','-c:a','copy','-t',String(presentationDuration)]:['-an'];
+const encoder=spawn(ffmpeg,['-hide_banner','-loglevel','error','-f','image2pipe','-framerate',String(fps),'-i','pipe:0',...audioArgs,'-c:v','libx264','-preset','fast','-crf','20','-pix_fmt','yuv420p','-movflags','+faststart',file],{stdio:['pipe','inherit','inherit'],windowsHide:true});
 const exit=new Promise((resolve,reject)=>{encoder.on('error',reject);encoder.on('close',c=>c===0?resolve():reject(Error(`encoder exit ${c}`)))});
 for(let f=0;f<presentationDuration*fps;f++){
  const png=await sharp(Buffer.from(frameSvg(f/fps*playbackSpeed))).resize(width,height).png({compressionLevel:1}).toBuffer();
@@ -28,5 +31,5 @@ for(let f=0;f<presentationDuration*fps;f++){
 }
 encoder.stdin.end();await exit;
 const analysis=execFileSync(ffmpeg,['-hide_banner','-i',file,'-f','null','-'],{encoding:'utf8',stdio:['ignore','pipe','pipe'],windowsHide:true});
-fs.writeFileSync(path.join(output,'render.json'),JSON.stringify({file,duration_seconds:presentationDuration,source_timeline_seconds:duration,playback_speed:playbackSpeed,maximum_seconds:maxDuration,fps,width,height,frames:presentationDuration*fps,has_audio:false,chapters:chapters.map(c=>({title:c.title,second:c.at/playbackSpeed})),control_timeline:Object.fromEntries(Object.entries(controlTimeline).map(([key,value])=>[key,value/playbackSpeed])),renderer:'shared frameSvg -> sharp -> ffmpeg',bytes:fs.statSync(file).size},null,2));
+fs.writeFileSync(path.join(output,'render.json'),JSON.stringify({file,duration_seconds:presentationDuration,source_timeline_seconds:duration,playback_speed:playbackSpeed,maximum_seconds:maxDuration,fps,width,height,frames:presentationDuration*fps,has_audio:hasAudio,chapters:chapters.map(c=>({title:c.title,second:c.at/playbackSpeed})),control_timeline:Object.fromEntries(Object.entries(controlTimeline).map(([key,value])=>[key,value/playbackSpeed])),renderer:'shared frameSvg -> sharp -> ffmpeg',bytes:fs.statSync(file).size},null,2));
 console.log(JSON.stringify({file,bytes:fs.statSync(file).size}));
