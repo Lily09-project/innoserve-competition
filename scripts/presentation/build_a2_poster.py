@@ -62,7 +62,7 @@ def build():
     def disc(x, y, d, fill, stroke=None):
         return shape(MSO_SHAPE.OVAL, x, y, d, d, fill, stroke)
 
-    def text(x, y, w, h, content, size=18, color=INK, bold=False, align=PP_ALIGN.LEFT, lead=None):
+    def text(x, y, w, h, content, size=18, color=INK, bold=False, align=PP_ALIGN.LEFT, lead=None, spacing=1.1):
         box = slide.shapes.add_textbox(Mm(x), Mm(y), Mm(w), Mm(h))
         tf = box.text_frame
         tf.clear()
@@ -74,7 +74,7 @@ def build():
             p = tf.paragraphs[0] if i == 0 else tf.add_paragraph()
             p.alignment = align
             p.space_before = p.space_after = Pt(0)
-            p.line_spacing = 1.1
+            p.line_spacing = spacing
             runs = ([(lead[0], lead[1])] if lead and i == 0 else []) + [(paragraph, color)]
             for part, tint in runs:
                 for token, family in font_runs(part):
@@ -111,20 +111,22 @@ def build():
     rect(0, 0, 420, 162, PALE)
     line(0, 162, 420, 162, LINE, 1.5)
     text(24, 12, 372, 8, '2026 資安技術組 · 決賽作品', 18, TEAL, True, PP_ALIGN.CENTER)
-    title = text(24, 20, 372, 71, '融合新型內容相依時序方向模型\n入侵偵測與任務導向檢索增強稽核\n之 AI 資安框架', 46, NAVY, True, PP_ALIGN.CENTER)
+    title = text(24, 20, 372, 71, '融合新型內容相依時序方向模型\n入侵偵測與任務導向檢索增強稽核\n之 AI 資安框架', 56, NAVY, True, PP_ALIGN.CENTER, spacing=1.0)
     title.name = 'PosterTitle_Masthead'
     rect(198, 94, 24, 1.6, GOLD)
     text(24, 97, 372, 11, '從流量告警，走到有證據、可回復的處置', 27, BLUE, True, PP_ALIGN.CENTER)
     text(24, 109, 372, 8, '同一事件串起模型判定、相似案例、AI稽核與處置回條。', 18, MUTED, align=PP_ALIGN.CENTER)
-    line(56, 136, 364, 136, LINE, 2)
+    card(80, 118.5, 260, 8, GOLD_TINT)
+    text(80, 118.5, 260, 8, '本團隊原創：CTBM、校準融合、任務導向檢索、本機AI稽核、受控回復　｜　引用既有：PBCNN', 14, NAVY, True, PP_ALIGN.CENTER, ('★ ', GOLD))
+    line(56, 139, 364, 139, LINE, 2)
     for i, (label, image) in enumerate((('偵測', 2), ('檢索', 3), ('稽核', None), ('回復', 4))):
         cx = 56+i*102.7
-        disc(cx-8, 128, 16, WHITE, BLUE)
+        disc(cx-8, 131, 16, WHITE, BLUE)
         if image:
-            icon(image, cx-5, 131, 10)
+            icon(image, cx-5, 134, 10)
         else:
-            document(cx-3.2, 131, 6.4, 10)
-        text(cx-20, 146, 40, 9, label, 20, NAVY, True, PP_ALIGN.CENTER)
+            document(cx-3.2, 134, 6.4, 10)
+        text(cx-20, 149, 40, 9, label, 20, NAVY, True, PP_ALIGN.CENTER)
 
     section(169, '01', '四階段方法，串成同一條事件鏈')
     stages = [('互補判定', '內容＋時序'), ('任務檢索', '表徵＋機率'),
@@ -156,7 +158,7 @@ def build():
 
     # 01: parallel models enter one calibrated output.
     node(126, 191, 78, 16, 'CTBM', '內容·時間差·方向')
-    node(126, 211, 78, 16, 'PBCNN', '短窗位元組模式')
+    node(126, 211, 78, 16, 'PBCNN', '短窗位元組模式·既有模型')
     merge(204, 199, 219, 209)
     node(222, 196, 84, 26, '校準＋融合', 'OOF Gate', BLUE_TINT)
     arrow(308, 206.5, 10, 5)
