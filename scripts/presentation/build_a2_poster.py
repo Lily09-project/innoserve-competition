@@ -21,7 +21,6 @@ PALETTE = json.loads((ROOT/'design-system/palette.json').read_text(encoding='utf
 BLUE, NAVY, GOLD, TEAL = (PALETTE[key].lstrip('#') for key in ('blue', 'navy', 'gold', 'teal'))
 INK, MUTED, PALE, LINE = (PALETTE[key].lstrip('#') for key in ('ink', 'muted', 'gray', 'line'))
 BLUE_TINT, TEAL_TINT, GOLD_TINT, BLUE_MUTED = (PALETTE[key].lstrip('#') for key in ('blue_tint', 'teal_tint', 'gold_tint', 'blue_muted'))
-NIGHT_LINE, CYAN, DARK_MUTED = (PALETTE[key].lstrip('#') for key in ('night_line', 'cyan', 'on_dark_muted'))
 WHITE = 'FFFFFF'
 
 
@@ -107,23 +106,24 @@ def build():
         text(41, y-1.5, 300, 13, title, 26, NAVY, True)
         line(24, y+13, 396, y+13)
 
-    # Night masthead: formal name, one takeaway and the four-stage evidence chain.
-    rect(0, 0, 420, 162, NAVY)
-    text(24, 12, 300, 8, '2026 資安技術組 · 決賽作品', 18, CYAN, True)
-    title = text(24, 20, 372, 71, '融合新型內容相依時序方向模型\n入侵偵測與任務導向檢索增強稽核\n之 AI 資安框架', 46, WHITE, True)
+    # Light masthead matching the deck cover: formal name, one takeaway and the four-stage evidence chain.
+    rect(0, 0, 420, 162, PALE)
+    line(0, 162, 420, 162, LINE, 1.5)
+    text(24, 12, 300, 8, '2026 資安技術組 · 決賽作品', 18, TEAL, True)
+    title = text(24, 20, 372, 71, '融合新型內容相依時序方向模型\n入侵偵測與任務導向檢索增強稽核\n之 AI 資安框架', 46, NAVY, True)
     title.name = 'PosterTitle_Masthead'
     rect(24, 94, 24, 1.6, GOLD)
-    text(24, 97, 372, 11, '從流量告警，走到有證據、可回復的處置', 27, WHITE, True)
-    text(24, 109, 372, 8, '同一事件串起模型判定、相似案例、AI稽核與處置回條。', 18, DARK_MUTED)
-    line(56, 136, 364, 136, NIGHT_LINE, 2)
+    text(24, 97, 372, 11, '從流量告警，走到有證據、可回復的處置', 27, BLUE, True)
+    text(24, 109, 372, 8, '同一事件串起模型判定、相似案例、AI稽核與處置回條。', 18, MUTED)
+    line(56, 136, 364, 136, LINE, 2)
     for i, (label, image) in enumerate((('偵測', 2), ('檢索', 3), ('稽核', None), ('回復', 4))):
         cx = 56+i*102.7
-        disc(cx-8, 128, 16, WHITE, CYAN)
+        disc(cx-8, 128, 16, WHITE, BLUE)
         if image:
             icon(image, cx-5, 131, 10)
         else:
             document(cx-3.2, 131, 6.4, 10)
-        text(cx-20, 146, 40, 9, label, 20, WHITE, True, PP_ALIGN.CENTER)
+        text(cx-20, 146, 40, 9, label, 20, NAVY, True, PP_ALIGN.CENTER)
 
     section(169, '01', '四階段方法，串成同一條事件鏈')
     stages = [('互補判定', '內容＋時序', 2), ('任務檢索', '表徵＋機率', 3),
