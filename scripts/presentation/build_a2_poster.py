@@ -116,8 +116,8 @@ def build():
     rect(198, 94, 24, 1.6, GOLD)
     text(24, 97, 372, 11, '從流量告警，走到有證據、可回復的處置', 27, BLUE, True, PP_ALIGN.CENTER)
     text(24, 109, 372, 8, '同一事件串起模型判定、相似案例、AI稽核與處置回條。', 18, MUTED, align=PP_ALIGN.CENTER)
-    card(80, 118.5, 260, 8, GOLD_TINT)
-    text(80, 118.5, 260, 8, '本團隊原創：CTBM、校準融合、任務導向檢索、本機AI稽核、受控回復　｜　引用既有：PBCNN', 14, NAVY, True, PP_ALIGN.CENTER, ('★ ', GOLD))
+    card(50, 118.5, 320, 8, GOLD_TINT)
+    text(50, 118.5, 320, 8, '本團隊原創：CTBM、校準融合、任務導向檢索、本機AI稽核、受控回復　｜　引用既有：PBCNN（Yu et al., 2021）', 14, NAVY, True, PP_ALIGN.CENTER, ('★ ', GOLD))
     line(56, 139, 364, 139, LINE, 2)
     for i, (label, image) in enumerate((('偵測', 2), ('檢索', 3), ('稽核', None), ('回復', 4))):
         cx = 56+i*102.7
