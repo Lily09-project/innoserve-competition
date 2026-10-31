@@ -6,7 +6,7 @@
   "target_seconds": 300,
   "buffer_seconds": 60,
   "operation_seconds": 10,
-  "video": {"slide": 2, "seconds": 30, "speed_factor": 2, "audio_tracks": 0},
+  "video": {"slide": 2, "seconds": 30, "speed_factor": 2, "audio_tracks": 1},
   "segments": [
     {"slide": 1, "seconds": 15, "mode": "spoken", "focus": "作品定位"},
     {"slide": 2, "seconds": 30, "mode": "video", "focus": "完整事件流程"},
