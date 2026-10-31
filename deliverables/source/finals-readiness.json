@@ -32,20 +32,20 @@
   ],
   "human_checks_verified_by_this_script": false,
   "bindings": {
-    "deliverables/決賽簡報_AI資安框架.pptx": "06a62c2b4302bb26948fbdf5a617c447e73e8a2fd4f73fa1ffb0c9d79ac99850",
-    "deliverables/決賽簡報_AI資安框架.pdf": "b140a8158d4dd77c770b874d22f0de869c9703882c46bfe878dd4bdfdf1aca71",
+    "deliverables/決賽簡報_AI資安框架.pptx": "71676af9d2e962dc6496f6086adc151b32c64a96d2ebbbe646f93c5c0fbc9ea1",
+    "deliverables/決賽簡報_AI資安框架.pdf": "bc19ad8bc6721affebf9d2c37b6ccaf4a53d5d3d8151c3fa63b7eef9a13ffbb0",
     "deliverables/AI資安框架_系統展示影片_30秒快版.mp4": "b5132c1cbe1d6bc0c824908377c127500a23fe03ff629ef9c286a490f7fd171e",
-    "deliverables/決賽海報_AI資安框架_A2.pptx": "6ae470325d8c3249a06c0cdd43c7670bfeeb051d9b08ac8e14fcdbdf7ae901ad",
-    "deliverables/決賽海報_AI資安框架_A2.pdf": "1a4bc05689e420606baa28efbb67f9c69248e0719c111fcb7a3ad14478e41465",
-    "deliverables/source/speaker-notes.md": "e720c67309673542ff49b627e6a3d0426556d37a8dd60d563dfb789c2a52d302",
+    "deliverables/決賽海報_AI資安框架_A2.pptx": "027dbf6b9b2ed3c2dbb4a976853d75f70332de016c2b3c4eb3040ffdedb5750a",
+    "deliverables/決賽海報_AI資安框架_A2.pdf": "b8342a06708b1f97aae482179c1e0432c1967221dbab6c876dda7aad74759eb2",
+    "deliverables/source/speaker-notes.md": "6da0eae147c7920278f77049f9cd70b7cd313818e63de18f2f8ff5d5a3782d6e",
     "deliverables/source/finals-runbook.json": "cd251e699e8b08650a93bb72605b14b45fe8e1cdffc6a9131dc9197c8f8228f1",
-    "docs/決賽五分鐘口語稿.md": "a94f5e6db709a4f073882271138949b0710f5d5738353d018c4d0b5ff1e68d22",
+    "docs/決賽五分鐘口語稿.md": "fd45f6cd5d0186112b68e4ee8f31e1bc65a0a981bf6230d61b29349ece1845a9",
     "docs/決賽六題答詢口徑.md": "d2a41e50b7b6c8e9f0307715897e6adfeefb5bd904623ce0fd5942ee205e83a9",
     "docs/現場控場與備援卡.md": "eab0deac3b38fd5444269a40b64772295011685bd011919fab9311e78bb66502",
-    "deliverables/interactive/AI資安框架_自動循環展示.html": "0699305f8aed0898fb06da53326e29e76461babf322924d6644fb9b7d7c45d06",
+    "deliverables/interactive/AI資安框架_自動循環展示.html": "1e151f933ff2f0a9715463ee737f1a5db762b61b5eb001a8282d43d05ed31d87",
     "scripts/check_finals_readiness.py": "b509d47a5e1501d590abdbea2f6aac3095ff91517c957f64d8e4198799d67539",
     "scripts/package_finals.py": "a7b2ee1791268e0d22647ba71bb2f82b4c9647f0386550ffb4bbfc2bf5700035",
-    "deliverables/決賽離線展示包.zip": "9dabd5f0b1fb685dc45a91b34acc6fb7bf8b094c05ae70c5657bffe07691d60b",
+    "deliverables/決賽離線展示包.zip": "951b0e7bf955764c8c18adda569222f957a151381079a49823dce973a6fe7cca",
     "README.md": "19848fa92138c3ef1d343e8a3d4ebc4e07055e4df92d6058754c90a9cf2ee479",
     "media/film/metrics.json": "816450d6ba5340d14b5bae6aeb133a462deb6be3f6eb3f4a37fb8274656222c1",
     "design-system/palette.json": "3c7c609fbe761752756a835954ecfa098194c09b38620054655d5e4bc487cb2e",
@@ -56,5 +56,5 @@
     "tests/offline-exhibit.cjs": "3665861805ebdbf6f7177b61284735268acbd172ab11a2f1a5c493e82f2ec173",
     "deliverables/interactive/README.md": "0dc41472f27ab4a88a5ff2fdf57324dfed6c4c933bc39054633710de5d111816"
   },
-  "created_utc": "2026-10-31T06:09:01.916550+00:00"
+  "created_utc": "2026-10-31T06:21:07.630393+00:00"
 }

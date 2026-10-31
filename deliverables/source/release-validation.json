@@ -7,7 +7,7 @@
       "design-system/typography.json": "95f36b0ea41fccc02e652e75652af6f92256d7eee75460be55b19ed909b0238a",
       "design-system/icons.json": "7997027b80b6b7990b8399383555d2775b4d8257902c3fa8c8f4f8a3b5e2aec7",
       "scripts/presentation/style_contract.py": "239555b0c0ab089839b8eca1614466e1e1b43e11e6db4da62f6a1c02921dd41e",
-      "scripts/presentation/editorial_assets.py": "1e0c3e51bc2f0ed277dc1e048e10622965a5a8b5377ee7378da620433d0cdce6",
+      "scripts/presentation/editorial_assets.py": "68d90fa420adf5e48dd22e664962abf272535eae55bafa526a7745ff266b382d",
       "scripts/presentation/build_a2_poster.py": "f4c0aad0a6fd62f2ff2d50aa58f70ff71ef1ef8b96e9a9d46af1794907d3a652",
       "scripts/presentation/finalize_delivery.py": "89d59ff4cd55eed9374fa5ef2b451981db694754cef194ec6eb1df60fd266e88",
       "media/film/scene.mjs": "6ad2cb1c64e5e3a2b29976f576d074c87a956c7a3f8d053fa2936981a4af5c93",
@@ -16,13 +16,13 @@
       "media/film/metrics.json": "816450d6ba5340d14b5bae6aeb133a462deb6be3f6eb3f4a37fb8274656222c1",
       "scripts/media_results.py": "9823f3ba4a60908ae3ba51dbd90ffb5a4a748297cb5663034a33fc7a6c5d2eae",
       "scripts/finals_pipeline.py": "d6e31277cc56e1b70fa7f39d03ddf4806c88230735ef175338650ddf3856b30c",
-      "deliverables/source/slides/01_slide.svg": "b92bd2e8c5e743f7ba0a83b0f49b6713704664585c6f2ef99fcc531d7aa7abfb",
+      "deliverables/source/slides/01_slide.svg": "3c359f7d5d67805602be9693047537fce99a12197b70919ae858057dc8b3a0c2",
       "deliverables/source/slides/02_slide.svg": "bc759749425a99a2025b4e4ed2c93195f8d7b74e6c7a8c475bbf39d455439602",
-      "deliverables/source/slides/03_slide.svg": "c8789832c756caa389a6b40569147e331bb3f85e8156d5004b11a9dad13676bf",
-      "deliverables/source/slides/04_slide.svg": "afd3ec944666aaaecf7b197c02057540ad5d10fbb597d56a5f4e3a38673325ff",
+      "deliverables/source/slides/03_slide.svg": "5815def4d4b8c422eec7265cf4cd61af2ab2cee6972c6de1f002f2309e6996f7",
+      "deliverables/source/slides/04_slide.svg": "3164b6e265bbb2f10f6ccdaa8a6c4885f7bca244377039bc4ee63fb92be64c93",
       "deliverables/source/slides/05_slide.svg": "e5b1538dedb41df5d399f97998724f77d9e8e17bfdafe4016843509233203bda",
       "deliverables/source/slides/06_slide.svg": "bd325b1b8b1c4e8d634b0314e571f93d72a70c42152fb36b0956bdb30c954027",
-      "deliverables/source/slides/07_slide.svg": "2ed81ee11af9ff4c9cec8b3cdb34c32c1fa8efbe5519d9fdf45291cc64275fd1",
+      "deliverables/source/slides/07_slide.svg": "4ec1083b4a0efdacdf850e9ff6bfd4bf97ae6192022de70477389fcb10a58d7b",
       "deliverables/source/slides/08_slide.svg": "396f176334b24ca029b73a8da3e4dafe66e1853bd03376701a903a6bfb14ac9e",
       "deliverables/source/slides/09_slide.svg": "d561a27c578dfe3de09459000631877ea1b5c6e7ecce3969c21df8c0adc9fae7",
       "deliverables/source/slides/10_slide.svg": "7629d82ea8e988918627acc295166206f03c1726977604f3ecae2f9fc797a8ae",
@@ -30,19 +30,19 @@
       "deliverables/source/slides/12_slide.svg": "99f08476b51eb8023bcb8598f9fe559254f49187e3ef81ea296a9794f4cfc57b"
     },
     "artifacts": {
-      "deliverables/決賽簡報_AI資安框架.pptx": "06a62c2b4302bb26948fbdf5a617c447e73e8a2fd4f73fa1ffb0c9d79ac99850",
-      "deliverables/決賽簡報_AI資安框架.pdf": "b140a8158d4dd77c770b874d22f0de869c9703882c46bfe878dd4bdfdf1aca71",
-      "deliverables/決賽海報_AI資安框架_A2.pptx": "6ae470325d8c3249a06c0cdd43c7670bfeeb051d9b08ac8e14fcdbdf7ae901ad",
-      "deliverables/決賽海報_AI資安框架_A2.pdf": "1a4bc05689e420606baa28efbb67f9c69248e0719c111fcb7a3ad14478e41465",
+      "deliverables/決賽簡報_AI資安框架.pptx": "71676af9d2e962dc6496f6086adc151b32c64a96d2ebbbe646f93c5c0fbc9ea1",
+      "deliverables/決賽簡報_AI資安框架.pdf": "bc19ad8bc6721affebf9d2c37b6ccaf4a53d5d3d8151c3fa63b7eef9a13ffbb0",
+      "deliverables/決賽海報_AI資安框架_A2.pptx": "027dbf6b9b2ed3c2dbb4a976853d75f70332de016c2b3c4eb3040ffdedb5750a",
+      "deliverables/決賽海報_AI資安框架_A2.pdf": "b8342a06708b1f97aae482179c1e0432c1967221dbab6c876dda7aad74759eb2",
       "deliverables/AI資安框架_系統展示影片_30秒快版.mp4": "b5132c1cbe1d6bc0c824908377c127500a23fe03ff629ef9c286a490f7fd171e",
-      "deliverables/source/architecture.svg": "bf3842b11f3a38f889d401a3b764dce1ee9b8f7f8f0bbd8d4164485d39ee7153",
-      "deliverables/source/speaker-notes.md": "e720c67309673542ff49b627e6a3d0426556d37a8dd60d563dfb789c2a52d302"
+      "deliverables/source/architecture.svg": "36bf31bcaf1f2e1cb2ab225e92871ae8d6264df4f1d0d8f494a4399caa9597c8",
+      "deliverables/source/speaker-notes.md": "6da0eae147c7920278f77049f9cd70b7cd313818e63de18f2f8ff5d5a3782d6e"
     },
     "previews": {
-      "deliverables/figures/slides-preview.png": "79aa65f4a26e0a5935f2d6e3f5d78d5fec21a50f22a31d2e4af457c3261a5ef1",
+      "deliverables/figures/slides-preview.png": "b80d3206a02a373c4917888ef295e0b1142500710d4dfcd0e2707dc23b5cb857",
       "deliverables/figures/poster-a2-preview.png": "0f02321a767063d058064341cd54297d4180d44e22b8627494760c8b4960ce3a",
       "deliverables/figures/film-preview.png": "a5df05d946a16bf19a8d00898f3db0e359ddbee65a1afd0469d291de593cbef2",
-      "deliverables/figures/fig_architecture.png": "dc785fe60482a12f4e1d91d39bab81b2f496b31b28f27ee02948af318efa1c94"
+      "deliverables/figures/fig_architecture.png": "a28e3e9934f5886f7fed505fd5e57216c6ab1ba91f52f6893dbd894ec89e1585"
     },
     "results": {
       "results/detection_17class.json": "f095d2a74131bfbbad13f7d4a205d96836a08c716793c56e60a9160ed9ab84f0",
