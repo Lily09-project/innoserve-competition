@@ -2973,7 +2973,7 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
             65,
             235,
             220,
-            T(263, 93, "CTBM", "heading") +
+            T(263, 93, "CTBM · 本團隊設計", "heading") +
               T(263, 113, "RGB 示意 · 0–255 展示色階", "tiny") +
               matrixMarkup("ct", 126) +
               T(263, 267, "等待第 1 列", "tiny", 'id="ctStatus"'),
@@ -2985,7 +2985,7 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
             345,
             235,
             220,
-            T(263, 373, "PBCNN", "heading") +
+            T(263, 373, "PBCNN · 既有模型", "heading") +
               T(263, 393, "首格 Δt 藍 · 流入紅 / 流出綠", "tiny") +
               matrixMarkup("pb", 406) +
               T(263, 547, "等待第 1 列", "tiny", 'id="pbStatus"') +
@@ -4117,7 +4117,7 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
           );
         }
         const aboutHTML =
-          '<h2>展示依據與範圍</h2><p>這是一個可離線操作的教學展示。目的是讓觀眾看見封包編碼、檢索、稽核與處置的關係。</p><ul class="help-list"><li><strong>實際計算：</strong>payload 位元組轉色碼、529 維向量串接與正規化、cosine similarity、Top-5 排序，以及指令送達前的合成連線計數。</li><li><strong>人工合成：</strong>封包、模型表徵、分類與信心、案例內容，以及 LLM 稽核回覆。沒有執行 CTBM、PBCNN、Llama 或 Mininet。</li><li><strong>模型輸入：</strong>公開專案透過外部來源載入完整前處理；CTBM 以每三個 payload bytes 映射一個 RGB 像素作教學簡化，未重現訓練時的完整編碼。PBCNN 依本頁教學設計：首格藍色表示同 flow 相鄰封包時間差，後續每 byte 依流入／流出放入紅／綠通道。內容與時間分別以四個範例共用範圍拉伸至 0–255；點格子可對照原始與展示 RGB，不更改原始資料。</li><li><strong>資料範圍：</strong>依原專案的 17 類合約與隔離 TCP 拓樸設計。第三方子模組另有 CICIDS2017／CSE-CIC-IDS2018 研究，但本頁不冒稱使用其原始資料，也不混用歷史 Fine-11 實驗。</li><li><strong>操作：</strong>按下任一情境就從頭播放；播放中再次按下，也會立即重新開始。點節點或色塊會暫停並開啟資料；可按播放繼續。</li><li><strong>時序：</strong>8 筆封包在展示中放慢輸入；模型輸入完成後才顯示結果。每個情境38秒，指令送達即結束；自動接續下一個情境。預設1倍速，可切換1.5倍或2倍速，2倍速每個情境19秒。頁面不模擬規則生效或期限回復。</li></ul><p>本頁為獨立示意，正式方法與實測請依隨附說明文件查核。</p>';
+          '<h2>展示依據與範圍</h2><p>這是一個可離線操作的教學展示。目的是讓觀眾看見封包編碼、檢索、稽核與處置的關係。</p><ul class="help-list"><li><strong>實際計算：</strong>payload 位元組轉色碼、529 維向量串接與正規化、cosine similarity、Top-5 排序，以及指令送達前的合成連線計數。</li><li><strong>人工合成：</strong>封包、模型表徵、分類與信心、案例內容，以及 LLM 稽核回覆。沒有執行 CTBM、PBCNN、Llama 或 Mininet。</li><li><strong>原創範圍：</strong>除 PBCNN 為引用的既有模型外，CTBM、校準融合、任務導向檢索、本機 AI 稽核與受控回復皆為本團隊設計。</li><li><strong>模型輸入：</strong>公開專案透過外部來源載入完整前處理；CTBM 以每三個 payload bytes 映射一個 RGB 像素作教學簡化，未重現訓練時的完整編碼。PBCNN 依本頁教學設計：首格藍色表示同 flow 相鄰封包時間差，後續每 byte 依流入／流出放入紅／綠通道。內容與時間分別以四個範例共用範圍拉伸至 0–255；點格子可對照原始與展示 RGB，不更改原始資料。</li><li><strong>資料範圍：</strong>依原專案的 17 類合約與隔離 TCP 拓樸設計。第三方子模組另有 CICIDS2017／CSE-CIC-IDS2018 研究，但本頁不冒稱使用其原始資料，也不混用歷史 Fine-11 實驗。</li><li><strong>操作：</strong>按下任一情境就從頭播放；播放中再次按下，也會立即重新開始。點節點或色塊會暫停並開啟資料；可按播放繼續。</li><li><strong>時序：</strong>8 筆封包在展示中放慢輸入；模型輸入完成後才顯示結果。每個情境38秒，指令送達即結束；自動接續下一個情境。預設1倍速，可切換1.5倍或2倍速，2倍速每個情境19秒。頁面不模擬規則生效或期限回復。</li></ul><p>本頁為獨立示意，正式方法與實測請依隨附說明文件查核。</p>';
         function renderDetail(s, net) {
           document.querySelectorAll("[data-tab]").forEach((el) => {
             const active = el.dataset.tab === state.tab;
