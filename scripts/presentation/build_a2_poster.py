@@ -111,7 +111,7 @@ def build():
     rect(0, 0, 420, 162, PALE)
     line(0, 162, 420, 162, LINE, 1.5)
     text(24, 12, 372, 8, '2026 資安技術組 · 決賽作品', 18, TEAL, True, PP_ALIGN.CENTER)
-    title = text(24, 20, 372, 71, '融合新型內容相依時序方向模型\n入侵偵測與任務導向檢索增強稽核\n之 AI 資安框架', 56, NAVY, True, PP_ALIGN.CENTER, spacing=1.0)
+    title = text(24, 20, 372, 71, '融合新型內容相依時序方向模型入侵偵測\n與任務導向檢索增強稽核之 AI 資安框架', 57, NAVY, True, PP_ALIGN.CENTER)
     title.name = 'PosterTitle_Masthead'
     rect(198, 94, 24, 1.6, GOLD)
     text(24, 97, 372, 11, '從流量告警，走到有證據、可回復的處置', 27, BLUE, True, PP_ALIGN.CENTER)
