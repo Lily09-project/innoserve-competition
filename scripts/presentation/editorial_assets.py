@@ -200,7 +200,7 @@ def build_pages(limit=12):
     s=''
     for k,l in enumerate(['融合新型內容相依時序方向模型','入侵偵測與任務導向檢索增強稽核','之 AI 資安框架']):s+=text(64,206+k*62,l,44,BLUE if k==2 else NAVY,700)
     s+=rect(64,350,56,4,GOLD,2)+text(64,400,'從流量判定，走到有證據、可回復的處置。',24,MUTED)
-    s+=rect(64,424,760,30,WHITE,15,LINE)+text(84,444,'★ 本團隊原創：CTBM、校準融合、任務導向檢索、本機 AI 稽核、受控回復　｜　引用既有：PBCNN',15,NAVY,700)
+    s+=rect(64,424,816,30,WHITE,15,LINE)+text(84,444,'★ 原創：CTBM、校準融合、任務導向檢索、本機 AI 稽核、受控回復　｜　引用：PBCNN（Yu et al., 2021）',15,NAVY,700)
     s+=evidence_chain(512,[('model','偵測','17 類互補判定'),('retrieval','檢索','Top-5 訓練案例'),('document','稽核','本機 AI 三態'),('shield','回復','讀回＋到期回復')],False)
     s+=f'<g transform="translate(912 150) scale(4.6)">{icon_fragment("framework")}</g>'
     pages.append(graphic_page(1,'',s,'2026 資安技術組 · 決賽','cover',canvas=GRAY))
@@ -224,7 +224,7 @@ def build_pages(limit=12):
     s+=text(850,378,f'Macro-F1 {m["macro_f1"]["OOF Gate"]*100:.2f}%',18,TEAL,700)+text(1010,378,'見第 07 頁',15,MUTED)
     s+=arrow([(1018,404),(1018,486)])+rect(64,488,1152,72,NAVY,14)
     s+=text(640,532,'17 類判定  ＋  校準信心  ＋  模型表徵   →   後段檢索與稽核',22,WHITE,700,'middle')
-    s+=text(64,612,'兩個模型讀同一筆流量：CTBM（本團隊設計）看時序與方向，PBCNN（引用既有模型）看短窗位元組，再由 Gate 依證據融合。',17,MUTED)
+    s+=text(64,612,'兩個模型讀同一筆流量：CTBM（本團隊設計）看時序與方向，PBCNN（引用既有模型，Yu et al., 2021）看短窗位元組，再由 Gate 依證據融合。',17,MUTED)
     pages.append(graphic_page(3,'互補模型，形成同一次判定',s,'DETECTION'))
     # P04: vector composition is qualitative, not a falsely scaled 512:17 chart.
     cols=[64,467,870]

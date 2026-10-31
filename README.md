@@ -69,6 +69,8 @@
 | 本機AI稽核 | 核對正式判定、信心、分支判定及案例證據，回傳支持、複核或不確定 | 附加稽核結論，保留原正式分類 |
 | 受控處置與回復 | 策略閘門檢查類別、支持證據、信心、動作白名單、範圍與期限 | 允許動作、規則讀回、實際隔離量測及回復回條 |
 
+除PBCNN引用既有模型外，CTBM、校準融合（OOF Gate）、任務導向檢索、本機AI稽核與受控回復皆為本團隊設計。PBCNN出處：Yu, L., Dong, J., Chen, L., Li, M., Xu, B., Li, Z., Qiao, L., Liu, L., Zhao, B., & Zhang, C. (2021). PBCNN: Packet bytes-based convolutional neural network for network intrusion detection. *Computer Networks*, 194, 108117. https://doi.org/10.1016/j.comnet.2021.108117
+
 創新重點在於互補模型產生一次正式判定、以任務向量取得相關證據，以及讓判定、稽核、策略和回條可沿同一事件追溯。AI支持結論仍須通過策略檢查；複核與不確定事件保留監測或蒐證路徑。
 
 完整17類名稱與策略對照以[事件合約](app/pipeline.py)為準；[框架說明](FRAMEWORK.md)與[程式審查修正](docs/程式審查修正.md)說明資料交接及拒絕錯誤的條件。
