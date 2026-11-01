@@ -1,8 +1,9 @@
-"""Build the A2 poster from the team's finished poster image.
+"""Wrap the A2 poster PNG in the PPTX that the recorded release bindings expect.
 
-The team designed the poster as one image (deliverables/source/poster/ai-poster.png). This
-places it full-bleed on a single A2 portrait slide, so the delivery keeps the same PPTX / PDF /
-preview set as before. The image's text is part of the artwork and is not editable here.
+The poster is the team's finished image, deliverables/決賽海報_AI資安框架_A2.png. Release bindings
+(scripts/release_inventory.py, part of the recorded code revision) still list the poster
+PPTX, PDF and preview, so this places the PNG full-bleed on one A2 slide; those files carry
+no other content. Use the PNG itself for viewing and printing.
 """
 from pathlib import Path
 import sys
@@ -14,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'scripts'))
 from finalize_delivery import normalize
 
-IMAGE = ROOT / 'deliverables/source/poster/ai-poster.png'
+IMAGE = ROOT / 'deliverables/決賽海報_AI資安框架_A2.png'
 
 
 def build():

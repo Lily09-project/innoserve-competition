@@ -2,40 +2,40 @@
   "base_revision": "7d95faf",
   "files": {
     "deliverables/決賽簡報_AI資安框架.pptx": {
-      "bytes": 6134067,
-      "sha256": "c8e1c76872be150299cb54e6b54cfe3396e5e0eb3f6ad82fb29883f20a38e9de"
+      "bytes": 6134048,
+      "sha256": "bd74519bdba5e67fb529eb5499a60e8ebe57df7fb75ef62f494c449a24e633fc"
     },
     "deliverables/決賽簡報_AI資安框架.pdf": {
-      "bytes": 461674,
-      "sha256": "e3df811ccc9eb0bad4edb8a257729c0467db0a4dce95a0eb5168f99411f11c3b"
+      "bytes": 461774,
+      "sha256": "41a78af6a7e3d8c06d601c8023abe1fc926a669f08a6e12bb1eb03c446c169ed"
     },
     "deliverables/AI資安框架_系統展示影片_30秒快版.mp4": {
       "bytes": 5630439,
       "sha256": "b5132c1cbe1d6bc0c824908377c127500a23fe03ff629ef9c286a490f7fd171e"
     },
     "deliverables/figures/fig_architecture.png": {
-      "bytes": 251261,
-      "sha256": "a28e3e9934f5886f7fed505fd5e57216c6ab1ba91f52f6893dbd894ec89e1585"
+      "bytes": 252546,
+      "sha256": "8b518425cdb82f87b7b805b18da451805999505ff004915c097f860f87d2688c"
     },
     "deliverables/source/architecture.svg": {
       "bytes": 17198,
-      "sha256": "36bf31bcaf1f2e1cb2ab225e92871ae8d6264df4f1d0d8f494a4399caa9597c8"
+      "sha256": "e30d7392ed099901cbbe08987a8ed6f3c0e30722defedec7074f626ec1ea7f39"
     },
     "deliverables/決賽海報_AI資安框架_A2.pptx": {
-      "bytes": 2038922,
-      "sha256": "2c16f2ad2941fb2ee647b51cded75b64aee3b24c7476787541fa563586143f8d"
+      "bytes": 2038968,
+      "sha256": "3f7a877c7bf887b00bed3ff2d990fbb0561f926f3f225f8b0d596c673cfde879"
     },
     "deliverables/決賽海報_AI資安框架_A2.pdf": {
-      "bytes": 493016,
-      "sha256": "ead6a026ec097e2dc9a46757bc7abc6d00dd34ba7fd8d80b0f902a940dd629d5"
+      "bytes": 493041,
+      "sha256": "f224625721665638389065339d2df6d6fe56f8f2454d88ee7255fc637167edce"
     },
     "deliverables/決賽離線展示包.zip": {
-      "bytes": 14687283,
-      "sha256": "c673cb1087ebf4e666c9e9d4e8b89524e7f437beee0fbf67a8d67e593424760c"
+      "bytes": 14175686,
+      "sha256": "431eb6a3e0994fb3b3a1a217d9215f34b50a9c398ec720f1524c334ef8335741"
     },
     "deliverables/source/release-validation.json": {
       "bytes": 10198,
-      "sha256": "302f2e7df4ae9810387461ca4b1fb8462d3ae1a996f4b2261bf17a816f75f82d",
+      "sha256": "8128b1a5284084e8e3cd56d9e1effd30de0115321f6e88439289600ebec4fd69",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/01_slide.svg": {
@@ -50,7 +50,7 @@
     },
     "deliverables/source/slides/03_slide.svg": {
       "bytes": 19158,
-      "sha256": "5815def4d4b8c422eec7265cf4cd61af2ab2cee6972c6de1f002f2309e6996f7",
+      "sha256": "4604b01b4b1e245c2d544913e84e94119618af28fdfd560e089096886e7fef27",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/04_slide.svg": {
@@ -75,12 +75,12 @@
     },
     "deliverables/source/slides/08_slide.svg": {
       "bytes": 7887,
-      "sha256": "396f176334b24ca029b73a8da3e4dafe66e1853bd03376701a903a6bfb14ac9e",
+      "sha256": "ca9edbdcee7b327d4a51894fe4361549c60cbf1594973116b71fd243e9a9f86f",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/09_slide.svg": {
-      "bytes": 6570,
-      "sha256": "d561a27c578dfe3de09459000631877ea1b5c6e7ecce3969c21df8c0adc9fae7",
+      "bytes": 6657,
+      "sha256": "055150e07dc7b729a2ba97718864c90b4920d33742167aba9cc4e79d6d5637a0",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/10_slide.svg": {
@@ -130,8 +130,8 @@
     },
     "deliverables/source/finals-readiness.json": {
       "hash_normalization": "LF",
-      "bytes": 3531,
-      "sha256": "c123fcac2c7d87eef200a8758f979cb5c55bee23ec97f97a448b4366ca2aa2b7"
+      "bytes": 3406,
+      "sha256": "ea6d05efa95f95164416c42090957f79fa5b0c1c1b69010fda27c322317bfada"
     },
     "docs/決賽五分鐘口語稿.md": {
       "hash_normalization": "LF",
@@ -160,8 +160,8 @@
     },
     "deliverables/interactive/AI資安框架_自動循環展示.html": {
       "hash_normalization": "LF",
-      "bytes": 154078,
-      "sha256": "17881eb819975b6ec350e1a32121f2262e68f97dfe7d4bff4a1a78bdca2c3ea9"
+      "bytes": 156491,
+      "sha256": "035cd43e7d52cf1fe472e2e6a70caafd06b271166ebda3f90fc19a894457d3d9"
     }
   },
   "slides": 12,
@@ -186,8 +186,8 @@
   "website": "removed; API-only",
   "review": "153 Python tests, media smoke/data checks, offline exhibit regressions, native static alignment and public delivery checks passed; no native playback.",
   "results_changed": true,
-  "markdown_documents": 33,
-  "local_links_checked": 160,
+  "markdown_documents": 32,
+  "local_links_checked": 155,
   "presentation_limit_seconds": 360,
   "buffer_seconds": 60,
   "visual_theme": "white canvas; navy titles, blue flow/icons, teal method/results/completion, restrained warm gold packets/current stage",

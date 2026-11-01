@@ -10,7 +10,7 @@
 
 **[下載決賽簡報](deliverables/決賽簡報_AI資安框架.pptx)** · **[觀看／下載30秒方法動畫](deliverables/AI資安框架_系統展示影片_30秒快版.mp4)**
 
-**[A2海報印刷PDF](deliverables/決賽海報_AI資安框架_A2.pdf)** · **[海報PPTX](deliverables/決賽海報_AI資安框架_A2.pptx)**
+**[A2海報PNG](deliverables/決賽海報_AI資安框架_A2.png)**
 
 互動展示可用上方連結直接在瀏覽器開啟，也可下載單檔離線使用；依序播放四種情境，每個38秒；可暫停、調速、跳轉時間軸與查看資料。點節點說明時會暫停，閱讀後可繼續。它使用合成示意資料解說方法，不執行真實模型或網路規則；正式實測仍以本文結果與本機模型控制台為準。
 
@@ -29,7 +29,7 @@
 <details>
 <summary>查看 A2 海報預覽</summary>
 
-[![A2海報預覽](deliverables/figures/poster-a2-preview.png)](deliverables/決賽海報_AI資安框架_A2.pdf)
+[![A2海報](deliverables/決賽海報_AI資安框架_A2.png)](deliverables/決賽海報_AI資安框架_A2.png)
 
 </details>
 
@@ -39,7 +39,7 @@
 | --- | --- | --- |
 | 決賽簡報 | 12頁：9頁正式報告、結束頁後3頁六題圖解備詢；第2頁內嵌30秒影片，各頁附繁體中文講者備忘稿 | [逐頁SVG](deliverables/source/slides/)、[製作程式](scripts/presentation/editorial_assets.py)、[講者稿](deliverables/source/speaker-notes.md) |
 | 方法動畫 | 1920×1080、24fps、30秒、2倍速、內建中文配音；宣傳片節奏：Packet Tracer式等角拓樸與發光封包、斜切轉場、護盾擋下異常封包、Top-5卡片飛出與成果數字跳動 | [動畫來源](media/film/scene.mjs)、[渲染程式](scripts/render_product_film.mjs) |
-| A2海報 | 420×594mm直向；團隊完成的整張海報圖（原始資料與方法、六階段流程、結果、防禦機制）滿版置於單頁A2 | [製作程式](scripts/presentation/build_a2_poster.py)、[印刷規格](deliverables/source/poster-a2-spec.md) |
+| A2海報 | 團隊完成的整張海報圖（原始資料與方法、六階段流程、結果、防禦機制），單一PNG，A2直式 | [決賽海報_AI資安框架_A2.png](deliverables/決賽海報_AI資安框架_A2.png) |
 | 離線包 | 簡報、影片、海報、口語稿、答詢、備援卡、互動HTML及SHA256清單 | [包裝程式](scripts/package_finals.py) |
 | 驗收索引 | 正式檔案、來源、預覽與實測彙整的雜湊及驗收範圍 | [交付清單](deliverables/source/delivery-manifest.json)、[實測索引](deliverables/source/release-validation.json) |
 
@@ -257,7 +257,7 @@ python scripts/finals_pipeline.py --stage validation/NEW_DELIVERY_FOLDER
 | [sources/paper_code/](sources/paper_code/) | 第三方研究程式子模組，固定版本與來源由Git記錄 |
 | [.github/](.github/) | CI、PR範本與核心程式審查規則 |
 
-逐頁SVG是可編輯的設計來源；第2頁SVG描述影片位置，MP4由封裝步驟內嵌到PPTX。正式PPTX另有原生字型與實際字形對齊校正，應以正式檔作投影及編輯交付。製作步驟見[來源說明](deliverables/source/README.md)、[簡報規格](deliverables/source/presentation-design-spec.md)及[海報規格](deliverables/source/poster-a2-spec.md)。
+逐頁SVG是可編輯的設計來源；第2頁SVG描述影片位置，MP4由封裝步驟內嵌到PPTX。正式PPTX另有原生字型與實際字形對齊校正，應以正式檔作投影及編輯交付。製作步驟見[來源說明](deliverables/source/README.md)、[簡報規格](deliverables/source/presentation-design-spec.md)。
 
 ## 公開內容與版本維護
 
