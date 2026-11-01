@@ -30,8 +30,8 @@
       "sha256": "9a335ffd3079153fde50c827a6b48f9d4553de56df8ebc1bd780ba9def372955"
     },
     "deliverables/決賽離線展示包.zip": {
-      "bytes": 12477201,
-      "sha256": "1988dbf960dbfb77b2de22b12f2d1ab1ef60b4e2dbd6027bed1239bc8c01abc4"
+      "bytes": 12477654,
+      "sha256": "b91585f066952c26106ba340f56d985cafc917b5b3978a3695da55a9283f6796"
     },
     "deliverables/source/release-validation.json": {
       "bytes": 10198,
@@ -131,7 +131,7 @@
     "deliverables/source/finals-readiness.json": {
       "hash_normalization": "LF",
       "bytes": 3544,
-      "sha256": "dd02cb67c56b1f4387676575658952e28dc726a9c65426d2147dfb3c1bf2e83c"
+      "sha256": "fedb65535c9bf7aae1571cc5ca2265c1e91e9cb799f53479f8c36a85dd17db35"
     },
     "docs/決賽五分鐘口語稿.md": {
       "hash_normalization": "LF",
@@ -150,8 +150,8 @@
     },
     "deliverables/interactive/README.md": {
       "hash_normalization": "LF",
-      "bytes": 4395,
-      "sha256": "0dc41472f27ab4a88a5ff2fdf57324dfed6c4c933bc39054633710de5d111816"
+      "bytes": 4635,
+      "sha256": "ba5bb0cca0b620d0361376532df80b8940971166b5816c8703c5351fc787cc72"
     },
     "tests/offline-exhibit.cjs": {
       "hash_normalization": "LF",
@@ -160,8 +160,8 @@
     },
     "deliverables/interactive/AI資安框架_自動循環展示.html": {
       "hash_normalization": "LF",
-      "bytes": 151387,
-      "sha256": "1e151f933ff2f0a9715463ee737f1a5db762b61b5eb001a8282d43d05ed31d87"
+      "bytes": 154078,
+      "sha256": "17881eb819975b6ec350e1a32121f2262e68f97dfe7d4bff4a1a78bdca2c3ea9"
     }
   },
   "slides": 12,
@@ -182,12 +182,12 @@
     2560,
     1072
   ],
-  "python_tests": 153,
+  "python_tests": 157,
   "website": "removed; API-only",
   "review": "153 Python tests, media smoke/data checks, offline exhibit regressions, native static alignment and public delivery checks passed; no native playback.",
   "results_changed": true,
   "markdown_documents": 33,
-  "local_links_checked": 159,
+  "local_links_checked": 160,
   "presentation_limit_seconds": 360,
   "buffer_seconds": 60,
   "visual_theme": "white canvas; navy titles, blue flow/icons, teal method/results/completion, restrained warm gold packets/current stage",

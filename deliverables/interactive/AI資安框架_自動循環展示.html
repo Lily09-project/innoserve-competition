@@ -1558,16 +1558,93 @@
         border-color: var(--teal);
         color: var(--teal);
       }
+      /* Projector mode: one screen, the diagram as large as it fits, playback pinned below. */
       body.focus-view main {
         max-width: none;
-        padding: 16px;
+        height: 100vh;
+        padding: 14px 22px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        overflow: hidden;
       }
       body.focus-view .masthead,
       body.focus-view .roadmap,
-      body.focus-view .controls,
       body.focus-view .inspector,
-      body.focus-view footer {
+      body.focus-view footer,
+      body.focus-view .start-hint,
+      body.focus-view .light-legend,
+      body.focus-view .view-tools label,
+      body.focus-view .mobile-hint,
+      body.focus-view .chapters,
+      body.focus-view .timing-note {
         display: none;
+      }
+      body.focus-view .controls {
+        flex: none;
+        margin: 0;
+      }
+      body.focus-view .scenario {
+        min-height: 46px;
+        padding: 6px 16px;
+      }
+      body.focus-view .scenario strong {
+        font-size: 19px;
+      }
+      body.focus-view .exhibit {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+      }
+      body.focus-view .stage-heading {
+        font-size: 18px;
+        padding: 10px 20px;
+      }
+      body.focus-view #sceneLabel {
+        font-size: 22px;
+      }
+      body.focus-view .board-scroll {
+        flex: 1;
+        min-height: 0;
+        overflow: hidden;
+      }
+      body.focus-view #board {
+        width: 100%;
+        height: 100%;
+      }
+      body.focus-view .stage-bottom {
+        font-size: 22px;
+        padding: 12px 20px;
+      }
+      body.focus-view #stageMessage {
+        color: var(--ink);
+        font-size: 22px;
+        font-weight: 700;
+        line-height: 1.4;
+      }
+      body.focus-view #sceneCaption {
+        font-size: 17px;
+      }
+      body.focus-view .processing-label {
+        font-size: 15px;
+      }
+      body.focus-view .timeline {
+        flex: none;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+      body.focus-view .timeline-line {
+        flex: 1;
+      }
+      body.focus-view .timeline-line strong {
+        font-size: 19px;
+        min-width: 190px;
+      }
+      body.focus-view .timeline-line output {
+        font-size: 16px;
       }
       .board-scroll:focus-visible {
         outline: 3px solid var(--blue);
@@ -2062,7 +2139,7 @@
                 <option value="200">200%</option>
               </select></label
             >
-            <button id="focusView" aria-pressed="false">專注展示</button>
+            <button id="focusView" aria-pressed="false" aria-keyshortcuts="P">投影模式（P）</button>
           </div>
           <span id="stageMessage">同一筆資料，同步形成兩種模型輸入。</span
           ><span class="mobile-hint">可左右滑動查看完整光流板</span
@@ -4266,8 +4343,11 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
           const focusView = (enabled) => {
             document.body.classList.toggle("focus-view", enabled);
             $("focusView").setAttribute("aria-pressed", String(enabled));
-            $("focusView").textContent = enabled ? "返回完整畫面" : "專注展示";
+            $("focusView").textContent = enabled ? "離開投影模式（Esc）" : "投影模式（P）";
           };
+          // Open straight into projector mode with #present or ?present in the address.
+          if (location.hash === "#present" || new URLSearchParams(location.search).has("present"))
+            focusView(true);
           $("focusView").onclick = () =>
             focusView(!document.body.classList.contains("focus-view"));
           document.addEventListener("keydown", (e) => {
@@ -4278,6 +4358,14 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
             ) {
               focusView(false);
               $("focusView").focus();
+            } else if (
+              (e.key === "p" || e.key === "P") &&
+              !e.ctrlKey && !e.altKey && !e.metaKey && !e.isComposing &&
+              !$("dialog").open &&
+              !e.target.closest?.("input,select,textarea,[contenteditable=true]")
+            ) {
+              e.preventDefault();
+              focusView(!document.body.classList.contains("focus-view"));
             }
           });
           $("scenarios").innerHTML = Object.entries(SCENARIOS)
