@@ -89,15 +89,22 @@ def check_claims(root=ROOT):
             slide = ET.fromstring(archive.read(f'ppt/slides/slide{number}.xml'))
             if slide.find('p:transition', NS) is not None:
                 raise ValueError('unexpected_transition')
+    # The A2 poster is the team's finished image on one A2 slide; its figures are part of the
+    # artwork, so it is checked for format here rather than as a native metric surface.
     with zipfile.ZipFile(root / 'deliverables/決賽海報_AI資安框架_A2.pptx') as archive:
-        text = slide_text(archive, 1)
-        require_tokens(text, detector + retrieval + judge + ['來源限速', '非原生攻擊防禦率'], 'poster')
-        if '上游清洗' in text:
-            raise ValueError('unsupported_service_claim')
+        presentation = ET.fromstring(archive.read('ppt/presentation.xml'))
+        size = presentation.find('p:sldSz', NS)
+        if (int(size.get('cx')), int(size.get('cy'))) != (420*36000, 594*36000):
+            raise ValueError('poster_not_a2')
+        if len(presentation.findall('p:sldIdLst/p:sldId', NS)) != 1:
+            raise ValueError('poster_page_count')
+        slide = ET.fromstring(archive.read('ppt/slides/slide1.xml'))
+        if len(slide.findall('.//p:pic', NS)) != 1 or slide_text(archive, 1).strip():
+            raise ValueError('poster_not_single_image')
     require_tokens((root / 'README.md').read_text(encoding='utf-8'), detector + retrieval + judge, 'README')
     scan_delivery_anonymity(root)
     return {'native_deck_pages': 12, 'poster_pages': 1, 'embedded_movie_matches': True,
-            'metric_surfaces': ['README', 'PPT7', 'PPT8', 'A2'], 'anonymity': 'passed',
+            'metric_surfaces': ['README', 'PPT7', 'PPT8'], 'anonymity': 'passed',
             'native_playback_executed': False}
 
 

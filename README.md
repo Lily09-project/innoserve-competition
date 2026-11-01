@@ -10,7 +10,7 @@
 
 **[下載決賽簡報](deliverables/決賽簡報_AI資安框架.pptx)** · **[觀看／下載30秒方法動畫](deliverables/AI資安框架_系統展示影片_30秒快版.mp4)**
 
-**[A2海報印刷PDF](deliverables/決賽海報_AI資安框架_A2.pdf)** · **[海報可編輯PPTX](deliverables/決賽海報_AI資安框架_A2.pptx)**
+**[A2海報印刷PDF](deliverables/決賽海報_AI資安框架_A2.pdf)** · **[海報PPTX](deliverables/決賽海報_AI資安框架_A2.pptx)**
 
 互動展示可用上方連結直接在瀏覽器開啟，也可下載單檔離線使用；依序播放四種情境，每個38秒；可暫停、調速、跳轉時間軸與查看資料。點節點說明時會暫停，閱讀後可繼續。它使用合成示意資料解說方法，不執行真實模型或網路規則；正式實測仍以本文結果與本機模型控制台為準。
 
@@ -27,7 +27,7 @@
 [![30秒方法動畫預覽](deliverables/figures/film-preview.png)](deliverables/AI資安框架_系統展示影片_30秒快版.mp4)
 
 <details>
-<summary>查看加豐版 A2 海報預覽</summary>
+<summary>查看 A2 海報預覽</summary>
 
 [![A2海報預覽](deliverables/figures/poster-a2-preview.png)](deliverables/決賽海報_AI資安框架_A2.pdf)
 
@@ -39,13 +39,13 @@
 | --- | --- | --- |
 | 決賽簡報 | 12頁：9頁正式報告、結束頁後3頁六題圖解備詢；第2頁內嵌30秒影片，各頁附繁體中文講者備忘稿 | [逐頁SVG](deliverables/source/slides/)、[製作程式](scripts/presentation/editorial_assets.py)、[講者稿](deliverables/source/speaker-notes.md) |
 | 方法動畫 | 1920×1080、24fps、30秒、2倍速、內建中文配音；宣傳片節奏：Packet Tracer式等角拓樸與發光封包、斜切轉場、護盾擋下異常封包、Top-5卡片飛出與成果數字跳動 | [動畫來源](media/film/scene.mjs)、[渲染程式](scripts/render_product_film.mjs) |
-| A2海報 | 420×594mm直向；淺灰標題區兩行57pt作品名稱、原創／引用註記與四節點證據鏈、四階段產物、Top-5圖卡、策略例子、實測比較與六情境圖解 | [原生製作程式](scripts/presentation/build_a2_poster.py)、[印刷規格](deliverables/source/poster-a2-spec.md) |
+| A2海報 | 420×594mm直向；團隊完成的整張海報圖（原始資料與方法、六階段流程、結果、防禦機制）滿版置於單頁A2 | [製作程式](scripts/presentation/build_a2_poster.py)、[印刷規格](deliverables/source/poster-a2-spec.md) |
 | 離線包 | 簡報、影片、海報、口語稿、答詢、備援卡、互動HTML及SHA256清單 | [包裝程式](scripts/package_finals.py) |
 | 驗收索引 | 正式檔案、來源、預覽與實測彙整的雜湊及驗收範圍 | [交付清單](deliverables/source/delivery-manifest.json)、[實測索引](deliverables/source/release-validation.json) |
 
 簡報、海報、影片與互動展示共用證據鏈視覺系統：淺灰底封面／結尾／影片、白底內頁，訊號藍流程、青綠成果與少量琥珀標示目前步驟；中文及中文標點使用微軟正黑體Microsoft JhengHei，其他文字使用Segoe UI。簡報關閉換頁特效與裝飾動畫，保留第2頁的內嵌媒體時序。報告規劃為五分鐘含影片，另留一分鐘緩衝；現場上限六分鐘，答詢七分鐘。
 
-海報加豐版補入適用對象、各階段產物、FTP／SSH、HTTP型DDoS與Bot策略例子，以及六種隔離情境的規則／監測／蒐證路徑。所有正式交付物保持匿名；公開儲存庫的帳號資訊不放進競賽投影或海報。
+A2海報改用團隊完成的整張海報圖；圖中文字屬於圖像，正式數值以本頁、簡報與results為準。所有正式交付物保持匿名；公開儲存庫的帳號資訊不放進競賽投影或海報。
 
 設計參考與原創轉譯見[海報與影片參考紀錄](docs/海報與影片參考轉譯.md)。正式成果可直接下載使用；完整模型展示另依下方工作站設定執行。
 
