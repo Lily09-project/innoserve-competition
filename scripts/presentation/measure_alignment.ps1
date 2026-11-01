@@ -36,7 +36,8 @@ function Read-Shapes($collection, $parentName) {
                 if ($CorrectText) {
                     $shape.Tags.Add('ALIGNMENT_TARGET_X',$target.ToString('R',[System.Globalization.CultureInfo]::InvariantCulture))
                     $shift = $target-$observed
-                    if ([Math]::Abs($shift) -gt .05) { $shape.Left = [double]$shape.Left+$shift }
+                    # Badge digits are centred on their disc at build time; one digit's glyph bounds mislead.
+                    if ([Math]::Abs($shift) -gt .05 -and -not $shape.Name.StartsWith('PosterBadge')) { $shape.Left = [double]$shape.Left+$shift }
                     $row.x = [double]$shape.Left
                     $row.bound = @([double]$r.BoundLeft,[double]$r.BoundTop,[double]$r.BoundWidth,[double]$r.BoundHeight)
                 }
