@@ -87,3 +87,10 @@ PDF與預覽由Microsoft PowerPoint實際輸出，PDF使用PDF/A選項以嵌入�
 依指定的AI生成風格參考改為深色主題。整張A2底圖由scripts/presentation/build_poster_art.py原創向量繪製（deliverables/source/poster/poster-background.png，10px/mm）：深夜藍漸層、頁首發光城市天際線、散景光點、兩側電路走線、每張卡片背後的青色光暈，以及底部深色霓虹等角場景（攻擊流量→交換器→AI資安框架→受保護服務，紅色封包在防火牆被擋、綠色封包放行）。底圖不承載數據，不是實機或實景照片，也未使用任何既有素材或商標。
 
 海報原生物件改用色票的夜間色：卡片night_panel＋night_line邊框，標題白色、強調cyan、次要文字on_dark_muted，輸出標籤teal底、規則情境gold底。內容、數值、格線與先前版本相同。寫實照片風（人物、實景城市）需另以圖像生成工具製作後再嵌入，本版未使用生成影像。
+
+
+## 改用團隊整張海報圖（2026-11-02）
+
+A2海報改為團隊提供的完成海報圖（deliverables/source/poster/ai-poster.png，1055×1491像素），由scripts/presentation/build_a2_poster.py滿版放在單頁420×594mm，輸出PPTX、PDF與預覽。圖中文字是圖像的一部分，無法在PPTX中編輯，也不再作為數值核對面；決賽準備檢查改為核對A2尺寸、單頁與單張滿版圖片，數值核對保留README與簡報第7、8頁。
+
+印刷注意：來源圖放大到A2約為64 dpi（建議至少150 dpi，理想300 dpi），近看會偏軟。若要更清楚，請匯出至少2480×3508像素的版本替換ai-poster.png後重建。圖中部分生成文字與實測資料不一致（例如封包編號、模型名稱拼寫與iptables內容），送印前請自行確認是否接受。

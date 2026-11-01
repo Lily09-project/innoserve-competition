@@ -14,7 +14,6 @@ sys.path.insert(0, str(ROOT / 'scripts'))
 from demo_walkthrough import summarize, summarize_receipt
 from network_contract import digest
 from package_finals import ASSETS, asset_bytes
-from media_results import load_metrics
 
 TYPOGRAPHY = json.loads((ROOT / 'design-system/typography.json').read_text(encoding='utf-8'))
 
@@ -38,12 +37,13 @@ class FinalsDeliveryTests(unittest.TestCase):
             self.assertTrue(any(row['path'].startswith(name+'::') for row in rows))
         self.assertFalse(any(row['identity_matches'] for row in rows))
 
-    def test_user_palette_is_present_in_native_poster_and_slides(self):
+    def test_user_palette_is_present_in_native_slides(self):
         colors = json.loads((ROOT / 'design-system/palette.json').read_text(encoding='utf-8'))
         expected = {'navy': '#0B1B2E', 'blue': '#1D4ED8', 'teal': '#0F766E', 'gold': '#F59E0B', 'ink': '#15233A'}
         for key, value in expected.items():
             self.assertEqual(colors[key], value)
-        for name in ('deliverables/決賽海報_AI資安框架_A2.pptx', 'deliverables/決賽簡報_AI資安框架.pptx'):
+        # The A2 poster is a single image; the palette contract applies to the native deck.
+        for name in ('deliverables/決賽簡報_AI資安框架.pptx',):
             with zipfile.ZipFile(ROOT / name) as archive:
                 ns = {'a': 'http://schemas.openxmlformats.org/drawingml/2006/main'}
                 theme = ET.fromstring(archive.read('ppt/theme/theme1.xml'))
@@ -70,54 +70,29 @@ class FinalsDeliveryTests(unittest.TestCase):
                 self.assertEqual(value, asset_bytes(name))
                 self.assertIn(hashlib.sha256(value).hexdigest()+'  '+name, hashes)
 
-    def test_a2_dimensions_fonts_and_recorded_metrics(self):
+    def test_a2_poster_is_the_team_image_on_one_a2_page(self):
         ns = {'p': 'http://schemas.openxmlformats.org/presentationml/2006/main',
-              'a': 'http://schemas.openxmlformats.org/drawingml/2006/main'}
+              'a': 'http://schemas.openxmlformats.org/drawingml/2006/main',
+              'r': 'http://schemas.openxmlformats.org/officeDocument/2006/relationships'}
         with zipfile.ZipFile(ROOT / 'deliverables/決賽海報_AI資安框架_A2.pptx') as archive:
             presentation = ET.fromstring(archive.read('ppt/presentation.xml'))
             size = presentation.find('p:sldSz', ns)
             self.assertEqual((int(size.get('cx')), int(size.get('cy'))), (420*36000, 594*36000))
             self.assertEqual(len(presentation.findall('p:sldIdLst/p:sldId', ns)), 1)
             slide = ET.fromstring(archive.read('ppt/slides/slide1.xml'))
-            text = ''.join(x.text or '' for x in slide.findall('.//a:t', ns))
-            metrics=load_metrics()
-            expected=[f'{metrics["macro_f1"][name]*100:.2f}%' for name in ('PBCNN','CTBM','OOF Gate')]
-            expected += [f'{metrics[key]*100:.2f}%' for key in ('accuracy','top5','mrr5')]
-            expected += [str(metrics[key]) for key in ('support','review','uncertain')]+['非原生攻擊防禦率']
-            for value in expected:
-                self.assertIn(value, text)
-            self.assertGreater(len(slide.findall('.//a:r', ns)), 50)
-            for run in slide.findall('.//a:rPr', ns):
-                self.assertEqual(run.find('a:latin', ns).get('typeface'), TYPOGRAPHY['latin'])
-                self.assertEqual(run.find('a:ea', ns).get('typeface'), TYPOGRAPHY['cjk'])
+            pictures = slide.findall('.//p:pic', ns)
+            self.assertEqual(len(pictures), 1)
+            extent = pictures[0].find('.//a:xfrm/a:ext', ns)
+            self.assertEqual((int(extent.get('cx')), int(extent.get('cy'))), (420*36000, 594*36000))
             self.assertIsNone(slide.find('p:transition', ns))
+            media = [name for name in archive.namelist() if name.startswith('ppt/media/')]
+            self.assertEqual(len(media), 1)
+            self.assertEqual(archive.read(media[0]), (ROOT / 'deliverables/source/poster/ai-poster.png').read_bytes())
             core = ET.fromstring(archive.read('docProps/core.xml'))
             for item in core:
                 if item.tag.rsplit('}', 1)[-1] in ('creator', 'lastModifiedBy'):
                     self.assertFalse(item.text)
         self.assertTrue((ROOT / 'deliverables/決賽海報_AI資安框架_A2.pdf').read_bytes().startswith(b'%PDF'))
-
-    def test_poster_masthead_hierarchy_and_visible_advantages(self):
-        ns = {'p': 'http://schemas.openxmlformats.org/presentationml/2006/main',
-              'a': 'http://schemas.openxmlformats.org/drawingml/2006/main'}
-        with zipfile.ZipFile(ROOT / 'deliverables/決賽海報_AI資安框架_A2.pptx') as archive:
-            slide = ET.fromstring(archive.read('ppt/slides/slide1.xml'))
-            texts = slide.findall('.//p:sp', ns)
-            title = next(s for s in texts if s.find('p:nvSpPr/p:cNvPr', ns).get('name') == 'PosterTitle_Masthead')
-            self.assertTrue(all(int(r.get('sz')) >= 4400 and r.get('b') == '1' for r in title.findall('.//a:rPr', ns)))
-            self.assertEqual(int(title.find('p:spPr/a:xfrm/a:off', ns).get('y')), 20*36000)
-            content = ''.join(t.text or '' for t in slide.findall('.//a:t', ns))
-            for phrase in ('互補判定', '任務證據', '受控可追溯', '保留正式分類', '本機AI', '到期回復'):
-                self.assertIn(phrase, content)
-
-    def test_poster_comparison_scale_is_explicit_and_zero_based(self):
-        ns = {'a': 'http://schemas.openxmlformats.org/drawingml/2006/main'}
-        with zipfile.ZipFile(ROOT / 'deliverables/決賽海報_AI資安框架_A2.pptx') as archive:
-            root = ET.fromstring(archive.read('ppt/slides/slide1.xml'))
-            labels = {''.join(p.itertext()) for p in root.findall('.//a:t', ns)}
-            self.assertTrue({'0%', '50%', '100%'}.issubset(labels))
-        source = (ROOT / 'scripts/presentation/build_a2_poster.py').read_text(encoding='utf-8')
-        self.assertIn('94*value/100', source)
 
     def event(self):
         evidence = [{'rank': i+1, 'label_id': 2, 'label': 'SSH-Bruteforce', 'similarity': .9, 'case_id': 'private-case-'+str(i)} for i in range(5)]
