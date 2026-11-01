@@ -87,7 +87,7 @@ class FinalsDeliveryTests(unittest.TestCase):
             self.assertIsNone(slide.find('p:transition', ns))
             media = [name for name in archive.namelist() if name.startswith('ppt/media/')]
             self.assertEqual(len(media), 1)
-            self.assertEqual(archive.read(media[0]), (ROOT / 'deliverables/source/poster/ai-poster.png').read_bytes())
+            self.assertEqual(archive.read(media[0]), (ROOT / 'deliverables/決賽海報_AI資安框架_A2.png').read_bytes())
             core = ET.fromstring(archive.read('docProps/core.xml'))
             for item in core:
                 if item.tag.rsplit('}', 1)[-1] in ('creator', 'lastModifiedBy'):

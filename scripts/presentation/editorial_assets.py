@@ -120,7 +120,7 @@ def architecture(save=True, oy=24):
     for i,(name,title,sub) in enumerate(STAGES):
         x=xs[i]
         s+=circle(x+22,oy+22,22,BLUE_TINT)+icon(name,x+8,oy+8,28)
-        s+=text(x+56,oy+16,f'0{i+1}',13,TEAL,700)+text(x+82,oy+16,sub,13,MUTED)
+        s+=text(x+56,oy+16,f'0{i+1}',14,TEAL,700)+text(x+84,oy+16,sub,14,MUTED)
         s+=text(x+56,oy+40,title,21,NAVY,700)
         if i<3:s+=chevron(x+282,oy+22)
         s+=rect(x,oy+60,270,312,GRAY,14)
@@ -142,7 +142,7 @@ def architecture(save=True, oy=24):
     s+=arrow([(x+135,oy+136),(x+135,oy+152)])
     s+=rect(x+16,oy+154,238,74,WHITE,10,LINE)+text(x+32,oy+180,'Top-5 相似案例',19,INK,700)
     for k in range(5):s+=rect(x+32+k*30,oy+194,24,22,BLUE_TINT,4)+text(x+44+k*30,oy+210,str(k+1),13,BLUE,700,'middle')
-    s+=text(x+188,oy+210,'訓練庫',13,MUTED)
+    s+=text(x+188,oy+210,'訓練庫',14,MUTED)
     s+=arrow([(x+135,oy+228),(x+135,oy+244)])
     s+=node(x+16,oy+246,238,50,'本機 AI 稽核','')
     for k,label in enumerate(['支持','複核','不確定']):
@@ -205,7 +205,7 @@ def build_pages(limit=12):
     s+=f'<g transform="translate(912 150) scale(4.6)">{icon_fragment("framework")}</g>'
     pages.append(graphic_page(1,'',s,'2026 資安技術組 · 決賽','cover',canvas=GRAY))
     # P02 (source order): the four-lane architecture.
-    pages.append(graphic_page(2,'一個框架，四個連續階段',architecture(False,150),'FRAMEWORK'))
+    pages.append(graphic_page(2,'一個框架，四個連續階段',architecture(False,172),'FRAMEWORK'))
     # P03: two complementary paths, one calibrated output.
     s=rect(64,150,280,300,GRAY,14)+text(88,190,'同一流量輸入',18,TEAL,700)
     for j,label in enumerate(['封包內容','時間差','方向']):
@@ -299,7 +299,7 @@ def build_pages(limit=12):
     s=rect(64,164,380,388,GRAY,18)+text(94,206,'檢索效果',16,TEAL,700)
     s+=text(94,286,f'{m["top5"]*100:.2f}%',62,TEAL,700)+text(94,320,'Top-5 命中率',19,INK,700)
     s+=rule(94,354,414,354)+text(94,414,f'{m["mrr5"]*100:.2f}%',42,NAVY,700)+text(94,444,'MRR@5 排序品質',18,INK)
-    s+=text(94,516,f'{m["bank_rows"]:,} 案例 ／ {m["queries"]} 查詢 · 重疊 {m["overlap"]}',15,MUTED)
+    s+=text(94,516,f'{m["bank_rows"]:,} 案例 ／ {m["queries"]} 查詢 · 重疊 {m["overlap"]}',16,MUTED)
     s+=rect(500,164,716,62,NAVY,14)+text(858,204,f'{m["queries"]} 筆事件  →  本機 AI 稽核',22,WHITE,700,'middle')
     s+=arrow([(858,226),(858,252),(612,252),(612,276)])+arrow([(858,252),(858,276)])+arrow([(858,252),(1104,252),(1104,276)])
     for i,(value,label,art) in enumerate([(str(m['support']),'支持','check'),(str(m['review']),'複核','review'),(str(m['uncertain']),'不確定','question')]):
@@ -311,11 +311,12 @@ def build_pages(limit=12):
     s+=text(176,617,f'筆偵測誤判分流至複核或不確定；其餘 {m["false_support"]} 筆仍獲支持，處置另經策略檢查。',19,INK)
     pages.append(graphic_page(8,'案例提供證據，AI 完成分流',s,'RESULT · EVIDENCE'))
     # P09: light ending with the actual linked artifacts, rather than slogans alone.
-    s=text(64,196,'偵測有依據，稽核有證據，處置可回復。',30,BLUE,700)
+    # P09 ending: a single centred axis from slogan to thanks.
+    s=text(640,200,'偵測有依據，稽核有證據，處置可回復。',32,BLUE,700,'middle')
     s+=evidence_chain(318,[('document','正式判定','17 類＋信心'),('search','檢索證據','Top-5 訓練案例'),('check','稽核結論','支持／複核／不確定'),('clock','處置回條','讀回＋到期回復')],False,180,307)
-    s+=rect(64,480,1152,56,WHITE,14,LINE)+text(640,516,'同一事件 ID，串起分類、證據、判斷與回復紀錄。',21,NAVY,700,'middle')
-    s+=text(64,592,f'{m["live_classes"]} 類真實張量重跑 · {m["network_cases"]} 種隔離 TCP 情境驗證',19,MUTED)
-    s+=text(1216,630,'感謝聆聽，敬請指教。',30,NAVY,700,'end')
+    s+=rect(184,468,912,52,WHITE,26,LINE)+text(640,502,'同一事件 ID，串起分類、證據、判斷與回復紀錄。',20,NAVY,700,'middle')
+    s+=text(640,560,f'{m["live_classes"]} 類真實張量重跑 · {m["network_cases"]} 種隔離 TCP 情境驗證',18,MUTED,400,'middle')
+    s+=rect(604,590,72,4,GOLD,2)+text(640,640,'感謝聆聽，敬請指教。',30,NAVY,700,'middle')
     pages.append(graphic_page(9,'一套可展示、可查核的資安框架',s,'AI SECURITY FRAMEWORK','ending',canvas=GRAY))
     pages=[pages[i] for i in [0,5,1,2,3,4,6,7,8]]
     qa=[('創新在哪裡？與一般 IDS 加上 RAG 有何不同？', '529 維', '任務導向證據向量', '正式分類保留 · 稽核證據可追溯 · 策略可回復'), ('如何證明前段判斷與後段處置已經串起來？', '同一 ID', '事件與執行可追溯', '分類、Top-5、Judge、策略與回條綁定同一事件'), ('評估資料如何切分？案例庫是否洩漏測試答案？', '0', '訓練／查詢重疊', '訓練庫只讀 · 查詢不重疊 · AI 不看真實標籤'), ('AI 若支持錯誤判斷，如何避免直接誤封？', f'{m["intercepted"]} / {m["errors"]}', '偵測誤判分流', f'{m["false_support"]} 筆為支持統計；處置與回復另以隔離情境驗證'), (f'{m["rollback"]}/{m["network_cases"]} 是否代表各種真實攻擊都能完全防住？', f'{m["rollback"]} / {m["network_cases"]}', '背景保留與回復', f'{m["rollback"]}/{m["network_cases"]} 驗證服務保留與回復；不等同真實攻擊防禦率'), ('如何部署、保護資料，並接到既有環境？', '0', '外部 API 呼叫', '本機 AI 稽核；私有權重、輸入及逐筆回覆不公開')]
