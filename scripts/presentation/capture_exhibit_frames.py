@@ -14,6 +14,7 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parents[2]
 EXHIBIT = ROOT / 'deliverables/interactive/AI資安框架_自動循環展示.html'
 OUT = ROOT / 'deliverables/source/poster'
+SKIN = Path(__file__).with_name('exhibit_capture_dark.css')
 SCENARIO = 'ddos'
 SCALE = 2
 # Seconds on the exhibit timeline, the view, and the regions stacked into one panel (CSS px).
@@ -36,7 +37,7 @@ addEventListener('load', () => {
   // stay put however the page around the board is laid out.
   if (q.has('present')) document.head.insertAdjacentHTML('beforeend', '<style>' +
     '#diagramRegion{position:fixed!important;left:0!important;top:0!important;width:1920px!important;height:768px!important;' +
-    'z-index:9999;background:#fff;overflow:hidden!important;padding:0!important;margin:0!important;border:0!important}' +
+    'z-index:9999;overflow:hidden!important;padding:0!important;margin:0!important;border:0!important}' +
     '#board{width:1920px!important;height:768px!important;max-width:none!important}</style>');
   setTimeout(() => {
     document.querySelector('[data-scenario="' + q.get('cap') + '"]').click();
@@ -67,10 +68,10 @@ def browser():
 
 
 def pad(image, aspect):
-    """Extend with the board's white canvas so every panel shares one aspect ratio."""
+    """Extend with the night canvas so every panel shares one aspect ratio."""
     w, h = image.size
     width, height = (round(h*aspect), h) if w/h < aspect else (w, round(w/aspect))
-    canvas = Image.new('RGB', (width, height), 'white')
+    canvas = Image.new('RGB', (width, height), '#06101F')
     canvas.paste(image, ((width-w)//2, (height-h)//2))
     return canvas
 
@@ -80,7 +81,9 @@ def capture():
     exe = browser()
     with tempfile.TemporaryDirectory() as folder:
         page = Path(folder) / 'exhibit.html'
-        page.write_text(EXHIBIT.read_text(encoding='utf-8').replace('</body>', HOOK+'</body>'), encoding='utf-8')
+        # The poster is dark, so frames are taken with a night skin; the exhibit file itself is untouched.
+        skin = '<style>' + SKIN.read_text(encoding='utf-8') + '</style>'
+        page.write_text(EXHIBIT.read_text(encoding='utf-8').replace('</head>', skin+'</head>').replace('</body>', HOOK+'</body>'), encoding='utf-8')
         shots = {}
         for seconds, view in sorted({(t, v) for t, v, _ in FRAMES.values()}):
             shot = Path(folder) / f'{seconds}-{view}.png'
@@ -95,7 +98,7 @@ def capture():
         for name, (seconds, view, boxes) in FRAMES.items():
             parts = [shots[seconds, view].crop(tuple(v*SCALE for v in box)) for box in boxes]
             gap = 16*SCALE
-            frame = Image.new('RGB', (max(i.width for i in parts), sum(i.height for i in parts)+gap*(len(parts)-1)), 'white')
+            frame = Image.new('RGB', (max(i.width for i in parts), sum(i.height for i in parts)+gap*(len(parts)-1)), '#06101F')
             y = 0
             for part in parts:
                 frame.paste(part, (0, y))

@@ -1,0 +1,70 @@
+/* Night skin applied only while capturing poster frames; the published exhibit is unchanged.
+   Colours follow design-system/palette.json night tokens: navy, night_panel, night_line, cyan. */
+html, body, main { background: #06101f !important; color: #dce6f2 !important; }
+
+/* Board canvas: deep navy with a faint cyan grid and a soft centre glow. */
+#diagramRegion, #board, .board-scroll {
+  background:
+    radial-gradient(ellipse at 50% 45%, rgba(29, 78, 216, .28), transparent 62%),
+    linear-gradient(rgba(94, 234, 212, .05) 1px, transparent 1px) 0 0 / 32px 32px,
+    linear-gradient(90deg, rgba(94, 234, 212, .05) 1px, transparent 1px) 0 0 / 32px 32px,
+    #06101f !important;
+}
+#board text { fill: #dce6f2; }
+#board .heading { fill: #ffffff !important; }
+#board .small, #board .tiny, #board .net-muted, #board .dim { fill: #93a7c0 !important; }
+#board .node-box { fill: rgba(14, 34, 56, .94) !important; stroke: #2a4260 !important; }
+#board .node.complete .node-box { stroke: #285a8c !important; }
+#board .node.live .node-box {
+  fill: rgba(15, 59, 58, .92) !important; stroke: #5eead4 !important;
+  filter: drop-shadow(0 0 6px #5eead4) drop-shadow(0 0 18px rgba(94, 234, 212, .55));
+}
+#board .node.live .heading { fill: #5eead4 !important; }
+#board .node-halo { stroke: #5eead4 !important; }
+#board .processing-badge rect { fill: #5eead4 !important; }
+#board .processing-badge text { fill: #06101f !important; }
+#board .wire-track { stroke: #1e3a5c !important; }
+#board .wire { stroke: #3b82f6 !important; }
+#board .wire.lit { stroke: #5eead4 !important; filter: drop-shadow(0 0 5px #5eead4); }
+#board .wire.done { stroke: #60a5fa !important; filter: drop-shadow(0 0 4px rgba(96, 165, 250, .7)); }
+#board .pulse, #board .pulse-halo { fill: #fbbf24 !important; filter: drop-shadow(0 0 6px #f59e0b); }
+#board .bank-row { fill: rgba(30, 58, 92, .55) !important; }
+#board .bank-row.active { fill: rgba(94, 234, 212, .22) !important; }
+#board .rank-active { fill: rgba(94, 234, 212, .22) !important; stroke: #5eead4 !important; }
+#board .slot { fill: #132a44 !important; stroke: #2a4260 !important; }
+/* Light panel fills written as SVG attributes by the exhibit become night surfaces. */
+#board [fill="#f3f6fa"], #board [fill="#FFFFFF"], #board [fill="#ffffff"], #board [fill="white"] { fill: #132a44; }
+#board [fill="#e2f3f0"] { fill: #0f3b3a; }
+#board [fill="#eaf1fe"] { fill: #16304f; }
+#board [stroke="#eaf1fe"], #board [stroke="#ffffff"] { stroke: #2a4260; }
+#board text[fill="#52637a"] { fill: #93a7c0; }
+/* Accent text drawn in teal or blue becomes cyan / light blue so it reads on the night panels. */
+#board text[fill="#0f766e"], #board .net-text { fill: #5eead4 !important; }
+#board text[fill="#1d4ed8"] { fill: #93c5fd !important; }
+#board #netNode > text.heading, #board #netNode text.heading { fill: #ffffff !important; }
+#board .node.live text { opacity: 1 !important; }
+/* Inline teal text (the AI audit prompt lines) brightens to cyan. */
+#board text[style*="fill:#0f766e"] { fill: #a7f3e4 !important; opacity: 1 !important; }
+#board text[style*="fill:#52637a"] { fill: #93a7c0 !important; }
+#board text[style*="fill:#1d4ed8"] { fill: #93c5fd !important; }
+#board #netNode .network-box { fill: rgba(14, 34, 56, .94) !important; }
+
+/* Inspector tabs used for the raw-input and output frames. */
+#inspector, .inspector {
+  background: linear-gradient(180deg, #0b1b2e, #081529) !important;
+  border-color: #2a4260 !important; color: #dce6f2 !important;
+  box-shadow: 0 0 0 1px rgba(94, 234, 212, .15), 0 0 40px rgba(29, 78, 216, .25) !important;
+}
+#inspector * { border-color: #1e3a5c !important; }
+#inspector h2, #inspector h3, #inspector strong, #inspector b { color: #ffffff !important; }
+#inspector p, #inspector span, #inspector td, #inspector li, #inspector small { color: #c4d2e3 !important; }
+#inspector th { background: #132a44 !important; color: #93a7c0 !important; }
+#inspector tr, #inspector td { background: transparent !important; }
+#inspector tr[aria-selected="true"] td, #inspector tr.active td, #inspector tr.selected td { background: rgba(94, 234, 212, .14) !important; }
+#inspector button { background: #132a44 !important; color: #dce6f2 !important; border-color: #2a4260 !important; }
+#inspector button[aria-pressed="true"], #inspector button.active { background: rgba(94, 234, 212, .18) !important; color: #5eead4 !important; border-color: #5eead4 !important; }
+#inspector pre, #inspector code, #inspector .callout, #inspector .note, #inspector .mode, #inspector .tag {
+  background: #0e2238 !important; color: #a7f3e4 !important;
+}
+#inspector .callout { border-left-color: #5eead4 !important; box-shadow: 0 0 18px rgba(94, 234, 212, .18); }
+#inspector .hex-byte { background: #132a44 !important; color: #93c5fd !important; }
