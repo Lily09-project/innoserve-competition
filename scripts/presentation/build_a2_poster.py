@@ -94,159 +94,112 @@ def build():
     def arrow(x, y, w, h, kind=MSO_SHAPE.RIGHT_ARROW, color=BLUE):
         return shape(kind, x, y, w, h, color)
 
-    def icon(n, x, y, size=23):
-        slide.shapes.add_picture(str(ROOT / f'deliverables/source/flat-icon-{n}.png'), Mm(x), Mm(y), width=Mm(size), height=Mm(size))
+    def picture(name, x, y, w, h):
+        slide.shapes.add_picture(str(ROOT / f'deliverables/source/poster/exhibit-{name}.png'), Mm(x), Mm(y), width=Mm(w), height=Mm(h))
 
-    def document(x, y, w, h):
-        rect(x, y, w, h, WHITE, BLUE)
-        for k in range(3):
-            yy = y+h*(k+1)/4
-            line(x+w*.22, yy, x+w*.78, yy, BLUE, .8)
+    def badge(x, y, number, d=9):
+        disc(x, y, d, GOLD)
+        text(x, y, d, d, str(number), 17, WHITE, True, PP_ALIGN.CENTER)
 
     def section(y, number, title):
         text(24, y-1.5, 372, 13, title, 26, NAVY, True, PP_ALIGN.CENTER, (number+'　', TEAL))
         line(24, y+13, 396, y+13)
 
-    # Light masthead matching the deck cover: formal name, one takeaway and the four-stage evidence chain.
-    rect(0, 0, 420, 162, PALE)
-    line(0, 162, 420, 162, LINE, 1.5)
+    # Light masthead matching the deck cover: formal name, one takeaway and the originality note.
+    rect(0, 0, 420, 124, PALE)
+    line(0, 124, 420, 124, LINE, 1.5)
     text(24, 12, 372, 8, '2026 資安技術組 · 決賽作品', 18, TEAL, True, PP_ALIGN.CENTER)
     title = text(24, 20, 372, 71, '融合新型內容相依時序方向模型入侵偵測\n與任務導向檢索增強稽核之 AI 資安框架', 57, NAVY, True, PP_ALIGN.CENTER)
     title.name = 'PosterTitle_Masthead'
-    rect(198, 94, 24, 1.6, GOLD)
+    rect(199, 93.2, 22, 1.4, GOLD)
     text(24, 97, 372, 11, '從流量告警，走到有證據、可回復的處置', 27, BLUE, True, PP_ALIGN.CENTER)
-    text(24, 109, 372, 8, '同一事件串起模型判定、相似案例、AI稽核與處置回條。', 18, MUTED, align=PP_ALIGN.CENTER)
-    card(50, 118.5, 320, 8, GOLD_TINT)
-    text(50, 118.5, 320, 8, '本團隊原創：CTBM、校準融合、任務導向檢索、本機AI稽核、受控回復　｜　引用既有：PBCNN（Yu et al., 2021）', 14, NAVY, True, PP_ALIGN.CENTER, ('★ ', GOLD))
-    line(56, 139, 364, 139, LINE, 2)
-    for i, (label, image) in enumerate((('偵測', 2), ('檢索', 3), ('稽核', None), ('回復', 4))):
-        cx = 56+i*102.7
-        disc(cx-8, 131, 16, WHITE, BLUE)
-        if image:
-            icon(image, cx-5, 134, 10)
-        else:
-            document(cx-3.2, 134, 6.4, 10)
-        text(cx-20, 149, 40, 9, label, 20, NAVY, True, PP_ALIGN.CENTER)
+    card(50, 111.5, 320, 8, GOLD_TINT)
+    text(50, 111.5, 320, 8, '本團隊原創：CTBM、校準融合、任務導向檢索、本機AI稽核、受控回復　｜　引用既有：PBCNN（Yu et al., 2021）', 14, NAVY, True, PP_ALIGN.CENTER, ('★ ', GOLD))
 
-    section(169, '01', '四階段方法，串成同一條事件鏈')
-    stages = [('互補判定', '內容＋時序'), ('任務檢索', '表徵＋機率'),
-              ('證據稽核', '保留正式分類'), ('受控回復', '策略＋期限')]
-    stage_outputs = ['產生正式類別、\n信心與流量表徵',
-                     '依事件任務找案例\n附上相似類別證據',
-                     '核對判定與案例\n附加三態稽核結論',
-                     '策略允許才介入\n讀回並確認回復']
-    for i, (name, detail) in enumerate(stages):
-        y = 187+i*47
-        card(24, y, 372, 43, PALE)
-        text(26, y+4, 96, 9, name, 22, NAVY, True, PP_ALIGN.CENTER, (f'{i+1:02d} ', TEAL))
-        text(26, y+13, 96, 6, detail, 14, TEAL, True, PP_ALIGN.CENTER)
-        text(26, y+22, 96, 15, stage_outputs[i], 15, INK, align=PP_ALIGN.CENTER)
+    # 01: the exhibit's own HTTP-flood run, whole board first, then each stage enlarged.
+    section(131, '01', '一次 HTTP 洪流攻擊，從輸入走到處置')
+    text(24, 147, 372, 7, '畫面擷取自本作品 HTML 互動展示（合成封包與示意輸出；實測數值見 02）', 15, MUTED, align=PP_ALIGN.CENTER)
+    card(24, 157, 372, 158, WHITE, LINE)
+    for k, tone in enumerate((LINE, LINE, LINE)):
+        disc(29+k*5, 159.6, 3, tone)
+    text(46, 157.5, 300, 7.5, '互動展示 · HTTP 洪流情境 · 00:38 展示完成', 14, MUTED)
+    line(24, 165.5, 396, 165.5, LINE, .8)
+    hero_w, hero_h = 368, 368*1220/3264
+    picture('overview', 26, 166, hero_w, hero_h)
+    # Badges sit on the top-left corner of each stage's card in the captured board.
+    for number, (fx, fy) in enumerate(((.150, .084), (.450, .059), (.810, .084), (.785, .575)), 1):
+        badge(26+fx*hero_w-4.5, 166+fy*hero_h-4.5, number)
+    # Input-to-output strip: what enters the framework and what leaves it in this run.
+    line(24, 305, 396, 305, LINE, .8)
+    text(32, 306.5, 120, 7, '輸入：8 筆 HTTP 封包（FLOW-001）', 16, NAVY, True, lead=('▶ ', TEAL))
+    line(158, 310, 262, 310, BLUE_MUTED, 1.5)
+    arrow(262, 307.5, 5, 5, color=BLUE_MUTED)
+    text(272, 306.5, 116, 7, '輸出：限速決定送達路由器 r1', 16, NAVY, True, PP_ALIGN.RIGHT, ('◆ ', GOLD))
+
+    panels = [('偵測', '互補判定', 'detect', '8 筆封包經 CTBM＋PBCNN 編碼', 'DDoS-LOIC-HTTP 正式分類'),
+              ('檢索', '任務證據', 'retrieve', '512＋17＝529 維查詢向量', 'cosine 排序取 Top-5 案例'),
+              ('稽核', '證據稽核', 'audit', '本機AI核對分類與五筆證據', '支持，保留正式分類'),
+              ('處置', '受控可追溯', 'act', '策略檢查通過才下發指令', '來源限速＋30秒到期回復')]
+    for i, (stage, heading, frame, body, output) in enumerate(panels):
+        x, y = 24+i*95, 322
+        card(x, y, 87, 104, WHITE, LINE)
+        picture(frame, x+1.5, y+1.5, 84, 70)
+        badge(x+3.5, y+3.5, i+1, 8)
+        text(x, y+74, 87, 8, heading, 19, NAVY, True, PP_ALIGN.CENTER, (f'{stage}｜', TEAL))
+        text(x, y+83, 87, 6, body, 14, INK, align=PP_ALIGN.CENTER)
+        card(x+5, y+91, 77, 9, TEAL_TINT)
+        text(x+5, y+91, 77, 9, output, 14, TEAL, True, PP_ALIGN.CENTER, ('輸出 ', MUTED))
         if i < 3:
-            arrow(258, y+43.3, 7, 3.4, MSO_SHAPE.DOWN_ARROW, BLUE_MUTED)
+            arrow(x+88.5, y+34, 5, 5, color=BLUE_MUTED)
 
-    def node(x, y, w, h, label, sub=None, fill=WHITE, color=BLUE):
-        card(x, y, w, h, fill, LINE if fill == WHITE else None)
-        text(x, y+(1 if sub else 0), w, h*(.56 if sub else 1), label, 19, color, True, PP_ALIGN.CENTER)
-        if sub:
-            text(x, y+h*.54, w, h*.43, sub, 13.5, MUTED, align=PP_ALIGN.CENTER)
-
-    def merge(x, y1, y2, ym):
-        line(x, y1, x+8, y1, BLUE, 1.2)
-        line(x, y2, x+8, y2, BLUE, 1.2)
-        line(x+8, y1, x+8, y2, BLUE, 1.2)
-        arrow(x+9, ym-2.5, 7, 5)
-
-    # 01: parallel models enter one calibrated output.
-    node(126, 191, 78, 16, 'CTBM', '內容·時間差·方向')
-    node(126, 211, 78, 16, 'PBCNN', '短窗位元組模式·既有模型')
-    merge(204, 199, 219, 209)
-    node(222, 196, 84, 26, '校準＋融合', 'OOF Gate', BLUE_TINT)
-    arrow(308, 206.5, 10, 5)
-    node(320, 196, 72, 26, '17類判定', '信心與512維表徵', TEAL_TINT, TEAL)
-    # 02: task vector composition and train-only evidence retrieval.
-    node(126, 238, 78, 16, '512維表徵')
-    node(126, 258, 78, 16, '17維機率')
-    merge(204, 246, 266, 256)
-    node(222, 243, 84, 26, '529維向量', 'L2正規化', BLUE_TINT)
-    arrow(308, 253.5, 10, 5)
-    card(320, 243, 72, 26, TEAL_TINT)
-    text(320, 244, 72, 10, 'Top-5訓練案例', 18, TEAL, True, PP_ALIGN.CENTER)
-    for rank in range(5):
-        x = 323+rank*13.4
-        card(x, 255, 11, 10, WHITE)
-        text(x, 255, 11, 10, str(rank+1), 16, TEAL, True, PP_ALIGN.CENTER)
-    # 03: attach an audit; never overwrite the original classifier.
-    node(126, 285, 78, 16, '正式判定')
-    node(126, 305, 78, 16, '案例證據')
-    merge(204, 293, 313, 303)
-    node(222, 290, 84, 26, '本機AI稽核', '核對同一事件', BLUE_TINT)
-    arrow(308, 300.5, 10, 5)
-    for k, label in enumerate(('支持', '複核', '不確定')):
-        node(320, 288+k*10.3, 72, 9, label, None, TEAL_TINT, TEAL)
-    # 04: allowed action, readback and expiry, with the review branch explicit.
-    text(126, 330, 266, 8, '策略檢查：範圍、動作與期限｜來源限速等', 16, INK, align=PP_ALIGN.CENTER)
-    for k, label in enumerate(('套用規則', '讀回驗證', '到期回復')):
-        x = 126+k*94
-        node(x, 340, 78, 14, label, None, TEAL_TINT if k == 2 else WHITE, TEAL if k == 2 else BLUE)
-        if k < 2:
-            arrow(x+80.5, 344.5, 11, 5)
-    text(126, 356, 266, 7, '複核／不確定 → 保留監測或蒐證', 14, MUTED, align=PP_ALIGN.CENTER)
-    card(24, 377, 372, 13, NAVY)
-    for i in range(4):
-        disc(70+i*93, 375, 4, GOLD)
-    text(24, 377, 372, 13, '同一事件識別碼：正式分類／案例證據／稽核結論／處置回條', 18, WHITE, True, PP_ALIGN.CENTER)
-
-    section(398, '02', '三項優勢，從判定走到可追溯處置')
-    innovations = [('互補判定', '內容、時間差與方向互補\n校準融合，固定17類輸出\nMacro-F1達93.05%'),
-                   ('任務證據', '529維任務向量找Top-5案例\nAI核對判定，保留正式分類\n命中率97.62%'),
-                   ('受控可追溯', '本機AI，事件資料留在本機\n同事件串接判定、證據與回條\n策略檢查、讀回及到期回復')]
-    for i, (heading, copy) in enumerate(innovations):
-        x = 24+i*126
-        card(x, 416, 120, 44, WHITE, LINE)
-        rect(x+53, 420, 14, 1.4, GOLD)
-        text(x+4, 423, 112, 10, heading, 22, TEAL, True, PP_ALIGN.CENTER)
-        text(x+4, 434, 112, 23, copy, 15, INK, align=PP_ALIGN.CENTER)
-
-    section(468, '03', '以分階段實測呈現效果')
-    text(24, 485, 184, 7, f'相同{m["detection_n"]:,}筆測試的 Macro-F1', 15, MUTED, align=PP_ALIGN.CENTER)
+    # 02: recorded aggregates, one card per stage family.
+    section(434, '02', '實測結果，分階段驗證同一套框架')
+    for x in (24, 150, 276):
+        card(x, 454, 120, 106, PALE)
+    text(24, 458, 120, 9, '17類偵測', 20, NAVY, True, PP_ALIGN.CENTER, ('互補判定｜', TEAL))
+    text(24, 468, 120, 7, f'相同{m["detection_n"]:,}筆測試的 Macro-F1', 14, MUTED, align=PP_ALIGN.CENTER)
     for i, name in enumerate(('PBCNN', 'CTBM', 'OOF Gate')):
-        y = 494+i*12
+        y = 480+i*17
         value = data['detection'][name]['macro_f1']*100
         best = i == 2
-        text(24, y, 40, 8, name, 17, TEAL if best else INK, True)
-        rect(66, y+1, 94, 6, PALE)
-        rect(66, y+1, 94*value/100, 6, TEAL if best else BLUE_MUTED)
-        text(163, y, 43, 8, f'{value:.2f}%', 20, TEAL if best else INK, True, PP_ALIGN.RIGHT)
+        text(37, y, 50, 7, name, 16, TEAL if best else INK, True)
+        text(87, y-.5, 44, 8, f'{value:.2f}%', 18, TEAL if best else INK, True, PP_ALIGN.RIGHT)
+        rect(37, y+8, 94, 5, WHITE)
+        rect(37, y+8, 94*value/100, 5, TEAL if best else BLUE_MUTED)
     for tick in (0, 50, 100):
-        x = 66 + 94*tick/100
-        line(x, 530, x, 532, LINE, .6)
-        text(x-9, 532, 18, 5, str(tick)+'%', 12, MUTED, align=PP_ALIGN.CENTER)
-    text(24, 539, 184, 7, f'整體準確率{m["accuracy"]*100:.2f}%·固定17類分類', 15, MUTED, align=PP_ALIGN.CENTER)
-    line(213, 485, 213, 546)
+        x = 37 + 94*tick/100
+        line(x, 531, x, 533, MUTED, .6)
+        text(x-9, 533.5, 18, 5, str(tick)+'%', 12, MUTED, align=PP_ALIGN.CENTER)
+    text(24, 541, 120, 8, f'整體準確率 {m["accuracy"]*100:.2f}%', 17, NAVY, True, PP_ALIGN.CENTER)
+    text(24, 549.5, 120, 6, '固定17類輸出 · OOF Gate', 13, MUTED, align=PP_ALIGN.CENTER)
+
     r, j = data['retrieval'], data['judge']
-    text(220, 485, 176, 7, f'{m["bank_rows"]:,}筆訓練案例／{m["queries"]}筆查詢', 15, MUTED, align=PP_ALIGN.CENTER)
-    text(220, 492, 176, 14, f'Top-5  {r["top5"]*100:.2f}%', 34, TEAL, True, PP_ALIGN.CENTER)
-    text(220, 506, 176, 7, f'MRR@5  {r["mrr5"]*100:.2f}%·訓練／查詢重疊{m["overlap"]}', 14, MUTED, align=PP_ALIGN.CENTER)
+    text(150, 458, 120, 9, '檢索與稽核', 20, NAVY, True, PP_ALIGN.CENTER, ('任務證據｜', TEAL))
+    text(150, 468, 120, 7, f'{m["bank_rows"]:,}筆訓練案例／{m["queries"]}筆查詢', 14, MUTED, align=PP_ALIGN.CENTER)
+    text(150, 476, 120, 14, f'Top-5  {r["top5"]*100:.2f}%', 32, TEAL, True, PP_ALIGN.CENTER)
+    text(150, 490, 120, 7, f'MRR@5  {r["mrr5"]*100:.2f}%·訓練／查詢重疊{m["overlap"]}', 14, MUTED, align=PP_ALIGN.CENTER)
     for i, (name, key) in enumerate((('支持', 'support'), ('複核', 'review'), ('不確定', 'uncertain'))):
-        x = 220+i*59.3
-        card(x, 515, 55, 22, TEAL_TINT if key == 'support' else PALE)
-        text(x, 515.5, 55, 12, str(j['assessment_counts'][key]), 26, TEAL if key == 'support' else NAVY, True, PP_ALIGN.CENTER)
-        text(x, 528, 55, 8, name, 15, INK, align=PP_ALIGN.CENTER)
-    text(220, 539, 176, 7, f'{m["errors"]}筆偵測誤判中{m["intercepted"]}筆分流；其餘{m["false_support"]}筆獲支持', 13.5, MUTED, align=PP_ALIGN.CENTER)
-    card(24, 550, 372, 22, PALE)
-    text(28, 551, 64, 20, f'{m["live_classes"]}類本機重跑\n{m["network_cases"]}種隔離TCP情境', 15, NAVY, True, PP_ALIGN.CENTER)
+        x = 155.5+i*37.5
+        card(x, 500, 34, 26, TEAL_TINT if key == 'support' else WHITE)
+        text(x, 501, 34, 13, str(j['assessment_counts'][key]), 26, TEAL if key == 'support' else NAVY, True, PP_ALIGN.CENTER)
+        text(x, 514, 34, 9, name, 15, INK, align=PP_ALIGN.CENTER)
+    text(150, 531, 120, 14, f'{m["errors"]}筆偵測誤判中{m["intercepted"]}筆分流\n其餘{m["false_support"]}筆獲支持，處置另經策略檢查', 14, MUTED, align=PP_ALIGN.CENTER)
+
+    framework = data['framework']
+    text(276, 458, 120, 9, '隔離TCP驗證', 20, NAVY, True, PP_ALIGN.CENTER, ('受控可追溯｜', TEAL))
+    text(276, 468, 120, 7, f'{m["live_classes"]}類本機重跑·{m["network_cases"]}種隔離TCP情境', 14, MUTED, align=PP_ALIGN.CENTER)
     case_labels = {'BENIGN': '正常', 'FTP-BruteForce': 'FTP', 'SSH-Bruteforce': 'SSH',
                    'DDoS-LOIC-HTTP': 'HTTP', 'Web-XSS': 'XSS', 'Bot': 'Bot'}
-    for i, case in enumerate(data['framework']['cases']):
-        x = 94+i*33
+    for i, case in enumerate(framework['cases']):
+        x, y = 282+(i % 3)*37, 478+(i//3)*20
         active = case['rules_applied'] > 0
-        card(x, 553, 30, 16, GOLD_TINT if active else WHITE, None if active else LINE)
-        text(x, 553.5, 30, 8, case_labels[case['validation_label']], 15, NAVY, True, PP_ALIGN.CENTER)
+        card(x, y, 34, 17, GOLD_TINT if active else WHITE, None if active else LINE)
+        text(x, y+.5, 34, 9, case_labels[case['validation_label']], 15, NAVY, True, PP_ALIGN.CENTER)
         status = '規則' if active else '監測' if case['action'] == 'monitor' else '蒐證'
-        text(x, 561, 30, 7, status, 13, MUTED, align=PP_ALIGN.CENTER)
-    framework = data['framework']
-    text(296, 551, 96, 20, f'背景保留 {framework["background_preserved_cases"]}/{m["network_cases"]}\n到期回復 {framework["rollback_passed_cases"]}/{m["network_cases"]}', 18, TEAL, True, PP_ALIGN.CENTER)
-    text(24, 576, 372, 7, f'{m["rules_cases"]}種套用規則、{m["passive_cases"]}種監測或蒐證；{m["rollback"]}/{m["network_cases"]}為隔離交易與回復結果，非原生攻擊防禦率。', 15, MUTED, align=PP_ALIGN.CENTER)
+        text(x, y+9, 34, 7, status, 12, MUTED, align=PP_ALIGN.CENTER)
+    text(276, 520, 120, 9, f'背景保留 {framework["background_preserved_cases"]}/{m["network_cases"]}　到期回復 {framework["rollback_passed_cases"]}/{m["network_cases"]}', 18, TEAL, True, PP_ALIGN.CENTER)
+    text(276, 532, 120, 13, f'{m["rules_cases"]}種套用規則、{m["passive_cases"]}種監測或蒐證\n策略允許才下發，讀回後到期撤銷', 14, MUTED, align=PP_ALIGN.CENTER)
+    text(24, 566, 372, 7, f'{m["rollback"]}/{m["network_cases"]}為隔離交易與回復結果，非原生攻擊防禦率；01 展示畫面為合成資料，實測數值以 02 為準。', 15, MUTED, align=PP_ALIGN.CENTER)
 
     target = ROOT / 'deliverables/決賽海報_AI資安框架_A2.pptx'
     intermediate = ROOT / 'validation/poster-a2/authoring.pptx'
