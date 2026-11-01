@@ -80,3 +80,10 @@ PDF與預覽由Microsoft PowerPoint實際輸出，PDF使用PDF/A選項以嵌入�
 底部70mm滿版為裝飾美術圖（scripts/presentation/build_poster_art.py原創向量繪製，以無頭Edge／Chrome輸出deliverables/source/poster/art-banner.png）：左側網路交換器與接線，右側六張霓虹面板對應五種攻擊情境與受控回復。此圖不承載數據，也不是實機照片；風格參考網路設備實驗室與霓虹資安面板類插圖，沒有使用任何既有素材或商標。輸出畫面裁切略過展示頁的動作識別碼列。
 
 重製順序：capture_exhibit_frames.py → build_poster_art.py → build_a2_poster.py → export_a2_poster.ps1。
+
+
+## 深色電影感版（2026-11-01）
+
+依指定的AI生成風格參考改為深色主題。整張A2底圖由scripts/presentation/build_poster_art.py原創向量繪製（deliverables/source/poster/poster-background.png，10px/mm）：深夜藍漸層、頁首發光城市天際線、散景光點、兩側電路走線、每張卡片背後的青色光暈，以及底部深色霓虹等角場景（攻擊流量→交換器→AI資安框架→受保護服務，紅色封包在防火牆被擋、綠色封包放行）。底圖不承載數據，不是實機或實景照片，也未使用任何既有素材或商標。
+
+海報原生物件改用色票的夜間色：卡片night_panel＋night_line邊框，標題白色、強調cyan、次要文字on_dark_muted，輸出標籤teal底、規則情境gold底。內容、數值、格線與先前版本相同。寫實照片風（人物、實景城市）需另以圖像生成工具製作後再嵌入，本版未使用生成影像。

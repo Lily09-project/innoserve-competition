@@ -17,28 +17,38 @@ OUT = ROOT / 'deliverables/source/poster'
 SCENARIO = 'ddos'
 SCALE = 2
 # Seconds on the exhibit timeline, the view, and the regions stacked into one panel (CSS px).
-# 'present' is the 1920x1080 projector board; a tab name opens that inspector tab in a
-# 1440x2300 page. The output panel skips the policy tab's raw action identifier line.
+# 'present' is the board fixed at 1920x768 (1.2x the 1600x640 diagram); a tab name opens that inspector tab in a
+# 1440x1100 page showing only the inspector. The output panel skips the policy tab's raw action identifier line.
 FRAMES = {
-    'input': (38, 'traffic', [(50, 1530, 707, 2005)]),
-    'detect': (16, 'present', [(149, 250, 826, 797)]),
-    'retrieve': (27.5, 'present', [(826, 240, 1416, 787)]),
-    'audit': (31, 'present', [(1255, 245, 1745, 553)]),
-    'act': (38, 'present', [(1421, 432, 1766, 811)]),
-    'output': (38, 'policy', [(728, 1522, 1385, 1702), (50, 1664, 707, 1857)]),
+    'input': (38, 'traffic', [(50, 221, 707, 696)]),
+    'detect': (16, 'present', [(18, 70, 745, 710)]),
+    'retrieve': (27.5, 'present', [(800, 55, 1495, 690)]),
+    'audit': (31, 'present', [(1300, 56, 1868, 420)]),
+    'act': (38, 'present', [(1495, 285, 1900, 722)]),
+    'output': (38, 'policy', [(728, 217, 1385, 397), (50, 359, 707, 552)]),
 }
 WINDOWS = {'present': (1920, 1080)}
 PANEL_ASPECT = 115.67/80
 HOOK = """<script>
 addEventListener('load', () => {
   const q = new URLSearchParams(location.search);
+  // Board views draw the 1600x640 diagram at exactly 1.2x in a fixed 1920x768 box, so crops
+  // stay put however the page around the board is laid out.
+  if (q.has('present')) document.head.insertAdjacentHTML('beforeend', '<style>' +
+    '#diagramRegion{position:fixed!important;left:0!important;top:0!important;width:1920px!important;height:768px!important;' +
+    'z-index:9999;background:#fff;overflow:hidden!important;padding:0!important;margin:0!important;border:0!important}' +
+    '#board{width:1920px!important;height:768px!important;max-width:none!important}</style>');
   setTimeout(() => {
     document.querySelector('[data-scenario="' + q.get('cap') + '"]').click();
     setTimeout(() => {
       const seek = document.getElementById('seek');
       seek.value = q.get('t');
       seek.dispatchEvent(new Event('input'));
-      if (q.get('tab')) setTimeout(() => document.querySelector('[data-tab="' + q.get('tab') + '"]').click(), 300);
+      if (q.get('tab')) setTimeout(() => {
+        document.querySelector('[data-tab="' + q.get('tab') + '"]').click();
+        // Only the inspector stays, pinned to the page top, so crops do not move with the layout above it.
+        for (const el of document.querySelectorAll('main > *')) if (el.id !== 'inspector') el.style.display = 'none';
+      }, 300);
     }, 400);
   }, 400);
 });
@@ -75,7 +85,7 @@ def capture():
         for seconds, view in sorted({(t, v) for t, v, _ in FRAMES.values()}):
             shot = Path(folder) / f'{seconds}-{view}.png'
             query = 'present' if view == 'present' else f'tab={view}'
-            width, height = WINDOWS.get(view, (1440, 2300))
+            width, height = WINDOWS.get(view, (1440, 1100))
             url = page.as_uri() + f'?{query}&cap={SCENARIO}&t={seconds}'
             subprocess.run([exe, '--headless=new', '--disable-gpu', '--hide-scrollbars',
                             f'--force-device-scale-factor={SCALE}', '--virtual-time-budget=6000',
