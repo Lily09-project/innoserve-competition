@@ -183,7 +183,7 @@ python scripts/preflight.py --warmup
 python scripts/demo_walkthrough.py --mode live --event-index 0
 ```
 
-Windows可直接使用[決賽展示.cmd](決賽展示.cmd)進入匿名控制台，選正常、FTP、SSH、HTTP、Bot或複核情境，不需記憶事件索引。控制台可預檢與預載，明確選擇即時模型或保存結果備援。舊[啟動作品.cmd](啟動作品.cmd)仍供只啟動API使用。本機狀態入口為`http://127.0.0.1:8765/api/status`，服務提供模型與事件API，不提供已捨棄的網站介面。`preflight`會核對權重、CUDA、隔離依賴及執行來源；檢查失敗不報READY。
+Windows可直接使用[決賽展示.cmd](決賽展示.cmd)進入匿名控制台，選正常、FTP、SSH、HTTP、Bot或複核情境，不需記憶事件索引。控制台可預檢與預載，明確選擇即時模型或保存結果備援；結果以投影用彩色結果卡分「偵測→檢索→稽核→處置」四段依序呈現，信心與成功率換成百分比、動作與布林值換成中文（[present_console.py](scripts/present_console.py)，沿用showcase與demo_walkthrough的同一套驗證，參數相同）。舊[啟動作品.cmd](啟動作品.cmd)仍供只啟動API使用。本機狀態入口為`http://127.0.0.1:8765/api/status`，服務提供模型與事件API，不提供已捨棄的網站介面。`preflight`會核對權重、CUDA、隔離依賴及執行來源；檢查失敗不報READY。
 
 需要隔離處置展示時，在支援測試流量設定的即時事件上加`--network`；此選項會真正建立隔離情境並等待期限回復。`--mode saved`則重新查詢保存事件的證據，使用已綁定回覆，不宣稱本次重新執行偵測模型或LLM。完整操作見[本機匿名展示操作單](docs/本機展示操作單.md)。
 
