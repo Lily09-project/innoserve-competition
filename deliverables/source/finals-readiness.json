@@ -35,8 +35,8 @@
     "deliverables/決賽簡報_AI資安框架.pptx": "c8e1c76872be150299cb54e6b54cfe3396e5e0eb3f6ad82fb29883f20a38e9de",
     "deliverables/決賽簡報_AI資安框架.pdf": "e3df811ccc9eb0bad4edb8a257729c0467db0a4dce95a0eb5168f99411f11c3b",
     "deliverables/AI資安框架_系統展示影片_30秒快版.mp4": "b5132c1cbe1d6bc0c824908377c127500a23fe03ff629ef9c286a490f7fd171e",
-    "deliverables/決賽海報_AI資安框架_A2.pptx": "876c8dd3b0071c9e6f9259d40297c225be28a743fab9c6ff6c4d488486c027d6",
-    "deliverables/決賽海報_AI資安框架_A2.pdf": "78ef9ad8f067c4411d710b3107611a3c63158317871541ab6f84cdd48f22777f",
+    "deliverables/決賽海報_AI資安框架_A2.pptx": "0e404902b24af7a690b439fc4dce0215aa1eca3940db256a2c3677837a701f6c",
+    "deliverables/決賽海報_AI資安框架_A2.pdf": "46407cea6e2add7d19a96c677fcd91a096ae1a37c13c5768e27a829535239943",
     "deliverables/source/speaker-notes.md": "6da0eae147c7920278f77049f9cd70b7cd313818e63de18f2f8ff5d5a3782d6e",
     "deliverables/source/finals-runbook.json": "cd251e699e8b08650a93bb72605b14b45fe8e1cdffc6a9131dc9197c8f8228f1",
     "docs/決賽五分鐘口語稿.md": "fd45f6cd5d0186112b68e4ee8f31e1bc65a0a981bf6230d61b29349ece1845a9",
@@ -45,7 +45,7 @@
     "deliverables/interactive/AI資安框架_自動循環展示.html": "17881eb819975b6ec350e1a32121f2262e68f97dfe7d4bff4a1a78bdca2c3ea9",
     "scripts/check_finals_readiness.py": "b509d47a5e1501d590abdbea2f6aac3095ff91517c957f64d8e4198799d67539",
     "scripts/package_finals.py": "a7b2ee1791268e0d22647ba71bb2f82b4c9647f0386550ffb4bbfc2bf5700035",
-    "deliverables/決賽離線展示包.zip": "5712f88c00a89ee130f2496c3d2779d3f758648428d6fcb3424219b6b5b823d3",
+    "deliverables/決賽離線展示包.zip": "027317c2b804b18e667141429dea1533c446e2b0c59c326029d5fa86067251cf",
     "README.md": "1b64f7ee171f258b4bac464cd1f5358d7d342254ec2e0caadb2f09c6aa5f0bb7",
     "media/film/metrics.json": "816450d6ba5340d14b5bae6aeb133a462deb6be3f6eb3f4a37fb8274656222c1",
     "design-system/palette.json": "3c7c609fbe761752756a835954ecfa098194c09b38620054655d5e4bc487cb2e",
@@ -56,5 +56,5 @@
     "tests/offline-exhibit.cjs": "3665861805ebdbf6f7177b61284735268acbd172ab11a2f1a5c493e82f2ec173",
     "deliverables/interactive/README.md": "ba5bb0cca0b620d0361376532df80b8940971166b5816c8703c5351fc787cc72"
   },
-  "created_utc": "2026-11-01T15:38:53.718507+00:00"
+  "created_utc": "2026-11-01T15:44:16.759922+00:00"
 }

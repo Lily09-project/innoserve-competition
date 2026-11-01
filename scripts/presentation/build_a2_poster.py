@@ -123,30 +123,31 @@ def build():
         card(x, y, w, 7, TEAL)
         text(x, y, w, 7, label, 14, WHITE, True, PP_ALIGN.CENTER)
 
-    # Night masthead over the background skyline: formal name, one takeaway and the originality note.
-    # Full-page background art (dark canvas, card halos, bottom isometric scene); carries no data.
+    # Masthead over the AI-generated artwork: formal name, one takeaway and the originality note
+    # sit above the presenters' hologram scene (86-167 mm), which stays visible as imagery.
+    # Full-page backdrop from the team's generated artwork with its text blurred out; carries no data.
     slide.shapes.add_picture(str(ROOT / 'deliverables/source/poster/poster-background.png'), 0, 0, width=Mm(420), height=Mm(594))
-    text(24, 12, 372, 8, '2026 資安技術組 · 決賽作品', 18, GOLD, True, PP_ALIGN.CENTER)
-    title = text(24, 20, 372, 71, '融合新型內容相依時序方向模型入侵偵測\n與任務導向檢索增強稽核之 AI 資安框架', 57, WHITE, True, PP_ALIGN.CENTER)
+    text(24, 9, 372, 8, '2026 資安技術組 · 決賽作品', 18, GOLD, True, PP_ALIGN.CENTER)
+    title = text(24, 20, 372, 43, '融合新型內容相依時序方向模型入侵偵測\n與任務導向檢索增強稽核之 AI 資安框架', 48, WHITE, True, PP_ALIGN.CENTER, spacing=1.0)
     title.name = 'PosterTitle_Masthead'
-    rect(199, 93.2, 22, 1.4, GOLD)
-    text(24, 97, 372, 11, '從流量告警，走到有證據、可回復的處置', 27, CYAN, True, PP_ALIGN.CENTER)
-    card(50, 111.5, 320, 8, PANEL, GOLD, GLASS)
-    text(50, 111.5, 320, 8, '本團隊原創：CTBM、校準融合、任務導向檢索、本機AI稽核、受控回復　｜　引用既有：PBCNN（Yu et al., 2021）', 14, WHITE, True, PP_ALIGN.CENTER, ('★ ', GOLD))
+    rect(199, 61.5, 22, 1.4, GOLD)
+    text(24, 63.5, 372, 11, '從流量告警，走到有證據、可回復的處置', 25, CYAN, True, PP_ALIGN.CENTER)
+    card(50, 76, 320, 8, PANEL, GOLD, GLASS)
+    text(50, 76, 320, 8, '本團隊原創：CTBM、校準融合、任務導向檢索、本機AI稽核、受控回復　｜　引用既有：PBCNN（Yu et al., 2021）', 14, WHITE, True, PP_ALIGN.CENTER, ('★ ', GOLD))
 
     # Every block below sits on one 3-column grid (118.67 mm columns, 8 mm gutters) inside 24-396 mm.
     cw = (372-16)/3
     cols = [24+k*(cw+8) for k in range(3)]
 
     # 01: original data, then one HTTP-flood run of the HTML exhibit as six HUD panels, raw input to output.
-    section(130, '01', '原始資料與方法：一次 HTTP 洪流攻擊，從原始輸入到輸出')
+    section(173, '01', '原始資料與方法：一次 HTTP 洪流攻擊，從原始輸入到輸出')
     data_cells = [('訓練／驗證', 'CICIDS2017＋CSE-CIC-IDS2018'),
                   ('封存測試 17 類', f'CSE-CIC-IDS2018 {m["detection_n"]:,} 筆'),
                   ('檢索案例庫', f'{m["bank_rows"]:,} 筆訓練案例／{m["queries"]} 查詢')]
     for k, (label, value) in enumerate(data_cells):
-        card(cols[k], 147, cw, 16, PANEL, EDGE, GLASS)
-        text(cols[k], 148, cw, 7, label, 14, CYAN, True, PP_ALIGN.CENTER, ('原始資料｜', SOFT))
-        text(cols[k], 155, cw, 7, value, 15, WHITE, True, PP_ALIGN.CENTER)
+        card(cols[k], 190, cw, 15, PANEL, EDGE, GLASS)
+        text(cols[k], 190.5, cw, 7, label, 14, CYAN, True, PP_ALIGN.CENTER, ('原始資料｜', SOFT))
+        text(cols[k], 197, cw, 7, value, 15, WHITE, True, PP_ALIGN.CENTER)
 
     blocks = [(None, '原始輸入', 'FLOW-001 封包序列', 'input', '輸入', '8 筆 HTTP 請求與回應（合成封包）'),
               (1, '偵測', '互補判定', 'detect', '輸出', 'DDoS-LOIC-HTTP 正式分類'),
@@ -154,26 +155,26 @@ def build():
               (3, '稽核', '證據稽核', 'audit', '輸出', '支持，保留正式分類'),
               (4, '處置', '受控可追溯', 'act', '輸出', '來源限速＋30秒到期回復'),
               (None, '輸出', '處置決定與 r1 指令', 'output', '結果', '新連線每秒限 1 個，超額丟棄')]
-    rows = [168, 283]
-    image_w = cw-3
-    image_h = image_w*80/115.67
+    rows, block = [209, 303], 88
+    image_h = 65
+    image_w = image_h*115.67/80
     for n, (number, stage, heading, frame, chip, value) in enumerate(blocks):
         x, y = cols[n % 3], rows[n//3]
         edge = number is None
-        card(x, y, cw, 107, PANEL, CYAN if edge else EDGE, GLASS)
-        picture(frame, x+1.5, y+1.5, image_w, image_h)
+        card(x, y, cw, block, PANEL, CYAN if edge else EDGE, GLASS)
+        picture(frame, x+(cw-image_w)/2, y+1.5, image_w, image_h)
         if edge:
-            tag(x+5, y+5, stage, 22)
+            tag(x+2.5, y+3, stage, 22)
         else:
-            badge(x+5, y+5, number, 8)
-        text(x, y+84, cw, 8, heading, 19, WHITE, True, PP_ALIGN.CENTER, (f'{stage}｜', CYAN))
-        card(x+6, y+94, cw-12, 9, TEAL)
-        text(x+6, y+94, cw-12, 9, value, 14, WHITE, True, PP_ALIGN.CENTER, (chip+' ', GOLD))
+            badge(x+2.5, y+3, number, 8)
+        text(x, y+67.5, cw, 8, heading, 19, WHITE, True, PP_ALIGN.CENTER, (f'{stage}｜', CYAN))
+        card(x+6, y+77, cw-12, 9, TEAL)
+        text(x+6, y+77, cw-12, 9, value, 14, WHITE, True, PP_ALIGN.CENTER, (chip+' ', GOLD))
         if n % 3 < 2:
             arrow(x+cw+1.5, y+1.5+image_h/2-2.5, 5, 5, color=CYAN)
     # Row turn: from the retrieval block down and back to the audit block.
-    turn = rows[0]+107+3.5
-    line(cols[2]+cw/2, rows[0]+107, cols[2]+cw/2, turn, CYAN, 1.5)
+    turn = rows[0]+block+2.5
+    line(cols[2]+cw/2, rows[0]+block, cols[2]+cw/2, turn, CYAN, 1.5)
     line(cols[0]+cw/2, turn, cols[2]+cw/2, turn, CYAN, 1.5)
     arrow(cols[0]+cw/2-2.5, turn, 5, rows[1]-turn, MSO_SHAPE.DOWN_ARROW, CYAN)
 

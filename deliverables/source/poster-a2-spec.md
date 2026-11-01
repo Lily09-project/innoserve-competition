@@ -103,3 +103,12 @@ PDF與預覽由Microsoft PowerPoint實際輸出，PDF使用PDF/A選項以嵌入�
 - 底部（build_poster_art.py）：伺服器機櫃走道透視全景，中央發光盾牌與「AI 資安框架」，左側交換器、右側疊放偵測／檢索／稽核／處置四塊標牌。
 
 全部為程式繪製的原創圖像，不是照片或生成模型影像，也未使用任何品牌商標。重製順序：capture_exhibit_frames.py → build_poster_panels.py → build_poster_art.py → build_a2_poster.py → export_a2_poster.ps1。
+
+
+## 改用團隊AI生成主視覺（2026-11-01）
+
+背景改用團隊以圖像生成工具製作的整張海報主視覺（deliverables/source/poster/ai-poster-source.png，1055×1491）。生成圖的文字有錯字、錯誤數字與歪斜，因此scripts/presentation/build_poster_art.py把所有曾有文字的區域（頁首標題、01–03內容區、底部註記列）以高斯模糊加壓暗處理成無法閱讀的光暈底，只保留純影像：頁首人物與全息盾牌場景、兩側機櫃與底部等角場景。標題、主旨、原創註記、六格HUD面板、02結果與03防禦機制全部由原生可編輯物件疊上，數值仍讀自results。
+
+版面依生成圖調整：標題兩行48pt置於頁首，主視覺場景留在86–167mm，01區自173mm起，六格卡片高88mm，02、03與底部位置不變。
+
+注意：來源圖僅1055×1491，放大至A2約64 dpi，頁首人物場景印刷會偏軟；正式印刷建議重新匯出至少2480×3508的版本並替換ai-poster-source.png後重建。
