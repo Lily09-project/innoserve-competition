@@ -8,6 +8,7 @@ from pptx.dml.color import RGBColor
 from pptx.enum.shapes import MSO_SHAPE, MSO_CONNECTOR
 from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
 from pptx.util import Mm, Pt
+from pptx.oxml.ns import qn
 from pptx.oxml.xmlchemy import OxmlElement
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -24,6 +25,7 @@ BLUE_TINT, TEAL_TINT, GOLD_TINT, BLUE_MUTED = (PALETTE[key].lstrip('#') for key 
 WHITE = 'FFFFFF'
 # Night theme on the dark poster canvas: glass panels, light text, cyan accents.
 PANEL, EDGE, CYAN, SOFT = (PALETTE[key].lstrip('#') for key in ('night_panel', 'night_line', 'cyan', 'on_dark_muted'))
+GLASS = 0.78
 BADGE_LIFT = 0.015
 
 
@@ -57,9 +59,15 @@ def build():
     def rect(x, y, w, h, fill=PALE, stroke=None):
         return shape(MSO_SHAPE.RECTANGLE, x, y, w, h, fill, stroke)
 
-    def card(x, y, w, h, fill=PALE, stroke=None):
+    def card(x, y, w, h, fill=PALE, stroke=None, alpha=None):
         s = shape(MSO_SHAPE.ROUNDED_RECTANGLE, x, y, w, h, fill, stroke)
         s.adjustments[0] = min(.5, 2.4/min(w, h))
+        if alpha is not None:
+            # Glass panel: the tech background shows faintly through the fill.
+            colour = s._element.spPr.find(qn('a:solidFill')).find(qn('a:srgbClr'))
+            opacity = OxmlElement('a:alpha')
+            opacity.set('val', str(round(alpha*100000)))
+            colour.append(opacity)
         return s
 
     def disc(x, y, d, fill, stroke=None):
@@ -98,7 +106,7 @@ def build():
         return shape(kind, x, y, w, h, color)
 
     def picture(name, x, y, w, h):
-        slide.shapes.add_picture(str(ROOT / f'deliverables/source/poster/exhibit-{name}.png'), Mm(x), Mm(y), width=Mm(w), height=Mm(h))
+        slide.shapes.add_picture(str(ROOT / f'deliverables/source/poster/stage-{name}.png'), Mm(x), Mm(y), width=Mm(w), height=Mm(h))
 
     def badge(x, y, number, d=9):
         # The digit box is lifted by BADGE_LIFT of the diameter: CJK line boxes sit low,
@@ -123,20 +131,20 @@ def build():
     title.name = 'PosterTitle_Masthead'
     rect(199, 93.2, 22, 1.4, GOLD)
     text(24, 97, 372, 11, '從流量告警，走到有證據、可回復的處置', 27, CYAN, True, PP_ALIGN.CENTER)
-    card(50, 111.5, 320, 8, PANEL, GOLD)
+    card(50, 111.5, 320, 8, PANEL, GOLD, GLASS)
     text(50, 111.5, 320, 8, '本團隊原創：CTBM、校準融合、任務導向檢索、本機AI稽核、受控回復　｜　引用既有：PBCNN（Yu et al., 2021）', 14, WHITE, True, PP_ALIGN.CENTER, ('★ ', GOLD))
 
     # Every block below sits on one 3-column grid (118.67 mm columns, 8 mm gutters) inside 24-396 mm.
     cw = (372-16)/3
     cols = [24+k*(cw+8) for k in range(3)]
 
-    # 01: original data, then one HTTP-flood run of the HTML exhibit as six blocks, raw input to output.
+    # 01: original data, then one HTTP-flood run of the HTML exhibit as six HUD panels, raw input to output.
     section(130, '01', '原始資料與方法：一次 HTTP 洪流攻擊，從原始輸入到輸出')
     data_cells = [('訓練／驗證', 'CICIDS2017＋CSE-CIC-IDS2018'),
                   ('封存測試 17 類', f'CSE-CIC-IDS2018 {m["detection_n"]:,} 筆'),
                   ('檢索案例庫', f'{m["bank_rows"]:,} 筆訓練案例／{m["queries"]} 查詢')]
     for k, (label, value) in enumerate(data_cells):
-        card(cols[k], 147, cw, 16, PANEL, EDGE)
+        card(cols[k], 147, cw, 16, PANEL, EDGE, GLASS)
         text(cols[k], 148, cw, 7, label, 14, CYAN, True, PP_ALIGN.CENTER, ('原始資料｜', SOFT))
         text(cols[k], 155, cw, 7, value, 15, WHITE, True, PP_ALIGN.CENTER)
 
@@ -152,15 +160,12 @@ def build():
     for n, (number, stage, heading, frame, chip, value) in enumerate(blocks):
         x, y = cols[n % 3], rows[n//3]
         edge = number is None
-        card(x, y, cw, 107, PANEL, CYAN if edge else EDGE)
+        card(x, y, cw, 107, PANEL, CYAN if edge else EDGE, GLASS)
+        picture(frame, x+1.5, y+1.5, image_w, image_h)
         if edge:
-            # Input and output keep a header row for their tag; the capture shrinks to fit below it.
-            tag(x+3.5, y+3, stage, 22)
-            h = image_h-9.5
-            picture(frame, x+cw/2-h*115.67/80/2, y+11, h*115.67/80, h)
+            tag(x+5, y+5, stage, 22)
         else:
-            picture(frame, x+1.5, y+1.5, image_w, image_h)
-            badge(x+3.5, y+3.5, number, 8)
+            badge(x+5, y+5, number, 8)
         text(x, y+84, cw, 8, heading, 19, WHITE, True, PP_ALIGN.CENTER, (f'{stage}｜', CYAN))
         card(x+6, y+94, cw-12, 9, TEAL)
         text(x+6, y+94, cw-12, 9, value, 14, WHITE, True, PP_ALIGN.CENTER, (chip+' ', GOLD))
@@ -175,8 +180,8 @@ def build():
     # 02 results (columns 1-2) and 03 defence mechanism (column 3) share one baseline.
     section(397, '02', '結果', cols[0], 2*cw+8)
     section(397, '03', '防禦機制', cols[2], cw)
-    card(cols[0], 414, 2*cw+8, 96, PANEL, EDGE)
-    card(cols[2], 414, cw, 96, PANEL, EDGE)
+    card(cols[0], 414, 2*cw+8, 96, PANEL, EDGE, GLASS)
+    card(cols[2], 414, cw, 96, PANEL, EDGE, GLASS)
     line(cols[1]-4, 422, cols[1]-4, 502, EDGE, .8)
 
     x0, y0 = cols[0], 414

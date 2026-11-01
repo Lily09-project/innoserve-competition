@@ -1,4 +1,7 @@
-"""Capture the HTTP-flood run of the interactive exhibit as poster frames.
+"""Capture the HTTP-flood run of the interactive exhibit for the poster.
+
+build_poster_panels.py crops the CTBM and PBCNN matrices from the detect frame, so the
+poster shows the exhibit's own encoding.
 
 Each frame is the exhibit itself, paused at a recorded point of its 38-second timeline and
 rendered by a headless Edge/Chrome; nothing is redrawn. The exhibit runs on synthetic packets
@@ -17,16 +20,11 @@ OUT = ROOT / 'deliverables/source/poster'
 SKIN = Path(__file__).with_name('exhibit_capture_dark.css')
 SCENARIO = 'ddos'
 SCALE = 2
-# Seconds on the exhibit timeline, the view, and the regions stacked into one panel (CSS px).
-# 'present' is the board fixed at 1920x768 (1.2x the 1600x640 diagram); a tab name opens that inspector tab in a
-# 1440x1100 page showing only the inspector. The output panel skips the policy tab's raw action identifier line.
+# Seconds on the exhibit timeline, the view, and the regions stacked into one frame (CSS px).
+# 'present' is the board fixed at 1920x768 (1.2x the 1600x640 diagram); a tab name would open
+# that inspector tab in a 1440x1100 page showing only the inspector.
 FRAMES = {
-    'input': (38, 'traffic', [(50, 221, 707, 696)]),
     'detect': (16, 'present', [(18, 70, 745, 710)]),
-    'retrieve': (27.5, 'present', [(800, 55, 1495, 690)]),
-    'audit': (31, 'present', [(1300, 56, 1868, 420)]),
-    'act': (38, 'present', [(1495, 285, 1900, 722)]),
-    'output': (38, 'policy', [(728, 217, 1385, 397), (50, 359, 707, 552)]),
 }
 WINDOWS = {'present': (1920, 1080)}
 PANEL_ASPECT = 115.67/80

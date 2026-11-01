@@ -92,3 +92,14 @@ PDF與預覽由Microsoft PowerPoint實際輸出，PDF使用PDF/A選項以嵌入�
 ## 展示畫面深色化（2026-11-01）
 
 01區六格展示截圖改以深色霓虹外觀擷取：capture_exhibit_frames.py在截圖用的暫存頁注入scripts/presentation/exhibit_capture_dark.css（夜色底、青色網格、發光節點與連線、深色觀察窗），只改外觀，畫面中的封包、分類、相似度、稽核與處置狀態仍是互動展示在同一時間點實際呈現的內容。發布的互動展示HTML本身沒有修改。
+
+
+## 科技感背景、HUD面板與機櫃走道（2026-11-01）
+
+依指定參考（霓虹面板、資料中心走道橫幅、城市夜景儀表板海報）重新繪製：
+
+- 背景（build_poster_art.py）：頁首城市夜景加全息地球與資料圖表、全版淡六角網格、散景與電路走線；卡片改為78%不透明的玻璃面板（PPTX填色alpha），讓背景透出而前景文字清楚。
+- 01區六格（build_poster_panels.py）：不再使用展示網頁截圖，改繪為霓虹HUD面板（原始輸入藍、偵測紅、檢索橙、稽核紫、處置綠、輸出青）。畫面上的數值全部取自互動展示HTTP洪流情境的實際顯示：8筆合成封包、信心97%（示範）、案例庫相似度與Top-5、策略三項檢查、r1 iptables指令；CTBM與PBCNN矩陣直接裁自展示的偵測畫面（exhibit-detect.png）。
+- 底部（build_poster_art.py）：伺服器機櫃走道透視全景，中央發光盾牌與「AI 資安框架」，左側交換器、右側疊放偵測／檢索／稽核／處置四塊標牌。
+
+全部為程式繪製的原創圖像，不是照片或生成模型影像，也未使用任何品牌商標。重製順序：capture_exhibit_frames.py → build_poster_panels.py → build_poster_art.py → build_a2_poster.py → export_a2_poster.ps1。

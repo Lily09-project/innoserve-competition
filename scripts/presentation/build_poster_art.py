@@ -1,11 +1,11 @@
-"""Draw the poster's full-page background: a dark cinematic tech canvas and an isometric scene.
+"""Draw the poster's full-page background: a dark cinematic tech canvas and a data-centre footer.
 
-Original vector artwork in a night, neon-lit style; it carries no data. A glowing skyline
-sits behind the masthead, bokeh and circuit traces fill the margins, every content card gets
-a soft cyan halo, and the bottom scene tells the poster's story as floating isometric islands: attack traffic, a switch, the AI security framework (firewall,
-AI chip and shield) and the protected servers, joined by packet flows — red packets stop at
-the framework, green ones continue. Rendered by headless Edge/Chrome at 10 px per mm so
-Windows CJK fonts are used for the island captions.
+Original vector artwork in a night, neon-lit style; it carries no data. A glowing skyline with
+a hologram globe and chart sits behind the masthead, a faint hex grid, bokeh and circuit
+traces fill the page behind the translucent cards, every card gets a soft cyan halo, and the
+footer is a server-rack aisle receding to the framework emblem, with a switch on the left and
+the four stages stacked on the right. Rendered by headless Edge/Chrome at 10 px per mm so
+Windows CJK fonts are used.
 """
 from pathlib import Path
 import math
@@ -16,112 +16,7 @@ import tempfile
 from capture_exhibit_frames import OUT, browser
 
 WIDTH, HEIGHT = 4200, 5940  # A2 portrait at 10 px per mm
-BAND = 5200                 # scene starts below the poster's last text line (520 mm)
-NAVY, INK, BLUE, TEAL, GOLD, RED = '#0B1B2E', '#15233A', '#1D4ED8', '#0F766E', '#F59E0B', '#E5484D'
-S = 54                      # isometric unit in px
-C30, S30 = math.cos(math.pi/6), 0.5
-
-
-def shade(hex_color, k):
-    """Lighten (k > 0) or darken (k < 0) a colour by mixing with white or black."""
-    r, g, b = (int(hex_color[i:i+2], 16) for i in (1, 3, 5))
-    t = 255 if k > 0 else 0
-    k = abs(k)
-    return '#%02X%02X%02X' % tuple(round(c+(t-c)*k) for c in (r, g, b))
-
-
-class Iso:
-    """Isometric drawing anchored so that point (cx, cy, 0) of the island lands on (sx, sy)."""
-
-    def __init__(self, sx, sy, cx, cy):
-        self.ox = sx-(cx-cy)*C30*S
-        self.oy = sy-(cx+cy)*S30*S
-        self.parts = []
-
-    def p(self, x, y, z):
-        return self.ox+(x-y)*C30*S, self.oy+(x+y)*S30*S-z*S
-
-    def poly(self, points, fill, stroke='none', width=0, extra=''):
-        d = ' '.join(f'{a:.1f},{b:.1f}' for a, b in (self.p(*q) for q in points))
-        self.parts.append(f'<polygon points="{d}" fill="{fill}" stroke="{stroke}" stroke-width="{width}" stroke-linejoin="round"{extra}/>')
-
-    def line(self, a, b, color, width=2, opacity=1):
-        (x1, y1), (x2, y2) = self.p(*a), self.p(*b)
-        self.parts.append(f'<line x1="{x1:.1f}" y1="{y1:.1f}" x2="{x2:.1f}" y2="{y2:.1f}" stroke="{color}" stroke-width="{width}" stroke-opacity="{opacity}" stroke-linecap="round"/>')
-
-    def box(self, x, y, z, w, d, h, color, top=None):
-        edge = shade(color, -.25)
-        self.poly([(x, y+d, z), (x+w, y+d, z), (x+w, y+d, z+h), (x, y+d, z+h)], shade(color, -.08), edge, 1.5)
-        self.poly([(x+w, y, z), (x+w, y+d, z), (x+w, y+d, z+h), (x+w, y, z+h)], shade(color, -.22), edge, 1.5)
-        self.poly([(x, y, z+h), (x+w, y, z+h), (x+w, y+d, z+h), (x, y+d, z+h)], top or shade(color, .12), edge, 1.5)
-
-    def platform(self, w, d):
-        cx, cy = self.p(w/2, d/2, -1.4)
-        self.parts.append(f'<ellipse cx="{cx:.0f}" cy="{cy:.0f}" rx="{(w+d)*C30*S*.55:.0f}" ry="{(w+d)*S30*S*.32:.0f}" fill="#5EEAD4" fill-opacity=".16" filter="url(#blur)"/>')
-        self.box(0, 0, -.55, w, d, .55, '#1B2F4A', '#14263E')
-        for k in range(1, int(w)):
-            self.line((k, 0, 0), (k, d, 0), '#5EEAD4', 1.2, .18)
-        for k in range(1, int(d)):
-            self.line((0, k, 0), (w, k, 0), '#5EEAD4', 1.2, .18)
-        for a, b in (((0, 0, 0), (w, 0, 0)), ((w, 0, 0), (w, d, 0)), ((w, d, 0), (0, d, 0)), ((0, d, 0), (0, 0, 0))):
-            (x1, y1), (x2, y2) = self.p(*a), self.p(*b)
-            self.parts.append(f'<line x1="{x1:.1f}" y1="{y1:.1f}" x2="{x2:.1f}" y2="{y2:.1f}" stroke="#5EEAD4" stroke-width="4" class="glow" style="color:#5EEAD4"/>')
-
-    def svg(self):
-        return ''.join(self.parts)
-
-
-def laptop(g, x, y):
-    g.box(x, y, 0, 1.5, 1.05, .12, '#64748B')
-    g.poly([(x+.05, y, .12), (x+1.45, y, .12), (x+1.45, y, 1.15), (x+.05, y, 1.15)], INK, shade(INK, -.3), 1.5)
-    g.poly([(x+.17, y, .25), (x+1.33, y, .25), (x+1.33, y, 1.03), (x+.17, y, 1.03)], shade(RED, -.15), extra=' class="glow" style="color:#E5484D"')
-    g.line((x+.4, y, .75), (x+1.1, y, .55), '#FFFFFF', 3, .9)
-    g.line((x+.4, y, .55), (x+1.1, y, .75), '#FFFFFF', 3, .9)
-
-
-def cube(g, x, y, z, color, size=.38):
-    g.box(x, y, z, size, size, size, color)
-
-
-def switch(g, x, y):
-    g.box(x, y, 0, 3.2, 1.3, .55, '#2B3B55')
-    for k in range(10):
-        t = x+.22+k*.29
-        g.poly([(t, y+1.3, .14), (t+.2, y+1.3, .14), (t+.2, y+1.3, .36), (t, y+1.3, .36)], '#0A1626', '#7F90A8', 1)
-        g.line((t+.1, y+1.3, .44), (t+.1, y+1.3, .46), TEAL if k % 4 else GOLD, 6)
-    for k, h in enumerate((1.0, 1.25)):
-        g.line((x+.5+k*2.2, y+.3, .55), (x+.5+k*2.2, y+.3, .55+h), '#64748B', 5)
-
-
-def firewall(g, x, y):
-    w, d, h = 3.4, .8, 1.7
-    g.box(x, y, 0, w, d, h, '#F08A5D')
-    for r in range(1, 5):
-        z = h*r/5
-        g.line((x, y+d, z), (x+w, y+d, z), '#FFFFFF', 2, .65)
-        g.line((x+w, y, z), (x+w, y+d, z), '#FFFFFF', 2, .5)
-    for r in range(5):
-        for c in range(7):
-            t = x+(c+(.5 if r % 2 else 0))*w/7
-            if x < t < x+w:
-                g.line((t, y+d, h*r/5), (t, y+d, h*(r+1)/5), '#FFFFFF', 2, .65)
-
-
-def chip(g, x, y):
-    g.box(x, y, 0, 1.7, 1.7, .4, INK, '#22324A')
-    g.poly([(x+.4, y+.4, .4), (x+1.3, y+.4, .4), (x+1.3, y+1.3, .4), (x+.4, y+1.3, .4)], TEAL, extra=' class="glow" style="color:#0F766E"')
-    for k in range(5):
-        t = .2+k*.32
-        g.line((x+t, y+1.7, .1), (x+t, y+2.0, .1), '#94A3B8', 3)
-        g.line((x+1.7, y+t, .1), (x+2.0, y+t, .1), '#94A3B8', 3)
-
-
-def rack(g, x, y, h):
-    g.box(x, y, 0, 1.05, 1.05, h, '#1E2C44', '#33445E')
-    for k in range(int(h/.32)):
-        z = .18+k*.32
-        g.poly([(x+.1, y+1.05, z), (x+.95, y+1.05, z), (x+.95, y+1.05, z+.2), (x+.1, y+1.05, z+.2)], '#2E4060', '#4B5F80', 1)
-        g.line((x+.82, y+1.05, z+.1), (x+.84, y+1.05, z+.1), '#2EE6A6', 7)
+BAND = 5200                 # footer art starts below the poster's last text line (520 mm)
 
 
 def shield(cx, cy, size):
@@ -129,10 +24,6 @@ def shield(cx, cy, size):
     return (f'<g transform="translate({cx-50*s:.1f} {cy-60*s:.1f}) scale({s:.3f})" class="glow" style="color:#1D4ED8">'
             '<path d="M50 0 L100 20 V58 C100 92 76 112 50 122 C24 112 0 92 0 58 V20 Z" fill="url(#shieldFill)" stroke="#FFFFFF" stroke-width="5"/>'
             '<path d="M28 60 L45 77 L74 44" fill="none" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/></g>')
-
-
-def caption(x, y, text):
-    return f'<text x="{x:.0f}" y="{y:.0f}" text-anchor="middle" class="cap">{text}</text>'
 
 
 def skyline(rng):
@@ -190,54 +81,94 @@ def halos():
                    f'stroke="#5EEAD4" stroke-opacity=".55" stroke-width="10" filter="url(#halo)"/>' for x, y, w, h in boxes)
 
 
-def scene():
-    out = []
-    base = BAND+365
-    # Islands, left to right: attack traffic, switch, framework, protected servers.
-    a = Iso(640, base, 2.2, 2.0)
-    a.platform(4.4, 4.0)
-    for i, (x, y) in enumerate(((.4, .4), (2.5, .5), (1.4, 2.4))):
-        laptop(a, x, y)
-    cube(a, 3.3, 2.7, 1.4, RED)
-    cube(a, .6, 2.9, 1.8, RED)
-    b = Iso(1500, base+10, 1.9, 1.6)
-    b.platform(3.8, 3.2)
-    switch(b, .3, .9)
-    c = Iso(2420, base+20, 3.0, 2.6)
-    c.platform(6.0, 5.2)
-    chip(c, 3.6, 2.6)
-    firewall(c, .5, .6)
-    cube(c, .9, 3.6, 0, RED)
-    cube(c, 1.6, 4.1, 0, RED, .3)
-    d = Iso(3420, base+10, 2.3, 2.0)
-    d.platform(4.6, 4.0)
-    for i, h in enumerate((2.6, 3.1, 2.3)):
-        rack(d, .5+i*1.3, .6, h)
-    cube(d, 3.4, 3.1, 0, '#2EE6A6', .34)
-    # Packet flows between islands (screen space), red into the framework, green out of it.
-    flows = [((900, base-60), (1290, base-90), RED), ((1700, base-90), (2140, base-150), RED),
-             ((2700, base-150), (3160, base-120), '#10B981')]
-    for (x1, y1), (x2, y2), color in flows:
-        mx, my = (x1+x2)/2, min(y1, y2)-120
-        out.append(f'<path d="M{x1} {y1} Q{mx} {my} {x2} {y2}" fill="none" stroke="{color}" stroke-width="6" stroke-dasharray="4 18" stroke-linecap="round" class="glow" style="color:{color}"/>')
-        for k in (.3, .55, .8):
-            px = (1-k)**2*x1+2*(1-k)*k*mx+k*k*x2
-            py = (1-k)**2*y1+2*(1-k)*k*my+k*k*y2
-            out.append(f'<rect x="{px-11:.0f}" y="{py-11:.0f}" width="22" height="22" rx="5" fill="{color}" class="glow" style="color:{color}"/>')
-    out += [a.svg(), b.svg(), c.svg(), d.svg()]
-    # Hologram ring and shield above the framework island.
-    rx, ry = c.p(4.45, 3.45, .45)
-    out.append(f'<ellipse cx="{rx:.0f}" cy="{ry:.0f}" rx="150" ry="86" fill="none" stroke="#14B8A6" stroke-width="5" stroke-dasharray="14 10" class="glow" style="color:#14B8A6"/>')
-    sx, sy = c.p(3.0, 2.6, 4.1)
-    out.append(f'<line x1="{rx:.0f}" y1="{ry:.0f}" x2="{sx:.0f}" y2="{sy+60:.0f}" stroke="#60A5FA" stroke-width="3" stroke-dasharray="6 8" stroke-opacity=".6"/>')
-    out.append(shield(sx, sy, 190))
-    # A blocked mark where the red flow meets the firewall.
-    bx, by = 2150, base-150
-    out.append(f'<g transform="translate({bx:.0f} {by:.0f})" class="glow" style="color:#E5484D"><circle r="34" fill="#FFFFFF" stroke="#E5484D" stroke-width="6"/>'
-               '<path d="M-14 -14L14 14M14 -14L-14 14" stroke="#E5484D" stroke-width="8" stroke-linecap="round"/></g>')
-    cy = BAND+598
-    out += [caption(640, cy, '攻擊流量'), caption(1500, cy, '交換器'), caption(2420, cy, 'AI 資安框架'), caption(3420, cy, '受保護服務')]
+def aisle():
+    """Data-centre aisle panorama for the footer: racks recede to a glowing framework emblem."""
+    y0, h = BAND+40, HEIGHT-BAND-40
+    vx, vy = WIDTH/2, y0+270
+    out = [f'<rect y="{y0}" width="{WIDTH}" height="{h}" fill="url(#aisleBg)"/>']
+    # Ceiling light strips and floor seams converge on the vanishing point.
+    for k in range(-7, 8):
+        out.append(f'<line x1="{vx+k*40}" y1="{vy-40}" x2="{vx+k*620}" y2="{y0}" stroke="#BFDBFE" stroke-opacity=".38" stroke-width="7"/>')
+        out.append(f'<line x1="{vx+k*30}" y1="{vy+50}" x2="{vx+k*700}" y2="{y0+h}" stroke="#5EEAD4" stroke-opacity=".16" stroke-width="3"/>')
+    out.append(f'<ellipse cx="{vx}" cy="{y0+h-40}" rx="1500" ry="90" fill="#1D4ED8" fill-opacity=".25" filter="url(#blur)"/>')
+    rng = random.Random(5)
+    for side in (-1, 1):
+        for k in range(7):
+            t1, t2 = 1-0.74**k, 1-0.74**(k+1)
+            def at(t, top):
+                x = (0 if side < 0 else WIDTH)-side*(vx-460)*t
+                y = (y0+10 if top else y0+h)+((vy-120 if top else vy+120)-(y0+10 if top else y0+h))*t
+                return x, y
+            (ax, ay), (bx, by) = at(t1+.01, True), at(t2-.01, True)
+            (cx, cy), (dx, dy) = at(t2-.01, False), at(t1+.01, False)
+            out.append(f'<polygon points="{ax:.0f},{ay:.0f} {bx:.0f},{by:.0f} {cx:.0f},{cy:.0f} {dx:.0f},{dy:.0f}" fill="url(#rackFace)" stroke="#3B6EA8" stroke-width="5"/>')
+            for col in range(3):
+                f = .25+col*.25
+                x = ax+(bx-ax)*f
+                ytop, ybot = ay+(by-ay)*f, dy+(cy-dy)*f
+                for r in range(10):
+                    if rng.random() < .7:
+                        y = ytop+(ybot-ytop)*(r+.5)/10
+                        color = rng.choice(('#5EEAD4', '#3B82F6', '#60A5FA', '#22C55E'))
+                        out.append(f'<circle cx="{x:.0f}" cy="{y:.0f}" r="{max(3, 12*(1-t1)):.1f}" fill="{color}" class="glow" style="color:{color}"/>')
+    # Framework emblem at the end of the aisle.
+    out.append(f'<circle cx="{vx}" cy="{vy}" r="330" fill="url(#emblemGlow)"/>')
+    out.append(shield(vx, vy-70, 170))
+    out.append(f'<text x="{vx}" y="{vy+120}" text-anchor="middle" class="emblem">AI 資安框架</text>')
+    out.append(f'<text x="{vx}" y="{vy+182}" text-anchor="middle" class="emblemSub">偵測 · 檢索 · 稽核 · 處置</text>')
+    out.append(f'<path d="M{vx-360} {vy+225} C{vx-120} {vy+200} {vx+140} {vy+212} {vx+380} {vy+185}" fill="none" stroke="#F59E0B" stroke-width="12" stroke-linecap="round" class="glow" style="color:#F59E0B"/>')
+    # Foreground switch on the left and stacked stage slabs on the right.
+    sx, sy = 260, y0+330
+    out.append(f'<path d="M{sx} {sy} L{sx+80} {sy-60} L{sx+980} {sy-60} L{sx+900} {sy} Z" fill="#22324A"/>')
+    out.append(f'<rect x="{sx}" y="{sy}" width="900" height="170" rx="10" fill="#141F31" stroke="#3B5578" stroke-width="4"/>')
+    out.append(f'<path d="M{sx+900} {sy} L{sx+980} {sy-60} L{sx+980} {sy+110} L{sx+900} {sy+170} Z" fill="#0E1726"/>')
+    for k in range(16):
+        px = sx+260+k*38+(k//8)*20
+        out.append(f'<rect x="{px}" y="{sy+50}" width="28" height="26" rx="3" fill="#05080F" stroke="#64748B" stroke-width="2"/>'
+                   f'<rect x="{px}" y="{sy+92}" width="28" height="26" rx="3" fill="#05080F" stroke="#64748B" stroke-width="2"/>'
+                   f'<circle cx="{px+14}" cy="{sy+40}" r="4" fill="{"#22C55E" if k % 3 else "#F59E0B"}"/>')
+    out.append(f'<text x="{sx+40}" y="{sy+100}" class="device">AI SEC</text>')
+    for k, (zh, en) in enumerate((('偵測', 'DETECTION'), ('檢索', 'RETRIEVAL'), ('稽核', 'AI AUDIT'), ('處置', 'RESPONSE'))):
+        bx, by = 3180+k*18, y0+500-k*74
+        out.append(f'<path d="M{bx} {by} L{bx+60} {by-34} L{bx+820} {by-34} L{bx+760} {by} Z" fill="#26364F"/>'
+                   f'<rect x="{bx}" y="{by}" width="760" height="64" fill="#101B2D" stroke="#3B5578" stroke-width="3"/>'
+                   f'<path d="M{bx+760} {by} L{bx+820} {by-34} L{bx+820} {by+30} L{bx+760} {by+64} Z" fill="#0A1220"/>'
+                   f'<text x="{bx+380}" y="{by+46}" text-anchor="middle" class="slab">{zh}　{en}</text>')
     return ''.join(out)
+
+
+def globe(cx, cy, r):
+    """Wireframe hologram globe with orbit arcs (decorative)."""
+    out = [f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="#1D4ED8" fill-opacity=".10" stroke="#5EEAD4" stroke-opacity=".55" stroke-width="3"/>']
+    for k in range(1, 6):
+        out.append(f'<ellipse cx="{cx}" cy="{cy}" rx="{r*k/6:.0f}" ry="{r}" fill="none" stroke="#5EEAD4" stroke-opacity=".28" stroke-width="2"/>')
+        out.append(f'<ellipse cx="{cx}" cy="{cy}" rx="{r}" ry="{r*k/6:.0f}" fill="none" stroke="#5EEAD4" stroke-opacity=".22" stroke-width="2"/>')
+    out.append(f'<ellipse cx="{cx}" cy="{cy}" rx="{r*1.5:.0f}" ry="{r*.42:.0f}" fill="none" stroke="#F59E0B" stroke-opacity=".55" stroke-width="3" transform="rotate(-18 {cx} {cy})"/>')
+    return ''.join(out)
+
+
+def chart(x, y):
+    """Translucent hologram bar and line chart (decorative, no values)."""
+    out = [f'<rect x="{x}" y="{y}" width="620" height="360" rx="18" fill="#0E2238" fill-opacity=".45" stroke="#5EEAD4" stroke-opacity=".45" stroke-width="3"/>']
+    for k, hgt in enumerate((90, 150, 120, 210, 170, 250, 230)):
+        out.append(f'<rect x="{x+50+k*78}" y="{y+320-hgt}" width="44" height="{hgt}" rx="6" fill="#3B82F6" fill-opacity=".55"/>')
+    pts = ' '.join(f'{x+72+k*78},{y+300-v}' for k, v in enumerate((60, 120, 90, 180, 150, 220, 260)))
+    out.append(f'<polyline points="{pts}" fill="none" stroke="#5EEAD4" stroke-width="5" class="glow" style="color:#5EEAD4"/>')
+    return ''.join(out)
+
+
+def hexes():
+    out = []
+    r = 70
+    for row in range(0, int(BAND/(r*1.5))+1):
+        for col in range(0, int(WIDTH/(r*1.732))+2):
+            cx = col*r*1.732+(r*.866 if row % 2 else 0)
+            cy = 1300+row*r*1.5
+            if cy > BAND:
+                continue
+            pts = ' '.join(f'{cx+r*.95*math.cos(a):.0f},{cy+r*.95*math.sin(a):.0f}' for a in (i*math.pi/3+math.pi/6 for i in range(6)))
+            out.append(f'<polygon points="{pts}"/>')
+    return f'<g fill="none" stroke="#3B82F6" stroke-opacity=".07" stroke-width="2">{"".join(out)}</g>'
 
 
 def build():
@@ -250,11 +181,14 @@ def build():
     </linearGradient>
     <linearGradient id="tower" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#12284A"/><stop offset="1" stop-color="#0A1830"/></linearGradient>
     <linearGradient id="mastFade" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#040A16" stop-opacity=".96"/><stop offset=".55" stop-color="#040A16" stop-opacity=".78"/>
+      <stop offset="0" stop-color="#040A16" stop-opacity=".82"/><stop offset=".55" stop-color="#040A16" stop-opacity=".62"/>
       <stop offset="1" stop-color="#040A16" stop-opacity=".25"/>
     </linearGradient>
     <radialGradient id="beam" cx=".5" cy=".42" r=".5"><stop offset="0" stop-color="#1D4ED8" stop-opacity=".45"/><stop offset="1" stop-color="#1D4ED8" stop-opacity="0"/></radialGradient>
     <radialGradient id="glowBand" cx=".5" cy="1" r=".6"><stop offset="0" stop-color="#5EEAD4" stop-opacity=".18"/><stop offset="1" stop-color="#5EEAD4" stop-opacity="0"/></radialGradient>
+    <linearGradient id="aisleBg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#06101F" stop-opacity="0"/><stop offset=".18" stop-color="#050B17"/><stop offset="1" stop-color="#03070F"/></linearGradient>
+    <linearGradient id="rackFace" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1A3253"/><stop offset="1" stop-color="#0C1A2E"/></linearGradient>
+    <radialGradient id="emblemGlow"><stop offset="0" stop-color="#3B82F6" stop-opacity=".55"/><stop offset="1" stop-color="#3B82F6" stop-opacity="0"/></radialGradient>
     <linearGradient id="shieldFill" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3B82F6"/><stop offset="1" stop-color="#0F766E"/></linearGradient>
     <pattern id="dots" width="60" height="60" patternUnits="userSpaceOnUse"><circle cx="30" cy="30" r="2.2" fill="#5EEAD4" fill-opacity=".10"/></pattern>
     <filter id="blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="18"/></filter>
@@ -264,17 +198,22 @@ def build():
   <rect width="{WIDTH}" height="{HEIGHT}" fill="url(#page)"/>
   <rect width="{WIDTH}" height="{HEIGHT}" fill="url(#dots)"/>
   <rect x="300" y="-400" width="3600" height="2000" fill="url(#beam)"/>
+  {globe(3720, 420, 300)}{chart(170, 240)}
   {skyline(rng)}
+  {hexes()}
   {bokeh(rng)}
   {circuits(rng)}
   <rect y="{BAND-300}" width="{WIDTH}" height="{HEIGHT-BAND+300}" fill="url(#glowBand)"/>
   {halos()}
-  {scene()}
+  {aisle()}
 </svg>'''
     page = f'''<!doctype html><html><head><meta charset="utf-8"><style>
 html,body{{margin:0;background:#040A16}}
 .glow{{filter:drop-shadow(0 0 8px color-mix(in srgb,currentColor 60%,transparent)) drop-shadow(0 0 22px color-mix(in srgb,currentColor 35%,transparent))}}
-.cap{{font:700 40px "Microsoft JhengHei","Segoe UI",sans-serif;fill:#E2E8F0;letter-spacing:2px}}
+.emblem{{font:800 100px "Microsoft JhengHei","Segoe UI",sans-serif;fill:#FFFFFF;filter:drop-shadow(0 0 18px #3B82F6)}}
+.emblemSub{{font:700 44px "Microsoft JhengHei","Segoe UI",sans-serif;fill:#5EEAD4;letter-spacing:6px}}
+.device{{font:800 44px "Segoe UI",sans-serif;fill:#E2E8F0;letter-spacing:4px}}
+.slab{{font:700 34px "Microsoft JhengHei","Segoe UI",sans-serif;fill:#CBD5E1;letter-spacing:3px}}
 </style></head><body>{art}</body></html>'''
     with tempfile.TemporaryDirectory() as folder:
         html = Path(folder) / 'art.html'
