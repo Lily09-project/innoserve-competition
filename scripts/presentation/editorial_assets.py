@@ -166,9 +166,27 @@ def group(key, body):
     return f'<g id="{key}"{bound}>{body}</g>'
 
 
+# Which of the four stages each content page covers; the header tracker marks them.
+STAGE_LABELS=['偵測','檢索','稽核','回復']
+PAGE_STAGES={2:(0,1,2,3),3:(0,),4:(1,2),5:(3,),7:(0,),8:(1,2)}
+
+
+def stage_tracker(n):
+    """Four pills at the header's right edge, the same chain as the cover; active stages filled."""
+    active=PAGE_STAGES.get(n)
+    if active is None:return ''
+    s=''
+    for k,label in enumerate(STAGE_LABELS):
+        x=1216-(4-k)*84+8
+        on=k in active
+        s+=rect(x,42,76,28,TEAL if on else GRAY,14)+text(x+38,61,label,15,WHITE if on else MUTED,700,'middle')
+        if k<3:s+=rule(x+77,56,x+83,56,LINE,2)
+    return s
+
+
 def graphic_page(n, title, body, kicker='METHOD', role='content', dark=False, canvas=None):
     title_color, kicker_color, footer_color, rail = (WHITE, CYAN, DARK_MUTED, NIGHT_LINE) if dark else (NAVY, TEAL, MUTED, LINE)
-    heading=rect(64,50,10,10,GOLD,2)+text(84,60,kicker,15,kicker_color,700)
+    heading=rect(64,50,10,10,GOLD,2)+text(84,60,kicker,15,kicker_color,700)+stage_tracker(n)
     if title:heading+=text(64,114,title,38,title_color,700)
     current=PAGE_NUMBERS[n]-1 if n<=9 else n-10
     progress=''.join(rect(916+k*20,688,14,4,GOLD if k==current else rail,2) for k in range(9 if n<=9 else 3))
