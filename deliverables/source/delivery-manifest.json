@@ -2,12 +2,12 @@
   "base_revision": "7d95faf",
   "files": {
     "deliverables/決賽簡報_AI資安框架.pptx": {
-      "bytes": 8035422,
-      "sha256": "9966d466ca95cb473216e46c1ee142ffb4d16e098195459bccb3660e1b4e4b78"
+      "bytes": 8038060,
+      "sha256": "e97a7bb6bc1430b0499046f765e0278baaeed997aeb64809f86d78d377e07d56"
     },
     "deliverables/決賽簡報_AI資安框架.pdf": {
-      "bytes": 504329,
-      "sha256": "442c8fca54cb10ae9816268452c88cfa1b8ad9a25db0c565b7d12cfdeb36f246"
+      "bytes": 681648,
+      "sha256": "71d56a8b03ae2f8c625fb66eb9e9e653130445ea734f945d24f8c48d212de7a9"
     },
     "deliverables/AI資安框架_系統展示影片_30秒快版.mp4": {
       "bytes": 7672996,
@@ -27,15 +27,15 @@
     },
     "deliverables/決賽海報_AI資安框架_A2.pdf": {
       "bytes": 493041,
-      "sha256": "9b949b7e8c71f28655ac1a51453d8b1197a912a488312b59643c0b542d7ff03e"
+      "sha256": "ebbfec195d64fe158d14e38d9e1a69744a2cec5a42cb0b27afc2b3720e2ed33c"
     },
     "deliverables/決賽離線展示包.zip": {
-      "bytes": 18116024,
-      "sha256": "ea3ed65bebcc6eb613e365ac5a3b7e44aabfb8ca3fd2d88a917cee92a714b8e6"
+      "bytes": 18198056,
+      "sha256": "ca4acb439ebc40b979f2e0428e55a19d58efb96ba6af62a6cec0842c1fcb040b"
     },
     "deliverables/source/release-validation.json": {
       "bytes": 10198,
-      "sha256": "640e693426de4410e0f3c81a7a6b1f94f6aa07d187276cb92706078144d16538",
+      "sha256": "98783d1295b660792195e1b6cb7850d38da1523b328bb928f3889dc7c6e25eb9",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/01_slide.svg": {
@@ -44,8 +44,8 @@
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/02_slide.svg": {
-      "bytes": 2823,
-      "sha256": "bc759749425a99a2025b4e4ed2c93195f8d7b74e6c7a8c475bbf39d455439602",
+      "bytes": 2367,
+      "sha256": "92558ddc4acadeb0e73b3f92452338999a55f2e6d75af5a5905ece9b6da92a6e",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/03_slide.svg": {
@@ -84,18 +84,18 @@
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/10_slide.svg": {
-      "bytes": 11894,
-      "sha256": "7629d82ea8e988918627acc295166206f03c1726977604f3ecae2f9fc797a8ae",
+      "bytes": 8445,
+      "sha256": "96a9239c7164df4e44ddf725e682f01cbc86766fabd9fb3f55a0f9b1edde28ed",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/11_slide.svg": {
-      "bytes": 8818,
-      "sha256": "de5277a48dbe7d1d7ba8361917200a86a5ebe05af15283d004fe5104956e272e",
+      "bytes": 8956,
+      "sha256": "7127e9df286da947e9e2de0de40213a5bba55697b2a51730fd2ffae69694e9c6",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/12_slide.svg": {
-      "bytes": 12467,
-      "sha256": "99f08476b51eb8023bcb8598f9fe559254f49187e3ef81ea296a9794f4cfc57b",
+      "bytes": 9766,
+      "sha256": "f7abb27ca59c2ac765737d0202e096c4e2141d47bcd091042f2e2b347beb7c7d",
       "hash_normalization": "LF"
     },
     "media/film/metrics.json": {
@@ -125,13 +125,13 @@
     },
     "deliverables/source/finals-runbook.json": {
       "hash_normalization": "LF",
-      "bytes": 2119,
-      "sha256": "cd251e699e8b08650a93bb72605b14b45fe8e1cdffc6a9131dc9197c8f8228f1"
+      "bytes": 2134,
+      "sha256": "0b3704b0560c83afea89e4d44824a00e401c1da0cb67ce7d37aae10ee0325d8c"
     },
     "deliverables/source/finals-readiness.json": {
       "hash_normalization": "LF",
       "bytes": 3406,
-      "sha256": "44f847bfd79ee283ad72f5a06c3eb739ce1ec5ab26adb5cd715e4dd55e36d0df"
+      "sha256": "a30f26f037bf49232b48d705539c06726bfd0dde6b347951dc9c46cd0edc08a4"
     },
     "docs/決賽五分鐘口語稿.md": {
       "hash_normalization": "LF",
@@ -140,8 +140,8 @@
     },
     "docs/決賽六題答詢口徑.md": {
       "hash_normalization": "LF",
-      "bytes": 4566,
-      "sha256": "d2a41e50b7b6c8e9f0307715897e6adfeefb5bd904623ce0fd5942ee205e83a9"
+      "bytes": 4181,
+      "sha256": "cd70c5902d09b63c4f48fc263bd211afe55008bb810cbc066efcedb22a1b9a0f"
     },
     "docs/現場控場與備援卡.md": {
       "hash_normalization": "LF",
@@ -160,7 +160,7 @@
     },
     "deliverables/interactive/AI資安框架_自動循環展示.html": {
       "hash_normalization": "LF",
-      "bytes": 153722,
+      "bytes": 158510,
       "sha256": "cee606e57b2e0cdb13f13ead787c989d65afde7e647ec2a6ba79d5a8295164ef"
     }
   },

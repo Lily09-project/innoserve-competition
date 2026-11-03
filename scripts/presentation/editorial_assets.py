@@ -184,10 +184,10 @@ def stage_tracker(n):
     return s
 
 
-def graphic_page(n, title, body, kicker='METHOD', role='content', dark=False, canvas=None):
+def graphic_page(n, title, body, kicker='METHOD', role='content', dark=False, canvas=None, compact=False):
     title_color, kicker_color, footer_color, rail = (WHITE, CYAN, DARK_MUTED, NIGHT_LINE) if dark else (NAVY, TEAL, MUTED, LINE)
     heading=rect(64,50,10,10,GOLD,2)+text(84,60,kicker,15,kicker_color,700)+stage_tracker(n)
-    if title:heading+=text(64,114,title,38,title_color,700)
+    if title:heading+=text(64,96,title,28,title_color,700) if compact else text(64,114,title,38,title_color,700)
     current=PAGE_NUMBERS[n]-1 if n<=9 else n-10
     progress=''.join(rect(916+k*20,688,14,4,GOLD if k==current else rail,2) for k in range(9 if n<=9 else 3))
     label=f'{PAGE_NUMBERS[n]:02d} / 09' if n<=9 else f'答詢備用 {n-9} / 3'
@@ -287,10 +287,9 @@ def build_pages(limit=12):
         x=760+i*228
         s+=text(x,606,value,56,TEAL,700)+text(x,636,label,16,MUTED)
     pages.append(graphic_page(5,'受控執行，留下可回復的處置紀錄',s,'CONTROL'))
-    # P06: native 16:9 movie frame; embedded in the packaging pass.
-    s=rect(192,151,896,504,NAVY,16)+circle(640,376,44,NIGHT_PANEL,CYAN,2)+'<path d="M628 356L658 376L628 396Z" fill="#5EEAD4"/>'
-    s+=text(640,470,'產品方法動畫',30,WHITE,700,'middle')+text(640,508,'30 秒 · 2 倍速',20,DARK_MUTED,400,'middle')
-    pages.append(graphic_page(6,'一個事件，走完完整流程',group('video-slot',s),'METHOD FILM'))
+    # P06: film page. Only the header and footer are authored here; embed_movie_package.py places the
+    # film at FILM_FRAME (160,114 · 960x540) between them.
+    pages.append(graphic_page(6,'一次 HTTP 洪流，從封包到處置｜互動展示實錄 30 秒',group('video-slot',''),'影片展示',canvas=GRAY,compact=True))
     # P07: genuine zero-baseline comparison. Plot domain 0..100, x=200..820.
     s=text(64,176,f'相同 {m["detection_n"]:,} 筆封存測試 · Macro-F1',18,MUTED)
     chart=''
@@ -337,7 +336,27 @@ def build_pages(limit=12):
     s+=rect(604,590,72,4,GOLD,2)+text(640,640,'感謝聆聽，敬請指教。',30,NAVY,700,'middle')
     pages.append(graphic_page(9,'一套可展示、可查核的資安框架',s,'AI SECURITY FRAMEWORK','ending',canvas=GRAY))
     pages=[pages[i] for i in [0,5,1,2,3,4,6,7,8]]
-    qa=[('創新在哪裡？與一般 IDS 加上 RAG 有何不同？', '529 維', '任務導向證據向量', '正式分類保留 · 稽核證據可追溯 · 策略可回復'), ('如何證明前段判斷與後段處置已經串起來？', '同一 ID', '事件與執行可追溯', '分類、Top-5、Judge、策略與回條綁定同一事件'), ('評估資料如何切分？案例庫是否洩漏測試答案？', '0', '訓練／查詢重疊', '訓練庫只讀 · 查詢不重疊 · AI 不看真實標籤'), ('AI 若支持錯誤判斷，如何避免直接誤封？', f'{m["intercepted"]} / {m["errors"]}', '偵測誤判分流', f'{m["false_support"]} 筆為支持統計；處置與回復另以隔離情境驗證'), (f'{m["rollback"]}/{m["network_cases"]} 是否代表各種真實攻擊都能完全防住？', f'{m["rollback"]} / {m["network_cases"]}', '背景保留與回復', f'{m["rollback"]}/{m["network_cases"]} 驗證服務保留與回復；不等同真實攻擊防禦率'), ('如何部署、保護資料，並接到既有環境？', '0', '外部 API 呼叫', '本機 AI 稽核；私有權重、輸入及逐筆回覆不公開')]
+    # P10-P12: six judge questions on detail and practical use, answered from recorded results.
+    timing=json.loads((ROOT/'deliverables/source/release-validation.json').read_text(encoding='utf-8'))['measured_timings']
+    risk=json.loads((ROOT/'results/policy_risk_analysis.json').read_text(encoding='utf-8'))
+    weak={row['label']:row for row in risk['weak_class_analysis']}
+    xss=weak['Web-XSS']
+    framework=json.loads((ROOT/'results/framework_validation.json').read_text(encoding='utf-8'))
+    ttl=[c['ttl_rollback_elapsed_seconds'] for c in framework['cases'] if c['ttl_rollback_elapsed_seconds']]
+    det,ret,llm=(timing[k]['median'] for k in ('detector_ms','retrieval_ms','fresh_llm_ms'))
+    blocked=risk['counts']['wrong_support_non_disruptive_or_blocked']
+    qa=[('一筆告警從進來到產生處置，要花多久？能即時處理嗎？',f'{(det+ret+llm)/1000:.2f} 秒','單筆中位數合計',
+         f'RTX 4090 暖機後 {timing["detector_ms"]["samples"]} 次單筆實測中位數；本機 AI 是主要耗時，非負載或吞吐測試'),
+        ('哪一類攻擊最容易判錯？判錯時系統會怎麼做？',f'{xss["f1"]*100:.2f}%','Web-XSS F1（最弱類別）',
+         f'Web-BruteForce F1 {weak["Web-BruteForce"]["f1"]*100:.2f}% 次低；兩類互相混淆最多，證據不足時不自動處置'),
+        ('處置會不會影響正常使用者？規則會一直留著嗎？',f'{m["background"]} / {m["network_cases"]}','背景服務保留',
+         f'策略限定來源、服務與期限；{m["network_cases"]} 種隔離情境到期回復 {m["rollback"]} / {m["network_cases"]}，不等同真實攻擊防禦率'),
+        ('本機 AI 會不會亂判（幻覺）？AI 判錯了怎麼辦？','0 筆','AI 改寫正式分類',
+         f'支持精確率 {m["support_precision"]*100:.2f}%；AI 只附加結論，處置另經策略檢查'),
+        ('遇到沒看過的新型攻擊怎麼辦？案例庫要怎麼更新？','17 類','目前固定輸出類別',
+         '本次未量測未知攻擊；機制上證據不足即保留人工複核，不自動處置'),
+        ('實際導入一間公司需要什麼？資料會不會外流？','0','外部 API 呼叫',
+         '接新來源需轉成相同欄位與表徵；處置以 Mininet 隔離驗證，尚未接企業正式網路')]
     def qa_node(x,y,w,label,fill=WHITE,size=19):
         return rect(x,y,w,46,fill,10,LINE if fill==WHITE else 'none')+text(x+w/2,y+30,label,size,INK,700,'middle')
 
@@ -351,41 +370,52 @@ def build_pages(limit=12):
             content+=rect(88,y+22,54,30,NAVY,15)+text(115,y+43,f'Q{qi+1}',16,WHITE,700,'middle')+text(158,y+44,question,22,INK,700)
             d=y+8
             if qi==0:
-                for j,(name,label) in enumerate([('model','互補判定'),('retrieval','529 維檢索'),('document','AI 稽核'),('shield','策略與回復')]):
-                    x=88+j*212
-                    content+=circle(x+94,d+108,40,WHITE)+(icon(name,x+70,d+84,48) if name!='document' else glyph('document',x+70,d+84,48))+text(x+94,d+174,label,18,INK,700,'middle')
-                    if j<3:content+=arrow([(x+144,d+108),(x+256,d+108)],BLUE_MUTED)
+                # Stage latency bars on one linear scale (the AI bar sets the full width).
+                for j,(label,value) in enumerate([('偵測',det),('檢索',ret),('本機 AI 稽核',llm)]):
+                    yy=d+62+j*42
+                    width=max(4,560*value/llm)
+                    content+=text(88,yy+20,label,18,INK,700)+rect(232,yy+2,width,24,TEAL if j==2 else BLUE_MUTED,6)
+                    content+=text(232+width+12,yy+21,f'{value:,.2f} ms',18,TEAL if j==2 else INK,700)
             elif qi==1:
-                for j,label in enumerate(['正式類別','Top-5 案例','稽核結論','處置回條']):
-                    x=88+j*212
-                    content+=glyph('document',x+72,d+66,46)+text(x+94,d+136,label,18,INK,700,'middle')
-                    if j<3:content+=arrow([(x+128,d+90),(x+268,d+90)],BLUE_MUTED)
-                content+=rect(88,d+152,800,34,BLUE_TINT,10)+text(488,d+175,'同一 event_id  ＋  同次 execution_id',18,BLUE,700,'middle')
+                content+=qa_node(88,d+66,212,f'Web-XSS 測試 {xss["support"]} 筆',WHITE,18)
+                content+=arrow([(300,d+89),(326,d+89)],BLUE_MUTED)
+                content+=qa_node(328,d+66,276,f'{xss["largest_confusions"][0]["count"]} 筆誤判為 Web-BruteForce',WHITE,18)
+                content+=arrow([(604,d+89),(630,d+89)],BLUE_MUTED)
+                content+=qa_node(632,d+66,256,'信心 ≥ 0.8 且同類 ≥ 4',BLUE_TINT,18)
+                content+=arrow([(760,d+112),(760,d+132)],BLUE_MUTED)
+                content+=qa_node(88,d+134,516,'AI 複核／不確定，或 Top-5 同類不足',WHITE,18)
+                content+=arrow([(604,d+157),(630,d+157)],BLUE_MUTED)
+                content+=qa_node(632,d+134,256,'未達 → 保留人工複核',BLUE_TINT,18)
             elif qi==2:
-                content+=icon('retrieval',176,d+70,70)+text(211,d+168,f'訓練案例 {m["bank_rows"]:,}',19,INK,700,'middle')
-                content+=glyph('search',462,d+72,64)+text(494,d+168,'Top-5 檢索',19,BLUE,700,'middle')
-                content+=glyph('document',760,d+74,60)+text(790,d+168,f'測試查詢 {m["queries"]}',19,INK,700,'middle')
-                content+=arrow([(280,d+106),(450,d+106)],BLUE_MUTED)+arrow([(744,d+106),(540,d+106)],BLUE_MUTED)
+                for j,label in enumerate(['正常類禁止處置','動作需符合白名單','只限指定來源與服務','期限 30–900 秒']):
+                    content+=qa_node(88+j*204,d+66,190,label,WHITE,17)
+                content+=qa_node(88,d+132,394,f'隔離實測：設定 30 秒，約 {min(ttl):.1f} 秒撤銷',BLUE_TINT,17)
+                content+=qa_node(496,d+132,392,f'背景服務保留 {m["background"]} / {m["network_cases"]}、回復完整 {m["rollback"]} / {m["network_cases"]}',BLUE_TINT,17)
             elif qi==3:
-                content+=qa_node(88,d+104,150,f'{m["errors"]} 筆誤判')
-                content+=arrow([(238,d+127),(272,d+127),(272,d+89),(306,d+89)],BLUE_MUTED)+arrow([(272,d+127),(272,d+151),(306,d+151)],BLUE_MUTED)
-                content+=qa_node(306,d+66,240,f'{m["intercepted"]} 複核／不確定')+qa_node(306,d+128,240,f'{m["false_support"]} 仍支持')
-                content+=arrow([(546,d+89),(600,d+89)],BLUE_MUTED)+arrow([(546,d+151),(600,d+151)],BLUE_MUTED)
-                content+=qa_node(600,d+66,288,'監測／蒐證',BLUE_TINT)+qa_node(600,d+128,288,'若觸發 → 策略檢查',BLUE_TINT,18)
+                content+=qa_node(88,d+66,236,'AI 只回三態 JSON',WHITE,18)
+                content+=arrow([(324,d+89),(350,d+89)],BLUE_MUTED)
+                content+=qa_node(352,d+66,250,f'{m["queries"]} / {m["queries"]} 格式有效',WHITE,18)
+                content+=arrow([(602,d+89),(628,d+89)],BLUE_MUTED)
+                content+=qa_node(630,d+66,258,'正式分類改動 0 筆',BLUE_TINT,18)
+                content+=qa_node(88,d+132,514,f'錯誤支持 {m["false_support"]} 筆：{blocked} 筆仍只蒐證或被策略擋下',BLUE_TINT,17)
+                content+=qa_node(630,d+132,258,'AI 輸入不含真實標籤',WHITE,17)
             elif qi==4:
-                content+=rect(88,d+64,330,120,WHITE,12,LINE)+text(253,d+92,'隔離 TCP 測試床',18,INK,700,'middle')+glyph('server',124,d+104,40)+glyph('firewall',233,d+104,40)+glyph('server',342,d+104,40)
-                content+=arrow([(166,d+124),(231,d+124)])+arrow([(275,d+124),(340,d+124)])+text(253,d+170,f'{m["rules_cases"]} 規則＋{m["passive_cases"]} 監測',16,BLUE,700,'middle')
-                content+=arrow([(418,d+124),(450,d+124),(450,d+93),(480,d+93)],BLUE_MUTED)+arrow([(450,d+124),(450,d+153),(480,d+153)],BLUE_MUTED)
-                content+=qa_node(480,d+70,408,f'背景服務保留 {m["background"]} / {m["network_cases"]}',BLUE_TINT)+qa_node(480,d+130,408,f'回復完整性 {m["rollback"]} / {m["network_cases"]}',BLUE_TINT)
+                content+=qa_node(88,d+66,200,'未見過的攻擊',WHITE,18)
+                content+=arrow([(288,d+89),(314,d+89)],BLUE_MUTED)
+                content+=qa_node(316,d+66,276,'Top-5 同類不足或 AI 不確定',WHITE,18)
+                content+=arrow([(592,d+89),(618,d+89)],BLUE_MUTED)
+                content+=qa_node(620,d+66,268,'保留蒐證，人工確認',BLUE_TINT,18)
+                content+=qa_node(88,d+132,394,'確認後加入案例庫，不需改 AI 提示',WHITE,17)
+                content+=qa_node(496,d+132,392,'新增類別需重新訓練偵測模型',WHITE,17)
             else:
-                content+=rect(88,d+62,800,118,WHITE,12,LINE)+text(110,d+90,'本機工作站 · GPU 模型與案例庫',17,BLUE,700)
-                for j,(art,label) in enumerate([('document','欄位遮罩'),('model','17 類推論'),('retrieval','檢索＋AI'),('shield','策略回條')]):
+                content+=rect(88,d+62,800,118,WHITE,12,LINE)+text(110,d+90,'本機工作站 · RTX 4090 · Llama 3 8B · 案例庫',17,BLUE,700)
+                for j,(art,label) in enumerate([('document','欄位遮罩'),('model','17 類推論'),('retrieval','檢索＋AI'),('shield','路由器規則')]):
                     x=104+j*196
                     content+=rect(x,d+108,170,52,GRAY,10)+(glyph('document',x+8,d+114,40) if art=='document' else icon(art,x+8,d+114,40))+text(x+106,d+141,label,17,INK,700,'middle')
                     if j<3:content+=chevron(x+183,d+134)
             content+=text(88,y+222,proof,15,TEAL,700)
             content+=text(1088,y+124,metric,46,TEAL,700,'middle')+text(1088,y+162,metric_label,16,MUTED,400,'middle')
-        pages.append(graphic_page(10+page_index,['答詢圖解｜創新與整合','答詢圖解｜評估與誤判','答詢圖解｜效果與部署'][page_index],content,'JUDGES · Q&A'))
+        pages.append(graphic_page(10+page_index,['答詢圖解｜速度與誤判','答詢圖解｜處置與 AI 可靠度','答詢圖解｜新攻擊與導入'][page_index],content,'JUDGES · Q&A'))
     for i,p in enumerate(pages[:limit]):(out/f'{i+1:02d}_slide.svg').write_text(resolve_colors(p),encoding='utf-8')
     print(f'Authored {min(limit,len(pages))} graphical slides; all static.')
 
