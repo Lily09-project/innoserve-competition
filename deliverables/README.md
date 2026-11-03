@@ -4,7 +4,7 @@
 | --- | --- |
 | 決賽簡報_AI資安框架.pptx | 12頁可編輯簡報（9頁正式＋3頁答詢備用），附講者備忘稿；第2頁全幅內嵌30秒影片 |
 | 決賽簡報_AI資安框架.pdf | 簡報預覽與離線備援 |
-| AI資安框架_系統展示影片_30秒快版.mp4 | 1080p、2倍速、30秒正式展示 |
+| AI資安框架_系統展示影片_30秒快版.mp4 | 1080p、30fps、30秒說明影片：互動展示HTTP洪流情境實錄，內建配音 |
 | 決賽海報_AI資安框架_A2.png | A2直式海報，唯一海報檔，檢視與印刷都用這張 |
 | 決賽離線展示包.zip | 簡報、影片、海報與備忘稿備援，附SHA256清單；不含模型部署 |
 | figures/fig_architecture.png | 四區巢狀架構圖，2560×1072 |
@@ -13,7 +13,7 @@
 
 簡報與影片採白底、淺灰章節及深藍、中藍與金黃重點。所有數值取自results四份實測彙整；動畫拓樸為方法說明，隔離驗證效果為TCP測試交易與回條。交付內容保持匿名。簡報第2頁內嵌影片，並保留獨立MP4備援；正式順序為第1頁封面、第2頁影片、第3至9頁方法與成果；第10至12頁供答詢。
 
-簡報製作來源：scripts/presentation/editorial_assets.py；影片來源：media/film/scene.mjs及scripts/render_product_film.mjs。三種成果共用配色、字型及平面向量圖示。簡報PPTX以PPT Master原生DrawingML編譯，圖形及文字可編輯。海報為團隊完成的單一PNG；決賽海報_AI資安框架_A2.pptx／.pdf與figures/poster-a2-preview.png僅因已記錄的程式版本綁定而保留，內容都是同一張PNG。詳見source/README.md與design-system/DESIGN.md。
+簡報製作來源：scripts/presentation/editorial_assets.py；影片來源：scripts/render_exhibit_film.mjs逐格錄製互動展示，配音media/exhibit-film/narration.m4a。三種成果共用配色、字型及平面向量圖示。簡報PPTX以PPT Master原生DrawingML編譯，圖形及文字可編輯。海報為團隊完成的單一PNG；決賽海報_AI資安框架_A2.pptx／.pdf與figures/poster-a2-preview.png僅因已記錄的程式版本綁定而保留，內容都是同一張PNG。詳見source/README.md與design-system/DESIGN.md。
 
 海報PNG為1055×1491像素，A2印刷約64 dpi，近看偏軟；印刷前依印刷廠確認紙材與打樣。模型展示操作與實際彩排清單見docs/本機展示操作單.md及docs/展前驗收與備援.md。
 

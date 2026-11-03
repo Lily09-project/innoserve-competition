@@ -1,8 +1,10 @@
-"""Synthesize the film voiceover from media/film/narration.json and fit each line to its chapter window.
+"""Synthesize a film voiceover from a narration spec and fit each line to its chapter window.
 
-Needs edge-tts and FFMPEG_BINARY; the resulting media/film/narration.m4a is committed so film
-rendering itself stays offline.
+Needs edge-tts and FFMPEG_BINARY. Defaults to media/film/narration.json; pass --spec and
+--output for another film (the exhibit explainer uses media/exhibit-film/). The resulting .m4a
+is committed so film rendering itself stays offline.
 """
+import argparse
 import asyncio
 import json
 import os
@@ -44,11 +46,11 @@ def trim(ffmpeg, paths):
     return trimmed
 
 
-def build():
+def build(spec_path=SPEC, output=OUTPUT):
     ffmpeg = os.environ.get('FFMPEG_BINARY')
     if not ffmpeg:
         raise SystemExit('Set FFMPEG_BINARY to installed encoder')
-    spec = json.loads(SPEC.read_text(encoding='utf-8'))
+    spec = json.loads(Path(spec_path).read_text(encoding='utf-8'))
     lines, total = spec['lines'], spec['seconds']
     with tempfile.TemporaryDirectory() as folder:
         paths = trim(ffmpeg, asyncio.run(synthesize(spec, folder)))
@@ -66,10 +68,14 @@ def build():
         command = [ffmpeg, '-hide_banner', '-loglevel', 'error', '-y']
         for path in paths:
             command += ['-i', str(path)]
-        command += ['-filter_complex', graph, '-map', '[out]', '-ar', '48000', '-ac', '1', '-c:a', 'aac', '-b:a', '128k', str(OUTPUT)]
+        command += ['-filter_complex', graph, '-map', '[out]', '-ar', '48000', '-ac', '1', '-c:a', 'aac', '-b:a', '128k', str(output)]
         subprocess.run(command, check=True)
-    print(json.dumps({'output': OUTPUT.relative_to(ROOT).as_posix(), 'voice': spec['voice'], 'seconds': round(seconds(ffmpeg, OUTPUT), 3), 'lines': report}, ensure_ascii=False, indent=1))
+    print(json.dumps({'output': Path(output).resolve().relative_to(ROOT).as_posix(), 'voice': spec['voice'], 'seconds': round(seconds(ffmpeg, output), 3), 'lines': report}, ensure_ascii=False, indent=1))
 
 
 if __name__ == '__main__':
-    build()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--spec', type=Path, default=SPEC)
+    parser.add_argument('--output', type=Path, default=OUTPUT)
+    args = parser.parse_args()
+    build(args.spec, args.output)
