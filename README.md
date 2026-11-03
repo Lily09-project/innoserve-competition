@@ -38,7 +38,7 @@
 | 交付項目 | 內容與用途 | 原始來源 |
 | --- | --- | --- |
 | 決賽簡報 | 12頁：9頁正式報告、結束頁後3頁六題圖解備詢；第2頁內嵌30秒影片，各頁附繁體中文講者備忘稿 | [逐頁SVG](deliverables/source/slides/)、[製作程式](scripts/presentation/editorial_assets.py)、[講者稿](deliverables/source/speaker-notes.md) |
-| 方法動畫 | 1920×1080、24fps、30秒、2倍速、內建中文配音；宣傳片節奏：Packet Tracer式等角拓樸與發光封包、斜切轉場、護盾擋下異常封包、Top-5卡片飛出與成果數字跳動 | [動畫來源](media/film/scene.mjs)、[渲染程式](scripts/render_product_film.mjs) |
+| 說明影片 | 1920×1080、30fps、30秒、內建中文配音；互動展示HTTP洪流情境的逐格實錄：片頭→封包編碼→雙模型融合→Top-5檢索→本機AI稽核→策略檢查→限速處置→實測成果卡 | [錄製程式](scripts/render_exhibit_film.mjs)、[配音稿](media/exhibit-film/narration.json) |
 | A2海報 | 團隊完成的整張海報圖（原始資料與方法、六階段流程、結果、防禦機制），單一PNG，A2直式 | [決賽海報_AI資安框架_A2.png](deliverables/決賽海報_AI資安框架_A2.png) |
 | 離線包 | 簡報、影片、海報、口語稿、答詢、備援卡、互動HTML及SHA256清單 | [包裝程式](scripts/package_finals.py) |
 | 驗收索引 | 正式檔案、來源、預覽與實測彙整的雜湊及驗收範圍 | [交付清單](deliverables/source/delivery-manifest.json)、[實測索引](deliverables/source/release-validation.json) |
@@ -227,7 +227,7 @@ python scripts/media_results.py --check
 
 此步驟只驗證既有彙整並重建媒體數據，不執行或替代模型實驗。若指標改變，須重製媒體、預覽及離線包後，再執行release_inventory與交付檢查。快照包含四份來源的雜湊與共同指標；來源變更而快照未更新時，產生器會停止，避免輸出舊數據。CI會檢查快照、文件連結及交付manifest，包含12張公開SVG。
 
-媒體重製使用`scripts/render_product_film.mjs`，設定`FFMPEG_BINARY`並使用新的輸出目錄；製作工作站使用Windows內建的微軟正黑體與Segoe UI。舊的`render_film_resvg.py`已停用，執行會回報錯誤且不產生影片，避免替換成不符規格的字型。完整製作及交付同步步驟見[來源說明](deliverables/source/README.md)。
+說明影片以`scripts/render_exhibit_film.mjs`從互動展示逐格錄製，設定`FFMPEG_BINARY`（必要時`EXHIBIT_BROWSER`）；配音以`scripts/presentation/build_narration.py --spec media/exhibit-film/narration.json --output media/exhibit-film/narration.m4a`產生。舊的`scripts/render_product_film.mjs`動畫仍保留於media/film作為對照，不再是交付影片；製作工作站使用Windows內建的微軟正黑體與Segoe UI。舊的`render_film_resvg.py`已停用，執行會回報錯誤且不產生影片，避免替換成不符規格的字型。完整製作及交付同步步驟見[來源說明](deliverables/source/README.md)。
 
 ### 6. 交付驗證與封裝
 
