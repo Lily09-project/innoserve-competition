@@ -40,10 +40,10 @@
     "docs/決賽五分鐘口語稿.md": "28bc487d240b20630a615474945ae352c98666d3fa7236cce8099f08da4e7813",
     "docs/決賽六題答詢口徑.md": "d2a41e50b7b6c8e9f0307715897e6adfeefb5bd904623ce0fd5942ee205e83a9",
     "docs/現場控場與備援卡.md": "eab0deac3b38fd5444269a40b64772295011685bd011919fab9311e78bb66502",
-    "deliverables/interactive/AI資安框架_自動循環展示.html": "035cd43e7d52cf1fe472e2e6a70caafd06b271166ebda3f90fc19a894457d3d9",
+    "deliverables/interactive/AI資安框架_自動循環展示.html": "cee606e57b2e0cdb13f13ead787c989d65afde7e647ec2a6ba79d5a8295164ef",
     "scripts/check_finals_readiness.py": "5a5bd5b28b05761df3a0e165237a70ffbd2598f2c500b0a5366b67e1ae310bc3",
     "scripts/package_finals.py": "842ecb0ab2d3839476b9278942231b3446a5cf1c32118179bbb7c31033b8bd41",
-    "deliverables/決賽離線展示包.zip": "982f0fd3830e3d981fc821b5bfa512b7647baeb909b3e7bd1cbb145bdd20bf64",
+    "deliverables/決賽離線展示包.zip": "ea3ed65bebcc6eb613e365ac5a3b7e44aabfb8ca3fd2d88a917cee92a714b8e6",
     "README.md": "2bf0f89d265db2c812298eb5159c7b2bd766be51e9e13b542b4c63b34dbb3e9d",
     "media/film/metrics.json": "816450d6ba5340d14b5bae6aeb133a462deb6be3f6eb3f4a37fb8274656222c1",
     "design-system/palette.json": "3c7c609fbe761752756a835954ecfa098194c09b38620054655d5e4bc487cb2e",
@@ -54,5 +54,5 @@
     "tests/offline-exhibit.cjs": "3665861805ebdbf6f7177b61284735268acbd172ab11a2f1a5c493e82f2ec173",
     "deliverables/interactive/README.md": "ba5bb0cca0b620d0361376532df80b8940971166b5816c8703c5351fc787cc72"
   },
-  "created_utc": "2026-11-03T12:27:59.229474+00:00"
+  "created_utc": "2026-11-03T12:39:00.114793+00:00"
 }
