@@ -47,7 +47,7 @@ class FinalsReadinessTests(unittest.TestCase):
         self.assertTrue(check_claims()['embedded_movie_matches'])
 
     def test_bundle_contains_current_operator_materials(self):
-        self.assertEqual(check_bundle()['offline_assets'], 10)
+        self.assertEqual(check_bundle()['offline_assets'], 11)
 
     def test_readiness_does_not_assert_human_checks_completed(self):
         value = audit()

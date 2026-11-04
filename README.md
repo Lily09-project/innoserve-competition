@@ -14,7 +14,7 @@
 
 互動展示可用上方連結直接在瀏覽器開啟，也可下載單檔離線使用；依序播放四種情境，每個38秒；可暫停、調速、跳轉時間軸與查看資料。點節點說明時會暫停，閱讀後可繼續。它使用合成示意資料解說方法，不執行真實模型或網路規則；正式實測仍以本文結果與本機模型控制台為準。
 
-[下載離線簡報、影片與海報備援包](deliverables/決賽離線展示包.zip) · [簡報PDF備援](deliverables/決賽簡報_AI資安框架.pdf) · [正式版本封存與SHA256](https://github.com/Lily09-project/innoserve-competition/releases)
+[下載離線簡報、影片與海報備援包](deliverables/決賽離線展示包.zip) · [簡報PDF備援](deliverables/決賽簡報_AI資安框架.pdf) · [講稿PDF](deliverables/決賽講稿_AI資安框架.pdf) · [正式版本封存與SHA256](https://github.com/Lily09-project/innoserve-competition/releases)
 
 簡報、A2海報、30秒影片與互動展示已改用共用的[證據鏈視覺系統](design-system/DESIGN.md)：淺灰底封面與影片、白底內頁、微軟正黑體＋Segoe UI，以「偵測 → 檢索 → 稽核 → 回復」四節點串成同一條鏈；方法、真實數據與匿名設定不變。[參考來源與轉譯範圍](docs/海報與影片參考轉譯.md)。
 
