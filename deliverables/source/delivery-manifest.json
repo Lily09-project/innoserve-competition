@@ -2,8 +2,8 @@
   "base_revision": "7d95faf",
   "files": {
     "deliverables/決賽簡報_AI資安框架.pptx": {
-      "bytes": 8038060,
-      "sha256": "e97a7bb6bc1430b0499046f765e0278baaeed997aeb64809f86d78d377e07d56"
+      "bytes": 8038634,
+      "sha256": "7903e26494b4e14d37a81000fd8cb8c2052c8cbf9361c9fa66da1a51fa927028"
     },
     "deliverables/決賽簡報_AI資安框架.pdf": {
       "bytes": 681648,
@@ -27,15 +27,15 @@
     },
     "deliverables/決賽海報_AI資安框架_A2.pdf": {
       "bytes": 493041,
-      "sha256": "ebbfec195d64fe158d14e38d9e1a69744a2cec5a42cb0b27afc2b3720e2ed33c"
+      "sha256": "dfeb5f6646e0ded11cbe01fe9d114b3115669ea906677ecce3bcc051cfb85b89"
     },
     "deliverables/決賽離線展示包.zip": {
-      "bytes": 18198056,
-      "sha256": "ca4acb439ebc40b979f2e0428e55a19d58efb96ba6af62a6cec0842c1fcb040b"
+      "bytes": 18730014,
+      "sha256": "be2f31a274bf3239eec7d0ca85a33ed7da4cb8395705505a2e0a5bf7b91fe9ce"
     },
     "deliverables/source/release-validation.json": {
       "bytes": 10198,
-      "sha256": "98783d1295b660792195e1b6cb7850d38da1523b328bb928f3889dc7c6e25eb9",
+      "sha256": "4c73b15ca00797ab766b98f45ef69d3e811a363bb341731a1504a0d369233326",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/01_slide.svg": {
@@ -130,13 +130,13 @@
     },
     "deliverables/source/finals-readiness.json": {
       "hash_normalization": "LF",
-      "bytes": 3406,
-      "sha256": "a30f26f037bf49232b48d705539c06726bfd0dde6b347951dc9c46cd0edc08a4"
+      "bytes": 3527,
+      "sha256": "253a438e684f3ef1ac3e27aaef4ecc9eaac63e7beb8297e60e1053b87a85bb85"
     },
     "docs/決賽五分鐘口語稿.md": {
       "hash_normalization": "LF",
-      "bytes": 5218,
-      "sha256": "28bc487d240b20630a615474945ae352c98666d3fa7236cce8099f08da4e7813"
+      "bytes": 5597,
+      "sha256": "30f943ad8d94d0a2a7e659dcdda2008feef08bd9592a08b685898edf657a03fc"
     },
     "docs/決賽六題答詢口徑.md": {
       "hash_normalization": "LF",
@@ -187,7 +187,7 @@
   "review": "153 Python tests, media smoke/data checks, offline exhibit regressions, native static alignment and public delivery checks passed; no native playback.",
   "results_changed": true,
   "markdown_documents": 32,
-  "local_links_checked": 155,
+  "local_links_checked": 157,
   "presentation_limit_seconds": 360,
   "buffer_seconds": 60,
   "visual_theme": "white canvas; navy titles, blue flow/icons, teal method/results/completion, restrained warm gold packets/current stage",
