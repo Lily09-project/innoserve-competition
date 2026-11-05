@@ -230,7 +230,7 @@ def build_pages(limit=12):
     for k,l in enumerate(['融合新型內容相依時序方向模型','入侵偵測與任務導向檢索增強稽核','之 AI 資安框架']):s+=text(64,206+k*62,l,44,BLUE if k==2 else NAVY,700)
     s+=rect(64,350,56,4,GOLD,2)+text(64,400,'從流量判定，走到有證據、可回復的處置。',24,MUTED)
     s+=rect(64,424,816,30,WHITE,15,LINE)+text(84,444,'★ 原創：CTBM、校準融合、任務導向檢索、本機 AI 稽核、受控回復　｜　引用：PBCNN [1]',15,NAVY,700)
-    s+=evidence_chain(512,[('model','偵測','17 類互補判定'),('retrieval','檢索','Top-5 訓練案例'),('document','稽核','本機 AI 三態'),('shield','回復','讀回＋到期回復')],False)
+    s+=evidence_chain(512,[('model','偵測','17 類互補判定'),('retrieval','檢索','Top-5 訓練案例'),('document','稽核','本機 AI 三態'),('shield','回復','讀回＋到期回復')],False,124)
     s+=f'<g transform="translate(912 150) scale(4.6)">{icon_fragment("framework")}</g>'
     s+=references([1])
     pages.append(graphic_page(1,'',s,'2026 資安技術組 · 決賽','cover',canvas=GRAY))
@@ -243,7 +243,7 @@ def build_pages(limit=12):
         s+=text(88,y,label,21,INK,700)+rect(222,y-26,98,34,WHITE,6)
         for z in range(5):s+=rect(232+z*16,y-20+(0 if j!=1 else 12-z*3),9,22 if j!=1 else 10+z*3,BLUE,2)
     s+=arrow([(344,300),(372,300),(372,218),(400,218)])+arrow([(372,300),(372,383),(400,383)])
-    for y,name,sub,desc,art in [(150,'CTBM','內容 · 時序 · 方向','讀取流量的時序關係','model'),(316,'PBCNN','短窗位元組模式','補充局部內容特徵','packet')]:
+    for y,name,sub,desc,art in [(150,'CTBM','內容 · 時間差 · 方向','讀取流量的時序關係','model'),(316,'PBCNN','短窗位元組模式','補充局部內容特徵','packet')]:
         s+=rect(400,y,360,134,WHITE,14,LINE)+rect(400,y+24,4,86,BLUE,2)
         s+=(icon('model',428,y+33,68) if art=='model' else glyph('packet',428,y+33,68))
         s+=text(520,y+52,name,28,BLUE,700)+text(520,y+84,sub,18,INK)+text(520,y+110,desc,15,MUTED)
@@ -285,7 +285,7 @@ def build_pages(limit=12):
     # P05: stability in the isolated Mininet network: the policy steps, the real topology built by
     # scripts/live_network_test.py, and how many TCP transactions the six recorded cases measured.
     s=rect(64,144,1152,56,GRAY,12)
-    stages=[('政策檢查','範圍期限','shield'),('套用規則','下到 r1','firewall'),('讀回驗證','核對規則','document'),('到期回復','撤銷確認','clock')]
+    stages=[('策略檢查','範圍期限','shield'),('套用規則','下到 r1','firewall'),('讀回驗證','核對規則','document'),('到期回復','撤銷確認','clock')]
     for i,(label,detail,kind) in enumerate(stages):
         x=80+i*226
         s+=icon('shield',x,152,40) if kind=='shield' else glyph(kind,x,152,40)
@@ -373,7 +373,7 @@ def build_pages(limit=12):
         s+=glyph(art,x+90,296,44,TEAL if not i else BLUE)+text(x+112,400,value,52,TEAL if not i else NAVY,700,'middle')+text(x+112,442,label,19,INK,700,'middle')
     s+=text(500,516,f'支持精確率 {m["support_precision"]*100:.2f}% · 正式分類保持可追溯',18,MUTED)
     s+=rect(64,580,1152,58,BLUE_TINT,12)+text(92,617,f'{m["intercepted"]} / {m["errors"]}',24,BLUE,700)
-    s+=text(176,617,f'筆偵測誤判分流至複核或不確定；其餘 {m["false_support"]} 筆仍獲支持，處置另經策略檢查。',19,INK)
+    s+=text(188,617,f'筆偵測誤判分流至複核或不確定；其餘 {m["false_support"]} 筆仍獲支持，處置另經策略檢查。',19,INK)
     pages.append(graphic_page(8,'案例提供證據，AI 完成分流',s,'技術可行性 · 完整性'))
     # P09: light ending with the actual linked artifacts, rather than slogans alone.
     # P09 ending: a single centred axis from slogan to thanks.
