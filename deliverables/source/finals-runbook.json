@@ -3,8 +3,8 @@
   "slides": 12,
   "report_slides": [1, 2, 3, 4, 5, 6, 7, 8, 9],
   "report_limit_seconds": 360,
-  "target_seconds": 300,
-  "buffer_seconds": 60,
+  "target_seconds": 330,
+  "buffer_seconds": 30,
   "operation_seconds": 10,
   "video": {"slide": 2, "seconds": 30, "speed_factor": 2, "audio_tracks": 1},
   "segments": [
@@ -13,8 +13,8 @@
     {"slide": 3, "seconds": 40, "mode": "spoken", "focus": "四階段與同事件交接"},
     {"slide": 4, "seconds": 40, "mode": "spoken", "focus": "互補偵測與融合"},
     {"slide": 5, "seconds": 45, "mode": "spoken", "focus": "任務檢索與證據稽核"},
-    {"slide": 6, "seconds": 35, "mode": "spoken", "focus": "策略、讀回與回復"},
-    {"slide": 7, "seconds": 30, "mode": "spoken", "focus": "同測試集偵測結果"},
+    {"slide": 6, "seconds": 50, "mode": "spoken", "focus": "Mininet拓撲與穩定性實測"},
+    {"slide": 7, "seconds": 45, "mode": "spoken", "focus": "對照他人模型與擴充性"},
     {"slide": 8, "seconds": 40, "mode": "spoken", "focus": "檢索與稽核結果"},
     {"slide": 9, "seconds": 15, "mode": "spoken", "focus": "結語"}
   ],

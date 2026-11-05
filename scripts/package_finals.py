@@ -9,7 +9,6 @@ ROOT = Path(__file__).resolve().parents[1]
 ASSETS = [
     'deliverables/決賽簡報_AI資安框架.pptx',
     'deliverables/決賽簡報_AI資安框架.pdf',
-    'deliverables/決賽講稿_AI資安框架.pdf',
     'deliverables/AI資安框架_系統展示影片_30秒快版.mp4',
     'deliverables/決賽海報_AI資安框架_A2.png',
     'deliverables/source/speaker-notes.md',
@@ -23,8 +22,7 @@ INSTRUCTIONS = '''決賽離線展示包
 
 正式簡報為12頁：第1至9頁報告，第10至12頁為六題答詢。
 封面後第2頁內嵌30秒影片，自動播放一次，換頁由講者手動操作。
-簡報目標五分鐘，另保留一分鐘緩衝。請在正式設備實際朗讀彩排。
-講稿PDF（決賽講稿_AI資安框架.pdf）含第1至9頁口語稿與第10至12頁六題答詢，可列印照唸。
+簡報目標5分30秒，另保留30秒緩衝。請在正式設備實際朗讀彩排。
 影片不能播放時，使用獨立MP4；簡報不能開啟時，使用PDF。
 海報為單一PNG（決賽海報_AI資安框架_A2.png），A2直式420×594mm，交印時選擇實際尺寸並滿版。
 可編輯PPTX使用Windows內建的微軟正黑體與Segoe UI。

@@ -16,14 +16,14 @@ class FinalsReadinessTests(unittest.TestCase):
 
     def test_five_minute_plan_includes_video_and_buffer(self):
         value = validate_plan(self.plan)
-        self.assertEqual(value['planned_spoken_seconds'], 260)
-        self.assertEqual(value['planned_total_seconds'], 300)
+        self.assertEqual(value['planned_spoken_seconds'], 290)
+        self.assertEqual(value['planned_total_seconds'], 330)
         self.assertFalse(value['timing_is_human_measured'])
 
-    def test_extra_minute_cannot_be_filled_with_more_content(self):
+    def test_buffer_cannot_be_filled_with_more_content(self):
         changed = copy.deepcopy(self.plan)
-        changed['segments'][2]['seconds'] += 60
-        with self.assertRaisesRegex(ValueError, 'five_minute'):
+        changed['segments'][2]['seconds'] += 30
+        with self.assertRaisesRegex(ValueError, 'report_plan'):
             validate_plan(changed)
 
     def test_video_must_remain_second_and_thirty_seconds(self):
@@ -47,7 +47,7 @@ class FinalsReadinessTests(unittest.TestCase):
         self.assertTrue(check_claims()['embedded_movie_matches'])
 
     def test_bundle_contains_current_operator_materials(self):
-        self.assertEqual(check_bundle()['offline_assets'], 11)
+        self.assertEqual(check_bundle()['offline_assets'], 10)
 
     def test_readiness_does_not_assert_human_checks_completed(self):
         value = audit()
