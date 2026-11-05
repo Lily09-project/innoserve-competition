@@ -2,12 +2,12 @@
   "base_revision": "7d95faf",
   "files": {
     "deliverables/決賽簡報_AI資安框架.pptx": {
-      "bytes": 8051705,
-      "sha256": "9567ca25deb875e5e49a1b54011149c98475b9229ac74da38b8cc048270acbc9"
+      "bytes": 8053975,
+      "sha256": "ec96ef67abf6f72344435452eb7f87a4e03c16d5da2dc13641941ccc3f4da21c"
     },
     "deliverables/決賽簡報_AI資安框架.pdf": {
-      "bytes": 697904,
-      "sha256": "654069963846daa37a12981522fe6c2377258104e9fa52fc4b84ba0f0bbf8512"
+      "bytes": 699232,
+      "sha256": "c000d2f4296fe4970f00606f87ac53328743175e3084af36a55f04344ed50337"
     },
     "deliverables/AI資安框架_系統展示影片_30秒快版.mp4": {
       "bytes": 7672996,
@@ -27,15 +27,15 @@
     },
     "deliverables/決賽海報_AI資安框架_A2.pdf": {
       "bytes": 493041,
-      "sha256": "096b030d9f03f8f5675e0aa6583a4e2dd17ac4cb3ca577468046cd6295cfea60"
+      "sha256": "a83ab87344b11671a030ec3a8a3bd81637eed3f43cf039eb59d011f33ed40375"
     },
     "deliverables/決賽離線展示包.zip": {
-      "bytes": 18212078,
-      "sha256": "41f5a8ec3f98ce401c08d165c838c6de7986d178940187ae207d2eaa917170d5"
+      "bytes": 18215249,
+      "sha256": "b9d27fcc4d97b9b28aa5cc00943c86f1805405fb5e851633daed6f4d815d85dc"
     },
     "deliverables/source/release-validation.json": {
       "bytes": 10198,
-      "sha256": "4f8d00916051b5eff97bbb9340590f38e5a98d108265be9e0990b0d323cb2ba3",
+      "sha256": "ffafbb36a424ace52f380cfbc3204047ba0c882bcf4bc0b0881a815a6461af16",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/01_slide.svg": {
@@ -54,8 +54,8 @@
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/04_slide.svg": {
-      "bytes": 12122,
-      "sha256": "b68bcf7da5f76b5747f4c428b2df854c62e9469982289a85999d9acc53d37cba",
+      "bytes": 12764,
+      "sha256": "29294244d71bb0a5f71f352ab4af947a0318a04c2c1a23526ae961dedb3f0d41",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/05_slide.svg": {
@@ -64,13 +64,13 @@
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/06_slide.svg": {
-      "bytes": 17046,
-      "sha256": "e65de1623bd67005aea3eb29f560491a6ee7337cfd987aec372a7ab3712c15db",
+      "bytes": 16584,
+      "sha256": "a218cb2db799164a79720770c111782c34b30327132522269b19b9bfe02b86df",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/07_slide.svg": {
-      "bytes": 11422,
-      "sha256": "8f216b9b07384871e3bed3e1a46da84b4d19e2cd8b04d8cc1d22ed668cc8f6c3",
+      "bytes": 11319,
+      "sha256": "a31d182f63b0c913698c81d099b43174e7dd517e3442335aea2d04bdce915172",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/08_slide.svg": {
@@ -79,8 +79,8 @@
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/09_slide.svg": {
-      "bytes": 6657,
-      "sha256": "055150e07dc7b729a2ba97718864c90b4920d33742167aba9cc4e79d6d5637a0",
+      "bytes": 6848,
+      "sha256": "848c4a72a7f8fca92ea13db37d03d4dfa133a8686fb6f34b90cd7fcb932e161f",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/10_slide.svg": {
@@ -131,7 +131,7 @@
     "deliverables/source/finals-readiness.json": {
       "hash_normalization": "LF",
       "bytes": 3526,
-      "sha256": "5bc1f01f95878cb543fac7ca68a7dda818cabf5c321723aa627dcd94b85a346e"
+      "sha256": "4e91fa93ea99968bd6f83aa61d047087babb41ee129d1f9a63c5be4f6c10798a"
     },
     "docs/決賽五分鐘口語稿.md": {
       "hash_normalization": "LF",
@@ -140,8 +140,8 @@
     },
     "docs/決賽六題答詢口徑.md": {
       "hash_normalization": "LF",
-      "bytes": 4181,
-      "sha256": "cd70c5902d09b63c4f48fc263bd211afe55008bb810cbc066efcedb22a1b9a0f"
+      "bytes": 4890,
+      "sha256": "121a9ccc2cd722a0ec58fc4c6038abbd508efea217fb7ab7032366ee35c40c46"
     },
     "docs/現場控場與備援卡.md": {
       "hash_normalization": "LF",
@@ -165,7 +165,7 @@
     },
     "results/mininet_topology_expansion.json": {
       "hash_normalization": "LF",
-      "bytes": 1182,
+      "bytes": 1241,
       "sha256": "2fda6281d258e56e3803976ff5045f7133e5ab682466455adb9af31fbf23b765"
     },
     "results/detector_external_baselines.json": {
@@ -197,7 +197,7 @@
   "review": "153 Python tests, media smoke/data checks, offline exhibit regressions, native static alignment and public delivery checks passed; no native playback.",
   "results_changed": true,
   "markdown_documents": 32,
-  "local_links_checked": 154,
+  "local_links_checked": 157,
   "presentation_limit_seconds": 360,
   "buffer_seconds": 60,
   "visual_theme": "white canvas; navy titles, blue flow/icons, teal method/results/completion, restrained warm gold packets/current stage",

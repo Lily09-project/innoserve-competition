@@ -243,7 +243,8 @@ def build_pages(limit=12):
     s+=text(850,378,f'Macro-F1 {m["macro_f1"]["OOF Gate"]*100:.2f}%',18,TEAL,700)+text(1010,378,'見第 07 頁',15,MUTED)
     s+=arrow([(1018,404),(1018,486)])+rect(64,488,1152,72,NAVY,14)
     s+=text(640,532,'17 類判定  ＋  校準信心  ＋  模型表徵   →   後段檢索與稽核',22,WHITE,700,'middle')
-    s+=text(64,612,'兩個模型讀同一筆流量：CTBM（本團隊設計）看時序與方向，PBCNN（引用既有模型，Yu et al., 2021）看短窗位元組，再由 Gate 依證據融合。',17,MUTED)
+    s+=text(64,598,'兩個模型讀同一筆流量：CTBM（本團隊設計）看時序與方向，PBCNN（引用既有模型，Yu et al., 2021）看短窗位元組，再由 Gate 依證據融合。',16,MUTED)
+    s+=text(64,628,f'註：框架內的 PBCNN 為兩階層互補路徑（單獨 Macro-F1 {m["macro_f1"]["PBCNN"]*100:.2f}%）；第 07 頁的 PBCNN-20 是依原論文設定重實作的獨立比較組。',15,TEAL,700)
     pages.append(graphic_page(3,'互補模型，形成同一次判定',s,'技術創新性 · DETECTION'))
     # P04: vector composition is qualitative, not a falsely scaled 512:17 chart.
     cols=[64,467,870]
@@ -271,42 +272,40 @@ def build_pages(limit=12):
     pages.append(graphic_page(4,'把偵測表徵，變成可核對的證據',s,'技術創新性 · EVIDENCE'))
     # P05: stability in the isolated Mininet network: the policy steps, the real topology built by
     # scripts/live_network_test.py, and how many TCP transactions the six recorded cases measured.
-    s=''
-    stages=[('政策檢查','範圍 · 動作 · 期限','shield'),('套用規則','下到路由器 r1','firewall'),('讀回驗證','核對規則與回條','document'),('到期回復','撤銷並確認恢復','clock')]
+    s=rect(64,144,1152,56,GRAY,12)
+    stages=[('政策檢查','範圍期限','shield'),('套用規則','下到 r1','firewall'),('讀回驗證','核對規則','document'),('到期回復','撤銷確認','clock')]
     for i,(label,detail,kind) in enumerate(stages):
-        x=64+i*294
-        s+=rect(x,146,270,92,TEAL_TINT if i==3 else WHITE,14,'none' if i==3 else LINE)
-        s+=icon('shield',x+16,164,56) if kind=='shield' else glyph(kind,x+16,164,56)
-        s+=text(x+86,186,label,22,TEAL if i==3 else NAVY,700)+text(x+86,214,detail,15,MUTED)
-        if i<3:s+=chevron(x+282,192)
-    s+=text(64,268,'複核／不確定：不自動處置，只做監測或蒐證',16,MUTED)
+        x=80+i*226
+        s+=icon('shield',x,152,40) if kind=='shield' else glyph(kind,x,152,40)
+        s+=text(x+50,179,label,18,TEAL if i==3 else NAVY,700)+text(x+128,179,detail,14,MUTED)
+        if i<3:s+=chevron(x+208,165)
+    s+=text(1196,179,'複核／不確定 → 只監測蒐證',15,MUTED,400,'end')
     expansion=json.loads((ROOT/'results/mininet_topology_expansion.json').read_text(encoding='utf-8'))
-    s+=rect(64,288,592,352,GRAY,16)+text(88,322,'Mininet 隔離拓樸',20,TEAL,700)
-    s+=text(632,322,'原 3 子網 → 擴充至 4 子網',16,MUTED,400,'end')
+    s+=rect(64,220,592,420,GRAY,16)+text(88,256,'Mininet 隔離拓樸',20,TEAL,700)
+    s+=text(632,256,'原 3 子網 → 擴充至 4 子網',16,MUTED,400,'end')
     for j,(name,role) in enumerate([('subject','受處置來源'),('background','原背景來源'),('server','服務端'),('bg_extra','新增背景來源')]):
-        y=340+j*65
+        y=276+j*82
         color=TEAL if j==3 else BLUE_MUTED
-        s+=rect(88,y,212,54,TEAL_TINT if j==3 else WHITE,10,LINE)
-        s+=text(108,y+23,name,17,NAVY,700)+text(108,y+44,role,14,MUTED)
-        s+=rule(300,y+27,340,y+27,color,2)+rect(340,y+10,52,34,BLUE_TINT,8)
-        s+=text(366,y+33,f's{j+1}',15,TEAL if j==3 else BLUE,700,'middle')+rule(392,y+27,428,y+27,color,2)+rule(428,y+27,476,414+j*33,color,2)
-
-    s+=rect(476,398,156,132,NAVY,14)+text(554,443,'r1',30,WHITE,700,'middle')
-    s+=text(554,474,'路由器',15,DARK_MUTED,400,'middle')+text(554,503,'iptables 規則',15,CYAN,700,'middle')
+        s+=rect(88,y,212,62,TEAL_TINT if j==3 else WHITE,10,LINE)
+        s+=text(108,y+27,name,18,NAVY,700)+text(108,y+50,role,14,MUTED)
+        s+=rule(300,y+31,340,y+31,color,2)+rect(340,y+14,52,34,BLUE_TINT,8)
+        s+=text(366,y+37,f's{j+1}',15,TEAL if j==3 else BLUE,700,'middle')+rule(392,y+31,428,y+31,color,2)+rule(428,y+31,476,382+j*33,color,2)
+    s+=rect(476,362,156,134,NAVY,14)+text(554,410,'r1',30,WHITE,700,'middle')
+    s+=text(554,442,'路由器',15,DARK_MUTED,400,'middle')+text(554,470,'iptables 規則',15,CYAN,700,'middle')
     s+=text(88,622,'綠色支線為擴充實測新增的子網',15,MUTED)
     original_count=m['network_cases']*3*2*12
     during=expansion['stages']['during']
     restored=expansion['stages']['recovery']['subject']
     bg_ok=sum(during[name]['successes'] for name in ('background','bg_extra'))
     bg_total=sum(during[name]['attempts'] for name in ('background','bg_extra'))
-    s+=rect(680,288,536,160,WHITE,16,LINE)+text(704,322,'穩定性｜3 子網',18,TEAL,700)
-    s+=text(704,376,f'{original_count} 筆',43,TEAL,700)+text(904,357,'6 情境 × 3 階段 × 2 來源 × 12 筆',16,INK,700)
-    s+=text(904,383,'6/6 背景服務保留 · 6/6 連線復原',16,INK)
-    s+=text(704,423,f'{len(ttl)} 種規則到期撤銷（{min(ttl):.2f}–{max(ttl):.2f} 秒） · 2 種監測／蒐證',16,MUTED)
-    s+=rect(680,462,536,178,TEAL_TINT,16)+text(704,496,'擴充性｜4 子網',18,TEAL,700)
-    s+=text(704,553,f'{expansion["transactions"]} 筆',43,TEAL,700)+text(904,532,'1 情境 × 3 階段 × 3 來源 × 12 筆',16,INK,700)
-    s+=text(904,558,f'規則生效時背景來源 {bg_ok}/{bg_total} 成功',16,INK)
-    s+=text(704,596,f'受測來源 {during["subject"]["successes"]}/{during["subject"]["attempts"]} → 撤銷後 {restored["successes"]}/{restored["attempts"]}，規則清除',17,INK,700)
+    s+=rect(680,220,536,196,WHITE,16,LINE)+text(704,256,'穩定性｜3 子網',18,TEAL,700)
+    s+=text(704,326,f'{original_count} 筆',52,TEAL,700)+text(914,302,'6 情境 × 3 階段 × 2 來源 × 12 筆',16,INK,700)
+    s+=text(914,330,'6/6 背景服務保留 · 6/6 連線復原',16,INK)
+    s+=text(704,388,f'{len(ttl)} 種規則到期撤銷（{min(ttl):.2f}–{max(ttl):.2f} 秒） · 2 種監測／蒐證',16,MUTED)
+    s+=rect(680,432,536,208,TEAL_TINT,16)+text(704,468,'擴充性｜4 子網',18,TEAL,700)
+    s+=text(704,538,f'{expansion["transactions"]} 筆',52,TEAL,700)+text(914,514,'1 情境 × 3 階段 × 3 來源 × 12 筆',16,INK,700)
+    s+=text(914,542,f'規則生效時背景來源 {bg_ok}/{bg_total} 成功',16,INK)
+    s+=text(704,590,f'受測來源 {during["subject"]["successes"]}/{during["subject"]["attempts"]} → 撤銷後 {restored["successes"]}/{restored["attempts"]}，規則清除',17,INK,700)
     s+=text(704,620,'兩組皆為隔離 TCP 交易，量測規則與連線行為',14,MUTED)
     pages.append(graphic_page(5,'Mininet 實測：驗證穩定回復與拓樸擴充',s,'技術可行性 · 穩定性與擴充性'))
     # P06: film page. Only the header and footer are authored here; embed_movie_package.py places the
@@ -346,10 +345,10 @@ def build_pages(limit=12):
         s+=text(1192,y,f'+{delta:.2f}',23,CYAN,700,'end')
     s+=text(896,488,'差值單位為百分點',15,DARK_MUTED)
     s+=text(896,515,'各模型採各自的封包輸入設定',15,DARK_MUTED)
-    s+=rule(64,564,1216,564)
-    s+=text(64,590,'模型原始論文',15,TEAL,700)
-    s+=text(64,614,'[1] Yu et al. (2021), PBCNN: Packet Bytes-based Convolutional Neural Network for Network Intrusion Detection. DOI: 10.1016/j.comnet.2021.108117',14,INK)
-    s+=text(64,638,'[2] Ghadermazi et al. (2025), Towards Real-Time Network Intrusion Detection With Image-Based Sequential Packets Representation. DOI: 10.1109/TBDATA.2024.3403394',14,INK)
+    s+=rule(64,558,1216,558)
+    s+=text(64,586,'模型原始論文',16,TEAL,700)
+    s+=text(64,614,'[1] Yu et al. (2021). PBCNN, Computer Networks. DOI: 10.1016/j.comnet.2021.108117',16,INK)
+    s+=text(64,640,'[2] Ghadermazi et al. (2025). Image-Based Sequential Packets Representation, IEEE TBD. DOI: 10.1109/TBDATA.2024.3403394',16,INK)
     pages.append(graphic_page(7,'同一封存測試集，融合模型表現最佳',s,'技術可行性 · 模型比較'))
     # P08: outcomes form a qualitative branch; card area does not encode counts.
     s=rect(64,164,380,388,GRAY,18)+text(94,206,'檢索效果',16,TEAL,700)
@@ -371,7 +370,7 @@ def build_pages(limit=12):
     s=text(640,200,'偵測有依據，稽核有證據，處置可回復。',32,BLUE,700,'middle')
     s+=evidence_chain(318,[('document','正式判定','17 類＋信心'),('search','檢索證據','Top-5 訓練案例'),('check','稽核結論','支持／複核／不確定'),('clock','處置回條','讀回＋到期回復')],False,180,307)
     s+=rect(184,468,912,52,WHITE,26,LINE)+text(640,502,'同一事件 ID，串起分類、證據、判斷與回復紀錄。',20,NAVY,700,'middle')
-    s+=text(640,560,f'{m["live_classes"]} 類真實張量重跑 · {m["network_cases"]} 種隔離 TCP 情境驗證',18,MUTED,400,'middle')
+    s+=text(640,560,f'{m["live_classes"]} 類真實張量重跑 · {m["network_cases"]} 種隔離 TCP 情境 ＋ {expansion["subnets"]} 子網擴充驗證',18,MUTED,400,'middle')
     s+=rect(604,590,72,4,GOLD,2)+text(640,640,'感謝聆聽，敬請指教。',30,NAVY,700,'middle')
     pages.append(graphic_page(9,'一套可展示、可查核的資安框架',s,'AI SECURITY FRAMEWORK','ending',canvas=GRAY))
     pages=[pages[i] for i in [0,5,1,2,3,4,6,7,8]]
