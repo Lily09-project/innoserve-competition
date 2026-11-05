@@ -131,12 +131,12 @@
     "deliverables/source/finals-readiness.json": {
       "hash_normalization": "LF",
       "bytes": 3526,
-      "sha256": "7d9f13802e6ba6d7d09e25b1f330132ad0b98dcfa59146415a24df76edde3fc8"
+      "sha256": "e4d0565b0fd22ac66bccb35de76204e13e3d13dabdf195c697e764753ad82a93"
     },
-    "docs/決賽五分鐘口語稿.md": {
+    "archive/docs/決賽五分鐘口語稿.md": {
       "hash_normalization": "LF",
-      "bytes": 198,
-      "sha256": "7e714468405c6e59e8cca8cce660bba66909a18e519ac85fa6c55b3019bbee9e"
+      "bytes": 201,
+      "sha256": "67b3afb2cd906c7e2c58b46b8460ecb2b5398f34f7c3268715a6bd8cb5842106"
     },
     "docs/決賽六題答詢口徑.md": {
       "hash_normalization": "LF",
@@ -196,8 +196,8 @@
   "website": "removed; API-only",
   "review": "153 Python tests, media smoke/data checks, offline exhibit regressions, native static alignment and public delivery checks passed; no native playback.",
   "results_changed": true,
-  "markdown_documents": 32,
-  "local_links_checked": 157,
+  "markdown_documents": 33,
+  "local_links_checked": 186,
   "presentation_limit_seconds": 360,
   "buffer_seconds": 60,
   "visual_theme": "white canvas; navy titles, blue flow/icons, teal method/results/completion, restrained warm gold packets/current stage",

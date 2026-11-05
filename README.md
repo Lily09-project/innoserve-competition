@@ -4,6 +4,8 @@
 
 本作品以同一事件串接17類入侵偵測、訓練案例檢索、本機AI稽核與受控處置。前段提供正式分類、校準信心與流量表徵；後段附上Top-5證據、稽核結論、策略檢查及回復回條，保留各階段的來源與執行關係。
 
+> **目前版本：[v1.12-finals 決賽交付版](https://github.com/Lily09-project/innoserve-competition/releases/tag/v1.12-finals)（2026-11-05）**　簡報依決賽評分項目調整：Mininet 三子網432筆與四子網擴充108筆實測、同一18,998筆測試集比較PBCNN-20／SPIN-IDS-15；含30秒影片共5分30秒，講稿放在PPT講者備忘稿。舊版文件與工具已移到[舊版本封存](archive/README.md)。
+
 ### ▶ [線上開啟互動展示（免下載，直接在瀏覽器播放）](https://lily09-project.github.io/innoserve-competition/deliverables/interactive/AI%E8%B3%87%E5%AE%89%E6%A1%86%E6%9E%B6_%E8%87%AA%E5%8B%95%E5%BE%AA%E7%92%B0%E5%B1%95%E7%A4%BA.html)
 
 [下載HTML單檔離線使用](deliverables/interactive/AI資安框架_自動循環展示.html) · [互動展示操作與範圍](deliverables/interactive/README.md)
@@ -14,11 +16,9 @@
 
 互動展示可用上方連結直接在瀏覽器開啟，也可下載單檔離線使用；依序播放四種情境，每個38秒；可暫停、調速、跳轉時間軸與查看資料。點節點說明時會暫停，閱讀後可繼續。它使用合成示意資料解說方法，不執行真實模型或網路規則；正式實測仍以本文結果與本機模型控制台為準。
 
-[下載離線簡報、影片與海報備援包](deliverables/決賽離線展示包.zip) · [簡報PDF備援](deliverables/決賽簡報_AI資安框架.pdf) · [正式版本封存與SHA256](https://github.com/Lily09-project/innoserve-competition/releases)
+[下載離線簡報、影片與海報備援包](deliverables/決賽離線展示包.zip) · [簡報PDF備援](deliverables/決賽簡報_AI資安框架.pdf) · [最新版本封存與SHA256](https://github.com/Lily09-project/innoserve-competition/releases/latest)
 
-簡報、A2海報、30秒影片與互動展示已改用共用的[證據鏈視覺系統](design-system/DESIGN.md)：淺灰底封面與影片、白底內頁、微軟正黑體＋Segoe UI，以「偵測 → 檢索 → 稽核 → 回復」四節點串成同一條鏈；方法、真實數據與匿名設定不變。[參考來源與轉譯範圍](docs/海報與影片參考轉譯.md)。
-
-[互動展示 UX 檢查與修正](docs/互動展示UX檢查.md)：鍵盤閱讀自動暫停、即時減少動態偏好、對話框焦點及快捷鍵保留。
+簡報、30秒影片與互動展示共用[證據鏈視覺系統](design-system/DESIGN.md)：淺灰底封面與影片、白底內頁、微軟正黑體＋Segoe UI，以「偵測 → 檢索 → 稽核 → 回復」四節點串成同一條鏈。
 
 [成果與規格](#成果與規格) · [系統方法](#系統方法與創新) · [實測結果](#實測結果與適用範圍) · [公開測試](#公開程式測試) · [完整執行](#完整本機模型與隔離驗證) · [目錄](#專案目錄與來源) · [發布範圍](#公開內容與版本維護)
 
@@ -47,7 +47,7 @@
 
 A2海報改用團隊完成的整張海報圖；圖中文字屬於圖像，正式數值以本頁、簡報與results為準。所有正式交付物保持匿名；公開儲存庫的帳號資訊不放進競賽投影或海報。
 
-設計參考與原創轉譯見[海報與影片參考紀錄](docs/海報與影片參考轉譯.md)。正式成果可直接下載使用；完整模型展示另依下方工作站設定執行。
+正式成果可直接下載使用；完整模型展示另依下方工作站設定執行。
 
 第6頁分列三子網穩定性（432筆）及四子網擴充性（108筆），第7頁在同測試集比較重實作的PBCNN-20、SPIN-IDS-15與本團隊模型。評分對應與資料來源見[決賽展示與答詢](docs/決賽展示與答詢.md)。
 
@@ -75,17 +75,19 @@ A2海報改用團隊完成的整張海報圖；圖中文字屬於圖像，正式
 
 創新重點在於互補模型產生一次正式判定、以任務向量取得相關證據，以及讓判定、稽核、策略和回條可沿同一事件追溯。AI支持結論仍須通過策略檢查；複核與不確定事件保留監測或蒐證路徑。
 
-完整17類名稱與策略對照以[事件合約](app/pipeline.py)為準；[框架說明](FRAMEWORK.md)與[程式審查修正](docs/程式審查修正.md)說明資料交接及拒絕錯誤的條件。
+完整17類名稱與策略對照以[事件合約](app/pipeline.py)為準；[框架說明](FRAMEWORK.md)說明資料交接及拒絕錯誤的條件。
 
 ## 實測結果與適用範圍
 
 | 實驗範圍 | 已記錄結果 | 公開來源 |
 | --- | --- | --- |
-| 相同18,998筆封存偵測測試 | Accuracy 98.08%；Macro-F1 93.05%；PBCNN與CTBM的Macro-F1分別79.75%、92.10% | [偵測彙整](results/detection_17class.json) |
+| 相同18,998筆封存偵測測試 | Accuracy 98.08%；Macro-F1 93.05%；框架內兩階層PBCNN與CTBM的Macro-F1分別79.75%、92.10% | [偵測彙整](results/detection_17class.json) |
+| 同一18,998筆測試、依原論文重實作的外部模型 | PBCNN-20 Macro-F1 88.82%、SPIN-IDS-15 91.69%；融合模型分別高4.23與1.36個百分點 | [外部模型比較](results/detector_external_baselines.json) |
 | 1,550筆訓練案例、463筆查詢 | Top-5 97.62%；MRR@5 93.89%；訓練／查詢ID重疊0 | [檢索彙整](results/retrieval_17class.json) |
 | 同一批463筆本機AI稽核 | 415支持、13複核、35不確定；支持精確率97.11% | [稽核彙整](results/local_judge_17class.json) |
 | 17類真實前處理張量重跑 | 17次本機推論與17次本機AI呼叫，正式類別及Top-5案例排序與保存結果對齊 | [整合彙整](results/framework_validation.json)、[證據索引](deliverables/source/release-validation.json) |
-| 預定6種隔離TCP情境 | 4種套用規則、2種監測或蒐證；背景保留6/6、回復完整性6/6 | [六情境逐項彙整](results/framework_validation.json) |
+| 預定6種隔離TCP情境（Mininet三子網） | 共432筆TCP交易；4種套用規則、2種監測或蒐證；背景保留6/6、回復完整性6/6 | [六情境逐項彙整](results/framework_validation.json) |
+| Mininet四子網擴充 | 1種情境108筆TCP交易；規則生效時背景來源24/24成功，撤銷後受測來源12/12恢復 | [擴充實測](results/mininet_topology_expansion.json) |
 
 30筆封存偵測誤判中18筆分流至複核或不確定，12筆仍獲AI支持。稽核不改寫正式分類，因此不能將分流數據解讀為新的分類準確率。6/6量測的是隔離TCP測試交易、背景服務與期限回復，並非原生攻擊防禦率或漏洞修補率。
 
@@ -119,7 +121,7 @@ python scripts/check_public_files.py
 
 已有clone時先執行`git submodule update --init --recursive`。子模組必須初始化，才能載入真正的共用策略元件。
 
-目前153項Python測試涵蓋事件合約、Judge上下文、策略、逐筆證據、資產匯入、預檢、API、字型、匿名、封裝失敗保護及交付一致性。媒體檢查另編譯九個動畫章節。測試中的合成fixture只測程式邊界，不列入模型成效；CI通過也不代表重新執行真實模型。完整項目見[測試矩陣](docs/測試矩陣.md)。
+目前155項Python測試涵蓋事件合約、Judge上下文、策略、逐筆證據、資產匯入、預檢、API、字型、匿名、封裝失敗保護及交付一致性。媒體檢查另編譯九個動畫章節。測試中的合成fixture只測程式邊界，不列入模型成效；CI通過也不代表重新執行真實模型。完整項目見[測試矩陣](docs/測試矩陣.md)。
 
 ## 完整本機模型與隔離驗證
 
@@ -249,7 +251,8 @@ python scripts/finals_pipeline.py --stage validation/NEW_DELIVERY_FOLDER
 | [app/](app/) | 17類事件合約、本機推論、Judge解析、策略閘門、API、設定與資產驗證 |
 | [scripts/](scripts/) | 案例重建、稽核、匯出、預檢、公開檔案及交付檢查 |
 | [scripts/presentation/](scripts/presentation/) | 簡報／海報製作、字型正規化、影片封裝與對齊量測 |
-| [media/film/](media/film/) | 純程式產品動畫來源 |
+| [media/exhibit-film/](media/exhibit-film/) | 30秒說明影片的配音稿與配音 |
+| [media/film/](media/film/) | 舊版產品動畫來源與共用媒體數據快照；動畫已不作為交付影片，因版本綁定保留原位 |
 | [design-system/](design-system/) | 共用色盤、兩種字型、平面圖示與視覺規格 |
 | [deliverables/](deliverables/) | 正式PPTX、PDF、MP4、離線ZIP及預覽 |
 | [deliverables/source/](deliverables/source/) | 最新12頁SVG、架構圖、設計規格、講者稿及交付索引 |
@@ -258,6 +261,7 @@ python scripts/finals_pipeline.py --stage validation/NEW_DELIVERY_FOLDER
 | [docs/](docs/) | 方法、答詢、重現、驗收及版本紀錄 |
 | [sources/paper_code/](sources/paper_code/) | 第三方研究程式子模組，固定版本與來源由Git記錄 |
 | [.github/](.github/) | CI、PR範本與核心程式審查規則 |
+| [archive/](archive/README.md) | 舊版本封存：已被取代的文件、工具與素材，不再更新 |
 
 逐頁SVG是可編輯的設計來源；第2頁SVG描述影片位置，MP4由封裝步驟內嵌到PPTX。正式PPTX另有原生字型與實際字形對齊校正，應以正式檔作投影及編輯交付。製作步驟見[來源說明](deliverables/source/README.md)、[簡報規格](deliverables/source/presentation-design-spec.md)。
 
@@ -269,7 +273,7 @@ python scripts/finals_pipeline.py --stage validation/NEW_DELIVERY_FOLDER
 | 核心彙整及風險分析、正式簡報／影片／海報／離線包 | 案例向量庫、逐筆事件、Judge原始回覆及私有回條 |
 | 設定範例、依賴清單、子模組版本、雜湊索引 | config.local.json、環境憑證、執行日誌、暫存／舊版製作目錄 |
 
-公開範圍以[.gitignore](.gitignore)、[公開檔案檢查](scripts/check_public_files.py)及[發布盤點](docs/公開發布盤點.md)為依據。正式資產、預覽與來源變更後需同步交付索引；十二張逐頁SVG也納入LF正規化雜湊檢查，避免只更新PPT而留下舊來源。
+公開範圍以[.gitignore](.gitignore)及[公開檔案檢查](scripts/check_public_files.py)為依據。正式資產、預覽與來源變更後需同步交付索引；十二張逐頁SVG也納入LF正規化雜湊檢查，避免只更新PPT而留下舊來源。
 
 模型、程式與彙整結果由不同層級的驗證紀錄綁定；最新成果以`main`、[交付manifest](deliverables/source/delivery-manifest.json)及[release-validation](deliverables/source/release-validation.json)為準。不要把私有部署資產誤認為漏推送的公開內容。
 
@@ -277,17 +281,17 @@ python scripts/finals_pipeline.py --stage validation/NEW_DELIVERY_FOLDER
 
 - [決賽內容與數據基準](docs/決賽內容基準.md)
 - [方法與現場答詢](docs/決賽展示與答詢.md)
+- [六題答詢口徑](docs/決賽六題答詢口徑.md)
+- [現場控場與備援卡](docs/現場控場與備援卡.md)
 - [展前驗收與備援](docs/展前驗收與備援.md)
-- [完整交付驗收](docs/完整交付驗收.md)
 - [實測與證據索引](docs/實測與證據索引.md)
-- [架構圖設計與驗收](docs/架構圖設計與驗收.md)
 - [決賽穩定性與操作整合](docs/決賽穩定性與操作整合.md)
-- [完整程式審查追補修正](docs/完整程式審查追補修正.md)
 - [版本與檢查紀錄](docs/版本與檢查紀錄.md)
+- [舊版本封存](archive/README.md)
 - [協作規則](CONTRIBUTING.md)
 
 原創程式採[Apache-2.0](LICENSE)。第三方子模組、模型及資料維持各自授權，見[NOTICE.md](NOTICE.md)。修改透過PR與CI合併，核心合約依專案審查規則處理。
 
 ### English summary
 
-This project integrates 17-class intrusion detection, task-oriented retrieval of training-only evidence, local AI auditing, and policy-controlled actions with readback and expiry rollback. The public repository includes source code, recorded aggregate results, editable slide sources, a 12-slide finals presentation, a 30-second method animation, and an A2 poster. Model weights, raw traffic, per-event traces and workstation configuration remain private. The six network scenarios validate isolated TCP transactions and rollback rather than native exploit prevention.
+This project integrates 17-class intrusion detection, task-oriented retrieval of training-only evidence, local AI auditing, and policy-controlled actions with readback and expiry rollback. The public repository includes source code, recorded aggregate results, editable slide sources, a 12-slide finals presentation, a 30-second method animation, and an A2 poster. The current release is v1.12-finals; superseded documents and tools are kept in archive/. Model weights, raw traffic, per-event traces and workstation configuration remain private. The six network scenarios validate isolated TCP transactions and rollback rather than native exploit prevention.
