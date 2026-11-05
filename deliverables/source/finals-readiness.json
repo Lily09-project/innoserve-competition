@@ -31,8 +31,8 @@
   ],
   "human_checks_verified_by_this_script": false,
   "bindings": {
-    "deliverables/決賽簡報_AI資安框架.pptx": "ec96ef67abf6f72344435452eb7f87a4e03c16d5da2dc13641941ccc3f4da21c",
-    "deliverables/決賽簡報_AI資安框架.pdf": "c000d2f4296fe4970f00606f87ac53328743175e3084af36a55f04344ed50337",
+    "deliverables/決賽簡報_AI資安框架.pptx": "d638da3133e1bf9c3248203f553b3aba85ff03690f4ca10a77ebc98dd40c93a8",
+    "deliverables/決賽簡報_AI資安框架.pdf": "2e0f5b6d3da6ffc0ee8828d5ec40ee006396e600b0b05a631c790a69591f5433",
     "deliverables/AI資安框架_系統展示影片_30秒快版.mp4": "8c089e9e88a77e883a44c4d67f00ec5d8a2bd4b84383c5f80b520664544558fd",
     "deliverables/決賽海報_AI資安框架_A2.png": "02e94304d80e3cc324d4e7886ef7bafbb0e1d3c60be6de29023d685325856014",
     "deliverables/source/finals-runbook.json": "cbb124e97eaa985bf504f88ea128e8f2b4dadb193549d6acf47a5fcd96fcdceb",
@@ -41,7 +41,7 @@
     "deliverables/interactive/AI資安框架_自動循環展示.html": "cee606e57b2e0cdb13f13ead787c989d65afde7e647ec2a6ba79d5a8295164ef",
     "scripts/check_finals_readiness.py": "83cb47aca5d15ed1b06420ced116a8500ab004bf1f55eed4531eeb169f70976c",
     "scripts/package_finals.py": "3b609c012c92f9e3d94cba42cc063bd364351bb6d37c35e0f0dbf9469bea51b4",
-    "deliverables/決賽離線展示包.zip": "b9d27fcc4d97b9b28aa5cc00943c86f1805405fb5e851633daed6f4d815d85dc",
+    "deliverables/決賽離線展示包.zip": "43c8e286d5cd710ae6b280caeacbaaf1b748f858d66a51e70bc41d6a89e501a8",
     "README.md": "623c44613ad91907587294c6c7c0c48c78e2ec5f7fd6e54ed8d5852660fd002e",
     "media/film/metrics.json": "816450d6ba5340d14b5bae6aeb133a462deb6be3f6eb3f4a37fb8274656222c1",
     "design-system/palette.json": "3c7c609fbe761752756a835954ecfa098194c09b38620054655d5e4bc487cb2e",
@@ -55,5 +55,5 @@
     "results/detector_external_baselines.json": "97bb6c9a074760222b0344337eadf6bebf3ec400920a92fd22daf3397a8a2237",
     "scripts/test_mininet_expansion.py": "679d733467d164899d7b35476213aec2a4a7647b452a5a52e1753c512c10db84"
   },
-  "created_utc": "2026-11-05T08:18:07.085234+00:00"
+  "created_utc": "2026-11-05T08:27:29.781610+00:00"
 }

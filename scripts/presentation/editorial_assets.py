@@ -132,7 +132,7 @@ def architecture(save=True, oy=24):
     s+=arrow([(x+135,oy+226),(x+135,oy+272)])
     s+=node(x+16,oy+276,238,62,'流量表徵','送入兩個互補模型','out')
     x=xs[1]
-    s+=node(x+16,oy+78,222,58,'CTBM','內容 · 時間差 · 方向')+node(x+16,oy+150,222,58,'PBCNN','短窗位元組模式 · 既有模型')
+    s+=node(x+16,oy+78,222,58,'CTBM','內容 · 時間差 · 方向')+node(x+16,oy+150,222,58,'PBCNN','短窗位元組模式 · 既有模型 [1]')
     s+=arrow([(x+238,oy+107),(x+256,oy+107),(x+256,oy+251),(x+240,oy+251)])+rule(x+238,oy+179,x+256,oy+179,BLUE,2.5)
     s+=node(x+16,oy+222,222,58,'校準＋OOF Gate','依事件證據融合','key')
     s+=arrow([(x+127,oy+280),(x+127,oy+296)])
@@ -158,6 +158,16 @@ def architecture(save=True, oy=24):
     s+=text(640,oy+423,'同一事件 ID 串起  正式判定 · Top-5 證據 · AI 稽核結論 · 處置回條',19,WHITE,700,'middle')
     if save:(DEST/'architecture.svg').write_text(svg(s,oy+464),encoding='utf-8')
     return s
+
+
+REFERENCES={
+    1:'[1] Yu, L. et al. (2021). PBCNN: Packet bytes-based convolutional neural network for network intrusion detection. Computer Networks, 194, 108117. DOI: 10.1016/j.comnet.2021.108117',
+    2:'[2] Ghadermazi et al. (2025). Towards real-time network intrusion detection with image-based sequential packets representation. IEEE Transactions on Big Data. DOI: 10.1109/TBDATA.2024.3403394'}
+
+
+def references(keys, y=652, size=13):
+    """Citation lines just above the footer rule, one per cited model."""
+    return ''.join(text(64,y-(len(keys)-1-i)*(size+7),REFERENCES[k],size,MUTED) for i,k in enumerate(keys))
 
 
 def group(key, body):
@@ -219,12 +229,13 @@ def build_pages(limit=12):
     s=''
     for k,l in enumerate(['融合新型內容相依時序方向模型','入侵偵測與任務導向檢索增強稽核','之 AI 資安框架']):s+=text(64,206+k*62,l,44,BLUE if k==2 else NAVY,700)
     s+=rect(64,350,56,4,GOLD,2)+text(64,400,'從流量判定，走到有證據、可回復的處置。',24,MUTED)
-    s+=rect(64,424,816,30,WHITE,15,LINE)+text(84,444,'★ 原創：CTBM、校準融合、任務導向檢索、本機 AI 稽核、受控回復　｜　引用：PBCNN（Yu et al., 2021）',15,NAVY,700)
+    s+=rect(64,424,816,30,WHITE,15,LINE)+text(84,444,'★ 原創：CTBM、校準融合、任務導向檢索、本機 AI 稽核、受控回復　｜　引用：PBCNN [1]',15,NAVY,700)
     s+=evidence_chain(512,[('model','偵測','17 類互補判定'),('retrieval','檢索','Top-5 訓練案例'),('document','稽核','本機 AI 三態'),('shield','回復','讀回＋到期回復')],False)
     s+=f'<g transform="translate(912 150) scale(4.6)">{icon_fragment("framework")}</g>'
+    s+=references([1])
     pages.append(graphic_page(1,'',s,'2026 資安技術組 · 決賽','cover',canvas=GRAY))
     # P02 (source order): the four-lane architecture.
-    pages.append(graphic_page(2,'一個框架，四個連續階段',architecture(False,172),'技術創新性 · FRAMEWORK'))
+    pages.append(graphic_page(2,'一個框架，四個連續階段',architecture(False,164)+references([1]),'技術創新性 · FRAMEWORK'))
     # P03: two complementary paths, one calibrated output.
     s=rect(64,150,280,300,GRAY,14)+text(88,190,'同一流量輸入',18,TEAL,700)
     for j,label in enumerate(['封包內容','時間差','方向']):
@@ -243,8 +254,9 @@ def build_pages(limit=12):
     s+=text(850,378,f'Macro-F1 {m["macro_f1"]["OOF Gate"]*100:.2f}%',18,TEAL,700)+text(1010,378,'見第 07 頁',15,MUTED)
     s+=arrow([(1018,404),(1018,486)])+rect(64,488,1152,72,NAVY,14)
     s+=text(640,532,'17 類判定  ＋  校準信心  ＋  模型表徵   →   後段檢索與稽核',22,WHITE,700,'middle')
-    s+=text(64,598,'兩個模型讀同一筆流量：CTBM（本團隊設計）看時序與方向，PBCNN（引用既有模型，Yu et al., 2021）看短窗位元組，再由 Gate 依證據融合。',16,MUTED)
-    s+=text(64,628,f'註：框架內的 PBCNN 為兩階層互補路徑（單獨 Macro-F1 {m["macro_f1"]["PBCNN"]*100:.2f}%）；第 07 頁的 PBCNN-20 是依原論文設定重實作的獨立比較組。',15,TEAL,700)
+    s+=text(64,588,'兩個模型讀同一筆流量：CTBM（本團隊設計）看時序與方向，PBCNN（引用既有模型 [1]）看短窗位元組，再由 Gate 依證據融合。',16,MUTED)
+    s+=text(64,616,f'註：框架內的 PBCNN 為兩階層互補路徑（單獨 Macro-F1 {m["macro_f1"]["PBCNN"]*100:.2f}%）；第 07 頁的 PBCNN-20 是依原論文設定重實作的獨立比較組。',15,TEAL,700)
+    s+=references([1])
     pages.append(graphic_page(3,'互補模型，形成同一次判定',s,'技術創新性 · DETECTION'))
     # P04: vector composition is qualitative, not a falsely scaled 512:17 chart.
     cols=[64,467,870]
@@ -314,7 +326,7 @@ def build_pages(limit=12):
     # P07: comparable test split, with model-specific packet budgets disclosed.
     baseline=json.loads((ROOT/'results/detector_external_baselines.json').read_text(encoding='utf-8'))
     models=baseline['models'] | detector
-    s=text(64,172,f'相同 {baseline["samples"]:,} 筆封存測試 · {baseline["classes"]} 類',18,MUTED)
+    s=rect(64,140,416,48,TEAL_TINT,24)+text(88,173,f'測試資料 {baseline["samples"]:,} 筆',26,TEAL,700)+text(330,171,f'· {baseline["classes"]} 類 · 四模型共用',15,INK,700)
     s+=rect(492,156,14,14,BLUE_MUTED,3)+text(512,169,'準確率',15,MUTED)
     s+=rect(586,156,7,14,BLUE,2)+rect(593,156,7,14,TEAL,2)+text(606,169,'Macro-F1',15,MUTED)
     chart=''
@@ -345,10 +357,8 @@ def build_pages(limit=12):
         s+=text(1192,y,f'+{delta:.2f}',23,CYAN,700,'end')
     s+=text(896,488,'差值單位為百分點',15,DARK_MUTED)
     s+=text(896,515,'各模型採各自的封包輸入設定',15,DARK_MUTED)
-    s+=rule(64,558,1216,558)
-    s+=text(64,586,'模型原始論文',16,TEAL,700)
-    s+=text(64,614,'[1] Yu et al. (2021). PBCNN, Computer Networks. DOI: 10.1016/j.comnet.2021.108117',16,INK)
-    s+=text(64,640,'[2] Ghadermazi et al. (2025). Image-Based Sequential Packets Representation, IEEE TBD. DOI: 10.1109/TBDATA.2024.3403394',16,INK)
+    s+=rule(64,572,1216,572)+text(64,600,'模型原始論文',15,TEAL,700)
+    s+=references([1,2],652,13)
     pages.append(graphic_page(7,'同一封存測試集，融合模型表現最佳',s,'技術可行性 · 模型比較'))
     # P08: outcomes form a qualitative branch; card area does not encode counts.
     s=rect(64,164,380,388,GRAY,18)+text(94,206,'檢索效果',16,TEAL,700)
