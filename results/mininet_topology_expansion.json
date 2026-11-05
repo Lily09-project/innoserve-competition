@@ -1,0 +1,59 @@
+{
+  "scope": "one isolated policy replay with generated TCP transactions; no attack PCAP or capacity claim",
+  "scenario": "DDoS-LOIC-HTTP",
+  "action": "upstream_scrubbing",
+  "subnets": 4,
+  "hosts": 4,
+  "switches": 4,
+  "routers": 1,
+  "stages": {
+    "baseline": {
+      "subject": {
+        "attempts": 12,
+        "successes": 12
+      },
+      "background": {
+        "attempts": 12,
+        "successes": 12
+      },
+      "bg_extra": {
+        "attempts": 12,
+        "successes": 12
+      }
+    },
+    "during": {
+      "subject": {
+        "attempts": 12,
+        "successes": 2
+      },
+      "background": {
+        "attempts": 12,
+        "successes": 12
+      },
+      "bg_extra": {
+        "attempts": 12,
+        "successes": 12
+      }
+    },
+    "recovery": {
+      "subject": {
+        "attempts": 12,
+        "successes": 12
+      },
+      "background": {
+        "attempts": 12,
+        "successes": 12
+      },
+      "bg_extra": {
+        "attempts": 12,
+        "successes": 12
+      }
+    }
+  },
+  "transactions": 108,
+  "ttl_seconds": 30,
+  "rollback_elapsed_seconds": 30.128,
+  "rules_read_back": 2,
+  "remaining_rules": false,
+  "cleanup_passed": true
+}

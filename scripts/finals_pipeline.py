@@ -40,7 +40,8 @@ def refresh_manifest(root=ROOT,audit_dir=None):
     root=Path(root)
     path=root/'deliverables/source/delivery-manifest.json'
     value=json.loads(path.read_text(encoding='utf-8'))
-    for name in ('results/policy_risk_analysis.json',):
+    for name in ('results/policy_risk_analysis.json', 'results/mininet_topology_expansion.json',
+                 'results/detector_external_baselines.json'):
         value['files'].setdefault(name,{'hash_normalization':'LF'})
     for name,entry in value['files'].items():
         content=(root/name).read_bytes()

@@ -280,65 +280,77 @@ def build_pages(limit=12):
         s+=text(x+86,186,label,22,TEAL if i==3 else NAVY,700)+text(x+86,214,detail,15,MUTED)
         if i<3:s+=chevron(x+282,192)
     s+=text(64,268,'複核／不確定：不自動處置，只做監測或蒐證',16,MUTED)
-    # Topology panel: three hosts, each on its own switch, routed by r1 where the rule is applied.
-    s+=rect(64,288,592,352,GRAY,16)+text(88,322,'Mininet 隔離拓撲',18,TEAL,700)+text(632,322,'3 子網 · 1 路由器',15,MUTED,400,'end')
-    for j,(name,ip,role) in enumerate([('subject','10.10.1.10','受處置來源'),('background','10.10.2.10','背景使用者'),('server','10.10.3.10','服務端')]):
-        y=340+j*88
-        s+=rect(88,y,212,72,WHITE,12,LINE)+text(108,y+30,name,19,NAVY,700)+text(108,y+56,f'{ip} · {role}',14,MUTED)
-        s+=rule(300,y+36,340,y+36,BLUE_MUTED,2)+rect(340,y+18,52,36,BLUE_TINT,8)+text(366,y+42,f's{j+1}',15,BLUE,700,'middle')
-        s+=rule(392,y+36,452,y+36,BLUE_MUTED,2)
-    s+=rule(452,376,452,552,BLUE_MUTED,2)+rule(452,464,476,464,BLUE_MUTED,2)
-    s+=rect(476,392,156,144,NAVY,14)+text(554,444,'r1',30,WHITE,700,'middle')+text(554,476,'路由器',15,DARK_MUTED,400,'middle')+text(554,506,'iptables 規則',15,CYAN,700,'middle')
-    s+=text(88,622,'每個情境建立獨立網路，結束即清理',15,MUTED)
-    # Measured volume: each case runs six query phases (baseline, after, recovery for subject and
-    # background) of 12 TCP transactions, as fixed in live_network_test.measure.
-    per_case=6*12
-    s+=rect(680,288,536,352,WHITE,16,LINE)+text(708,322,'穩定性實測',18,TEAL,700)
-    s+=text(708,398,f'{m["network_cases"]*per_case} 筆',58,TEAL,700)+text(708,432,'TCP 交易',18,INK,700)
-    s+=text(900,380,f'{m["network_cases"]} 種情境 × 每情境 {per_case} 筆',17,INK,700)+text(900,408,'處置前、中、後各量測一次',16,MUTED)
-    s+=rule(708,456,1188,456)
-    for i,(value,label) in enumerate([(f'{m["background"]}/{m["network_cases"]}','背景服務保留'),(f'{m["rollback"]}/{m["network_cases"]}','到期回復完整'),(f'{min(ttl):.1f} 秒','30 秒規則實際撤銷')]):
-        x=708+i*164
-        s+=text(x,520,value,36,NAVY if i==2 else TEAL,700)+text(x,550,label,15,MUTED)
-    s+=text(708,594,f'{m["rules_cases"]} 種套用規則、{m["passive_cases"]} 種監測蒐證',16,INK,700)
-    s+=text(708,622,'隔離交易與回復驗證，不等同原生攻擊防禦率',14,MUTED)
-    pages.append(graphic_page(5,'Mininet 實測：處置受控，到期穩定回復',s,'技術可行性 · 穩定性'))
+    expansion=json.loads((ROOT/'results/mininet_topology_expansion.json').read_text(encoding='utf-8'))
+    s+=rect(64,288,592,352,GRAY,16)+text(88,322,'Mininet 隔離拓樸',20,TEAL,700)
+    s+=text(632,322,'原 3 子網 → 擴充至 4 子網',16,MUTED,400,'end')
+    for j,(name,role) in enumerate([('subject','受處置來源'),('background','原背景來源'),('server','服務端'),('bg_extra','新增背景來源')]):
+        y=340+j*65
+        color=TEAL if j==3 else BLUE_MUTED
+        s+=rect(88,y,212,54,TEAL_TINT if j==3 else WHITE,10,LINE)
+        s+=text(108,y+23,name,17,NAVY,700)+text(108,y+44,role,14,MUTED)
+        s+=rule(300,y+27,340,y+27,color,2)+rect(340,y+10,52,34,BLUE_TINT,8)
+        s+=text(366,y+33,f's{j+1}',15,TEAL if j==3 else BLUE,700,'middle')+rule(392,y+27,428,y+27,color,2)+rule(428,y+27,476,414+j*33,color,2)
+
+    s+=rect(476,398,156,132,NAVY,14)+text(554,443,'r1',30,WHITE,700,'middle')
+    s+=text(554,474,'路由器',15,DARK_MUTED,400,'middle')+text(554,503,'iptables 規則',15,CYAN,700,'middle')
+    s+=text(88,622,'綠色支線為擴充實測新增的子網',15,MUTED)
+    original_count=m['network_cases']*3*2*12
+    during=expansion['stages']['during']
+    restored=expansion['stages']['recovery']['subject']
+    bg_ok=sum(during[name]['successes'] for name in ('background','bg_extra'))
+    bg_total=sum(during[name]['attempts'] for name in ('background','bg_extra'))
+    s+=rect(680,288,536,160,WHITE,16,LINE)+text(704,322,'穩定性｜3 子網',18,TEAL,700)
+    s+=text(704,376,f'{original_count} 筆',43,TEAL,700)+text(904,357,'6 情境 × 3 階段 × 2 來源 × 12 筆',16,INK,700)
+    s+=text(904,383,'6/6 背景服務保留 · 6/6 連線復原',16,INK)
+    s+=text(704,423,f'{len(ttl)} 種規則到期撤銷（{min(ttl):.2f}–{max(ttl):.2f} 秒） · 2 種監測／蒐證',16,MUTED)
+    s+=rect(680,462,536,178,TEAL_TINT,16)+text(704,496,'擴充性｜4 子網',18,TEAL,700)
+    s+=text(704,553,f'{expansion["transactions"]} 筆',43,TEAL,700)+text(904,532,'1 情境 × 3 階段 × 3 來源 × 12 筆',16,INK,700)
+    s+=text(904,558,f'規則生效時背景來源 {bg_ok}/{bg_total} 成功',16,INK)
+    s+=text(704,596,f'受測來源 {during["subject"]["successes"]}/{during["subject"]["attempts"]} → 撤銷後 {restored["successes"]}/{restored["attempts"]}，規則清除',17,INK,700)
+    s+=text(704,620,'兩組皆為隔離 TCP 交易，量測規則與連線行為',14,MUTED)
+    pages.append(graphic_page(5,'Mininet 實測：驗證穩定回復與拓樸擴充',s,'技術可行性 · 穩定性與擴充性'))
     # P06: film page. Only the header and footer are authored here; embed_movie_package.py places the
     # film at FILM_FRAME (160,114 · 960x540) between them.
     pages.append(graphic_page(6,'一次 HTTP 洪流，從封包到處置｜互動展示實錄 30 秒',group('video-slot',''),'影片展示',canvas=GRAY,compact=True))
-    # P07: the cited model (PBCNN) against ours on the same sealed test; zero-baseline bars,
-    # plot domain 0..100 at x=300..760. The right panel reads the gain of adding a model path.
-    s=text(64,172,f'相同 {m["detection_n"]:,} 筆封存測試 · 17 類',18,MUTED)
-    s+=rect(500,156,14,14,BLUE_MUTED,3)+text(520,169,'準確率',15,MUTED)+rect(590,156,14,14,TEAL,3)+text(610,169,'Macro-F1',15,MUTED)
+    # P07: comparable test split, with model-specific packet budgets disclosed.
+    baseline=json.loads((ROOT/'results/detector_external_baselines.json').read_text(encoding='utf-8'))
+    models=baseline['models'] | detector
+    s=text(64,172,f'相同 {baseline["samples"]:,} 筆封存測試 · {baseline["classes"]} 類',18,MUTED)
+    s+=rect(492,156,14,14,BLUE_MUTED,3)+text(512,169,'準確率',15,MUTED)
+    s+=rect(586,156,7,14,BLUE,2)+rect(593,156,7,14,TEAL,2)+text(606,169,'Macro-F1',15,MUTED)
     chart=''
-    for tick in [0,50,100]:
-        x=300+460*tick/100
-        chart+=rule(x,196,x,512,LINE,1)+text(x,536,f'{tick}%',15,MUTED,400,'middle')
+    for tick in (0,50,100):
+        x=290+450*tick/100
+        chart+=rule(x,192,x,519,LINE,1)+text(x,540,f'{tick}%',15,MUTED,400,'middle')
     marks=''
-    for i,(name,owner) in enumerate([('PBCNN','他人模型 · Yu et al., 2021'),('CTBM','本團隊設計'),('OOF Gate','本團隊融合')]):
-        y=210+i*104
-        best=i==2
-        marks+=text(64,y+30,name,22,TEAL if best else INK,700)+text(64,y+56,owner,14,MUTED)
-        for j,key in enumerate(['accuracy','macro_f1']):
-            value=detector[name][key]*100
-            yy=y+j*40
-            marks+=rect(300,yy,460*value/100,32,(TEAL if best else BLUE) if j else BLUE_MUTED,5)
-            marks+=text(300+460*value/100+10,yy+24,f'{value:.2f}%',18,TEAL if best and j else INK,700)
-    chart+='<!-- chart-plot-area: object=detector-comparison | 300,196,760,512 -->'+marks
+    roster=[('PBCNN-20','他人模型 [1] · 團隊重實作'),('SPIN-IDS-15','他人模型 [2] · 團隊重實作'),
+            ('CTBM','本團隊設計'),('OOF Gate','本團隊融合')]
+    for i,(name,owner) in enumerate(roster):
+        y=202+i*80
+        best=i==3
+        marks+=text(64,y+25,name,22,TEAL if best else INK,700)+text(64,y+48,owner,14,MUTED)
+        for j,key in enumerate(('accuracy','macro_f1')):
+            value=models[name][key]*100
+            yy=y+j*30
+            marks+=rect(290,yy,450*value/100,24,(TEAL if best else BLUE) if j else BLUE_MUTED,4)
+            marks+=text(300+450*value/100,yy+18,f'{value:.2f}%',17,TEAL if best and j else INK,700)
+    chart+='<!-- chart-plot-area: object=detector-comparison | 290,192,740,519 -->'+marks
     s+=group('detector-comparison',group('detector-comparison-chartArea',chart))
-    pb,gate=(detector[k]['per_class'] for k in ('PBCNN','OOF Gate'))
-    better=sum(g['f1']>b['f1'] for b,g in zip(pb,gate));same=sum(g['f1']==b['f1'] for b,g in zip(pb,gate))
-    s+=rect(880,156,336,392,NAVY,18)+text(908,196,'相較他人模型 PBCNN',17,DARK_MUTED)
-    s+=text(908,262,f'+{m["gain_pbcnn"]:.2f}',52,CYAN,700)+text(908,294,'Macro-F1 百分點',16,WHITE)
-    s+=text(908,358,f"+{(detector['OOF Gate']['accuracy']-detector['PBCNN']['accuracy'])*100:.2f}",40,CYAN,700)+text(908,388,'準確率百分點',16,WHITE)
-    s+=rule(908,414,1188,414,NIGHT_LINE,1)
-    lower=len(pb)-better-same
-    s+=text(908,456,f'{len(pb)} 類中 {better} 類 F1 提升',20,WHITE,700)+text(908,490,f'{same} 類持平、{lower} 類略低',16,DARK_MUTED)
-    gains=sorted(zip(pb,gate),key=lambda pair:pair[1]['f1']-pair[0]['f1'],reverse=True)[:3]
-    s+=rect(64,564,1152,80,TEAL_TINT,12)+text(88,594,'擴充性｜在既有模型旁加入新的偵測路徑，F1 提升最多的三類',16,TEAL,700)
-    for i,(b,g) in enumerate(gains):
-        s+=text(88+i*376,628,f'{b["label"]}  {b["f1"]*100:.2f}% → {g["f1"]*100:.2f}%',18,INK,700)
-    pages.append(graphic_page(7,'同一測試集對照他人模型，融合後明顯提升',s,'技術可行性 · 擴充性'))
+    s+=rect(872,156,344,388,NAVY,18)+text(896,194,'本團隊融合｜Macro-F1',18,WHITE,700)
+    s+=text(896,260,f'{models["OOF Gate"]["macro_f1"]*100:.2f}%',57,CYAN,700)
+    s+=rule(896,282,1192,282,NIGHT_LINE,1)
+    for i,name in enumerate(('PBCNN-20','SPIN-IDS-15','CTBM')):
+        y=321+i*52
+        delta=(models['OOF Gate']['macro_f1']-models[name]['macro_f1'])*100
+        s+=text(896,y,f'較 {name}',17,DARK_MUTED)
+        s+=text(1192,y,f'+{delta:.2f}',23,CYAN,700,'end')
+    s+=text(896,488,'差值單位為百分點',15,DARK_MUTED)
+    s+=text(896,515,'各模型採各自的封包輸入設定',15,DARK_MUTED)
+    s+=rule(64,564,1216,564)
+    s+=text(64,590,'模型原始論文',15,TEAL,700)
+    s+=text(64,614,'[1] Yu et al. (2021), PBCNN: Packet Bytes-based Convolutional Neural Network for Network Intrusion Detection. DOI: 10.1016/j.comnet.2021.108117',14,INK)
+    s+=text(64,638,'[2] Ghadermazi et al. (2025), Towards Real-Time Network Intrusion Detection With Image-Based Sequential Packets Representation. DOI: 10.1109/TBDATA.2024.3403394',14,INK)
+    pages.append(graphic_page(7,'同一封存測試集，融合模型表現最佳',s,'技術可行性 · 模型比較'))
     # P08: outcomes form a qualitative branch; card area does not encode counts.
     s=rect(64,164,380,388,GRAY,18)+text(94,206,'檢索效果',16,TEAL,700)
     s+=text(94,286,f'{m["top5"]*100:.2f}%',62,TEAL,700)+text(94,320,'Top-5 命中率',19,INK,700)

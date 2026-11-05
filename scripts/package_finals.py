@@ -11,9 +11,7 @@ ASSETS = [
     'deliverables/決賽簡報_AI資安框架.pdf',
     'deliverables/AI資安框架_系統展示影片_30秒快版.mp4',
     'deliverables/決賽海報_AI資安框架_A2.png',
-    'deliverables/source/speaker-notes.md',
     'deliverables/source/finals-runbook.json',
-    'docs/決賽五分鐘口語稿.md',
     'docs/決賽六題答詢口徑.md',
     'docs/現場控場與備援卡.md',
     'deliverables/interactive/AI資安框架_自動循環展示.html',
@@ -32,7 +30,7 @@ INSTRUCTIONS = '''決賽離線展示包
 interactive內的HTML可直接離線開啟，自動循環四個情境，每個38秒，可暫停、調速或跳轉章節。
 HTML使用合成示意資料，不執行模型或網路規則，匯出數字不可當作實測成果。
 正式投影前關閉通知，隱藏個人路徑、帳號與可識別資訊。
-docs內另附五分鐘口語稿、六題答詢與現場備援卡，source內含頁序與時間設定。
+口語稿在PPT講者備忘稿。docs內另附六題答詢與現場備援卡，source內含頁序與時間設定。
 這些時間是配置目標；講者朗讀、場地可讀性及印刷打樣由現場人員確認。
 SHA256SUMS.txt列出本包資產雜湊，可比對檔案是否變動。
 '''

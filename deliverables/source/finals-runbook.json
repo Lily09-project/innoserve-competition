@@ -13,8 +13,8 @@
     {"slide": 3, "seconds": 40, "mode": "spoken", "focus": "四階段與同事件交接"},
     {"slide": 4, "seconds": 40, "mode": "spoken", "focus": "互補偵測與融合"},
     {"slide": 5, "seconds": 45, "mode": "spoken", "focus": "任務檢索與證據稽核"},
-    {"slide": 6, "seconds": 50, "mode": "spoken", "focus": "Mininet拓撲與穩定性實測"},
-    {"slide": 7, "seconds": 45, "mode": "spoken", "focus": "對照他人模型與擴充性"},
+    {"slide": 6, "seconds": 50, "mode": "spoken", "focus": "Mininet三／四子網的穩定性與擴充實測"},
+    {"slide": 7, "seconds": 45, "mode": "spoken", "focus": "同測試集比較PBCNN-20、SPIN-IDS-15及本團隊模型"},
     {"slide": 8, "seconds": 40, "mode": "spoken", "focus": "檢索與稽核結果"},
     {"slide": 9, "seconds": 15, "mode": "spoken", "focus": "結語"}
   ],

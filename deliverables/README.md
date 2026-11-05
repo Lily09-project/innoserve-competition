@@ -6,12 +6,12 @@
 | 決賽簡報_AI資安框架.pdf | 簡報預覽與離線備援 |
 | AI資安框架_系統展示影片_30秒快版.mp4 | 1080p、30fps、30秒說明影片：互動展示HTTP洪流情境實錄，內建配音 |
 | 決賽海報_AI資安框架_A2.png | A2直式海報，唯一海報檔，檢視與印刷都用這張 |
-| 決賽離線展示包.zip | 簡報、影片、海報與備忘稿備援，附SHA256清單；不含模型部署 |
+| 決賽離線展示包.zip | 含講者備忘稿的PPT、影片、海報與備援資料，附SHA256清單；不含模型部署 |
 | figures/fig_architecture.png | 四區巢狀架構圖，2560×1072 |
 | source/architecture.svg | 文字可編輯原稿 |
 | source/slides/ | 逐頁可編輯SVG |
 
-簡報與影片採白底、淺灰章節及深藍、中藍與金黃重點。所有數值取自results四份實測彙整；動畫拓樸為方法說明，隔離驗證效果為TCP測試交易與回條。交付內容保持匿名。簡報第2頁內嵌影片，並保留獨立MP4備援；正式順序為第1頁封面、第2頁影片、第3至9頁方法與成果；第10至12頁供答詢。
+簡報與影片採白底、淺灰章節及深藍、中藍與金黃重點。實測數據取自results；第7頁附外部模型的原始論文；動畫拓樸為方法說明，隔離驗證效果為TCP測試交易與回條。交付內容保持匿名。簡報第2頁內嵌影片，並保留獨立MP4備援；正式順序為第1頁封面、第2頁影片、第3至9頁方法與成果；第10至12頁供答詢。
 
 簡報製作來源：scripts/presentation/editorial_assets.py；影片來源：scripts/render_exhibit_film.mjs逐格錄製互動展示，配音media/exhibit-film/narration.m4a。三種成果共用配色、字型及平面向量圖示。簡報PPTX以PPT Master原生DrawingML編譯，圖形及文字可編輯。海報為團隊完成的單一PNG；決賽海報_AI資安框架_A2.pptx／.pdf與figures/poster-a2-preview.png僅因已記錄的程式版本綁定而保留，內容都是同一張PNG。詳見source/README.md與design-system/DESIGN.md。
 

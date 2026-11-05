@@ -25,7 +25,9 @@ BOUND_FILES = list(dict.fromkeys(ASSETS + [PLAN, 'scripts/check_finals_readiness
     'media/film/metrics.json', 'design-system/palette.json',
     'scripts/presentation/recolor_roundtrip.py', 'scripts/presentation/restore_alignment.py',
     'scripts/presentation/export_static_delivery.ps1', 'scripts/presentation/merge_static_poster.py',
-    'tests/offline-exhibit.cjs', 'deliverables/interactive/README.md']))
+    'tests/offline-exhibit.cjs', 'deliverables/interactive/README.md',
+    'results/mininet_topology_expansion.json', 'results/detector_external_baselines.json',
+    'scripts/test_mininet_expansion.py']))
 
 
 def sha(path):
@@ -68,17 +70,42 @@ def slide_text(archive, number):
     return ' '.join(node.text or '' for node in ET.fromstring(archive.read(f'ppt/slides/slide{number}.xml')).findall('.//a:t', NS))
 
 
+def expansion_claims(root):
+    expansion = json.loads((root / 'results/mininet_topology_expansion.json').read_text(encoding='utf-8'))
+    stages = expansion['stages']
+    counts = [row['attempts'] for stage in stages.values() for row in stage.values()]
+    during, recovered = stages['during'], stages['recovery']['subject']
+    backgrounds = [during[name] for name in ('background', 'bg_extra')]
+    background_success = sum(row['successes'] for row in backgrounds)
+    background_attempts = sum(row['attempts'] for row in backgrounds)
+    subject = during['subject']
+    if (expansion['subnets'] != 4 or expansion['transactions'] != sum(counts)
+            or len(counts) != 9 or any(count != 12 for count in counts)
+            or background_success != background_attempts or recovered['successes'] != recovered['attempts']
+            or subject['successes'] >= subject['attempts'] or not expansion['cleanup_passed']
+            or expansion['remaining_rules'] or expansion['rules_read_back'] != 2):
+        raise ValueError('mininet_expansion_evidence_mismatch')
+    return [f'{expansion["transactions"]}筆', f'{background_success}/{background_attempts}',
+            f'{subject["successes"]}/{subject["attempts"]}', f'{recovered["successes"]}/{recovered["attempts"]}']
+
+
 def check_claims(root=ROOT):
     root = Path(root)
     metrics = load_metrics(root)
-    f1 = [f'{metrics["macro_f1"][name] * 100:.2f}%' for name in ('PBCNN', 'CTBM', 'OOF Gate')]
+    f1 = [f'{metrics["macro_f1"][name] * 100:.2f}%' for name in ('CTBM', 'OOF Gate')]
     detector = f1 + [f'{metrics["accuracy"] * 100:.2f}%', str(metrics['detection_n'])]
     retrieval = [f'{metrics[key] * 100:.2f}%' for key in ('top5', 'mrr5')]
     judge = [str(metrics[key]) for key in ('support', 'review', 'uncertain', 'queries')]
     with zipfile.ZipFile(root / 'deliverables/決賽簡報_AI資安框架.pptx') as archive:
-        require_tokens(slide_text(archive, 7), detector, 'slide7')
+        baselines = json.loads((root / 'results/detector_external_baselines.json').read_text(encoding='utf-8'))
+        if (baselines['samples'], baselines['classes']) != (metrics['detection_n'], 17):
+            raise ValueError('detector_baseline_scope_mismatch')
+        external = []
+        for name, model in baselines['models'].items():
+            external.extend([name, model['doi'], *(f'{model[key]*100:.2f}%' for key in ('accuracy', 'macro_f1'))])
+        require_tokens(slide_text(archive, 7), detector + external, 'slide7')
         require_tokens(slide_text(archive, 8), retrieval + judge + [f'{metrics["support_precision"] * 100:.2f}%'], 'slide8')
-        require_tokens(slide_text(archive, 6), ['隔離', '6/6'], 'slide6-scope')
+        require_tokens(slide_text(archive, 6), ['隔離', '6/6', '432筆', '4子網'] + expansion_claims(root), 'slide6-scope')
         presentation = ET.fromstring(archive.read('ppt/presentation.xml'))
         if len(presentation.findall('p:sldIdLst/p:sldId', NS)) != 12:
             raise ValueError('native_slide_count_mismatch')

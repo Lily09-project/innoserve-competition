@@ -29,6 +29,7 @@ def carry_native(native_slide, native_rels, approved_slide, refs):
     for group in tree.findall('p:grpSp', NS):
         if group.find('p:nvGrpSpPr/p:cNvPr', NS).get('name') in CARRIED:
             tree.remove(group)
+    next_shape_id = max(int(node.get('id')) for node in tree.findall('.//p:cNvPr', NS)) + 1
     kept = {}
     tags = {row.get('Id'): row.get('Target') for row in native_rels if row.get('Type').endswith('/tags')}
     insert_at = 2
@@ -36,6 +37,9 @@ def carry_native(native_slide, native_rels, approved_slide, refs):
         if group.find('p:nvGrpSpPr/p:cNvPr', NS).get('name') not in CARRIED:
             continue
         group = copy.deepcopy(group)
+        for shape in group.findall('.//p:cNvPr', NS):
+            shape.set('id', str(next_shape_id))
+            next_shape_id += 1
         for node in group.iter():
             old = node.get(R_ID)
             if old in tags:

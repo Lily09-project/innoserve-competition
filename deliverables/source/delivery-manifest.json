@@ -2,12 +2,12 @@
   "base_revision": "7d95faf",
   "files": {
     "deliverables/決賽簡報_AI資安框架.pptx": {
-      "bytes": 8050761,
-      "sha256": "38e70eadf1b3b81f2f7abee8aa1429fee03c33f3b1267ba1bc54ddf07520c45d"
+      "bytes": 8051705,
+      "sha256": "9567ca25deb875e5e49a1b54011149c98475b9229ac74da38b8cc048270acbc9"
     },
     "deliverables/決賽簡報_AI資安框架.pdf": {
-      "bytes": 694900,
-      "sha256": "73185e2098e811e3fafc8042c8a685a60000469d6ff2f0ac1fcda36454961f47"
+      "bytes": 697904,
+      "sha256": "654069963846daa37a12981522fe6c2377258104e9fa52fc4b84ba0f0bbf8512"
     },
     "deliverables/AI資安框架_系統展示影片_30秒快版.mp4": {
       "bytes": 7672996,
@@ -30,12 +30,12 @@
       "sha256": "096b030d9f03f8f5675e0aa6583a4e2dd17ac4cb3ca577468046cd6295cfea60"
     },
     "deliverables/決賽離線展示包.zip": {
-      "bytes": 18217785,
-      "sha256": "bcda40a60f06607c449c349adf555ff329b64ada8872342ab84f0fec5f19afde"
+      "bytes": 18212078,
+      "sha256": "41f5a8ec3f98ce401c08d165c838c6de7986d178940187ae207d2eaa917170d5"
     },
     "deliverables/source/release-validation.json": {
       "bytes": 10198,
-      "sha256": "f493bd268e67d0c93f3210c891f15dc34c03d7327a2bd048eba647d0056f12a8",
+      "sha256": "4f8d00916051b5eff97bbb9340590f38e5a98d108265be9e0990b0d323cb2ba3",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/01_slide.svg": {
@@ -64,13 +64,13 @@
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/06_slide.svg": {
-      "bytes": 15148,
-      "sha256": "d8aa4d26f0a97cf44cd45a0b73ad5b91b03bcb53fae57fe8170cffd66eccd4e6",
+      "bytes": 17046,
+      "sha256": "e65de1623bd67005aea3eb29f560491a6ee7337cfd987aec372a7ab3712c15db",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/07_slide.svg": {
-      "bytes": 10267,
-      "sha256": "673ebb3f1d0f847ed9c0fc3605feadb9b3d492647b574523ee7fcaf09566fdc3",
+      "bytes": 11422,
+      "sha256": "8f216b9b07384871e3bed3e1a46da84b4d19e2cd8b04d8cc1d22ed668cc8f6c3",
       "hash_normalization": "LF"
     },
     "deliverables/source/slides/08_slide.svg": {
@@ -125,18 +125,18 @@
     },
     "deliverables/source/finals-runbook.json": {
       "hash_normalization": "LF",
-      "bytes": 2147,
-      "sha256": "427741bc890b0c418115246badb68231a31338e8bcf49b163af1a7c2d5f64dc2"
+      "bytes": 2193,
+      "sha256": "cbb124e97eaa985bf504f88ea128e8f2b4dadb193549d6acf47a5fcd96fcdceb"
     },
     "deliverables/source/finals-readiness.json": {
       "hash_normalization": "LF",
-      "bytes": 3406,
-      "sha256": "67941f0e1cfabbe629ad03da08e113c30a7cff95117223396ead375c0482a51a"
+      "bytes": 3526,
+      "sha256": "5bc1f01f95878cb543fac7ca68a7dda818cabf5c321723aa627dcd94b85a346e"
     },
     "docs/決賽五分鐘口語稿.md": {
       "hash_normalization": "LF",
-      "bytes": 5959,
-      "sha256": "79b95e972fe941518ad3a0737e5bec06b0117aab50a87abdd458a371bc185097"
+      "bytes": 198,
+      "sha256": "7e714468405c6e59e8cca8cce660bba66909a18e519ac85fa6c55b3019bbee9e"
     },
     "docs/決賽六題答詢口徑.md": {
       "hash_normalization": "LF",
@@ -162,6 +162,16 @@
       "hash_normalization": "LF",
       "bytes": 158510,
       "sha256": "cee606e57b2e0cdb13f13ead787c989d65afde7e647ec2a6ba79d5a8295164ef"
+    },
+    "results/mininet_topology_expansion.json": {
+      "hash_normalization": "LF",
+      "bytes": 1182,
+      "sha256": "2fda6281d258e56e3803976ff5045f7133e5ab682466455adb9af31fbf23b765"
+    },
+    "results/detector_external_baselines.json": {
+      "hash_normalization": "LF",
+      "bytes": 575,
+      "sha256": "97bb6c9a074760222b0344337eadf6bebf3ec400920a92fd22daf3397a8a2237"
     }
   },
   "slides": 12,
@@ -187,7 +197,7 @@
   "review": "153 Python tests, media smoke/data checks, offline exhibit regressions, native static alignment and public delivery checks passed; no native playback.",
   "results_changed": true,
   "markdown_documents": 32,
-  "local_links_checked": 156,
+  "local_links_checked": 154,
   "presentation_limit_seconds": 360,
   "buffer_seconds": 60,
   "visual_theme": "white canvas; navy titles, blue flow/icons, teal method/results/completion, restrained warm gold packets/current stage",

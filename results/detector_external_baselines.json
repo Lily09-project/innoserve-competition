@@ -1,0 +1,19 @@
+{
+  "scope": "Locally reimplemented published architectures, evaluated on the common sealed 17-class test split using model-specific input packet budgets.",
+  "samples": 18998,
+  "classes": 17,
+  "models": {
+    "PBCNN-20": {
+      "accuracy": 0.9250973786714392,
+      "macro_f1": 0.8882485871838,
+      "packet_budget": 20,
+      "doi": "10.1016/j.comnet.2021.108117"
+    },
+    "SPIN-IDS-15": {
+      "accuracy": 0.9599957890304243,
+      "macro_f1": 0.9168940413919229,
+      "packet_budget": 15,
+      "doi": "10.1109/TBDATA.2024.3403394"
+    }
+  }
+}
