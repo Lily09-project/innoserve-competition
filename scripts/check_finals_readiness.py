@@ -42,18 +42,18 @@ def validate_plan(plan):
     if any(type(r['seconds']) is not int or r['seconds'] <= 0 for r in plan['segments']):
         raise ValueError('invalid_planned_duration')
     spoken = sum(r['seconds'] for r in plan['segments'] if r['mode'] == 'spoken')
-    if spoken != 260 or sum(r['seconds'] for r in plan['segments']) + plan['operation_seconds'] != 300:
-        raise ValueError('five_minute_plan_mismatch')
+    if spoken != 290 or sum(r['seconds'] for r in plan['segments']) + plan['operation_seconds'] != 330:
+        raise ValueError('report_plan_mismatch')
     video = plan['video']
     if video != {'slide': 2, 'seconds': 30, 'speed_factor': 2, 'audio_tracks': 1} or plan['segments'][1]['mode'] != 'video' or plan['segments'][1]['seconds'] != 30:
         raise ValueError('opening_video_plan_mismatch')
-    if plan['target_seconds'] != 300 or plan['buffer_seconds'] != 60 or plan['report_limit_seconds'] != 360 or plan['operation_seconds'] != 10:
+    if plan['target_seconds'] != 330 or plan['buffer_seconds'] != 30 or plan['report_limit_seconds'] != 360 or plan['operation_seconds'] != 10:
         raise ValueError('buffer_plan_mismatch')
     if [(q['question'], q['slide']) for q in plan['qa']] != [(i, 10 + (i - 1) // 2) for i in range(1, 7)]:
         raise ValueError('six_question_roster_mismatch')
     if plan['native_playback'] != 'excluded_by_user' or len(plan['human_checks']) != 3:
         raise ValueError('verification_scope_mismatch')
-    return {'planned_spoken_seconds': spoken, 'planned_total_seconds': 300, 'buffer_seconds': 60,
+    return {'planned_spoken_seconds': spoken, 'planned_total_seconds': 330, 'buffer_seconds': 30,
             'timing_is_human_measured': False, 'qa_questions': 6}
 
 

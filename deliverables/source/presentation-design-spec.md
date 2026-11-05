@@ -14,7 +14,7 @@
 | Communication Intent | 以圖形說明創新方法及已量測效果 |
 | Desired Audience Outcome | 了解同事件的偵測、證據稽核與受控處置 |
 | Core Message / Ask / Action | 完整框架以事件回條連結判定、證據及回復 |
-| Delivery Context | presenter-led；五分鐘含展示，另留一分鐘緩衝，七分鐘答詢 |
+| Delivery Context | presenter-led；5分30秒含展示，另留30秒緩衝，七分鐘答詢 |
 | Artifact Afterlife | GitHub審查及離線展演 |
 | Reading Mode | presentation |
 | Content Strategy | 保留正式實測範圍，精簡文字，重畫方法圖 |
@@ -264,7 +264,7 @@
 - **Generation**: enabled
 - **Filename**: match SVG names under notes/
 - **Content**: 正式口語；第2頁全幅內嵌播放30秒，不另加講解。
-- **Total duration**: 260秒口述＋30秒影片＋10秒正常操作＝5分鐘；另留1分鐘緩衝。
+- **Total duration**: 290秒口述＋30秒影片＋10秒正常操作＝5分30秒；另留30秒緩衝。
 - **Notes style**: 繁體中文。
 - **Transitions**: none；manual advance；所有頁面無p:transition；第2頁僅保留影片播放timing，其他頁面無物件動畫。
 
@@ -278,7 +278,7 @@
 
 ## XIII. Q&A appendix
 
-第1至9頁為五分鐘正式報告，第9頁結束；第10至12頁每頁兩題，共六題，只於七分鐘答詢依提問切換，不納入正式講述時間。正文與備詢均以圖解呈現，詳細口語答案放講者備忘稿。問題與答案依實測範圍，不將TCP驗證解讀成原生攻擊防禦率。
+第1至9頁為5分30秒正式報告，第9頁結束；第10至12頁每頁兩題，共六題，只於七分鐘答詢依提問切換，不納入正式講述時間。正文與備詢均以圖解呈現，詳細口語答案放講者備忘稿。問題與答案依實測範圍，不將TCP驗證解讀成原生攻擊防禦率。
 
 ## XIV. Illustrated explanation revision
 
@@ -290,7 +290,7 @@
 
 ## XVI. Readability and completeness refinement
 
-封面與結語口語稿縮短，方法頁用正面敘述說明交接與證據。策略檢查明示允許動作，避免將動作白名單誤解成額外IP清單。影片右側說明放大到28px、設備25px及樣本範圍26px；成果段為26–28.5秒，控制23.5–26秒，結尾28.5–30秒。頁數、字型、五分鐘目標及同事件架構不變。
+封面與結語口語稿縮短，方法頁用正面敘述說明交接與證據。策略檢查明示允許動作，避免將動作白名單誤解成額外IP清單。影片右側說明放大到28px、設備25px及樣本範圍26px；成果段為26–28.5秒，控制23.5–26秒，結尾28.5–30秒。頁數、字型、5分30秒目標及同事件架構不變。
 
 ## XVII. Unified visual and typography contract
 
