@@ -143,10 +143,17 @@ async function main() {
   assert.equal(w.document.querySelectorAll("[data-scenario]").length, 4);
   assert.equal(api.state.speed, 1);
   assert.equal(api.state.playing, true);
+  const decisions = {ddos: "示意送出限速", benign: "維持通行",
+    ssh: "示意限制登入連線", review: "交由人工複核"};
   for (const key of Object.keys(api.SCENARIOS)) {
     w.document.querySelector(`[data-scenario="${key}"]`).click();
     assert.equal(api.state.key, key);
     assert.equal(api.state.playing, true);
+    const cards = () => [...w.document.querySelectorAll(".judge-result")].map((node) => node.textContent);
+    assert.ok(!cards().includes(decisions[key]), "the decision is hidden until the policy stage completes");
+    api.jump(38, false);
+    assert.equal(cards().length, 4);
+    assert.equal(cards()[3], decisions[key]);
     const top = api.retrieve(key);
     assert.equal(top.length, 5);
     assert.equal(new Set(top.map((row) => row.id)).size, 5);
@@ -162,19 +169,19 @@ async function main() {
     for (const time of [0, 2, 14, 17, 20, 26, 28, 32, 36, 37, 37.6, 38]) {
       api.jump(time, false);
       const stage =
-        time < 14
+        time < 17
           ? "traffic"
-          : time < 20
+          : time < 28
             ? "detection"
             : time < 32
               ? "audit"
               : "policy";
       assert.equal(
-        w.document.querySelectorAll('[aria-current="step"]').length,
+        w.document.querySelectorAll('.roadmap [aria-current="step"]').length,
         1,
       );
       assert.equal(
-        w.document.querySelector('[aria-current="step"]').dataset.stage,
+        w.document.querySelector('.roadmap [aria-current="step"]').dataset.stage,
         stage,
       );
       assert.ok(!w.document.querySelector("#board").outerHTML.includes("NaN"));
@@ -258,16 +265,7 @@ async function main() {
   const loop = boot();
   assert.equal(loop.api.DURATION, 38);
   let stamp = 100;
-  const expected = [
-    "ddos",
-    "ssh",
-    "review",
-    "benign",
-    "ddos",
-    "ssh",
-    "review",
-    "benign",
-  ];
+  const expected = ["benign", "ssh", "review", "ddos", "benign", "ssh", "review", "ddos"];
   loop.tick(stamp);
   for (const next of expected) {
     loop.api.jump(37.95, true);
@@ -397,7 +395,7 @@ async function main() {
   assert.ok(offline.includes("script data-bundled"));
   assert.ok(!offline.includes("window.__test="));
   const savedPage = boot(false, offline);
-  assert.equal(savedPage.api.state.key, "benign");
+  assert.equal(savedPage.api.state.key, "ddos");
   assert.equal(savedPage.api.state.playing, true);
   assert.equal(savedPage.w.document.querySelectorAll("#playPause").length, 1);
   savedPage.w.close();

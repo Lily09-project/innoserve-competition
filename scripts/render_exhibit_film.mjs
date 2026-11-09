@@ -2,9 +2,8 @@
 
 The exhibit (deliverables/interactive/AI資安框架_自動循環展示.html) is opened in projector mode
 in a headless Edge/Chrome, the HTTP-flood scenario is selected, and every frame is captured with
-the timeline paused at an exact exhibit time, so the animation is the exhibit's own. A camera
-pushes in on the station being processed (rendered at 2x, cropped back to 1080p) with a chapter
-card, and pulls back to the whole board before the results. Title and
+the timeline paused at an exact exhibit time. The four result cards stay in view
+as each stage completes. Title and
 results cards use the same light visual system; figures on the results card come from
 media/film/metrics.mjs, which refuses a stale results snapshot. The voiceover is
 media/exhibit-film/narration.m4a, built by scripts/presentation/build_narration.py.
@@ -22,69 +21,54 @@ import {metrics} from '../media/film/metrics.mjs';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const exhibit = path.join(root, 'deliverables/interactive/AI資安框架_自動循環展示.html');
 const narration = path.join(root, 'media/exhibit-film/narration.m4a');
-const output = path.join(root, 'deliverables/AI資安框架_系統展示影片_30秒快版.mp4');
+const output = process.env.EXHIBIT_FILM_OUTPUT || path.join(root, 'deliverables/AI資安框架_系統展示影片_30秒快版.mp4');
 const stills = path.resolve(root, process.argv[2] || 'validation/exhibit-film');
-const FPS = 30, WIDTH = 1920, HEIGHT = 1080, TOTAL = 30, TITLE = 1.6, ENDING = 26, FADE = 0.4;
-// Video seconds -> exhibit seconds, one segment per exhibit chapter; the final hold shows the delivered decision.
-const SEGMENTS = [[1.6, 2.8, 0, 2], [2.8, 7.8, 2, 14], [7.8, 10.2, 14, 17], [10.2, 12.4, 17, 20], [12.4, 15.8, 20, 26],
-  [15.8, 17.4, 26, 28], [17.4, 20.2, 28, 32], [20.2, 23, 32, 36], [23, 25.5, 36, 37.95], [25.5, 26 + FADE, 37.95, 37.95]];
-const CHAPTER_STILLS = [2.0, 5.0, 9.0, 11.5, 14.5, 16.8, 19.0, 22.0, 25.0];
-// Camera keyframes [video s, centre x, centre y, zoom] in CSS px of the 1920x1080 projector page:
-// it pushes in on the station being processed so its text reads on a projector, then pulls back.
-const CAMERA = [[1.6, 960, 540, 1], [2.6, 960, 540, 1], [3.4, 480, 580, 1.7], [7.6, 480, 580, 1.7], [8.3, 800, 620, 1.9],
-  [10.0, 800, 620, 1.9], [10.6, 900, 690, 1.9], [12.2, 900, 690, 1.9], [12.9, 1070, 480, 1.8], [15.6, 1070, 480, 1.8],
-  [16.2, 1300, 600, 1.8], [17.2, 1300, 600, 1.8], [17.9, 1650, 420, 1.9], [20.0, 1650, 420, 1.9], [20.6, 1680, 620, 1.8],
-  [22.8, 1680, 620, 1.8], [23.4, 1680, 740, 1.9], [25.3, 1680, 740, 1.9], [26.0, 960, 540, 1]];
-// Chapter cards shown while the camera is in close: [from, to, stage number, stage, step].
-const CAPTIONS = [[2.8, 7.8, 1, '偵測', '封包逐筆編碼'], [7.8, 10.2, 1, '偵測', '雙模型融合判定'], [10.2, 12.4, 2, '檢索', '組合查詢向量'],
-  [12.4, 17.4, 2, '檢索', 'Top-5 相似案例'], [17.4, 20.2, 3, '稽核', '本機 AI 核對證據'], [20.2, 23, 4, '處置', '策略逐項檢查'],
-  [23, 25.5, 4, '處置', '限速送達路由器 r1']];
+const FPS = 30, WIDTH = 1920, HEIGHT = 1080, TOTAL = 30, TITLE = 1.6, ENDING = 26;
+// Map voiceover beats to the same four stages used by the exhibit.
+const SEGMENTS = [[1.6, 7.8, 0, 14], [7.8, 12.4, 14, 19], [12.4, 17.4, 19, 28],
+  [17.4, 20.2, 28, 32], [20.2, 24.4, 32, 38], [24.4, ENDING, 38, 38]];
+const CHAPTER_STILLS = [2, 5, 8.5, 11.5, 14.5, 16.8, 19, 22, 25];
 const SCALE = 2;  // render at 2x so close-ups stay sharp after the crop
 const browserPath = [process.env.EXHIBIT_BROWSER, 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',
   'C:/Program Files/Microsoft/Edge/Application/msedge.exe', 'C:/Program Files/Google/Chrome/Application/chrome.exe'].find(p => p && fs.existsSync(p));
 const ffmpeg = process.env.FFMPEG_BINARY;
 if (!browserPath || !ffmpeg) throw new Error('Set EXHIBIT_BROWSER (if Edge/Chrome is elsewhere) and FFMPEG_BINARY');
 
-function camera(v) {
-  // Smoothstep between keyframes; before the first or after the last keyframe the camera holds.
-  const k = CAMERA.findIndex(([t]) => t > v);
-  let x, y, z;
-  if (k <= 0) [, x, y, z] = CAMERA[k === 0 ? 0 : CAMERA.length - 1];
-  else {
-    const [t0, ...a] = CAMERA[k - 1], [t1, ...b] = CAMERA[k];
-    const u = (v - t0) / (t1 - t0), e = u * u * (3 - 2 * u);
-    [x, y, z] = a.map((value, i) => value + (b[i] - value) * e);
-  }
-  const w = WIDTH / z, h = HEIGHT / z;
-  return {x: Math.min(Math.max(x - w / 2, 0), WIDTH - w), y: Math.min(Math.max(y - h / 2, 0), HEIGHT - h), w, h, z};
-}
-
 function exhibitTime(v) {
   const [a, b, t0, t1] = SEGMENTS.find(([s, e]) => v >= s && v < e) || SEGMENTS.at(-1);
   return t0 + (t1 - t0) * Math.min(1, (v - a) / (b - a));
 }
 
-// The film shows the board, scenario row and step caption; playback controls and links are hidden.
+// Keep the visual sequence readable on a projector.
 const FILM_CSS = `*{transition:none!important;animation:none!important}
-.timeline,.view-tools,#openDetail,.mobile-hint{display:none!important}
-body.focus-view .stage-bottom{justify-content:center}
-#filmCaption{position:absolute;z-index:99;transform-origin:0 0;display:flex;align-items:center;gap:18px;padding:16px 30px 16px 16px;
-  border-radius:44px;background:rgba(255,255,255,.96);box-shadow:0 10px 32px rgba(11,27,46,.22);border:2px solid #DCE3EC;
-  font:700 40px "Segoe UI","Microsoft JhengHei",sans-serif;color:#0B1B2E;white-space:nowrap}
-#filmCaption i{width:56px;height:56px;border-radius:50%;background:#F59E0B;color:#fff;font-style:normal;display:grid;place-items:center;font-size:34px}
-#filmCaption b{color:#0F766E}
-#filmCaption[hidden]{display:none}`;
+.timeline,.stage-bottom{display:none!important}
+body.focus-view main{padding:42px;gap:22px}
+body.focus-view .controls{display:none}
+body.focus-view .stage-heading{padding:26px 36px}
+body.focus-view #sceneLabel{font-size:34px}
+body.focus-view .processing-label{display:none}
+body.focus-view .demo-scope{font-size:25px}
+body.focus-view .judge-flow{padding:42px;gap:44px}
+.judge-intro{font-size:34px}
+.judge-cards{gap:24px}
+.judge-card{min-height:260px;padding:26px}
+.judge-step{font-size:28px}
+.judge-result{font-size:36px}
+.judge-card p{font-size:24px}`;
 
 function card(kind) {
   const pct = v => `${(v * 100).toFixed(2)}%`;
   const body = kind === 'title'
     ? `<div class="tag">2026 資安技術組 · 決賽</div>
        <h1>一次 HTTP 洪流<br>從封包到處置</h1>
-       <p>偵測 → 檢索 → 稽核 → 處置 · 互動展示實錄（合成封包）</p>`
+       <p>合成情境示意 · 辨識流量 → 找相似案例 → 核對證據 → 決定處置</p>`
     : `<div class="tag">實測成果</div>
-       <div class="row">${[[pct(metrics.accuracy), '17 類整體準確率'], [pct(metrics.top5), 'Top-5 檢索命中率'],
-         [`${metrics.rollback}/${metrics.network_cases}`, '隔離情境到期回復']].map(([v, l]) => `<div class="stat"><b>${v}</b><span>${l}</span></div>`).join('')}</div>
-       <p>偵測有依據，稽核有證據，處置可回復。</p>`;
+       <div class="row">${[
+         [pct(metrics.accuracy), '17 類偵測準確率', `${metrics.detection_n.toLocaleString('en-US')} 筆封存測試`],
+         [pct(metrics.top5), '前五筆案例命中率', `${metrics.queries} 筆檢索查詢`],
+         [`${metrics.rollback}/${metrics.network_cases}`, '隔離情境連線回復', `${metrics.rules_cases} 種規則到期撤銷`],
+       ].map(([v, label, scope]) => `<div class="stat"><b>${v}</b><span>${label}</span><small>${scope}</small></div>`).join('')}</div>
+       <p>回復結果來自 Mininet 隔離 TCP 實測。</p>`;
   return `<!doctype html><meta charset="utf-8"><style>
     html,body{margin:0;width:${WIDTH}px;height:${HEIGHT}px;background:#F3F6FA;font-family:"Segoe UI","Microsoft JhengHei",sans-serif;color:#0B1B2E}
     main{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px;text-align:center}
@@ -94,6 +78,7 @@ function card(kind) {
     .row{display:flex;gap:40px}
     .stat{width:420px;padding:44px 0;border-radius:24px;background:#fff;border:2px solid #DCE3EC;display:flex;flex-direction:column;gap:14px}
     .stat b{font-size:84px;color:#0F766E}.stat span{font-size:32px;color:#52637A}
+    .stat small{font-size:25px;color:#52637A}
     .bar{width:120px;height:8px;border-radius:4px;background:#F59E0B}
   </style><main>${body}<div class="bar"></div></main>`;
 }
@@ -160,55 +145,47 @@ try {
     document.querySelector('[data-scenario="ddos"]').click();
     await new Promise(r => setTimeout(r, 300));
     document.getElementById('seek').step = 'any';
-    document.body.insertAdjacentHTML('beforeend', '<div id="filmCaption" hidden></div>');
   })()`);
-  // Place the chapter card at the camera window's lower left, scaled so it renders at a fixed size.
-  const caption = (v, view) => {
-    const item = CAPTIONS.find(([a, b]) => v >= a && v < b);
-    const shown = item && view.z > 1.4;
-    const html = shown ? `<i>${item[2]}</i><span><b>${item[3]}</b>｜${item[4]}</span>` : '';
-    return cdp.eval(`(() => { const c = document.getElementById('filmCaption'); c.hidden = ${!shown};
-      c.innerHTML = ${JSON.stringify(html)}; c.style.left = '${view.x + 36 / view.z}px'; c.style.top = '${view.y + view.h - 124 / view.z}px';
-      c.style.transform = 'scale(${1 / view.z})'; })()`);
-  };
   const seek = t => cdp.eval(`(async () => { const s = document.getElementById('seek'); s.value = '${t}';
     s.dispatchEvent(new Event('input')); await new Promise(r => setTimeout(r, 40)); })()`);
-  const first = Math.round(TITLE * FPS), last = Math.round((ENDING + FADE) * FPS);
+  const first = Math.round(TITLE * FPS), last = Math.round(ENDING * FPS);
   for (let n = first; n < last; n++) {
-    const view = camera(n / FPS);
     await seek(exhibitTime(n / FPS).toFixed(4));
-    await caption(n / FPS, view);
-    await cdp.shot(path.join(frames, `f${String(n - first).padStart(4, '0')}.png`), view);
+    await cdp.shot(path.join(frames, `f${String(n - first).padStart(4, '0')}.png`));
     if ((n - first) % 100 === 0) console.log(`frame ${n - first} / ${last - first}`);
   }
   for (const [k, v] of CHAPTER_STILLS.entries()) {
-    const view = camera(v);
     await seek(exhibitTime(v).toFixed(4));
-    await caption(v, view);
-    await cdp.shot(path.join(stills, `chapter-${k + 1}.png`), view);
+    await cdp.shot(path.join(stills, `chapter-${k + 1}.png`));
   }
   // The slide-2 poster frame is the whole board once the decision is delivered.
-  await seek('37.95');
-  await caption(0, camera(0));
+  await seek('38');
   await cdp.shot(path.join(stills, 'poster-frame.png'));
 } finally {
   browser.kill();
 }
 
-// Title fades into the exhibit, the exhibit fades into the results card; narration mixed under.
-const exhibitSeconds = ENDING + FADE - TITLE;
-const graph = [`[0:v]fps=${FPS},trim=duration=${TITLE + FADE},setpts=PTS-STARTPTS,fade=t=in:st=0:d=0.3,format=yuv420p[t]`,
-  `[1:v]fps=${FPS},format=yuv420p[x]`,
+// Join the three fixed-rate segments with clean chapter cuts.
+const exhibitSeconds = ENDING - TITLE;
+const graph = [
+  `[0:v]fps=${FPS},trim=duration=${TITLE},setpts=PTS-STARTPTS,fade=t=in:st=0:d=0.25,format=yuv420p[t]`,
+  `[1:v]fps=${FPS},trim=duration=${exhibitSeconds},setpts=PTS-STARTPTS,format=yuv420p[x]`,
   `[2:v]fps=${FPS},trim=duration=${TOTAL - ENDING},setpts=PTS-STARTPTS,fade=t=out:st=${TOTAL - ENDING - 0.4}:d=0.4,format=yuv420p[e]`,
-  `[t][x]xfade=transition=fade:duration=${FADE}:offset=${TITLE}[tx]`,
-  `[tx][e]xfade=transition=fade:duration=${FADE}:offset=${ENDING}[v]`].join(';');
+  '[t][x][e]concat=n=3:v=1:a=0[v]',
+].join(';');
 const result = spawnSync(ffmpeg, ['-hide_banner', '-loglevel', 'error', '-y',
-  '-loop', '1', '-t', String(TITLE + FADE), '-i', path.join(work, 'title.png'),
+  '-loop', '1', '-t', String(TITLE), '-i', path.join(work, 'title.png'),
   '-framerate', String(FPS), '-i', path.join(frames, 'f%04d.png'),
   '-loop', '1', '-t', String(TOTAL - ENDING), '-i', path.join(work, 'ending.png'),
   '-i', narration, '-filter_complex', graph, '-map', '[v]', '-map', '3:a', '-t', String(TOTAL),
   '-c:v', 'libx264', '-preset', 'slow', '-crf', '18', '-pix_fmt', 'yuv420p', '-r', String(FPS),
   '-c:a', 'aac', '-b:a', '160k', '-movflags', '+faststart', output], {stdio: 'inherit'});
 if (result.status !== 0) throw new Error('ffmpeg failed');
-fs.rmSync(work, {recursive: true, force: true});
+// Edge can keep profile files open briefly on Windows. The encoded file is already complete.
+try {
+  fs.rmSync(work, {recursive: true, force: true, maxRetries: 5, retryDelay: 200});
+} catch (error) {
+  if (!['EPERM', 'EBUSY', 'ENOTEMPTY'].includes(error.code)) throw error;
+  console.warn('Some temporary browser files are still in use:', work);
+}
 console.log(`Explainer film: ${path.relative(root, output)} (${TOTAL}s, ${exhibitSeconds.toFixed(1)}s of exhibit animation)`);

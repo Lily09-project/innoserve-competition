@@ -38,7 +38,7 @@
 | 交付項目 | 內容與用途 | 原始來源 |
 | --- | --- | --- |
 | 決賽簡報 | 12頁：9頁正式報告、結束頁後3頁六題圖解備詢；第2頁內嵌30秒影片，各頁附繁體中文講者備忘稿 | [逐頁SVG](deliverables/source/slides/)、[製作程式](scripts/presentation/editorial_assets.py) |
-| 說明影片 | 1920×1080、30fps、30秒、內建中文配音；互動展示HTTP洪流情境的逐格實錄，鏡頭隨處理進度推近各站並配章節字卡：片頭→封包編碼→雙模型融合→Top-5檢索→本機AI稽核→策略檢查→限速處置→全景→實測成果卡 | [錄製程式](scripts/render_exhibit_film.mjs)、[配音稿](media/exhibit-film/narration.json) |
+| 說明影片 | 1920×1080、30fps、30秒、內建中文配音；沿用互動展示的四站結果卡，從HTTP洪流的流量辨識、案例檢索、證據稽核一路看到處置決定，片尾標明實測成果與範圍 | [錄製程式](scripts/render_exhibit_film.mjs)、[配音稿](media/exhibit-film/narration.json) |
 | A2海報 | 團隊完成的整張海報圖（原始資料與方法、六階段流程、結果、防禦機制），單一PNG，A2直式 | [決賽海報_AI資安框架_A2.png](deliverables/決賽海報_AI資安框架_A2.png) |
 | 離線包 | 含備忘稿的PPT、影片、海報、答詢、備援卡、互動HTML及SHA256清單 | [包裝程式](scripts/package_finals.py) |
 | 驗收索引 | 正式檔案、來源、預覽與實測彙整的雜湊及驗收範圍 | [交付清單](deliverables/source/delivery-manifest.json)、[實測索引](deliverables/source/release-validation.json) |
@@ -295,3 +295,5 @@ python scripts/finals_pipeline.py --stage validation/NEW_DELIVERY_FOLDER
 ### English summary
 
 This project integrates 17-class intrusion detection, task-oriented retrieval of training-only evidence, local AI auditing, and policy-controlled actions with readback and expiry rollback. The public repository includes source code, recorded aggregate results, editable slide sources, a 12-slide finals presentation, a 30-second method animation, and an A2 poster. The current release is v1.12-finals; superseded documents and tools are kept in archive/. Model weights, raw traffic, per-event traces and workstation configuration remain private. The six network scenarios validate isolated TCP transactions and rollback rather than native exploit prevention.
+
+最新展示狀態、本機資產保留範圍與接手入口見[專案交接與最新交付](docs/專案交接與最新交付.md)。

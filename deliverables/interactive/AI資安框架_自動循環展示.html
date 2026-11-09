@@ -1558,6 +1558,16 @@
         border-color: var(--teal);
         color: var(--teal);
       }
+      .demo-scope {
+        margin-inline-start: auto;
+        padding: 3px 10px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: #fff;
+        color: var(--ink);
+        font-weight: 700;
+        white-space: nowrap;
+      }
       /* Projector mode: one screen, the diagram as large as it fits, playback pinned below. */
       body.focus-view main {
         max-width: none;
@@ -2096,11 +2106,75 @@
           transform: none;
         }
       }
+      .judge-flow, .judge-faq { display: none; }
+      body:not(.technical-view) .board-scroll,
+      body:not(.technical-view) .inspector,
+      body:not(.technical-view) .light-legend,
+      body:not(.technical-view) .mobile-hint,
+      body:not(.technical-view) .view-tools label,
+      body:not(.technical-view) .chapters,
+      body:not(.technical-view) .timing-note,
+      body:not(.technical-view) #sceneCaption,
+      body:not(.technical-view) #stageMessage,
+      body:not(.technical-view) #processingLabel { display: none; }
+      body:not(.technical-view) .judge-flow {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        justify-content: center;
+        gap: 24px;
+        padding: clamp(16px, 3vw, 40px);
+        background: var(--paper, #fff);
+      }
+      .judge-intro { margin: 0; color: var(--ink); font-size: clamp(16px, 2vw, 24px); }
+      .judge-cards {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 16px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      .judge-card {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        min-width: 0;
+        min-height: 176px;
+        gap: 12px;
+        padding: clamp(13px, 2vw, 24px);
+        border: 2px solid var(--line);
+        border-radius: 16px;
+        background: #fff;
+      }
+      .judge-card[aria-current="step"] { border-color: var(--teal); background: var(--teal-tint); }
+      .judge-card[data-finished="true"] { border-color: var(--teal); }
+      .judge-step { font-size: clamp(15px, 1.6vw, 22px); font-weight: 700; color: var(--ink); }
+      .judge-result { font-size: clamp(19px, 2.15vw, 31px); line-height: 1.3; color: var(--teal); }
+      .judge-card p { margin: 0; color: var(--ink); font-size: clamp(14px, 1.4vw, 18px); line-height: 1.5; }
+      .judge-card[data-pending="true"] .judge-result { color: var(--ink); font-weight: 500; }
+      body:not(.technical-view):not(.focus-view) .judge-faq {
+        display: block;
+        margin-top: 16px;
+        padding: 16px 24px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: #fff;
+      }
+      .judge-faq summary { cursor: pointer; font-weight: 700; color: var(--teal); }
+      .judge-faq p { margin: 12px 0 0; line-height: 1.6; }
+      body.focus-view:not(.technical-view) #openDetail { margin-inline-start: auto; }
+      body.focus-view:not(.technical-view) .judge-flow { min-height: 0; }
+      @media (max-width: 720px) {
+        .judge-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+        .judge-card { min-height: 118px; gap: 7px; }
+        body.focus-view:not(.technical-view) main { height: auto; min-height: 100vh; overflow: visible; }
+      }
     </style>
   </head>
   <body data-playback="auto">
     <nav class="skip-links" aria-label="快速導覽">
-      <a href="#diagramRegion">跳至方法流程圖</a
+      <a href="#judgeFlow">跳至方法流程圖</a
       ><a href="#playPause">跳至播放控制</a>
     </nav>
     <main id="app">
@@ -2145,11 +2219,11 @@
                 <rect x="47" y="45" width="14" height="13" rx="3" />
                 <path d="M20 15H44" />
               </g></svg
-            >流量與編碼
+            >辨識流量
           </button>
         </li>
         <li>
-          <button data-chapter="14" data-stage="detection">
+          <button data-chapter="17" data-stage="detection">
             <span class="step-number">02</span
             ><svg
               class="roadmap-icon"
@@ -2178,11 +2252,11 @@
                   fill="none"
                 />
               </g></svg
-            >融合判定
+            >找相似案例
           </button>
         </li>
         <li>
-          <button data-chapter="20" data-stage="audit">
+          <button data-chapter="28" data-stage="audit">
             <span class="step-number">03</span
             ><svg
               class="roadmap-icon"
@@ -2203,7 +2277,7 @@
                 <circle cx="43" cy="40" r="11" fill="#f3f6fa" />
                 <path d="M51 48L60 58" stroke-width="4" />
               </g></svg
-            >證據與稽核
+            >核對證據
           </button>
         </li>
         <li>
@@ -2232,27 +2306,31 @@
                 <rect x="47" y="45" width="14" height="13" rx="3" />
                 <path d="M20 15H44" />
               </g></svg
-            >策略與交付
+            >決定處置
           </button>
         </li>
       </ol>
       <section class="controls" aria-label="展示情境與播放控制">
         <div class="scenarios" id="scenarios"></div>
         <p class="start-hint" id="startHint">
-          按下情境，自動播放完整流程<br />再按任一情境，即從頭開始
+          選情境觀看完整流程。<br />點上方步驟可直接跳看。
         </p>
       </section>
-      <section class="exhibit" aria-label="可互動的光流展示面板">
+      <section class="exhibit" aria-label="四階段事件展示">
         <div class="stage-heading">
           <span id="sceneLabel">HTTP 洪流</span
-          ><span id="sceneCaption">選一個情境，讓資料帶著光往前走。</span
+          ><span id="sceneCaption">選一個情境，查看告警如何變成處置決定。</span
           ><span id="processingLabel" class="processing-label">等待啟動</span
-          ><span class="light-legend" aria-label="流程圖圖例">
+          ><span class="demo-scope">合成情境</span><span class="light-legend" aria-label="流程圖圖例">
             <span><i></i>目前處理</span><span><b></b>等待抵達</span>
             <span><span class="legend-complete"></span>已完成流程</span>
             <span><span class="legend-packet"></span>封包</span>
           </span>
         </div>
+        <section class="judge-flow" id="judgeFlow" tabindex="-1" aria-label="四階段事件結果">
+          <p class="judge-intro" id="judgeIntro"></p>
+          <ol class="judge-cards" id="judgeCards"></ol>
+        </section>
         <div
           class="board-scroll"
           id="diagramRegion"
@@ -2281,7 +2359,7 @@
           <span id="stageMessage">同一筆資料，同步形成兩種模型輸入。</span
           ><span class="mobile-hint">可左右滑動查看完整光流板</span
           ><button id="openDetail" class="text-button">
-            打開這一站的資料 ↓
+            查看答詢重點 ↓
           </button>
         </div>
       </section>
@@ -2331,6 +2409,12 @@
           TCP 交易。
         </p>
       </section>
+      <details class="judge-faq" id="judgeFAQ">
+        <summary>答詢重點</summary>
+        <p><strong>怎麼核對？</strong> 系統找出五筆相似案例，檢查它們是否支持原判定。</p>
+        <p><strong>何時才會處置？</strong> 判定與案例支持都達到門檻，才按政策處置。證據不足時保留紀錄，交由人員複核。</p>
+        <p><strong>畫面展示到哪裡？</strong> 合成情境展示到決定送達。連線回復是在 Mininet 隔離環境另外實測。</p>
+      </details>
       <section class="inspector" id="inspector">
         <div class="inspect-head">
           <div>
@@ -2347,8 +2431,7 @@
       </section>
       <footer>
         <span
-          >合成封包、示意模型與稽核回覆；色碼轉換和 cosine similarity
-          由瀏覽器實際計算。</span
+          >此頁可離線開啟，所有情境皆使用合成資料。</span
         ><button id="offline">下載離線單檔 ↓</button
         ><button id="embedding">離線操作說明</button>
       </footer>
@@ -2805,49 +2888,49 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
             end: 2,
             key: "traffic",
             title: "封包進入",
-            text: "先看處置前：來源請求與正常流量都能到達 Server。",
+            text: "處置前，受測來源與背景使用者都能連到服務端。",
           },
           {
             at: 2,
             end: 14,
             key: "encoding",
             title: "逐筆編碼",
-            text: "同一筆封包分成兩路。光點抵達後，兩個輸入圖同步新增一列。",
+            text: "同一筆封包送入兩個模型，各自轉成可判讀的特徵。",
           },
           {
             at: 14,
             end: 17,
             key: "fusion",
             title: "模型與融合判定",
-            text: "輸入累積完成，才顯示示意模型表徵與正式分類。",
+            text: "兩個模型的結果經過校準與融合，形成一個示意分類。",
           },
           {
             at: 17,
             end: 20,
             key: "vector",
             title: "組合查詢向量",
-            text: "CTBM 的 512 維表徵與融合後 17 維機率串接，再做 L2 正規化。",
+            text: "把流量特徵與各類機率合在一起，用來尋找相似案例。",
           },
           {
             at: 20,
             end: 26,
             key: "compare",
             title: "逐筆計算相似度",
-            text: "查詢向量逐筆比對案例庫。案例與分數依序亮起；不將本次事件寫入庫中。",
+            text: "逐筆比對既有案例，分數越高代表與這筆事件越相似。",
           },
           {
             at: 26,
             end: 28,
             key: "ranking",
             title: "排序取出 Top-5",
-            text: "以實際 cosine similarity 排序；排名前五的案例移出，準備組成 prompt。",
+            text: "取最相似的五筆案例，作為下一步稽核的證據。",
           },
           {
             at: 28,
             end: 32,
             key: "audit",
             title: "AI 稽核",
-            text: "正式分類、信心、分支與五筆證據組成 prompt；顯示預設示範回覆。",
+            text: "畫面以預設回覆示範 AI 如何用五筆案例核對分類。",
           },
           {
             at: 32,
@@ -2861,7 +2944,7 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
             end: 38,
             key: "command",
             title: "傳送處置決定",
-            text: "通過策略才將指令送向 r1；證據不足則走人工複核路徑。",
+            text: "通過策略後示意送出決定。證據不足時交由人工複核。",
           },
         ];
         const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
@@ -2953,7 +3036,9 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
         }
 
         const AUTO_MODE = document.body.dataset.playback === "auto";
-        const SCENARIO_ORDER = Object.keys(SCENARIOS);
+        const SCENARIO_ORDER = ["ddos", "benign", "ssh", "review"];
+        const TECHNICAL_VIEW = new URLSearchParams(location.search).has("technical");
+        document.body.classList.toggle("technical-view", TECHNICAL_VIEW);
         const NODE_LABELS = {
           packetNode: "流量輸入",
           ctNode: "CTBM",
@@ -2991,6 +3076,18 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
           ddos: "HTTP 洪流",
           ssh: "SSH 驗證嘗試",
           review: "可疑 Web 流量",
+        };
+        const JUDGE_STEPS = [
+          { title: "辨識流量", starts: 0, ready: 14 },
+          { title: "找相似案例", starts: 17, ready: 26 },
+          { title: "核對證據", starts: 28, ready: 30 },
+          { title: "決定處置", starts: 32, ready: COMMAND_ARRIVAL },
+        ];
+        const JUDGE_SCENES = {
+          ddos: ["短時間出現大量重複的網站請求。", "判定為 HTTP 洪流", "示意送出限速", "限制該來源的超額請求。"],
+          benign: ["網站請求與回應正常往返。", "判定為正常連線", "維持通行", "持續監測正常流量。"],
+          ssh: ["同一來源多次嘗試登入。", "判定為異常登入嘗試", "示意限制登入連線", "只限制該來源的登入連線。"],
+          review: ["兩個模型對這筆 Web 流量的判定有分歧。", "標記為可疑 Web 流量", "交由人工複核", "保留證據供人員判讀。"],
         };
         const tabNames = {
           traffic: "流量與封包",
@@ -3690,12 +3787,45 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
                     ? "重複驗證嘗試"
                     : "短間隔 · 重複請求");
         }
+        let judgeViewKey = "";
+        function renderJudge(t, policy, force) {
+          const active = JUDGE_STEPS.findLastIndex((step) => t >= step.starts);
+          const ready = JUDGE_STEPS.filter((step) => t >= step.ready).length;
+          const viewKey = [state.key, active, ready].join(":");
+          if (!force && viewKey === judgeViewKey) return;
+          judgeViewKey = viewKey;
+          const [intro, detection, decision, action] = JUDGE_SCENES[state.key];
+          const review = policy.assessment === "review";
+          const previews = [
+            "讀取同一筆流量的特徵。",
+            "在案例庫比對相似紀錄。",
+            "確認案例是否支持判定。",
+            "依政策選擇適當行動。",
+          ];
+          const outcomes = [
+            [detection, "兩個模型共同判讀同一筆流量。"],
+            ["找到五筆相似案例", "把最接近的紀錄交給稽核。"],
+            [review ? "證據需要複核" : "案例支持判定", "五筆案例中有 " + policy.support + " 筆支持原判定。"],
+            [decision, action],
+          ];
+          $("judgeIntro").textContent = intro;
+          $("judgeCards").innerHTML = JUDGE_STEPS.map((step, index) => {
+            const finished = index < ready;
+            const [result, detail] = outcomes[index];
+            return '<li class="judge-card" data-finished="' + finished +
+              '" data-pending="' + !finished + '"' + (index === active ? ' aria-current="step"' : '') +
+              '><span class="judge-step">0' + (index + 1) + " · " + step.title +
+              '</span><strong class="judge-result">' + (finished ? result : index === active ? "處理中" : "等待前一步") +
+              '</strong><p>' + (finished ? detail : previews[index]) + '</p></li>';
+          }).join("");
+        }
         function render(force = false) {
           const s = stateAt(state.time),
             t = s.t,
             scenario = SCENARIOS[state.key],
             disruptive = isDisruptive(state.key),
             p = policyFor(state.key);
+          renderJudge(t, p, force);
           $("progress").setAttribute("aria-valuenow", t.toFixed(2));
           $("progressFill").style.width = (t / DURATION) * 100 + "%";
           $("playPause").textContent = state.playing ? "暫停" : "播放";
@@ -3703,9 +3833,9 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
           $("seek").value = String(t);
           $("seek").setAttribute("aria-valuetext", t.toFixed(1) + "秒");
           const stage =
-            t < 14
+            t < (TECHNICAL_VIEW ? 14 : 17)
               ? "traffic"
-              : t < 20
+              : t < (TECHNICAL_VIEW ? 20 : 28)
                 ? "detection"
                 : t < 32
                   ? "audit"
@@ -3718,14 +3848,14 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
           $("clock").textContent = fmt(t) + " / " + fmt(DURATION);
           $("currentChapter").textContent = s.done
             ? "展示完成"
-            : s.chapter.title;
+            : TECHNICAL_VIEW ? s.chapter.title : JUDGE_STEPS.findLast((step) => t >= step.starts).title;
           if (state.chapter !== s.chapter.key || force) {
             state.chapter = s.chapter.key;
             $("sceneCaption").textContent =
               t === 0
                 ? state.playing
                   ? "情境啟動，資料開始流動。"
-                  : "選一個情境，讓資料帶著光往前走。"
+                  : "選一個情境，查看告警如何變成處置決定。"
                 : s.chapter.text;
             $("stageMessage").textContent = s.chapter.text;
             if (state.follow)
@@ -4450,7 +4580,7 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
         }
         function embedHelp() {
           modal(
-            "<h2>離線操作</h2><p>直接以瀏覽器開啟此 HTML，不需登入或連網。頁面自動依序播放正常流量、DDoS、SSH 與人工複核四個合成情境；每個情境 38 秒，2 倍速為 19 秒。</p><p>可暫停、調整速度、拖曳時間軸或點章節。開啟節點說明會暫停，按播放才繼續。Space 切換播放，方向鍵前後 5 秒；輸入欄位與對話框保留原有鍵盤操作。</p><p>減少動態效果設定啟用時不自動播放。JSON 匯出是合成示意紀錄，並非模型或處置實測證據。</p>",
+            "<h2>離線操作</h2><p>直接以瀏覽器開啟此 HTML，不需登入或連網。頁面自動依序播放 HTTP 洪流、正常連線、SSH 驗證嘗試與人工複核四個合成情境；每個情境 38 秒，2 倍速為 19 秒。</p><p>可暫停、調整速度、拖曳時間軸或點章節。開啟節點說明會暫停，按播放才繼續。Space 切換播放，方向鍵前後 5 秒；輸入欄位與對話框保留原有鍵盤操作。</p><p>減少動態效果設定啟用時不自動播放。JSON 匯出是合成示意紀錄，並非模型或處置實測證據。</p>",
           );
         }
         function pauseForReading(message) {
@@ -4556,8 +4686,22 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
             state.chapter = "";
             render(true);
           };
-          $("openDetail").onclick = () => inspect(state.tab);
-          $("about").onclick = () => modal(aboutHTML);
+          $("openDetail").onclick = () => {
+            if (TECHNICAL_VIEW) {
+              inspect(state.tab);
+              return;
+            }
+            if (document.body.classList.contains("focus-view")) $("focusView").click();
+            jump(state.time, false);
+            $("judgeFAQ").open = true;
+            $("judgeFAQ").querySelector("summary").focus();
+          };
+          $("judgeFAQ").addEventListener("toggle", () => {
+            if ($("judgeFAQ").open && state.playing) jump(state.time, false);
+          });
+          $("about").onclick = () =>
+            modal(TECHNICAL_VIEW ? aboutHTML :
+              '<h2>如何觀看展示</h2><p>先看 HTTP 洪流如何從告警走到處置決定。也可選其他情境，比較何時只監測、何時交由人工複核。</p><p>這是合成情境。連線回復的實測請看影片片尾或簡報第 6 頁。</p>');
           $("embedding").onclick = embedHelp;
           $("closeDialog").onclick = () => $("dialog").close();
           $("dialog").addEventListener("close", () => {
@@ -4734,7 +4878,7 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
             $("startHint").innerHTML =
               "自動輪播 · " +
               (SCENARIO_ORDER.indexOf(key) + 1) +
-              " / 4<br>本情境播完，自動切換下一個";
+              " / " + SCENARIO_ORDER.length + "<br>點上方步驟跳看，可隨時暫停";
           jump(0, !reducedMotion.matches);
         }
         function frame(stamp) {
@@ -4761,7 +4905,7 @@ Example format: {"assessment":"review","reason":"Evidence conflicts with the det
           requestAnimationFrame(frame);
         }
         bind();
-        const firstKey = AUTO_MODE ? SCENARIO_ORDER[0] : "ddos";
+        const firstKey = SCENARIO_ORDER[0];
         setData(firstKey);
         buildBoard();
         document.querySelectorAll("[data-pixel]").forEach((cell, index) => {
